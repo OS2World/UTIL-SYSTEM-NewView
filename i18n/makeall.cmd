@@ -4,7 +4,7 @@
 /* NewView - a new OS/2 Help Viewer                                          */
 /*                                                                           */
 /* Copyright 2003-2006 Aaron Lawrence (aaronl at consultant dot com)         */
-/* Copyright 2006 RonaldBrill (rbri at rbri.org)                             */
+/* Copyright 2006 Ronald Brill (rbri at rbri.org)                             */
 /*                                                                           */
 /* This software is released under the Gnu Public License                    */
 /*                                                                           */
