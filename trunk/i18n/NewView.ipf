@@ -438,6 +438,17 @@ refid='CommandLineTopicSearch'.Command Line Topic Search:elink.&per.
 :p.:hp2.&slash.s&colon.&lt.search text&gt.:ehp2.
 :p.After opening the file&comma. performs a :link reftype=hd
 refid='search'.search:elink. for the given text&per.
+.br
+Example&colon.
+:xmp.
+  newview cmdref &slash.s&colon.copy
+:exmp.
+:p.If you need to specify multiple words&comma. surround the entire option with
+quotes&comma. for example&colon.
+:xmp.
+  newview cmdref "&slash.s&colon.net copy"
+:exmp.
+
 :p.:hp2.&slash.g&colon.&lt.search text&gt.:ehp2.
 :p.Performs a :link reftype=hd refid='GlobalSearch'.global search:elink. for the
 given text&comma. on all the help files in your system&per.
@@ -469,13 +480,18 @@ Advanced Parameters
 developers&comma. but can be used for any purpose&per.
 :p.:hp2.&slash.lang&colon.&lt.language spec&gt.:ehp2.
 :p.Loads the specified language&per. Overrides the default chosen based on the
-LANG environment variable&per. For example&comma. &slash.lang&colon.en loads
-English&per. See readme&per.txt for more information&per.
+LANG environment variable&per. For example&comma.
+:xmp.
+  newview cmdref &slash.lang&colon.en
+:exmp.
+loads English&per. See readme&per.txt for more information&per.
 :p.:hp2.&slash.pos&colon.&lt.left&gt.&comma.&lt.bottom&gt.&comma.&lt.width&gt.&comma.&lt.height&gt.:ehp2.
 :p.Set the main program window to the given position and size&per. All values
 must be given&per. Put a :hp2.P:ehp2. after a number to specify a
 percentage&per. For example&colon.
-:p.newview &slash.pos&colon.10P&comma.10P&comma.80P&comma.80P
+:xmp.
+  newview &slash.pos&colon.10P&comma.10P&comma.80P&comma.80P
+:exmp.
 :p.makes the window centered and 80&percent. of the screen size&per.
 :p.:hp2.&slash.title&colon.&lt.window title&gt.:ehp2.
 :p.Sets the title of the NewView window to the specified text&comma. overriding
@@ -484,8 +500,10 @@ inserted in front of the specified text&comma. unless the specified text is
 "help"&comma. in which case the title will simply become "Help"&per. This is to
 make sure that help windows are always obvious as such in the window list&per.
 :p.If you need to specify multiple words&comma. surround the entire option with
-quotes&comma. for example&colon. newview cmdref "&slash.title&colon.Command Line
-Help"
+quotes&comma. for example&colon.
+:xmp.
+  newview cmdref "&slash.title&colon.Command Line Help"
+:exmp.
 :h2 res=15 id='CommandLineExamples'.
 Command Line Examples
 :p.:hp2.Command Line Examples:ehp2.
