@@ -26,6 +26,9 @@ nv_rc = SysMkDir(nv_build_dir_sibyl)
 nv_build_dir_sibyl_lib = nv_build_dir_sibyl||'\lib'
 nv_rc = SysMkDir(nv_build_dir_sibyl_lib)
 
+/* TODO dir cleanup */
+
+
 'cd spcc'
 'rcomp20 english.rc ' nv_build_dir_sibyl_lib
 'rcomp20 buttons.rc ' nv_build_dir_sibyl_lib
