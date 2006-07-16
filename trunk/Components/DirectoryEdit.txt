@@ -1,0 +1,83 @@
+TDirectoryEdit component
+for SpeedSoft Sibyl
+
+Written by Aaron Lawrence (aaronl@clear.net.nz)
+
+Summary
+-------
+
+This Sibyl component looks like a normal text edit box.
+However, it acts as a directory selector, when you press enter.
+If the direcctory does not exist it just beeps. If it does,
+then an event is called for your code to do what it will with 
+(probably setting the directory of a TFilelistBox).
+
+This would not be so useful, except that this component also implements
+directory completion like 4OS/2 and other shells. If you press tab,
+then it looks for a directory matching what you've typed so far, and if
+found it selects it. If you press tab again it looks for the next match.
+And so on.
+
+Overriding the tab and enter keys like this is not normally the 'done thing'
+for GUIs but it's pretty handy. You can use Ctrl-Tab to shift focus as the
+tab key would normally do.
+
+License
+-------
+
+This component is freeware, but comments would be appreciated!
+I make no warranty as to it's safe operation... etc.
+
+You may modify the source code and use it in your own projects.
+
+What you need
+-------------
+
+You should have these files:
+
+DirectoryEdit.pas
+DirectoryEdit.bmp
+
+Installation
+------------
+
+Load DirectoryEdit.pas into Sibyl, and compile it with Project - Compile.
+
+Then, use Component - Install Component
+Select DirectoryEdit.SPU (which you just produced by compiling DirectoryEdit.pas)
+
+Click the >> button to add the component.
+
+Click OK.
+
+Notes:
+- If you have a project open, Sibyl may ask if you want to save it,
+  since it needs to close the project to install the component.
+
+- If you're reinstalling this component, Sibyl will say an Error,
+   but will reinstall it anyway :-|
+
+The component should now appear under the User tab.
+
+Using the component
+-------------------
+
+Just stick a Directory Edit on a form. 
+
+You can set the directory just by changing it's text.
+
+To react to directory selection, set the OnChangeDirectory event.
+You will be passed the new directory (which you can also get
+just by reading the text)
+
+
+Problems/limitations
+--------------------
+
+This seems to work perfectly well, without any problems I have noticed.
+
+It keeps a File search open while it is running (using the FindFirst
+and FindNext functions) so this could potentially be a problem if you
+used lots of these components.
+
+
