@@ -15,8 +15,6 @@
 /* ------------------------------------------------------------------------- */
 
 
-nv_i18n_dir = directory()
-
 nv_build_dir = value('NV_BUILD', , 'OS2ENVIRONMENT')
 nv_rc = SysMkDir(nv_build_dir)
 
