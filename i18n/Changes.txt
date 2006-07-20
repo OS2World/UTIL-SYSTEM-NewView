@@ -4,6 +4,15 @@ V2.19
 - More examples added to the description for the command
   line parameters/options in the online help.
 - Some small formating changes in the online help.
+- Numbering changed
+- Menu entry 'Save as IPF' translated to german
+- some backup files removed
+- ACLCtl10.DLL, ACLCtl10.h, ACLCtl10.pas, ACLCtl10.zip removed form my
+  local build \components directory
+- Test.pas removed form my local build \components directory
+- fix for unused vars in sibyl\addon\gradient.pas
+- fix for unused vars in sibyl\addon\ScktComp.pas
+- fix for missing bitmap cool1.bmp in components
 
 
 V2.18.1
