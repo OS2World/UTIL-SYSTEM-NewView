@@ -62,14 +62,15 @@ CompInstallDir=D:\PROGS\SIBYL\Compnt
 
 [Find History]
 
-Find0=assertTrue
-Find1=getHelpManagerWindow
-Find2=do
-Find3=end
-Find4=BEGIN
-Find5=Interface
-Find6=assertEqualsString
-Find7=END
+Find0=split
+Find1=assertTrue
+Find2=getHelpManagerWindow
+Find3=do
+Find4=end
+Find5=BEGIN
+Find6=Interface
+Find7=assertEqualsString
+Find8=END
 
 [General]
 
@@ -88,17 +89,17 @@ Platform=Standard
 File0=.\CmdLineParameterUnit.pas
 File0.Left=-4
 File0.Bottom=-5
-File0.Width=1032
-File0.Height=621
-File0.Column=19
-File0.Line=210
+File0.Width=994
+File0.Height=406
+File0.Column=1
+File0.Line=325
 File1=.\NewViewTests.pas
 File1.Left=-4
 File1.Bottom=-5
 File1.Width=994
 File1.Height=406
 File1.Column=1
-File1.Line=514
+File1.Line=534
 
 [Linker Options]
 

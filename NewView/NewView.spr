@@ -1,6 +1,6 @@
 [Application Options]
 
-ApplicationIcon=x:\NEWVIEW\NewView.ico
+ApplicationIcon=P:\NEWVIEW_DEV\NewView\NewView.ico
 
 [Application Options Linux]
 
@@ -60,62 +60,63 @@ File40=ACLFINDFUNCTIONS
 File41=ACLFILEUTILITY
 File42=ACLLANGUAGEUNIT
 File43=GENERICTHREAD
-File44=SPLITBAR
-File45=CONTROLSCROLLING
-File46=OUTLINE2
-File47=CANVASFONTMANAGER
-File48=RICHTEXTDOCUMENTUNIT
-File49=RICHTEXTSTYLEUNIT
-File50=CLIPBRD
-File51=RICHTEXTLAYOUTUNIT
-File52=CONTROLSUTILITY
-File53=RICHTEXTDISPLAYUNIT
-File54=RICHTEXTVIEW
-File55=CUSTOMLISTBOX
-File56=IPFFILEFORMATUNIT
-File57=HELPWINDOWDIMENSIONS
-File58=ASTRINGUTILITYUNIT
-File59=CUSTOMMEMO
-File60=SYSTEMICONUNIT
-File61=ACLMESSAGEFORM
-File62=ACLDIALOGS
-File63=SETTINGSUNIT
-File64=HELPTOPIC
-File65=HELPBITMAP
-File66=TEXTSEARCHQUERY
-File67=SEARCHTABLE
-File68=HELPFILE
-File69=HELPWINDOWUNIT
-File70=NAVIGATEPOINTUNIT
-File71=MISCUNIT
-File72=HELPMANAGERUNIT
-File73=TABSET2UNIT
-File74=RICHTEXTPRINTUNIT
-File75=INFORMATIONFORMUNIT
-File76=SPIN
-File77=COLORMAPPING
-File78=COLORWHEEL
-File79=CUSTOMFONTDIALOG
-File80=BSEDEV
-File81=DRIVEINFOUNIT
-File82=BITMAPUTILITY
-File83=CUSTOMFILECONTROLS
-File84=FILEDIALOGFORM
-File85=OPTIONSFORM
-File86=VERSIONUNIT
-File87=RUNPROGRAMUNIT
-File88=WEBBROWSERUNIT
-File89=PRODUCTINFORMATIONFORMUNIT
-File90=NOTEFORM
-File91=LED
-File92=SEARCHUNIT
-File93=SEARCHDIRECTORIESFORMUNIT
-File94=GLOBALSEARCHFORM
-File95=BOOKMARKSFORMUNIT
-File96=PRINTDIALOGUNIT
-File97=GLOBALFILELISTUNIT
-File98=STARTUPUNIT
-File99=MAINFORM
+File44=CMDLINEPARAMETERUNIT
+File45=SPLITBAR
+File46=CONTROLSCROLLING
+File47=OUTLINE2
+File48=CANVASFONTMANAGER
+File49=RICHTEXTDOCUMENTUNIT
+File50=RICHTEXTSTYLEUNIT
+File51=CLIPBRD
+File52=RICHTEXTLAYOUTUNIT
+File53=CONTROLSUTILITY
+File54=RICHTEXTDISPLAYUNIT
+File55=RICHTEXTVIEW
+File56=CUSTOMLISTBOX
+File57=IPFFILEFORMATUNIT
+File58=HELPWINDOWDIMENSIONS
+File59=ASTRINGUTILITYUNIT
+File60=CUSTOMMEMO
+File61=SYSTEMICONUNIT
+File62=ACLMESSAGEFORM
+File63=ACLDIALOGS
+File64=SETTINGSUNIT
+File65=HELPTOPIC
+File66=HELPBITMAP
+File67=TEXTSEARCHQUERY
+File68=SEARCHTABLE
+File69=HELPFILE
+File70=HELPWINDOWUNIT
+File71=NAVIGATEPOINTUNIT
+File72=MISCUNIT
+File73=HELPMANAGERUNIT
+File74=TABSET2UNIT
+File75=RICHTEXTPRINTUNIT
+File76=INFORMATIONFORMUNIT
+File77=SPIN
+File78=COLORMAPPING
+File79=COLORWHEEL
+File80=CUSTOMFONTDIALOG
+File81=BSEDEV
+File82=DRIVEINFOUNIT
+File83=BITMAPUTILITY
+File84=CUSTOMFILECONTROLS
+File85=FILEDIALOGFORM
+File86=OPTIONSFORM
+File87=VERSIONUNIT
+File88=RUNPROGRAMUNIT
+File89=WEBBROWSERUNIT
+File90=PRODUCTINFORMATIONFORMUNIT
+File91=NOTEFORM
+File92=LED
+File93=SEARCHUNIT
+File94=SEARCHDIRECTORIESFORMUNIT
+File95=GLOBALSEARCHFORM
+File96=BOOKMARKSFORMUNIT
+File97=PRINTDIALOGUNIT
+File98=GLOBALFILELISTUNIT
+File99=STARTUPUNIT
+File100=MAINFORM
 
 [Compiler Options]
 
@@ -137,7 +138,7 @@ CompLibName=D:\progs\Sibyl\Bin\CompLib.dll
 
 [Debugger Options]
 
-DebugInfo=LocalSymbols
+DebugInfo=LineNumbers,LocalSymbols
 EvalHints=True
 Dbg_Options=0
 RTL_Exceptions=1073741823
@@ -145,12 +146,12 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\newview_dev\NEWVIEW
+LastDir=P:\NEWVIEW_DEV\BUILD\COMPONENTS
 OutDir=P:\newview_dev\build
 LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\components;P:\newview_dev\build\library
 LibSrcDir=P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl;P:\newview_dev\library;P:\newview_dev\components
 IncSrcDir=
-CompInstallDir=P:\newview_dev\sibyl\lib;P:\newview_dev\components
+CompInstallDir=P:\newview_dev\sibyl\lib;P:\NEWVIEW_DEV\build\components;P:\newview_dev\components
 
 [Directories OS/2]
 
@@ -163,27 +164,27 @@ CompInstallDir=
 
 [Find History]
 
-Find0=rbri
-Find1=RefreshFontSubstitutions
-Find2=substitutefi
-Find3=fixedfontsub
-Find4=doopt
-Find5=.doset
-Find6=refreshwind
-Find7=files.count
-Find8=.refreshwi
-Find9=applyset
-Find10=substi
-Find11=substit
-Find12=helpfile.cre
-Find13=SetupFontSubstitutes
-Find14=.setupf
-Find15=findfonts
+Find0=CmdLineParameters
+Find1=height
+Find2=getSearchTextFlag
+Find3=parame
+Find4=cmdline
+Find5=matchflag
+Find6=Match
+Find7=StringToList
+Find8=Classes
+Find9=ExtractNextValue
+Find10=getHelpManagerFlag
+Find11=splitted
+Find12=CmdLineParameterUnit
+Find13=parsec
+Find14=ParseCommandLineParameters
+Find15=ShowUsageFlag
 
 [General]
 
 Version=Sibyl Project Ver2.02
-ProjectName=P:\newview_dev\NewView\NewView.spr
+ProjectName=P:\NEWVIEW_DEV\NEWVIEW\NewView.spr
 ProjectType=Visual
 CompLibName=D:\progs\Sibyl\Bin\CompLib.dll
 Win32CompLibName=D:\progs\Sibyl\Bin\CompLib.dll
@@ -194,56 +195,43 @@ Platform=OS/2
 
 [Last Closed Files]
 
-File0=.\OptionsForm.pas
-File1=.\HelpTopic.pas
-File2=.\HelpFile.pas
-File3=.\SettingsUnit.pas
-File4=.\PrintDialogUnit.pas
+File0=..\.\Library\ACLStringUtility.pas
+File1=..\.\components\ACLLanguageUnit.pas
+File2=.\VersionUnit.pas
+File3=.\NewView.pas
+File4=.\ViewStub.pas
+File5=.\NewViewTests.pas
 
 [Last Open Files]
 
-File0=.\CHANGES.TXT
+File0=D:\PROGS\SIBYL\BIN\CompLib.scl
 File0.Left=-4
 File0.Bottom=-5
-File0.Width=764
-File0.Height=406
-File0.Column=20
-File0.Line=6
-File1=.\NewView.pas
+File0.Width=994
+File0.Height=255
+File0.Column=18
+File0.Line=8
+File1=.\StartupUnit.pas
 File1.Left=-4
 File1.Bottom=-5
-File1.Width=764
-File1.Height=406
-File1.Column=47
-File1.Line=12
-File2=.\VersionUnit.pas
+File1.Width=994
+File1.Height=255
+File1.Column=30
+File1.Line=246
+File2=.\CmdLineParameterUnit.pas
 File2.Left=-4
 File2.Bottom=-5
-File2.Width=764
-File2.Height=406
-File2.Column=28
-File2.Line=16
+File2.Width=1032
+File2.Height=470
+File2.Column=1
+File2.Line=33
 File3=.\MainForm.pas
 File3.Left=-4
 File3.Bottom=-5
-File3.Width=764
-File3.Height=406
-File3.Column=10
-File3.Line=803
-File4=.\IPFFileFormatUnit.pas
-File4.Left=-4
-File4.Bottom=-5
-File4.Width=764
-File4.Height=406
-File4.Column=1
-File4.Line=428
-File5=.\HelpFile.pas
-File5.Left=-4
-File5.Bottom=-5
-File5.Width=764
-File5.Height=406
-File5.Column=10
-File5.Line=158
+File3.Width=994
+File3.Height=255
+File3.Column=65
+File3.Line=2250
 
 [Linker Options]
 
@@ -264,7 +252,7 @@ Stack=1024
 Primary=.\NewView.pas
 MainFile0=.\NewView.pas
 MainFile0.Ext=.EXE
-MainFile0.Checksum=26112
+MainFile0.Checksum=26368
 MainFile0.Expanded=False
 MainFile0.File0=.\BookmarksFormUnit.pas
 MainFile0.File1=.\DataTypes.pas
@@ -293,7 +281,8 @@ MainFile0.File23=.\TextSearchQuery.pas
 MainFile0.File24=.\VersionUnit.pas
 MainFile0.File25=.\FileDialogForm.pas
 MainFile0.File26=.\MiscUnit.pas
-MainFile0.File27=[Dependencies]
+MainFile0.File27=.\CommandLineParameterUnit.pas
+MainFile0.File28=[Dependencies]
 MainFile0.Dependency0=..\.\sibyl\rtl\SYSTEM.PAS
 MainFile0.Dependency1=..\.\sibyl\rtl\OS2DEF.PAS
 MainFile0.Dependency2=..\.\sibyl\rtl\BSETIB.PAS
@@ -338,61 +327,62 @@ MainFile0.Dependency40=..\.\library\ACLFINDFUNCTIONS.PAS
 MainFile0.Dependency41=..\.\library\ACLFILEUTILITY.PAS
 MainFile0.Dependency42=..\.\components\ACLLANGUAGEUNIT.PAS
 MainFile0.Dependency43=..\.\components\GENERICTHREAD.PAS
-MainFile0.Dependency44=..\.\components\SPLITBAR.PAS
-MainFile0.Dependency45=..\.\components\CONTROLSCROLLING.PAS
-MainFile0.Dependency46=..\.\components\OUTLINE2.PAS
-MainFile0.Dependency47=..\.\components\CANVASFONTMANAGER.PAS
-MainFile0.Dependency48=..\.\components\RICHTEXTDOCUMENTUNIT.PAS
-MainFile0.Dependency49=..\.\components\RICHTEXTSTYLEUNIT.PAS
-MainFile0.Dependency50=..\.\sibyl\spcc\CLIPBRD.PAS
-MainFile0.Dependency51=..\.\components\RICHTEXTLAYOUTUNIT.PAS
-MainFile0.Dependency52=..\.\components\CONTROLSUTILITY.PAS
-MainFile0.Dependency53=..\.\components\RICHTEXTDISPLAYUNIT.PAS
-MainFile0.Dependency54=..\.\components\RICHTEXTVIEW.PAS
-MainFile0.Dependency55=..\.\components\CUSTOMLISTBOX.PAS
-MainFile0.Dependency56=.\IPFFILEFORMATUNIT.PAS
-MainFile0.Dependency57=.\HELPWINDOWDIMENSIONS.PAS
-MainFile0.Dependency58=..\.\library\ASTRINGUTILITYUNIT.PAS
-MainFile0.Dependency59=..\.\components\CUSTOMMEMO.PAS
-MainFile0.Dependency60=..\.\components\SYSTEMICONUNIT.PAS
-MainFile0.Dependency61=..\.\components\ACLMESSAGEFORM.PAS
-MainFile0.Dependency62=..\.\components\ACLDIALOGS.PAS
-MainFile0.Dependency63=.\SETTINGSUNIT.PAS
-MainFile0.Dependency64=.\HELPTOPIC.PAS
-MainFile0.Dependency65=.\HELPBITMAP.PAS
-MainFile0.Dependency66=.\TEXTSEARCHQUERY.PAS
-MainFile0.Dependency67=.\SEARCHTABLE.PAS
-MainFile0.Dependency68=.\HELPFILE.PAS
-MainFile0.Dependency69=.\HELPWINDOWUNIT.PAS
-MainFile0.Dependency70=.\NAVIGATEPOINTUNIT.PAS
-MainFile0.Dependency71=.\MISCUNIT.PAS
-MainFile0.Dependency72=.\HELPMANAGERUNIT.PAS
-MainFile0.Dependency73=..\.\components\TABSET2UNIT.PAS
-MainFile0.Dependency74=..\.\components\RICHTEXTPRINTUNIT.PAS
-MainFile0.Dependency75=.\INFORMATIONFORMUNIT.PAS
-MainFile0.Dependency76=..\.\components\COLORMAPPING.PAS
-MainFile0.Dependency77=..\.\components\COLORWHEEL.PAS
-MainFile0.Dependency78=..\.\components\CUSTOMFONTDIALOG.PAS
-MainFile0.Dependency79=..\.\sibyl\rtl\BSEDEV.PAS
-MainFile0.Dependency80=..\.\components\DRIVEINFOUNIT.PAS
-MainFile0.Dependency81=..\.\components\BITMAPUTILITY.PAS
-MainFile0.Dependency82=..\.\components\CUSTOMFILECONTROLS.PAS
-MainFile0.Dependency83=.\FILEDIALOGFORM.PAS
-MainFile0.Dependency84=.\OPTIONSFORM.PAS
-MainFile0.Dependency85=.\VERSIONUNIT.PAS
-MainFile0.Dependency86=..\.\library\RUNPROGRAMUNIT.PAS
-MainFile0.Dependency87=..\.\components\WEBBROWSERUNIT.PAS
-MainFile0.Dependency88=.\PRODUCTINFORMATIONFORMUNIT.PAS
-MainFile0.Dependency89=.\NOTEFORM.PAS
-MainFile0.Dependency90=.\SEARCHUNIT.PAS
-MainFile0.Dependency91=.\SEARCHDIRECTORIESFORMUNIT.PAS
-MainFile0.Dependency92=.\GLOBALSEARCHFORM.PAS
-MainFile0.Dependency93=.\BOOKMARKSFORMUNIT.PAS
-MainFile0.Dependency94=.\PRINTDIALOGUNIT.PAS
-MainFile0.Dependency95=.\GLOBALFILELISTUNIT.PAS
-MainFile0.Dependency96=.\STARTUPUNIT.PAS
-MainFile0.Dependency97=.\MAINFORM.PAS
-MainFile0.Dependency98=.\NewView.scu
+MainFile0.Dependency44=.\CMDLINEPARAMETERUNIT.PAS
+MainFile0.Dependency45=..\.\components\SPLITBAR.PAS
+MainFile0.Dependency46=..\.\components\CONTROLSCROLLING.PAS
+MainFile0.Dependency47=..\.\components\OUTLINE2.PAS
+MainFile0.Dependency48=..\.\components\CANVASFONTMANAGER.PAS
+MainFile0.Dependency49=..\.\components\RICHTEXTDOCUMENTUNIT.PAS
+MainFile0.Dependency50=..\.\components\RICHTEXTSTYLEUNIT.PAS
+MainFile0.Dependency51=..\.\sibyl\spcc\CLIPBRD.PAS
+MainFile0.Dependency52=..\.\components\RICHTEXTLAYOUTUNIT.PAS
+MainFile0.Dependency53=..\.\components\CONTROLSUTILITY.PAS
+MainFile0.Dependency54=..\.\components\RICHTEXTDISPLAYUNIT.PAS
+MainFile0.Dependency55=..\.\components\RICHTEXTVIEW.PAS
+MainFile0.Dependency56=..\.\components\CUSTOMLISTBOX.PAS
+MainFile0.Dependency57=.\IPFFILEFORMATUNIT.PAS
+MainFile0.Dependency58=.\HELPWINDOWDIMENSIONS.PAS
+MainFile0.Dependency59=..\.\library\ASTRINGUTILITYUNIT.PAS
+MainFile0.Dependency60=..\.\components\CUSTOMMEMO.PAS
+MainFile0.Dependency61=..\.\components\SYSTEMICONUNIT.PAS
+MainFile0.Dependency62=..\.\components\ACLMESSAGEFORM.PAS
+MainFile0.Dependency63=..\.\components\ACLDIALOGS.PAS
+MainFile0.Dependency64=.\SETTINGSUNIT.PAS
+MainFile0.Dependency65=.\HELPTOPIC.PAS
+MainFile0.Dependency66=.\HELPBITMAP.PAS
+MainFile0.Dependency67=.\TEXTSEARCHQUERY.PAS
+MainFile0.Dependency68=.\SEARCHTABLE.PAS
+MainFile0.Dependency69=.\HELPFILE.PAS
+MainFile0.Dependency70=.\HELPWINDOWUNIT.PAS
+MainFile0.Dependency71=.\NAVIGATEPOINTUNIT.PAS
+MainFile0.Dependency72=.\MISCUNIT.PAS
+MainFile0.Dependency73=.\HELPMANAGERUNIT.PAS
+MainFile0.Dependency74=..\.\components\TABSET2UNIT.PAS
+MainFile0.Dependency75=..\.\components\RICHTEXTPRINTUNIT.PAS
+MainFile0.Dependency76=.\INFORMATIONFORMUNIT.PAS
+MainFile0.Dependency77=..\.\components\COLORMAPPING.PAS
+MainFile0.Dependency78=..\.\components\COLORWHEEL.PAS
+MainFile0.Dependency79=..\.\components\CUSTOMFONTDIALOG.PAS
+MainFile0.Dependency80=..\.\sibyl\rtl\BSEDEV.PAS
+MainFile0.Dependency81=..\.\components\DRIVEINFOUNIT.PAS
+MainFile0.Dependency82=..\.\components\BITMAPUTILITY.PAS
+MainFile0.Dependency83=..\.\components\CUSTOMFILECONTROLS.PAS
+MainFile0.Dependency84=.\FILEDIALOGFORM.PAS
+MainFile0.Dependency85=.\OPTIONSFORM.PAS
+MainFile0.Dependency86=.\VERSIONUNIT.PAS
+MainFile0.Dependency87=..\.\library\RUNPROGRAMUNIT.PAS
+MainFile0.Dependency88=..\.\components\WEBBROWSERUNIT.PAS
+MainFile0.Dependency89=.\PRODUCTINFORMATIONFORMUNIT.PAS
+MainFile0.Dependency90=.\NOTEFORM.PAS
+MainFile0.Dependency91=.\SEARCHUNIT.PAS
+MainFile0.Dependency92=.\SEARCHDIRECTORIESFORMUNIT.PAS
+MainFile0.Dependency93=.\GLOBALSEARCHFORM.PAS
+MainFile0.Dependency94=.\BOOKMARKSFORMUNIT.PAS
+MainFile0.Dependency95=.\PRINTDIALOGUNIT.PAS
+MainFile0.Dependency96=.\GLOBALFILELISTUNIT.PAS
+MainFile0.Dependency97=.\STARTUPUNIT.PAS
+MainFile0.Dependency98=.\MAINFORM.PAS
+MainFile0.Dependency99=.\NewView.scu
 
 [Replace History]
 
@@ -425,7 +415,7 @@ MainForm=MainForm
 
 [Win32 Application Options]
 
-ApplicationIcon=x:\NEWVIEW\NewView.ico
+ApplicationIcon=P:\NEWVIEW_DEV\NewView\NewView.ico
 
 [Win32 Compiler Options]
 
@@ -443,7 +433,7 @@ MaxErrors=10
 
 [Win32 Debugger Options]
 
-DebugInfo=LocalSymbols
+DebugInfo=LineNumbers,LocalSymbols
 EvalHints=True
 Dbg_Options=0
 RTL_Exceptions=1073741823
@@ -451,12 +441,12 @@ SPCC_Exceptions=4194303
 
 [Win32 Directories]
 
-LastDir=P:\newview_dev\NEWVIEW
+LastDir=P:\NEWVIEW_DEV\BUILD\COMPONENTS
 OutDir=P:\newview_dev\build
 LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\components;P:\newview_dev\build\library
 LibSrcDir=P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl;P:\newview_dev\library;P:\newview_dev\components
 IncSrcDir=
-CompInstallDir=P:\newview_dev\sibyl\lib;P:\newview_dev\components
+CompInstallDir=P:\newview_dev\sibyl\lib;P:\NEWVIEW_DEV\build\components;P:\newview_dev\components
 
 [Win32 Linker Options]
 

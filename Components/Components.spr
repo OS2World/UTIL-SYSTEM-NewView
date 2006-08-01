@@ -123,7 +123,7 @@ SPCC_Exceptions=4194303
 
 LastDir=W:\COMPONENTS
 OutDir=P:\newview_dev\build\components
-LibDir=P:\newview_dev\build\sibyl\lib;x:\temp\Library
+LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\library;.;
 LibSrcDir=P:\newview_dev\Sibyl\RTL;P:\newview_dev\Sibyl\SPCC;P:\newview_dev\library
 IncSrcDir=
 CompInstallDir=P:\newview_dev\build\sibyl
