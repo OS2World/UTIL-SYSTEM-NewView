@@ -283,19 +283,6 @@ Procedure StrCopyAndResize( Var Dest: PChar;
 // Return "True" or "False"
 Function BoolToStr( const b: boolean ): string;
 
-// Return true if param matches the form
-// /Flag:value
-// dash (-) can be used instead of slash (/)
-// colon can be omitted
-function MatchValueParam( const Param: string;
-                          const Flag: string;
-                          var Value: string ): boolean;
-
-// Return true if param matches the form
-// /Flag
-// dash (-) can be used instead of slash (/)
-function MatchFlagParam( const Param: string;
-                         const Flag: string ): boolean;
 
 Implementation
 
@@ -1445,54 +1432,6 @@ begin
     Result := 'True'
   else
     Result := 'False';
-end;
-
-// Return true if param matches the form
-// /Flag:value
-// dash (-) can be used instead of slash (/)
-// colon can be omitted
-function MatchValueParam( const Param: string;
-                          const Flag: string;
-                          var Value: string ): boolean;
-begin
-  Result := false;
-
-  if Param = '' then
-    exit;
-
-  if     ( Param[ 1 ] <> '/' )
-     and ( Param[ 1 ] <> '-' ) then
-    exit;
-
-  if not StringsSame( Copy( Param, 2, Length( Flag ) ),
-                      Flag ) then
-    exit;
-
-  Result := true;
-
-  Value := StrRightFrom( Param, 2 + Length( Flag ) );
-  if Value <> '' then
-    if Value[ 1 ] = ':' then
-      Delete( Value, 1, 1 );
-end;
-
-// Return true if param matches the form
-// /Flag
-// dash (-) can be used instead of slash (/)
-function MatchFlagParam( const Param: string;
-                         const Flag: string ): boolean;
-begin
-  Result := false;
-
-  if Param = '' then
-    exit;
-
-  if     ( Param[ 1 ] <> '/' )
-     and ( Param[ 1 ] <> '-' ) then
-    exit;
-
-  Result := StringsSame( StrRightFrom( Param, 2 ),
-                         Flag );
 end;
 
 Initialization

@@ -95,58 +95,78 @@ VAR
 BEGIN
      writeln('CmdLineParameterUnit Tests ''' + nativeOS2GetCmdLineParameter + '''');
 
-     tmpResult := splitCmdLineParameter('', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter('', tmpResult);
      assertEqualsInt('CmdLine split empy string', 0, tmpRC);
      assertEqualsInt('CmdLine split empy string', 0, tmpResult.Count);
+     tmpResult.Destroy;
 
-     tmpResult := splitCmdLineParameter('abc', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter('abc', tmpResult);
      assertEqualsInt('CmdLine split single string', 0, tmpRC);
      assertEqualsInt('CmdLine split single string', 1, tmpResult.Count);
      assertEqualsString('CmdLine split single string', 'abc', tmpResult[0]);
+     tmpResult.Destroy;
 
-     tmpResult := splitCmdLineParameter(' abc', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter(' abc', tmpResult);
      assertEqualsInt('CmdLine split single string with leading blank', 0, tmpRC);
      assertEqualsInt('CmdLine split single string with leading blank', 1, tmpResult.Count);
      assertEqualsString('CmdLine split single string with leading blankCmdLine split many strings', 'abc', tmpResult[0]);
+     tmpResult.Destroy;
 
-     tmpResult := splitCmdLineParameter('abc def ghi', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter('abc def ghi', tmpResult);
      assertEqualsInt('CmdLine split empy string', 0, tmpRC);
      assertEqualsInt('CmdLine split many strings', 3, tmpResult.Count);
      assertEqualsString('CmdLine split many strings', 'abc', tmpResult[0]);
      assertEqualsString('CmdLine split many strings', 'def', tmpResult[1]);
      assertEqualsString('CmdLine split many strings', 'ghi', tmpResult[2]);
+     tmpResult.Destroy;
 
-     tmpResult := splitCmdLineParameter('"abc def"', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter('"abc def"', tmpResult);
      assertEqualsInt('CmdLine split quoted (1)', 0, tmpRC);
      assertEqualsInt('CmdLine split quoted (1)', 1, tmpResult.Count);
      assertEqualsString('CmdLine split quoted (1)', 'abc def', tmpResult[0]);
+     tmpResult.Destroy;
 
-     tmpResult := splitCmdLineParameter('ab"abc def"', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter('ab"abc def"', tmpResult);
      assertEqualsInt('CmdLine split quoted (2)', 0, tmpRC);
      assertEqualsInt('CmdLine split quoted (2)', 1, tmpResult.Count);
      assertEqualsString('CmdLine split quoted (2)', 'ababc def', tmpResult[0]);
+     tmpResult.Destroy;
 
-     tmpResult := splitCmdLineParameter('ab"""abc def"', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter('ab"""abc def"', tmpResult);
      assertEqualsInt('CmdLine split quoted (3)', 0, tmpRC);
      assertEqualsInt('CmdLine split quoted (3)', 1, tmpResult.Count);
      assertEqualsString('CmdLine split quoted (3)', 'ab"abc def', tmpResult[0]);
+     tmpResult.Destroy;
 
-     tmpResult := splitCmdLineParameter('ab"abc""def"', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter('ab"abc""def"', tmpResult);
      assertEqualsInt('CmdLine split quoted (4)', 0, tmpRC);
      assertEqualsInt('CmdLine split quoted (4)', 1, tmpResult.Count);
      assertEqualsString('CmdLine split quoted (4)', 'ababc"def', tmpResult[0]);
+     tmpResult.Destroy;
 
-     tmpResult := splitCmdLineParameter('ab"abc""def" "ghi"', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter('ab"abc""def" "ghi"', tmpResult);
      assertEqualsInt('CmdLine split quoted (5)', 0, tmpRC);
      assertEqualsInt('CmdLine split quoted (5)', 2, tmpResult.Count);
      assertEqualsString('CmdLine split quoted (5)', 'ababc"def', tmpResult[0]);
      assertEqualsString('CmdLine split quoted (5)', 'ghi', tmpResult[1]);
+     tmpResult.Destroy;
 
-     tmpResult := splitCmdLineParameter('ab"abc""def" "ghi', tmpRC);
+     tmpResult := TStringList.Create;
+     tmpRC := splitCmdLineParameter('ab"abc""def" "ghi', tmpResult);
      assertEqualsInt('CmdLine split quoted (6)', -1, tmpRC);
      assertEqualsInt('CmdLine split quoted (6)', 2, tmpResult.Count);
      assertEqualsString('CmdLine split quoted (6)', 'ababc"def', tmpResult[0]);
      assertEqualsString('CmdLine split quoted (6)', 'ghi', tmpResult[1]);
+     tmpResult.Destroy;
 
      // parser Tests
      tmpParams := TStringList.Create;
@@ -509,8 +529,9 @@ BEGIN
      tmpParams.add('topi2');
      tmpCmdLineParameters := TCmdLineParameters.Create;
      tmpCmdLineParameters.parseCmdLine(tmpParams);
-     assertEqualsString('parseCmdLine [getFileName](70)', 'ab c', tmpCmdLineParameters.getFileName);
-     assertEqualsString('parseCmdLine [getTopic](70)', 'topi1 topi2', tmpCmdLineParameters.getTopic);
+     assertEqualsString('parseCmdLine [getFileName](70)', 'ab c', tmpCmdLineParameters.getFileNames);
+     assertEqualsString('parseCmdLine [getTopic](70)', 'topi1 topi2', tmpCmdLineParameters.getTopics);
+
 END;
 
 

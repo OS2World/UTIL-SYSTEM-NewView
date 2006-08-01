@@ -46,12 +46,8 @@ uses
        windowPosition: TWindowPosition;
        ownerWindow : integer;
        windowTitle : string;
-       fileName : string;
-       topic : string;
-    {
-    TopicParam: string;
-    FilenamesParam: TAString;
-    }
+       fileNames : string;
+       topics : string;
 
      public
        FUNCTION getShowUsageFlag : boolean;
@@ -61,13 +57,14 @@ uses
        FUNCTION getGlobalSearchText : string;
        FUNCTION getLanguage : string;
        FUNCTION getHelpManagerFlag : boolean;
+       FUNCTION setHelpManagerFlag(aNewValue : boolean) : boolean;
        FUNCTION getHelpManagerWindow : integer;
        FUNCTION getWindowPositionFlag : boolean;
        FUNCTION getWindowPosition : TWindowPosition;
        FUNCTION getOwnerWindow : integer;
        FUNCTION getWindowTitle : string;
-       FUNCTION getFileName : string;
-       FUNCTION getTopic : string;
+       FUNCTION getFileNames : string;
+       FUNCTION getTopics : string;
        PROCEDURE parseCmdLine(aSplittedCmdLine : TStringList);
   end;
 
@@ -77,7 +74,7 @@ uses
 
  // returns a string containing the whole
  // command line parametes
- FUNCTION splitCmdLineParameter(aCmdLineString : String; var aRC : Integer) : TStringList;
+ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringList) : integer;
 
  // Return true if param matches the form
  // /Flag:value
@@ -144,6 +141,13 @@ Implementation
   end;
 
 
+  FUNCTION TCmdLineParameters.setHelpManagerFlag(aNewValue : boolean) : boolean;
+  begin
+       helpManagerFlag := aNewValue;
+       result := helpManagerFlag;
+  end;
+
+
   FUNCTION TCmdLineParameters.getHelpManagerWindow : integer;
   begin
        result := helpManagerWindow;
@@ -174,15 +178,15 @@ Implementation
   end;
 
 
-  FUNCTION TCmdLineParameters.getFileName : string;
+  FUNCTION TCmdLineParameters.getFileNames : string;
   begin
-       result := fileName;
+       result := fileNames;
   end;
 
 
-  FUNCTION TCmdLineParameters.getTopic : string;
+  FUNCTION TCmdLineParameters.getTopics : string;
   begin
-       result := topic;
+       result := topics;
   end;
 
 
@@ -192,6 +196,8 @@ Implementation
       tmpParameter  : string;
       tmpParameterValue : string;
   begin
+      ProfileEvent( 'ParseCommandLineParameters started' );
+
       // reset the whole object
       showUsageFlag := false;
       searchTextFlag := false;
@@ -206,8 +212,8 @@ Implementation
       ownerWindow := 0;
       windowTitle := '';
 
-      filename := '';
-      topic := '';
+      filenames := '';
+      topics := '';
 
       // start parsing
       for tmpParamIndex := 0 to aSplittedCmdLine.Count -1 do
@@ -272,22 +278,27 @@ Implementation
           end
           else
           begin
-               if length(filename) = 0 then
+               if length(filenames) = 0 then
                begin
                    // filename
-                   fileName := tmpParameter;
+                   fileNames := tmpParameter;
                end
                else
                begin
                    // search (topic) parameter... append all remaining thingies
-                   if topic <> '' then
+                   if topics <> '' then
                    begin
-                       topic := topic + ' ';
+                       topics := topics + ' ';
                    end;
-                   topic := topic + tmpParameter;
+                   topics := topics + tmpParameter;
                end;
           end;
       end;
+
+      ProfileEvent('Parameters parsed');
+      ProfileEvent('  Filename(s): ' + fileNames);
+      ProfileEvent('  Topic(s): ' + topics);
+      ProfileEvent( '...done' );
   end;
 
 
@@ -306,7 +317,7 @@ FUNCTION nativeOS2GetCmdLineParameter : STRING;
   END;
 
 
-FUNCTION splitCmdLineParameter(aCmdLineString : String; var aRC : Integer) : TStringList;
+FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringList) : integer;
  CONST
      STATE_BEFORE = 0;
      STATE_INSIDE = 1;
@@ -318,11 +329,11 @@ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aRC : Integer) : TSt
      tmpCurrentChar : char;
      tmpState : INTEGER;
      tmpCurrentCommand : String;
-     tmpResult : TStringList;
 
   BEGIN
-     aRC := SUCCESS;
-     tmpResult := TStringList.Create;
+     result := SUCCESS;
+     aResult.Clear;
+
      tmpState := 0;
      tmpCurrentCommand := '';
      for i:=1 to length(aCmdLineString) do
@@ -336,13 +347,13 @@ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aRC : Integer) : TSt
                STATE_BEFORE : {do nothing};
                STATE_INSIDE :
                  begin
-                    tmpResult.add(tmpCurrentCommand);
+                    aResult.add(tmpCurrentCommand);
                     tmpCurrentCommand := '';
                     tmpState := STATE_BEFORE;
                  end;
                STATE_INSIDE_QUOTED_START_QUOTE :
                  begin
-                    tmpResult.add(tmpCurrentCommand);
+                    aResult.add(tmpCurrentCommand);
                     tmpCurrentCommand := '';
                     tmpState := STATE_BEFORE;
                  end;
@@ -408,19 +419,18 @@ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aRC : Integer) : TSt
      STATE_BEFORE : { nothing to do};
      STATE_INSIDE :
        begin
-          tmpResult.add(tmpCurrentCommand);
+          aResult.add(tmpCurrentCommand);
        end;
      STATE_INSIDE_QUOTED_START_QUOTE :
        begin
-          tmpResult.add(tmpCurrentCommand);
+          aResult.add(tmpCurrentCommand);
        end;
      ELSE
        begin
-          aRC := ERROR_UNMATCHED_QUOTE;
-          tmpResult.add(tmpCurrentCommand);
+          result := ERROR_UNMATCHED_QUOTE;
+          aResult.add(tmpCurrentCommand);
        end;
      end;
-     splitCmdLineParameter:= tmpResult;
   END;
 
 
@@ -507,5 +517,6 @@ begin
     Result := false;
   end;
 end;
+
 
 END.

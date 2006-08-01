@@ -14,38 +14,12 @@ uses
   Classes,
   ACLString,
   GlobalFilelistUnit,
-  SharedMemoryUnit;
+  SharedMemoryUnit,
+  CmdLineParameterUnit;
 
 const
   OWN_HELP_MARKER = '[NVHELP]';
 
-type
-  TWindowPosition = record
-    Left: longint;
-    Bottom: longint;
-    Width: longint;
-    Height: longint;
-  end;
-
-  TCommandLineParameters = record
-    ShowUsageFlag: boolean; // *
-    TopicParam: string; // *
-    FilenamesParam: TAString;
-    SearchText: string;
-    SearchFlag: boolean;
-    GlobalSearchText: string; // *
-    GlobalSearchFlag: boolean; // *
-    OwnerWindow: HWND;
-    HelpManagerWindow: HWND;
-    IsHelpManager: boolean;
-    WindowTitle: string;
-    Position: TWindowPosition;
-    SetPosition: boolean;
-    Language: string;
-  end;
-  // * posted to re-used windows
-
-Procedure ParseCommandLineParameters;
 
 function AccessSharedMemory: TSuballocatedSharedMemory;
 
@@ -66,16 +40,21 @@ Procedure TranslateIPFEnvironmentVars( Items: TStrings;
 Function FindHelpFile( FileName: string ): string;
 
 var
-  Parameters: TCommandLineParameters;
+  CmdLineParameters: TCmdLineParameters;
   SharedMemory: TSubAllocatedSharedMemory;
   GlobalFilelist: TGlobalFilelist;
 
 Implementation
 
 uses
-  //Forms,
-  Dos, SysUtils, PMWin,
-  ACLUtility, ACLStringUtility, ACLFileUtility, AStringUtilityUnit, ACLProfile,
+  Dos,
+  SysUtils,
+  PMWin,
+  ACLUtility,
+  ACLStringUtility,
+  ACLFileUtility,
+  AStringUtilityUnit,
+  ACLProfile,
   HelpManagerUnit;
 
 // Look for any items that are actually specifiying environment
@@ -250,112 +229,6 @@ begin
   end;
 end;
 
-// Parse command line parameters newview was launched with.
-// Store them into the Parameters. variables for later processing.
-Procedure ParseCommandLineParameters;
-var
-  ParamIndex: longint;
-  Param: string;
-  ParamValue: string;
-begin
-  ProfileEvent( 'ParseCommandLineParameters started' );
-
-  Parameters.FilenamesParam := TAString.Create;
-  Parameters.TopicParam := '';
-  Parameters.ShowUsageFlag := false;
-  Parameters.GlobalSearchFlag := false;
-  Parameters.SearchFlag := false;
-  Parameters.OwnerWindow := 0;
-  Parameters.IsHelpManager := false;
-  Parameters.HelpManagerWindow := 0;
-  Parameters.WindowTitle := '';
-  Parameters.SetPosition := false;
-  Parameters.Language := '';
-
-  for ParamIndex := 1 to ParamCount do
-  begin
-    Param := ParamStr( ParamIndex );
-    if    MatchFlagParam( Param, '?' )
-       or MatchFlagParam( Param, 'H' )
-       or MatchFlagParam( Param, 'HELP' ) then
-    begin
-      Parameters.ShowUsageFlag := true
-    end
-    else if MatchValueParam( Param, 'LANG', Parameters.Language ) then
-    begin
-    end
-    else if MatchValueParam( Param, 'G', Parameters.GlobalSearchText ) then
-    begin
-      Parameters.GlobalSearchFlag := true;
-    end
-    else if MatchValueParam( Param, 'S', Parameters.SearchText ) then
-    begin
-      Parameters.SearchFlag := true;
-    end
-    else if MatchValueParam( Param, 'HM', ParamValue ) then
-    begin
-      try
-        Parameters.HelpManagerWindow := StrToInt( ParamValue );
-        Parameters.IsHelpManager := true;
-      except
-        // ignore invalid window value
-      end;
-    end
-    else if MatchValueParam( Param, 'OWNER', ParamValue ) then
-    begin
-      Parameters.OwnerWindow := StrToInt( ParamValue );
-    end
-    else if MatchValueParam( Param, 'TITLE', ParamValue ) then
-    begin
-      Parameters.WindowTitle := ParamValue;
-    end
-    else if MatchFlagParam( Param, 'PROFILE' ) then
-    begin
-      StartProfile( GetLogFilesDir + 'newview.prf' );
-    end
-    else if MatchValueParam( Param, 'POS', ParamValue ) then
-    begin
-      // set window position/size
-      if ExtractPositionSpec( ParamValue,
-                              Parameters.Position ) then
-      begin
-        Parameters.SetPosition := true;
-      end
-      else
-      begin
-        // invalid...
-        Parameters.ShowUsageFlag := true;
-      end;
-    end
-    else
-    begin
-      if Parameters.FilenamesParam.Length = 0 then
-      begin
-        // filename(s)
-        AString_ParamStr( ParamIndex, Parameters.FilenamesParam );
-      end
-      else
-      begin
-        // search (topic) parameter... append all remaining thingies
-        if Parameters.TopicParam <> '' then
-        begin
-          Parameters.TopicParam := Parameters.TopicParam + ' ';
-        end;
-        Parameters.TopicParam := Parameters.TopicParam + Param;
-      end;
-    end;
-  end;
-
-  ProfileEvent( 'Parameters parsed' );
-  ProfileEvent( '  Filenames: '
-                + Parameters.FilenamesParam.AsString );
-  ProfileEvent( '  Topic: '
-                + Parameters.TopicParam );
-
-  // params will be acted on later...
-  ProfileEvent( '...done' );
-
-end;
 
 // If another instance already has the files open
 // activate it and return true.
@@ -370,14 +243,14 @@ var
 begin
   Result := NULLHANDLE;
 
-  if Parameters.FilenamesParam.Length = 0 then
+  if length(CmdLineParameters.getFileNames) = 0 then
     // not loading files; nothing to check
     exit;
 
   FileItems := TStringList.Create;
   Filenames := TStringList.Create;
 
-  AStringToList( Parameters.FilenamesParam, FileItems, '+' );
+  StringToList(cmdLineParameters.getFileNames, FileItems, '+' );
   TranslateIPFEnvironmentVars( FileItems, FileNames );
 
   for i := 0 to FileNames.Count - 1 do
@@ -445,6 +318,10 @@ end;
 
 function Startup: boolean;
 var
+  tmpCmdLine: String;
+  tmpSplittedCmdLine : TStringList;
+  tmpRc : Integer;
+
   ExistingWindow: HWND;
 begin
   // open shared memory
@@ -454,7 +331,14 @@ begin
   GlobalFilelist := TGlobalFilelist.Create;
 
   // parse parameters into Parameters object
-  ParseCommandLineParameters;
+  tmpCmdLine := nativeOS2GetCmdLineParameter;
+  tmpSplittedCmdLine := TStringList.Create;
+  tmpRc := splitCmdLineParameter(tmpCmdLine, tmpSplittedCmdLine);
+
+  CmdLineParameters := TCmdLineParameters.Create;
+  CmdLineParameters.parseCmdLine(tmpSplittedCmdLine);
+
+  tmpSplittedCmdLine.Destroy;
 
   ExistingWindow := FindExistingWindow;
 
@@ -465,25 +349,26 @@ begin
 
     // destroy global list - nobody else will
     GlobalFilelist.Destroy;
-    Parameters.FilenamesParam.Destroy;
+    // TODO rbri maybe we need the next line
+    // Parameters.FilenamesParam.Destroy;
 
     WinSetFocus( HWND_DESKTOP, ExistingWindow );
 
-    if Parameters.TopicParam <> '' then
+    if CmdLineParameters.getTopics <> '' then
     begin
       PostNewViewTextMessage( ExistingWindow,
                               NHM_SEARCH,
-                              Parameters.TopicParam );
+                              CmdLineParameters.getTopics);
     end;
 
-    if Parameters.GlobalSearchFlag then
+    if CmdLineParameters.getGlobalSearchTextFlag then
     begin
       PostNewViewTextMessage( ExistingWindow,
                               NHM_GLOBAL_SEARCH,
-                              Parameters.GlobalSearchText );
+                              CmdLineParameters.getGlobalSearchText );
     end;
 
-    if Parameters.ShowUsageFlag then
+    if CmdLineParameters.getShowUsageFlag then
     begin
       WinPostMsg( ExistingWindow,
                NHM_SHOW_USAGE,
@@ -491,11 +376,11 @@ begin
                0 );
     end;
 
-    if Parameters.IsHelpManager then
+    if CmdLineParameters.getHelpManagerFlag then
     begin
       // tell the new help manager instance to talk to the
       // other viewer
-      WinPostMsg( Parameters.HelpManagerWindow,
+      WinPostMsg( CmdLineParameters.getHelpManagerWindow,
                NHM_VIEWER_READY,
                ExistingWindow,
                0 );

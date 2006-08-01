@@ -15,6 +15,8 @@ Uses
   Dialogs,
 // library
   ACLString, SharedMemoryUnit, ACLLanguageUnit, GenericThread,
+  CmdLineParameterUnit,
+
 // custom components
   SplitBar, Outline2, RichTextView, Coolbar2,
   CustomListBox,
@@ -861,7 +863,6 @@ var
   i: longint;
   T: TTopic;
   ResourceIDs: TList;
-  Level: longint;
   ImageOffsets: TList;
   ImageOffset: longint;
   Image: THelpBitmap;
@@ -1899,8 +1900,6 @@ var
 
   TotalTopics: longint;
   TotalTopicIndex: longint;
-
-  Topic: TTopic;
 begin
   PrintSingle := nil;
   PrintList := nil;
@@ -2217,18 +2216,51 @@ End;
 Procedure TMainForm.DebugShowParamsMIOnClick (Sender: TObject);
 var
   i: integer;
+  tmpCmdLine: String;
+  tmpSplittedCmdLine : TStringList;
+  tmpRc : Integer;
+  tmpWindowPosition : TWindowPosition;
 Begin
   with InformationForm.InformationMemo do
   begin
+    tmpCmdLine := nativeOS2GetCmdLineParameter;
+    tmpSplittedCmdLine := TStringList.Create;
+
     Lines.Clear;
-    Lines.Add( ParameterCountLabel
-               + IntToStr( ParamCount ) );
-    for i := 1 to ParamCount do
+    Lines.Add(ParameterCountLabel +IntToStr(tmpSplittedCmdLine.count));
+    tmpRc := splitCmdLineParameter(tmpCmdLine, tmpSplittedCmdLine);
+    for i := 0 to tmpSplittedCmdLine.Count -1 do
       Lines.Add( ' '
                  + IntToStr( i )
                  + ' ['
-                 + ParamStr( i )
+                 + tmpSplittedCmdLine[i]
                  + ']' );
+
+    tmpSplittedCmdLine.Destroy;
+    Lines.Add('');
+    Lines.Add('parsed infos:');
+    Lines.Add('getShowUsageFlag: ' + boolToStr(CmdLineParameters.getShowUsageFlag));
+    Lines.Add('getSearchTextFlag: ' + boolToStr(CmdLineParameters.getSearchTextFlag));
+    Lines.Add('getSearchText: ' + CmdLineParameters.getSearchText);
+    Lines.Add('getGlobalSearchTextFlag: ' + boolToStr(CmdLineParameters.getGlobalSearchTextFlag));
+    Lines.Add('getGlobalSearchText: ' + CmdLineParameters.getGlobalSearchText);
+    Lines.Add('getLanguage: ' + CmdLineParameters.getLanguage);
+    Lines.Add('getHelpManagerFlag: ' + boolToStr(CmdLineParameters.getHelpManagerFlag));
+    Lines.Add('getHelpManagerFlag: ' + boolToStr(CmdLineParameters.getHelpManagerFlag));
+    Lines.Add('getHelpManagerWindow: ' + intToStr(CmdLineParameters.getHelpManagerWindow));
+    Lines.Add('getWindowPositionFlag: ' + boolToStr(CmdLineParameters.getWindowPositionFlag));
+
+    tmpWindowPosition := CmdLineParameters.getWindowPosition;
+    Lines.Add('getWindowPosition: ');
+    Lines.Add('    left:   ' + intToStr(tmpWindowPosition.left));
+    Lines.Add('    bottom: ' + intToStr(tmpWindowPosition.bottom));
+    Lines.Add('    width: ' + intToStr(tmpWindowPosition.width));
+    Lines.Add('    height: ' + intToStr(tmpWindowPosition.height));
+    Lines.Add('getOwnerWindow: ' + intToStr(CmdLineParameters.getOwnerWindow));
+    Lines.Add('getWindowTitle: ' + CmdLineParameters.getWindowTitle);
+    Lines.Add('getFileNames: ' + CmdLineParameters.getFileNames);
+    Lines.Add('getTopics: ' + CmdLineParameters.getTopics);
+
   end;
 
   InformationForm.ShowModal;
@@ -2349,14 +2381,13 @@ Procedure TMainForm.NotebookOnPageChanged (Sender: TObject);
 var
   FileIndex: longint;
   HelpFile: THelpFile;
-  Dummy: TNode;
 Begin
   EnableControls;
   case Notebook.PageIndex of
     piContents:
     begin
       // not really feasible to load contents here, as we rely
-      // on it for many things 
+      // on it for many things
       ContentsOutline.Focus;
     end;
 
@@ -3618,7 +3649,8 @@ Begin
   DestroyListObjects( Settings.MRUList );
   Settings.MRUList.Destroy;
 
-  Parameters.FilenamesParam.Destroy;
+  // TODO rbri maybe we have to do this
+  // Parameters.FilenamesParam.Destroy;
 
   if g_CurrentLanguageFile <> nil then
     g_CurrentLanguageFile.Destroy;
@@ -3762,6 +3794,10 @@ begin
 end;
 
 Procedure TMainForm.MainFormOnCreate (Sender: TObject);
+var
+  tmpCmdLine: String;
+  tmpSplittedCmdLine : TStringList;
+  tmpRc : Integer;
 Begin
   ProfileEvent( 'MainFormOnCreate' );
 
@@ -3773,8 +3809,13 @@ Begin
   SharedMemory := AccessSharedMemory;
   GlobalFilelist := TGlobalFilelist.Create;
 
-  ParseCommandLineParameters;
-
+  // parse parameters into Parameters object
+  tmpCmdLine := nativeOS2GetCmdLineParameter;
+  tmpSplittedCmdLine := TStringList.Create;
+  tmpRc := splitCmdLineParameter(tmpCmdLine, tmpSplittedCmdLine);
+  CmdLineParameters := TCmdLineParameters.Create;
+  CmdLineParameters.parseCmdLine(tmpSplittedCmdLine);
+  tmpSplittedCmdLine.destroy;
   RegisterForLanguages( OnLanguageEvent );
 
   // if debug is not enabled, get rid of the debug menu and separator.
@@ -3848,8 +3889,8 @@ Begin
   // load default strings
   ProfileEvent( 'Loading language' );
 
-  if Parameters.Language <> '' then
-    LoadAutoLanguage( 'newview', Parameters.Language )
+  if CmdLineParameters.getLanguage <> '' then
+    LoadAutoLanguage( 'newview', CmdLineParameters.getLanguage )
   else
     LoadDefaultLanguage( 'newview' );
 
@@ -3880,13 +3921,13 @@ Begin
 
   ProfileEvent( 'OnCreate done' );
 
-  if Parameters.SetPosition then
+  if CmdLineParameters.getWindowPositionFlag then
   begin
     SmartSetWindowPos( self,
-                       Parameters.Position.Left,
-                       Parameters.Position.Bottom,
-                       Parameters.Position.Width,
-                       Parameters.Position.Height,
+                       CmdLineParameters.getWindowPosition.Left,
+                       CmdLineParameters.getWindowPosition.Bottom,
+                       CmdLineParameters.getWindowPosition.Width,
+                       CmdLineParameters.getWindowPosition.Height,
                        false );
   end;
 
@@ -3972,13 +4013,13 @@ end;
 
 Procedure TMainForm.ClearHelpManager;
 Begin
-  if not Parameters.IsHelpManager then
+  if not CmdLineParameters.getHelpManagerFlag then
     exit;
 
   // tell the help manager(s) we are no longer playing with them
   PostHelpManagerMessage( NHM_FORGET_VIEWER, 0, 0 );
 
-  Parameters.IsHelpManager := false;
+  CmdLineParameters.setHelpManagerFlag(false);
 
   HelpManagerWindows.Clear;
 End;
@@ -3989,16 +4030,16 @@ Begin
 
   ProfileEvent( 'MainFormOnShow' );
 
-  if Parameters.OwnerWindow <> NULLHANDLE then
+  if CmdLineParameters.getOwnerWindow <> NULLHANDLE then
   begin
     ProfileEvent( 'Setting owner: '
-                  + IntToStr( Parameters.OwnerWindow ) );
+                  + IntToStr( CmdLineParameters.getOwnerWindow ) );
     WinSetOwner( Frame.Handle,
-                 Parameters.OwnerWindow );
+                 CmdLineParameters.getOwnerWindow );
 
   end;
 
-  if Parameters.IsHelpManager then
+  if CmdLineParameters.getHelpManagerFlag then
   begin
     ProfileEvent( '  Help Manager Title: '
                   + StrNPas( pSharedStruct ^. Title,
@@ -4103,7 +4144,7 @@ begin
 
   ProfileEvent( 'WMOpened: SetLayout' );
 
-  if Parameters.IsHelpManager then
+  if CmdLineParameters.getHelpManagerFlag then
     FShowLeftPanel := Settings.ShowLeftPanel_Help
   else
     FShowLeftPanel := Settings.ShowLeftPanel_Standalone;
@@ -4122,12 +4163,12 @@ begin
   ProfileEvent( 'Finish paint' );
   Update;
 
-  if not Parameters.IsHelpManager then
+  if not CmdLineParameters.getHelpManagerFlag then
   begin
     ProfileEvent( 'Check environment vars' );
     CheckEnvironmentVars;
 
-    if Parameters.ShowUsageFlag then
+    if CmdLineParameters.getShowUsageFlag then
     begin
       ProfileEvent( 'Showing usage' );
       ShowUsage;
@@ -4135,61 +4176,62 @@ begin
     end;
   end;
 
-  HelpManagerWindows.Add( pointer( Parameters.HelpManagerWindow ) );
+  HelpManagerWindows.Add( pointer( CmdLineParameters.getHelpManagerWindow ) );
 
-  if Parameters.FilenamesParam.Length > 0 then
+  if length(CmdLineParameters.getFileNames) > 0 then
   begin
     // open specified files
     Filenames := TStringList.Create;
 
-    AStringToList( Parameters.FilenamesParam, Filenames, '+' );
+    // TODO rbri remove type conversion
+    StringToList(cmdLineParameters.getFileNames, Filenames, '+' );
 
     ProfileEvent( 'Call OpenFiles' );
 
     OpenFirstTopic := true;
-    if    ( Parameters.TopicParam <> '' )
-       or Parameters.SearchFlag then
+    if    ( CmdLineParameters.getTopics <> '' )
+       or CmdLineParameters.getSearchTextFlag then
       // if we're going to search, don't open first topic
       OpenFirstTopic := false;
 
-    if Parameters.IsHelpManager then
+    if CmdLineParameters.getHelpManagerFlag then
       // don't open first topic if we're online help
       // in case we are wanting to show a specific topic
       // - saves time/flicker
       OpenFirstTopic := false;
 
     OpenFiles( Filenames,
-               Parameters.WindowTitle,
+               CmdLineParameters.getWindowTitle,
                OpenFirstTopic );
 
     Filenames.Destroy;
 
-    if Parameters.TopicParam <> '' then
+    if CmdLineParameters.getTopics <> '' then
     begin
       // search in contents only!
       ProfileEvent( 'Do startup topic search' );
 
-      StartupTopicSearch( Parameters.TopicParam );
+      StartupTopicSearch( CmdLineParameters.getTopics );
     end
-    else if Parameters.SearchFlag then
+    else if CmdLineParameters.getSearchTextFlag then
     begin
       // search in specified files
       ProfileEvent( 'Do search for topic' );
       DisplaySearch;
 
-      SearchFor( Parameters.SearchText );
+      SearchFor( CmdLineParameters.getSearchText );
     end;
   end;
 
-  if Parameters.GlobalSearchFlag then
+  if CmdLineParameters.getGlobalSearchTextFlag then
   begin
     // Global search
-    ProfileEvent( 'Do global search: ' + Parameters.GlobalSearchText );
-    DoGlobalSearch( Parameters.GlobalSearchText );
+    ProfileEvent( 'Do global search: ' + CmdLineParameters.getGlobalSearchText );
+    DoGlobalSearch( CmdLineParameters.getGlobalSearchText );
   end;
 
-  if     ( Parameters.FilenamesParam.Length = 0 )
-     and ( not Parameters.GlobalSearchFlag ) then
+  if     ( length(CmdLineParameters.getFileNames) = 0 )
+     and ( not CmdLineParameters.getGlobalSearchTextFlag ) then
   begin
     // user hasn't requested any particular file
     // at startup, so if the option is still set,
@@ -4212,7 +4254,7 @@ begin
 
   ProfileEvent( 'Open finished' );
 
-  if Parameters.IsHelpManager then
+  if CmdLineParameters.getHelpManagerFlag then
   begin
     // Tell helpmanager(s) our window handle
     PostHelpManagerMessage( NHM_VIEWER_READY,
@@ -4756,7 +4798,7 @@ begin
   else
   begin
     SearchResultsListBox.Items.Add(   NoSearchMatchesMsg
-                                    + ': ' 
+                                    + ': '
                                     + SearchText );
     RefreshWindows( Windows ); // update to remove old highlights
   end;
@@ -6662,7 +6704,7 @@ begin
   DisplayFiles( HelpFiles,
                 FirstContentsNode );
 
-  if Parameters.IsHelpManager then
+  if CmdLineParameters.getHelpManagerFlag then
     ShowLeftPanel := Settings.ShowLeftPanel_Help
   else
     ShowLeftPanel := Settings.ShowLeftPanel_Standalone;
