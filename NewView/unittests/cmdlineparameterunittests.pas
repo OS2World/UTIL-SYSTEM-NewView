@@ -19,7 +19,14 @@ PROCEDURE testSplitCmdLineParameter_quotedPartIncludingQuoteInside;
 PROCEDURE testSplitCmdLineParameter_quotedPartIncludingQuoteAtEnd;
 PROCEDURE testSplitCmdLineParameter_TwoQuotedParts;
 PROCEDURE testSplitCmdLineParameter_TwoQuotesAtStartEnd;
+PROCEDURE testSplitCmdLineParameter_Failure_TwoQuotesAtEnd;
 PROCEDURE testSplitCmdLineParameter_TwoQuotedPartsMissingClosedQuote;
+PROCEDURE testSplitCmdLineParameter_1Quote;
+PROCEDURE testSplitCmdLineParameter_2Quote;
+PROCEDURE testSplitCmdLineParameter_3Quote;
+PROCEDURE testSplitCmdLineParameter_4Quote;
+PROCEDURE testSplitCmdLineParameter_5Quote;
+PROCEDURE testSplitCmdLineParameter_6Quote;
 
 PROCEDURE testParseCmdLine_Empty;
 
@@ -234,6 +241,22 @@ Implementation
   END;
 
 
+  PROCEDURE testSplitCmdLineParameter_Failure_TwoQuotesAtEnd;
+  VAR
+    tmpResult : TStringList;
+    tmpRC : Integer;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpRC := splitCmdLineParameter('"abc def""', tmpResult);
+
+    assertEqualsInt('testSplitCmdLineParameter_Failure_TwoQuotesAtEnd', -1, tmpRC);
+    assertEqualsInt('testSplitCmdLineParameter_Failure_TwoQuotesAtEnd', 1, tmpResult.Count);
+    assertEqualsString('testSplitCmdLineParameter_Failure_TwoQuotesAtEnd', 'abc def"', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
   PROCEDURE testSplitCmdLineParameter_TwoQuotedPartsMissingClosedQuote;
   VAR
     tmpResult : TStringList;
@@ -246,6 +269,100 @@ Implementation
     assertEqualsInt('testSplitCmdLineParameter_TwoQuotedPartsMissingClosedQuote', 2, tmpResult.Count);
     assertEqualsString('testSplitCmdLineParameter_TwoQuotedPartsMissingClosedQuote', 'ababc"def', tmpResult[0]);
     assertEqualsString('testSplitCmdLineParameter_TwoQuotedPartsMissingClosedQuote', 'ghi', tmpResult[1]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testSplitCmdLineParameter_1Quote;
+  VAR
+    tmpResult : TStringList;
+    tmpRC : Integer;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpRC := splitCmdLineParameter('"', tmpResult);
+
+    assertEqualsInt('testSplitCmdLineParameter_1Quote', -1, tmpRC);
+    assertEqualsInt('testSplitCmdLineParameter_1Quote', 0, tmpResult.Count);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testSplitCmdLineParameter_2Quote;
+  VAR
+    tmpResult : TStringList;
+    tmpRC : Integer;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpRC := splitCmdLineParameter('""', tmpResult);
+
+    assertEqualsInt('testSplitCmdLineParameter_2Quote', 0, tmpRC);
+    assertEqualsInt('testSplitCmdLineParameter_2Quote', 0, tmpResult.Count);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testSplitCmdLineParameter_3Quote;
+  VAR
+    tmpResult : TStringList;
+    tmpRC : Integer;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpRC := splitCmdLineParameter('"""', tmpResult);
+
+    assertEqualsInt('testSplitCmdLineParameter_3Quote', -1, tmpRC);
+    assertEqualsInt('', 1, tmpResult.Count);
+    assertEqualsString('testSplitCmdLineParameter_3Quote', '"', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testSplitCmdLineParameter_4Quote;
+  VAR
+    tmpResult : TStringList;
+    tmpRC : Integer;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpRC := splitCmdLineParameter('""""', tmpResult);
+
+    assertEqualsInt('testSplitCmdLineParameter_4Quote', 0, tmpRC);
+    assertEqualsInt('testSplitCmdLineParameter_4Quote', 1, tmpResult.Count);
+    assertEqualsString('testSplitCmdLineParameter_4Quote', '"', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testSplitCmdLineParameter_5Quote;
+  VAR
+    tmpResult : TStringList;
+    tmpRC : Integer;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpRC := splitCmdLineParameter('"""""', tmpResult);
+
+    assertEqualsInt('testSplitCmdLineParameter_5Quote', -1, tmpRC);
+    assertEqualsInt('testSplitCmdLineParameter_5Quote', 1, tmpResult.Count);
+    assertEqualsString('testSplitCmdLineParameter_5Quote', '""', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testSplitCmdLineParameter_6Quote;
+  VAR
+    tmpResult : TStringList;
+    tmpRC : Integer;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpRC := splitCmdLineParameter('""""""', tmpResult);
+
+    assertEqualsInt('testSplitCmdLineParameter_6Quote', 0, tmpRC);
+    assertEqualsInt('testSplitCmdLineParameter_6Quote', 1, tmpResult.Count);
+    assertEqualsString('testSplitCmdLineParameter_6Quote', '""', tmpResult[0]);
 
     tmpResult.Destroy;
   END;
@@ -869,6 +986,7 @@ Implementation
   FUNCTION getCmdLineParameterUnitTests : TList;
   BEGIN
     result := TList.Create;
+
     result.add(@testSplitCmdLineParameter_Empty);
     result.add(@testSplitCmdLineParameter_simpleOne);
     result.add(@testSplitCmdLineParameter_simpleOneWithLeadingBlanks);
@@ -880,7 +998,14 @@ Implementation
     result.add(@testSplitCmdLineParameter_quotedPartIncludingQuoteAtEnd);
     result.add(@testSplitCmdLineParameter_TwoQuotedParts);
     result.add(@testSplitCmdLineParameter_TwoQuotesAtStartEnd);
+    result.add(@testSplitCmdLineParameter_Failure_TwoQuotesAtEnd);
     result.add(@testSplitCmdLineParameter_TwoQuotedPartsMissingClosedQuote);
+    result.add(@testSplitCmdLineParameter_1Quote);
+    result.add(@testSplitCmdLineParameter_2Quote);
+    result.add(@testSplitCmdLineParameter_3Quote);
+    result.add(@testSplitCmdLineParameter_4Quote);
+    result.add(@testSplitCmdLineParameter_5Quote);
+    result.add(@testSplitCmdLineParameter_6Quote);
 
     result.add(@testParseCmdLine_Empty);
 

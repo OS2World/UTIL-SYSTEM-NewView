@@ -55,31 +55,31 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\BUILD\SIBYL\LIB
+LastDir=P:\NEWVIEW_DEV\NEWVIEW
 OutDir=P:\NEWVIEW_DEV\build
 LibDir=P:\NEWVIEW_DEV\build\library;P:\NEWVIEW_DEV\build\sibyl\lib
-LibSrcDir=D:\PROGS\SIBYL\Source\RTL;D:\PROGS\SIBYL\Source\SPCC
+LibSrcDir=P:\NEWVIEW_DEV\NEWVIEW;D:\PROGS\SIBYL\Source\RTL;D:\PROGS\SIBYL\Source\SPCC
 IncSrcDir=
 CompInstallDir=D:\PROGS\SIBYL\Compnt
 
 [Find History]
 
-Find0=testParseCmdLine_HelpManagerText
-Find1=tmpCmdLineParameters
-Find2=testParseCmdLine_doubleColonG
-Find3=testParseCmdLine_empty
-Find4=testParseCmdLine_upperHELP
-Find5=testParseCmdLine_h
-Find6=testSplitCmdLineParameter_simpleOne
-Find7=Assert
-Find8=testSplitCmdLineParameter_Empty
-Find9=FUNCTION
-Find10=Exception
-Find11=VAR
-Find12=Pointer
-Find13=xxx
-Find14=split
-Find15=assertTrue
+Find0=missing
+Find1=2
+Find2=testParseCmdLine_HelpManagerText
+Find3=tmpCmdLineParameters
+Find4=testParseCmdLine_doubleColonG
+Find5=testParseCmdLine_empty
+Find6=testParseCmdLine_upperHELP
+Find7=testParseCmdLine_h
+Find8=testSplitCmdLineParameter_simpleOne
+Find9=Assert
+Find10=testSplitCmdLineParameter_Empty
+Find11=FUNCTION
+Find12=Exception
+Find13=VAR
+Find14=Pointer
+Find15=xxx
 
 [General]
 
@@ -106,16 +106,23 @@ File1=.\cmdlineparameterunittests.pas
 File1.Left=-4
 File1.Bottom=-5
 File1.Width=1243
-File1.Height=500
-File1.Column=3
-File1.Line=869
+File1.Height=501
+File1.Column=5
+File1.Line=1010
 File2=.\testassert.pas
 File2.Left=-4
 File2.Bottom=-5
 File2.Width=1243
 File2.Height=500
 File2.Column=32
-File2.Line=61
+File2.Line=27
+File3=..\.\CmdLineParameterUnit.pas
+File3.Left=-4
+File3.Bottom=-5
+File3.Width=1243
+File3.Height=501
+File3.Column=68
+File3.Line=422
 
 [Linker Options]
 
@@ -157,8 +164,9 @@ MainFile0.Dependency12=D:\PROGS\SIBYL\Source\SPCC\INIFILES.PAS
 MainFile0.Dependency13=D:\PROGS\SIBYL\Source\RTL\PMBITMAP.PAS
 MainFile0.Dependency14=D:\PROGS\SIBYL\Source\RTL\PMGPI.PAS
 MainFile0.Dependency15=D:\PROGS\SIBYL\Source\RTL\PMDEV.PAS
-MainFile0.Dependency16=.\TESTASSERT.PAS
-MainFile0.Dependency17=.\CMDLINEPARAMETERUNITTESTS.PAS
+MainFile0.Dependency16=..\.\CMDLINEPARAMETERUNIT.PAS
+MainFile0.Dependency17=.\TESTASSERT.PAS
+MainFile0.Dependency18=.\CMDLINEPARAMETERUNITTESTS.PAS
 
 [Replace History]
 
