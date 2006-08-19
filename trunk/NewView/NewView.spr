@@ -151,7 +151,7 @@ OutDir=P:\newview_dev\build
 LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\components;P:\newview_dev\build\library
 LibSrcDir=P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl;P:\newview_dev\library;P:\newview_dev\components
 IncSrcDir=
-CompInstallDir=P:\newview_dev\sibyl\lib;P:\NEWVIEW_DEV\build\components;P:\newview_dev\components
+CompInstallDir=P:\NEWVIEW_DEV\build\components
 
 [Directories OS/2]
 
@@ -164,22 +164,22 @@ CompInstallDir=
 
 [Find History]
 
-Find0=CmdLineParameters
-Find1=height
-Find2=getSearchTextFlag
-Find3=parame
-Find4=cmdline
-Find5=matchflag
-Find6=Match
-Find7=StringToList
-Find8=Classes
-Find9=ExtractNextValue
-Find10=getHelpManagerFlag
-Find11=splitted
-Find12=CmdLineParameterUnit
-Find13=parsec
-Find14=ParseCommandLineParameters
-Find15=ShowUsageFlag
+Find0=todo
+Find1=CmdLineParameters
+Find2=height
+Find3=getSearchTextFlag
+Find4=parame
+Find5=cmdline
+Find6=matchflag
+Find7=Match
+Find8=StringToList
+Find9=Classes
+Find10=ExtractNextValue
+Find11=getHelpManagerFlag
+Find12=splitted
+Find13=CmdLineParameterUnit
+Find14=parsec
+Find15=ParseCommandLineParameters
 
 [General]
 
@@ -195,43 +195,36 @@ Platform=OS/2
 
 [Last Closed Files]
 
-File0=..\.\Library\ACLStringUtility.pas
-File1=..\.\components\ACLLanguageUnit.pas
-File2=.\VersionUnit.pas
-File3=.\NewView.pas
-File4=.\ViewStub.pas
-File5=.\NewViewTests.pas
+File0=D:\PROGS\SIBYL\BIN\CompLib.scl
+File1=..\.\Library\ACLStringUtility.pas
+File2=..\.\components\ACLLanguageUnit.pas
+File3=.\VersionUnit.pas
+File4=.\NewView.pas
+File5=.\ViewStub.pas
 
 [Last Open Files]
 
-File0=D:\PROGS\SIBYL\BIN\CompLib.scl
+File0=.\StartupUnit.pas
 File0.Left=-4
 File0.Bottom=-5
-File0.Width=994
-File0.Height=255
+File0.Width=1243
+File0.Height=443
 File0.Column=18
-File0.Line=8
-File1=.\StartupUnit.pas
+File0.Line=348
+File1=.\CmdLineParameterUnit.pas
 File1.Left=-4
 File1.Bottom=-5
-File1.Width=994
-File1.Height=255
-File1.Column=30
-File1.Line=246
-File2=.\CmdLineParameterUnit.pas
+File1.Width=1243
+File1.Height=443
+File1.Column=1
+File1.Line=33
+File2=.\MainForm.pas
 File2.Left=-4
 File2.Bottom=-5
-File2.Width=1032
-File2.Height=470
-File2.Column=1
-File2.Line=33
-File3=.\MainForm.pas
-File3.Left=-4
-File3.Bottom=-5
-File3.Width=994
-File3.Height=255
-File3.Column=65
-File3.Line=2250
+File2.Width=1243
+File2.Height=443
+File2.Column=46
+File2.Line=4190
 
 [Linker Options]
 

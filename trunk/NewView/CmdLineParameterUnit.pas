@@ -334,7 +334,7 @@ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringLis
      result := SUCCESS;
      aResult.Clear;
 
-     tmpState := 0;
+     tmpState := STATE_BEFORE;
      tmpCurrentCommand := '';
      for i:=1 to length(aCmdLineString) do
      begin
@@ -369,8 +369,7 @@ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringLis
                Case tmpState of
                STATE_START_QUOTE :
                  begin
-                    tmpState := STATE_INSIDE;
-                    tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
+                    tmpState := STATE_INSIDE_QUOTED_START_QUOTE;
                  end;
                STATE_INSIDE_QUOTED :
                     tmpState := STATE_INSIDE_QUOTED_START_QUOTE;
