@@ -16,7 +16,7 @@ uses
   BseDos, OS2Def,
   Classes, Graphics,
   ACLString,
-  RichTextDocumentUnit,
+//  RichTextDocumentUnit,
   HelpWindowDimensions, IPFFileFormatUnit;
 
 const
@@ -308,6 +308,7 @@ begin
   Language.LL( Apply, DefaultTitle, 'DefaultTitle', '(No title)' );
 end;
 
+
 function GetBeginLink( LinkIndex: longint ): string;
 begin
   Result := '<link '
@@ -551,9 +552,6 @@ Procedure SaveImageText( BitmapOffset: longint;
                          ImageOffsets: TList );
 var
   ImageIndex: longint;
-  OriginalAlignTag: string;
-  ImageTag: string;
-  AlignTag: string;
 begin
   ImageIndex := ImageOffsets.IndexOf( pointer( BitmapOffset ) );
   if ImageIndex = -1 then
@@ -659,7 +657,6 @@ var
   SubEscapeCode: uint8;
   BitmapOffset: longword;
   BitmapFlags: uint8;
-  Link: TInternalHelpLink;
   LinkTopicIndex: uint16;
 begin
   LinkTopicIndex := -1;
@@ -903,7 +900,6 @@ var
   ProgramFilename: string;
 
   OutputString: string;
-  p: longint;
 begin
   EscapeLen := pData^;
   EscapeCode := (pData + 1) ^;
@@ -2236,10 +2232,6 @@ var
   EscapeLen: uint8;
   EscapeCode: uint8;
 
-  Link: TInternalHelpLink;
-  FootnoteLink: TFootnoteHelpLink;
-  LinkByResourceID: THelpLinkByResourceID;
-
   Margin: integer;
 
   BitmapOffset: longword;
@@ -2252,19 +2244,14 @@ var
   pFontSpec: pTHelpFontSpec;
 
   FaceName: string;
-  PointSize: longint;
-  QuotedFaceName: string;
 
   ExternalLinkFileIndex: uint8;
   ExternalLinkTopicID: string;
 
   ProgramLink: string;
   ProgramPath: string;
-  ProgramFilename: string;
 
   OutputString: string;
-  p: longint;
-  ImageIndex: longint;
 begin
   EscapeLen := pData^;
   EscapeCode := (pData + 1) ^;
@@ -2537,9 +2524,6 @@ var
 
   State: TParseState;
 
-  EscapeLen: uint8;
-  i: longint;
-
   SequenceStepIndex: longint;
 
   LineLen: longint;
@@ -2669,7 +2653,6 @@ begin
           IPF_LINEBREAK:
           begin
             WriteLn( F, '' );
-//            WriteLn( F, '.br ' ); // break must be the only thing on the line
             if not State.InCharGraphics then
               WriteLn( F, '.br ' ); // break must be the only thing on the line
 
