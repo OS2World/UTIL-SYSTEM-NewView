@@ -324,7 +324,6 @@ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringLis
      STATE_START_QUOTE = 2;
      STATE_INSIDE_QUOTED = 3;
      STATE_INSIDE_QUOTED_START_QUOTE = 4;
-//     STATE_INSIDE_QUOTED_QUOTE_PROCESSED = 5;
   VAR
      i : Integer;
      tmpCurrentChar : char;
@@ -377,11 +376,8 @@ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringLis
                STATE_INSIDE_QUOTED_START_QUOTE :
                  begin
                     tmpState := STATE_INSIDE_QUOTED;
-//                    tmpState := STATE_INSIDE_QUOTED_QUOTE_PROCESSED;
                     tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
                  end;
-//               STATE_INSIDE_QUOTED_QUOTE_PROCESSED :
-//                    tmpState := STATE_INSIDE_QUOTED_START_QUOTE;
                ELSE
                     tmpState := STATE_START_QUOTE;
                end;
@@ -413,10 +409,6 @@ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringLis
                     tmpState := STATE_INSIDE;
                     tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
                  end;
-//               STATE_INSIDE_QUOTED_QUOTE_PROCESSED :
-//                 begin
-//                    tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
-//                 end;
                end;
             end;
           end;
@@ -447,14 +439,6 @@ FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringLis
             aResult.add(tmpCurrentCommand);
           end;
        end;
-//     STATE_INSIDE_QUOTED_QUOTE_PROCESSED :
-//       begin
-//          result := ERROR_UNMATCHED_QUOTE;
-//          if (1 < length(tmpCurrentCommand)) then
-//          begin
-//            aResult.add(copy(tmpCurrentCommand, 1, length(tmpCurrentCommand)-0));
-//          end
-//       end;
      ELSE
        begin
           result := ERROR_UNMATCHED_QUOTE;
