@@ -7,7 +7,10 @@ Unit BookmarksFormUnit;
 Interface
 
 Uses
-  Classes, Forms, StdCtrls, Buttons,
+  Classes,
+  Forms,
+  StdCtrls,
+  Buttons,
   ACLLanguageUnit,
   MiscUnit;
 
@@ -61,8 +64,9 @@ Implementation
 
 uses
   PMWin,
-  Dialogs,
-  ControlsUtility, ACLDialogs, ACLStringUtility;
+  ControlsUtility,
+  ACLDialogs,
+  ACLStringUtility;
 
 Procedure TBookmarksForm.BookmarksFormOnSetupShow (Sender: TObject);
 Begin

@@ -11,8 +11,14 @@ Interface
 // to enhance the one in SPCC.
 
 Uses
-  Classes, Forms, StdCtrls, FileCtrl, Buttons, Messages,
-  CustomFileControls, SplitBar, MultiColumnListBox,
+  Classes,
+  Forms,
+  StdCtrls,
+  Buttons,
+  Messages,
+  CustomFileControls,
+  SplitBar,
+  MultiColumnListBox,
   ACLLanguageUnit;
 
 // Note: filters have the form:
@@ -112,10 +118,16 @@ Type
 Implementation
 
 uses
-  BseDos, OS2Def, PmWin,
-  SysUtils, Dialogs,
-  ACLStringUtility, ACLFileUtility, ACLFileIOUtility, ACLDialogs, ACLUtility,
-  ACLString, AStringUtilityUnit, ControlsUtility,
+  BseDos,
+  OS2Def,
+  PmWin,
+  SysUtils,
+  ACLStringUtility,
+  ACLFileUtility,
+  ACLDialogs,
+  ACLString,
+  AStringUtilityUnit,
+  ControlsUtility,
   SettingsUnit,
   HelpFile;
 

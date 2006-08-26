@@ -10,12 +10,12 @@ Unit CmdLineParameterUnit;
 Interface
 
 uses
-  Os2Def, BseTib, BseDos,
+  Os2Def,
+  BseTib,
+  BseDos,
   SysUtils,
   Classes,
-
   PMWIN,
-
   ACLStringUtility,
   ACLProfile,
   ACLFileUtility;
@@ -50,21 +50,21 @@ uses
        topics : string;
 
      public
-       FUNCTION getShowUsageFlag : boolean;
-       FUNCTION getSearchTextFlag : boolean;
-       FUNCTION getSearchText : string;
-       FUNCTION getGlobalSearchTextFlag : boolean;
-       FUNCTION getGlobalSearchText : string;
-       FUNCTION getLanguage : string;
-       FUNCTION getHelpManagerFlag : boolean;
+       PROPERTY getShowUsageFlag : boolean read showUsageFlag;
+       PROPERTY getSearchTextFlag : boolean read searchTextFlag;
+       PROPERTY getSearchText : string read searchText;
+       PROPERTY getGlobalSearchTextFlag : boolean read globalSearchTextFlag;
+       PROPERTY getGlobalSearchText : string read globalSearchText;
+       PROPERTY getLanguage : string read language;
+       PROPERTY getHelpManagerFlag : boolean read helpManagerFlag;
        FUNCTION setHelpManagerFlag(aNewValue : boolean) : boolean;
-       FUNCTION getHelpManagerWindow : integer;
-       FUNCTION getWindowPositionFlag : boolean;
-       FUNCTION getWindowPosition : TWindowPosition;
-       FUNCTION getOwnerWindow : integer;
-       FUNCTION getWindowTitle : string;
-       FUNCTION getFileNames : string;
-       FUNCTION getTopics : string;
+       PROPERTY getHelpManagerWindow : integer read helpManagerWindow;
+       PROPERTY getWindowPositionFlag : boolean read windowPositionFlag;
+       PROPERTY getWindowPosition : TWindowPosition read windowPosition;
+       PROPERTY getOwnerWindow : integer read ownerWindow;
+       PROPERTY getWindowTitle : string read windowTitle;
+       PROPERTY getFileNames : string read fileNames;
+       PROPERTY getTopics : string read topics;
        PROCEDURE parseCmdLine(aSplittedCmdLine : TStringList);
   end;
 
@@ -99,94 +99,10 @@ uses
  FUNCTION ExtractPositionSpec(aParamValue: string; Var aPosition: TWindowPosition ): boolean;
 Implementation
 
-  FUNCTION TCmdLineParameters.getShowUsageFlag : boolean;
-  begin
-       result := showUsageFlag;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getSearchTextFlag : boolean;
-  begin
-       result := searchTextFlag;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getSearchText : string;
-  begin
-       result := searchText;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getGlobalSearchTextFlag : boolean;
-  begin
-       result := globalSearchTextFlag;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getGlobalSearchText : string;
-  begin
-       result := globalSearchText;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getLanguage : string;
-  begin
-       result := language;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getHelpManagerFlag : boolean;
-  begin
-       result := helpManagerFlag;
-  end;
-
-
   FUNCTION TCmdLineParameters.setHelpManagerFlag(aNewValue : boolean) : boolean;
   begin
        helpManagerFlag := aNewValue;
        result := helpManagerFlag;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getHelpManagerWindow : integer;
-  begin
-       result := helpManagerWindow;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getWindowPositionFlag : boolean;
-  begin
-       result := windowPositionFlag;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getWindowPosition : TWindowPosition;
-  begin
-       result := windowPosition;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getOwnerWindow : integer;
-  begin
-       result := ownerWindow;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getWindowTitle : string;
-  begin
-       result := windowTitle;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getFileNames : string;
-  begin
-       result := fileNames;
-  end;
-
-
-  FUNCTION TCmdLineParameters.getTopics : string;
-  begin
-       result := topics;
   end;
 
 
