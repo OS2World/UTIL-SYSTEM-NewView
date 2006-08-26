@@ -11,9 +11,18 @@ Interface
 
 Uses
   PmWin,
-  Classes, Forms, Graphics, Buttons, StdCtrls, ComCtrls,
-  MultiColumnListBox, Outline2, GenericThread, ACLLanguageUnit,
-  TextSearchQuery, HelpFile, TabCtrls, ExtCtrls, LED;
+  Classes,
+  Forms,
+  Buttons,
+  StdCtrls,
+  ComCtrls,
+  Outline2,
+  GenericThread,
+  ACLLanguageUnit,
+  TextSearchQuery,
+  HelpFile,
+  ExtCtrls,
+  LED;
 
 const
   // Custom window messages for this form
@@ -131,12 +140,19 @@ procedure EnsureGlobalSearchFormLoaded;
 Implementation
 
 uses
-  PMWin,
-  SysUtils, BseDos,
-  Dialogs,
-  ACLFileUtility, ACLProfile, ACLDialogs, ControlsUtility, DriveInfoUnit, ACLStringUtility,
-  IPFFileFormatUnit, HelpTopic, SearchUnit, SearchDirectoriesFormUnit,
-  SettingsUnit, InformationFormUnit;
+  SysUtils,
+  ACLFileUtility,
+  ACLProfile,
+  ACLDialogs,
+  ControlsUtility,
+  DriveInfoUnit,
+  ACLStringUtility,
+  IPFFileFormatUnit,
+  HelpTopic,
+  SearchUnit,
+  SearchDirectoriesFormUnit,
+  SettingsUnit,
+  InformationFormUnit;
 
 type
   // Used to store filenames in outline

@@ -10,7 +10,9 @@ Interface
 // for loading and saving them to ini file.
 
 Uses
-  Graphics, Forms, Classes;
+  Graphics,
+  Forms,
+  Classes;
 
 Const
   ContentsBackgroundColorIndex          = 0;

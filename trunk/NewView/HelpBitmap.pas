@@ -10,8 +10,12 @@ Interface
 // Once created from file data they can be used as a normal bitmap.
 
 uses
-  BseDos, OS2Def, PMBitmap,
-  Classes, Graphics, SysUtils,
+  BseDos,
+  OS2Def,
+  PMBitmap,
+  Classes,
+  Graphics,
+  SysUtils,
   IPFFileFormatUnit;
 
 type
@@ -108,7 +112,6 @@ var
   BytesRead: longint;
 
   Block: TBitmapBlock;
-  p: pointer;
   Blocks: TList;
   BlockIndex: longint;
   ImageType: USHORT;

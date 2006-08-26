@@ -83,13 +83,13 @@ File63=ACLDIALOGS
 File64=SETTINGSUNIT
 File65=HELPTOPIC
 File66=HELPBITMAP
-File67=TEXTSEARCHQUERY
-File68=SEARCHTABLE
-File69=HELPFILE
-File70=HELPWINDOWUNIT
-File71=NAVIGATEPOINTUNIT
-File72=MISCUNIT
-File73=HELPMANAGERUNIT
+File67=SEARCHTABLE
+File68=HELPFILE
+File69=HELPWINDOWUNIT
+File70=NAVIGATEPOINTUNIT
+File71=MISCUNIT
+File72=HELPMANAGERUNIT
+File73=TEXTSEARCHQUERY
 File74=TABSET2UNIT
 File75=RICHTEXTPRINTUNIT
 File76=INFORMATIONFORMUNIT
@@ -138,7 +138,7 @@ CompLibName=D:\progs\Sibyl\Bin\CompLib.dll
 
 [Debugger Options]
 
-DebugInfo=LineNumbers,LocalSymbols
+DebugInfo=LocalSymbols
 EvalHints=True
 Dbg_Options=0
 RTL_Exceptions=1073741823
@@ -146,8 +146,8 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\BUILD\COMPONENTS
-OutDir=P:\newview_dev\build
+LastDir=P:\NEWVIEW_DEV\NewView
+OutDir=P:\newview_dev\build\newview
 LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\components;P:\newview_dev\build\library
 LibSrcDir=P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl;P:\newview_dev\library;P:\newview_dev\components
 IncSrcDir=
@@ -164,22 +164,22 @@ CompInstallDir=
 
 [Find History]
 
-Find0=todo
-Find1=CmdLineParameters
-Find2=height
-Find3=getSearchTextFlag
-Find4=parame
-Find5=cmdline
-Find6=matchflag
-Find7=Match
-Find8=StringToList
-Find9=Classes
-Find10=ExtractNextValue
-Find11=getHelpManagerFlag
-Find12=splitted
-Find13=CmdLineParameterUnit
-Find14=parsec
-Find15=ParseCommandLineParameters
+Find0=SettingsUnit
+Find1=begin
+Find2=todo
+Find3=CmdLineParameters
+Find4=height
+Find5=getSearchTextFlag
+Find6=parame
+Find7=cmdline
+Find8=matchflag
+Find9=Match
+Find10=StringToList
+Find11=Classes
+Find12=ExtractNextValue
+Find13=getHelpManagerFlag
+Find14=splitted
+Find15=CmdLineParameterUnit
 
 [General]
 
@@ -195,12 +195,12 @@ Platform=OS/2
 
 [Last Closed Files]
 
-File0=D:\PROGS\SIBYL\BIN\CompLib.scl
-File1=..\.\Library\ACLStringUtility.pas
-File2=..\.\components\ACLLanguageUnit.pas
-File3=.\VersionUnit.pas
-File4=.\NewView.pas
-File5=.\ViewStub.pas
+File0=.\GlobalSearchForm.pas
+File1=.\GlobalFilelistUnit.pas
+File2=.\FileDialogForm.pas
+File3=.\BookmarksFormUnit.pas
+File4=.\HelpBitmap.pas
+File5=.\HelpFile.pas
 
 [Last Open Files]
 
@@ -208,23 +208,30 @@ File0=.\StartupUnit.pas
 File0.Left=-4
 File0.Bottom=-5
 File0.Width=1243
-File0.Height=500
+File0.Height=540
 File0.Column=18
 File0.Line=348
 File1=.\CmdLineParameterUnit.pas
 File1.Left=-4
 File1.Bottom=-5
 File1.Width=1243
-File1.Height=500
-File1.Column=1
-File1.Line=33
+File1.Height=540
+File1.Column=17
+File1.Line=21
 File2=.\MainForm.pas
 File2.Left=-4
 File2.Bottom=-5
 File2.Width=1243
-File2.Height=500
-File2.Column=46
-File2.Line=4190
+File2.Height=540
+File2.Column=10
+File2.Line=853
+File3=.\SettingsUnit.pas
+File3.Left=-4
+File3.Bottom=-5
+File3.Width=1243
+File3.Height=540
+File3.Column=1
+File3.Line=128
 
 [Linker Options]
 
@@ -343,13 +350,13 @@ MainFile0.Dependency63=..\.\components\ACLDIALOGS.PAS
 MainFile0.Dependency64=.\SETTINGSUNIT.PAS
 MainFile0.Dependency65=.\HELPTOPIC.PAS
 MainFile0.Dependency66=.\HELPBITMAP.PAS
-MainFile0.Dependency67=.\TEXTSEARCHQUERY.PAS
-MainFile0.Dependency68=.\SEARCHTABLE.PAS
-MainFile0.Dependency69=.\HELPFILE.PAS
-MainFile0.Dependency70=.\HELPWINDOWUNIT.PAS
-MainFile0.Dependency71=.\NAVIGATEPOINTUNIT.PAS
-MainFile0.Dependency72=.\MISCUNIT.PAS
-MainFile0.Dependency73=.\HELPMANAGERUNIT.PAS
+MainFile0.Dependency67=.\SEARCHTABLE.PAS
+MainFile0.Dependency68=.\HELPFILE.PAS
+MainFile0.Dependency69=.\HELPWINDOWUNIT.PAS
+MainFile0.Dependency70=.\NAVIGATEPOINTUNIT.PAS
+MainFile0.Dependency71=.\MISCUNIT.PAS
+MainFile0.Dependency72=.\HELPMANAGERUNIT.PAS
+MainFile0.Dependency73=.\TEXTSEARCHQUERY.PAS
 MainFile0.Dependency74=..\.\components\TABSET2UNIT.PAS
 MainFile0.Dependency75=..\.\components\RICHTEXTPRINTUNIT.PAS
 MainFile0.Dependency76=.\INFORMATIONFORMUNIT.PAS

@@ -13,11 +13,13 @@ Interface
 // RichTextView.
 
 uses
-  BseDos, OS2Def,
-  Classes, Graphics,
+  BseDos,
+  OS2Def,
+  Classes,
+  Graphics,
   ACLString,
-//  RichTextDocumentUnit,
-  HelpWindowDimensions, IPFFileFormatUnit;
+  HelpWindowDimensions,
+  IPFFileFormatUnit;
 
 const
   DefaultGroupIndex = 0;
@@ -1869,7 +1871,6 @@ var
   pData: pUInt8;
   pSlotEnd: pUInt8;
 
-  b: uint8;
   pHold: pUint8;
   pSearch: pUint8;
 begin

@@ -10,20 +10,43 @@ Uses
 // system is a good unit to be able to open ;)
 // the above line is here so you can use right-mouse open file on "system"
   OS2Def,
-  SysUtils, Classes, Forms, Graphics, Messages,
-  Buttons, ComCtrls, StdCtrls, ExtCtrls, TabCtrls,
+  SysUtils,
+  Classes,
+  Forms,
+  Graphics,
+  Messages,
+  Buttons,
+  ComCtrls,
+  StdCtrls,
+  ExtCtrls,
+  TabCtrls,
   Dialogs,
+
 // library
-  ACLString, SharedMemoryUnit, ACLLanguageUnit, GenericThread,
+  ACLString,
+  SharedMemoryUnit,
+  ACLLanguageUnit,
+  GenericThread,
   CmdLineParameterUnit,
 
 // custom components
-  SplitBar, Outline2, RichTextView, Coolbar2,
+  SplitBar,
+  Outline2,
+  RichTextView,
+  Coolbar2,
   CustomListBox,
+
 // local
-  HelpFile, HelpTopic, HelpWindowUnit, HelpWindowDimensions,
-  NavigatePointUnit, MiscUnit, HelpManagerUnit,
-  TextSearchQuery, IPFFileFormatUnit, Tabset2Unit;
+  HelpFile,
+  HelpTopic,
+  HelpWindowUnit,
+  HelpWindowDimensions,
+  NavigatePointUnit,
+  MiscUnit,
+  HelpManagerUnit,
+  TextSearchQuery,
+  IPFFileFormatUnit,
+  Tabset2Unit;
 
 const
   // Custom window messages for this form
@@ -793,26 +816,47 @@ Var
 Implementation
 
 uses
-  BseDos, BseErr, PMWin, PmShl,
+  BseDos,
+  BseErr,
+  PMWin,
+  PmShl,
   Dos,
   Printers,
+
   // Library
-  ACLStringUtility, AStringUtilityUnit,
-  ACLFileUtility, ACLFileIOUtility, ACLUtility,
-  ACLProfile, ACLDialogs, ACLString,
+  ACLStringUtility,
+  AStringUtilityUnit,
+  ACLFileUtility,
+  ACLFileIOUtility,
+  ACLUtility,
+  ACLProfile,
+  ACLDialogs,
+  ACLString,
+
   // Components
-  RichTextPrintUnit, RichTextStyleUnit, RichTextDocumentUnit,
-  // RBRi ComponentsVersionUnit,
+  RichTextPrintUnit,
+  RichTextStyleUnit,
+  RichTextDocumentUnit,
   ControlsUtility,
+
   // local: forms
-  InformationFormUnit, OptionsForm, ProductInformationFormUnit, NoteForm,
-  GlobalSearchForm, FileDialogForm, BookmarksFormUnit,
+  InformationFormUnit,
+  OptionsForm,
+  ProductInformationFormUnit,
+  NoteForm,
+  GlobalSearchForm,
+  FileDialogForm,
+  BookmarksFormUnit,
   PrintDialogUnit,
+
   // local: others
-  SettingsUnit, VersionUnit,
+  SettingsUnit,
+  VersionUnit,
   SearchUnit,
-  StartupUnit, GlobalFilelistUnit,
-  WebBrowserUnit, HelpBitmap;
+  StartupUnit,
+  GlobalFilelistUnit,
+  WebBrowserUnit,
+  HelpBitmap;
 
 {$R Images}
 

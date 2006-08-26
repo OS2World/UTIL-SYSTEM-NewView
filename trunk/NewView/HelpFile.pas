@@ -9,9 +9,16 @@ Interface
 // Encapsulates the basic reading of a help file's structure.
 
 uses
-  classes, BseDos, os2def, SysUtils, Graphics,
-  IPFFileFormatUnit, HelpTopic, HelpBitmap, ACLUtility,
-  TextSearchQuery, SearchTable;
+  Classes,
+  BseDos,
+  Os2Def,
+  SysUtils,
+  Graphics,
+  IPFFileFormatUnit,
+  HelpTopic,
+  HelpBitmap,
+  ACLUtility,
+  SearchTable;
 
 type
   THelpFile = class
@@ -45,7 +52,6 @@ type
     _pHighlightWords: UInt32ArrayPointer;
     _pSlotOffsets: Uint32ArrayPointer;
     _pDictionaryData: pointer;
-//    _pIndexData: pointer;
     _pFontTableData: pointer;
     _pTopicNameData: pointer;
     _pTopicGlobalNamesData: pointer;
@@ -148,11 +154,11 @@ function GetHelpFileTitle( const Filename: string ): string;
 Implementation
 
 uses
-  Dialogs, Forms,
   BseErr,
-  ACLFileUtility, ACLStringUtility, ACLFileIOUtility, ACLProfile,
-  ACLDialogs, ACLLanguageUnit,
-  HelpWindowDimensions;
+  ACLStringUtility,
+  ACLFileIOUtility,
+  ACLProfile,
+  ACLLanguageUnit;
 
 // Load "missing" bitmap
 {$R Images}
@@ -855,8 +861,6 @@ begin
 end;
 
 function THelpFile.GetImage( ImageOffset: longint ): THelpBitmap;
-var
-  ListIndex: longint;
 begin
   try
     Result := THelpBitmap.CreateFromHelpFile( _Handle,

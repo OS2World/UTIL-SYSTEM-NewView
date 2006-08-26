@@ -11,7 +11,8 @@ interface
 
 uses
   OS2Def,
-  SharedMemoryUnit, Semaphores;
+  SharedMemoryUnit,
+  Semaphores;
 
 const
   // size of shared mem used for storing global filelist
