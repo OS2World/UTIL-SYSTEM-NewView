@@ -10,7 +10,9 @@ Interface
 
 uses
   Classes,
-  HelpFile, TextSearchQuery, IPFFileFormatUnit;
+  HelpFile,
+  TextSearchQuery,
+  IPFFileFormatUnit;
 
 const
   // match weightings
@@ -45,7 +47,8 @@ Implementation
 
 uses
   SysUtils,
-  ACLUtility, ACLStringUtility, ACLProfile,
+  ACLStringUtility,
+  ACLProfile,
   HelpTopic;
 
 type

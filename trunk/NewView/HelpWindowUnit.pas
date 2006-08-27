@@ -7,9 +7,12 @@ Unit HelpWindowUnit;
 Interface
 
 uses
-  Classes, Forms, Buttons, Graphics, Messages,
+  Classes,
+  Forms,
+  Graphics,
   RichTextView,
-  HelpTopic, HelpWindowDimensions;
+  HelpTopic,
+  HelpWindowDimensions;
 
 type
   THelpWindow = class;
@@ -130,11 +133,9 @@ var
 Implementation
 
 uses
-  OS2Def, PmWin,
-  SysUtils,
-  Forms, ExtCtrls, StdCtrls,
   ACLUtility,
-  RichTextStyleUnit, ControlsUtility,
+  RichTextStyleUnit,
+  ControlsUtility,
   SettingsUnit;
 
 {$R Images}

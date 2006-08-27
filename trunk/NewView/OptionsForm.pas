@@ -7,9 +7,16 @@ Unit OptionsForm;
 Interface
 
 Uses
-  Classes, Forms, Graphics, Buttons, ExtCtrls, StdCtrls, Dialogs,
-  TabCtrls, ComCtrls, Spin,
-  ColorWheel, CustomFontDialog, ACLLanguageUnit,
+  Classes,
+  Forms,
+  Buttons,
+  ExtCtrls,
+  StdCtrls,
+  TabCtrls,
+  ComCtrls,
+  ColorWheel,
+  CustomFontDialog,
+  ACLLanguageUnit,
   SettingsUnit;
 
 // The correct sizes are:
@@ -129,9 +136,9 @@ procedure EnsureOptionsFormLoaded;
 Implementation
 
 uses
-  PmWin,
   SysUtils,
-  ACLUtility, ControlsUtility,
+  ACLUtility,
+  ControlsUtility,
   FileDialogForm;
 
 Procedure TOptionsForm.OptionsFormOnSetupShow (Sender: TObject);

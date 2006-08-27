@@ -7,7 +7,9 @@ Program ViewStub;
 // Becomes view.exe.
 
 Uses
-  OS2def, PMShl, PmWin,
+  OS2def,
+  PMShl,
+  PmWin,
   StartupUnit;
 
 {$R ViewStub}

@@ -3,8 +3,12 @@ Unit SearchDirectoriesFormUnit;
 Interface
 
 Uses
-  Classes, Forms, Graphics, Buttons, StdCtrls,
-  ACLLanguageUnit, CustomFileControls;
+  Classes,
+  Forms,
+  Buttons,
+  StdCtrls,
+  ACLLanguageUnit,
+  CustomFileControls;
 
 Type
   TSearchDirectoriesForm = Class (TForm)
@@ -47,7 +51,7 @@ Var
 Implementation
 
 Uses
-  ControlsUtility, ACLFileUtility, SysUtils;
+  ControlsUtility;
 
 Procedure TSearchDirectoriesForm.SearchDirectoriesFormOnSetupShow (Sender: TObject);
 Begin

@@ -10,7 +10,6 @@ Interface
 // for loading and saving them to ini file.
 
 Uses
-  Graphics,
   Forms,
   Classes;
 
@@ -136,8 +135,12 @@ Var
 Implementation
 
 Uses
-  SysUtils, IniFiles, Dos, Forms,
-  ACLFileUtility, ACLUtility, ACLStringUtility, ACLDialogs, ACLProfile,
+  SysUtils,
+  Dos,
+  ACLFileUtility,
+  ACLUtility,
+  ACLStringUtility,
+  ACLProfile,
   ControlsUtility;
 
 Const

@@ -7,7 +7,10 @@ Unit NoteForm;
 Interface
 
 Uses
-  Classes, Forms, Graphics, StdCtrls, Buttons, ExtCtrls,
+  Classes,
+  Forms,
+  StdCtrls,
+  Buttons,
   ACLString,
   ACLLanguageUnit;
 

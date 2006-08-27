@@ -7,7 +7,10 @@ Unit InformationFormUnit;
 Interface
 
 Uses
-  Classes, Forms, Graphics, StdCtrls, Buttons,
+  Classes,
+  Forms,
+  StdCtrls,
+  Buttons,
   ACLLanguageUnit;
 
 Type
