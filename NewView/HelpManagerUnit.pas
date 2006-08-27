@@ -9,7 +9,7 @@ Unit HelpManagerUnit;
 Interface
 
 uses
-  PmWin, OS2Def;
+  PmWin;
 
 const
   SharedMemSize = 16000; // space for messages: 16kB

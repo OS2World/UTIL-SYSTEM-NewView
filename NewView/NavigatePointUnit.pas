@@ -8,7 +8,9 @@ Interface
 
 uses
   Classes,
-  HelpFile, HelpTopic, HelpWindowDimensions, HelpWindowUnit;
+  HelpFile,
+  HelpTopic,
+  HelpWindowDimensions;
 
 type
   // Navigate point: a saved history position specifiying
@@ -44,7 +46,8 @@ Implementation
 
 uses
   SysUtils,
-  ACLUtility, ACLStringUtility;
+  ACLUtility,
+  ACLStringUtility;
 
 procedure SaveWindowList( Var F: TextFile;
                           Windows: TList;

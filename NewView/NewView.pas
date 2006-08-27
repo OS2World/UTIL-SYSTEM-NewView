@@ -8,12 +8,8 @@ Program NewView;
 // Becomes NewView.exe
 
 Uses
-  Forms, Graphics,
-  MainForm,   
-  ProductInformationFormUnit,
-  OptionsForm, InformationFormUnit, FileDialogForm,
-  GlobalSearchForm, NoteForm, BookmarksFormUnit, PrintDialogUnit,
-SearchDirectoriesFormUnit;
+  Forms,
+  MainForm;
 
 {$r NewView.scu}
 

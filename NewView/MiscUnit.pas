@@ -1,12 +1,19 @@
 Unit MiscUnit;
 
+// NewView - a new OS/2 Help Viewer
+// Copyright 2003 Aaron Lawrence (aaronl at consultant dot com)
+// This software is released under the Gnu Public License - see readme.txt
+
+
 // Miscellaneous objects...
 
 Interface
 
 uses
-  HelpTopic, ACLString,
-  NavigatePointUnit, HelpFile;
+  HelpTopic,
+  ACLString,
+  NavigatePointUnit,
+  HelpFile;
 
 // Help Notes
 // -----------------------------------------------------------

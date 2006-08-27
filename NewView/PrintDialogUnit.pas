@@ -7,7 +7,11 @@ Unit PrintDialogUnit;
 Interface
 
 Uses
-  Classes, Forms, Graphics, Buttons, ExtCtrls, StdCtrls,
+  Classes,
+  Forms,
+  Buttons,
+  ExtCtrls,
+  StdCtrls,
   ACLLanguageUnit;
 
 Type
@@ -47,7 +51,7 @@ Implementation
 
 uses
   SysUtils,
-  Dialogs, Printers,
+  Printers,
   ACLDialogs,
   ControlsUtility;
 

@@ -9,8 +9,8 @@ Interface
 // Encapsulates a parsed search query.
 
 uses
-  Classes, SysUtils,
-  IPFFileFormatUnit;
+  Classes,
+  SysUtils;
 
 Type
   ESearchSyntaxError = class( Exception )
@@ -49,7 +49,9 @@ Type
 Implementation
 
 uses
-  ACLStringUtility, ACLUtility, ACLLanguageUnit;
+  ACLStringUtility,
+  ACLUtility,
+  ACLLanguageUnit;
 
 var
   QueryErrorMissingWord1: string;

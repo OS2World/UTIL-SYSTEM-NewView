@@ -7,7 +7,9 @@ Unit SearchTable;
 Interface
 
 uses
-  Classes, IPFFileFormatUnit, OS2Def;
+  Classes,
+  IPFFileFormatUnit,
+  OS2Def;
 
 // Code to read and use IPF search tables
 // NB The RLE decompression was arrived at by trial and error

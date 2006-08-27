@@ -7,7 +7,11 @@ Unit ProductInformationFormUnit;
 Interface
 
 Uses
-  Classes, Forms, Buttons, StdCtrls, ExtCtrls,
+  Classes,
+  Forms,
+  Buttons,
+  StdCtrls,
+  ExtCtrls,
   ACLLanguageUnit;
 
 Type
@@ -39,7 +43,8 @@ procedure EnsureProductInformationFormLoaded;
 Implementation
 
 uses
-  VersionUnit, ControlsUtility,
+  VersionUnit,
+  ControlsUtility,
   WebBrowserUnit;
 
 Procedure TProductInformationForm.EmailEditOnClick (Sender: TObject);
