@@ -194,7 +194,7 @@ Performance
 
 Minor
 - Iconedit help for product information doesn't work
-  Somethin weird goin on with resource IDs. 
+  Something weird goin on with resource IDs.
   Note: old view really does work.
 }
 
