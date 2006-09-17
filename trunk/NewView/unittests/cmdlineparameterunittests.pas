@@ -7,58 +7,8 @@ uses
   TestAssert,
   CmdLineParameterUnit;
 
-FUNCTION getCmdLineParameterUnitTests : TList;
-PROCEDURE testSplitCmdLineParameter_Empty;
-PROCEDURE testSplitCmdLineParameter_simpleOne;
-PROCEDURE testSplitCmdLineParameter_simpleOneWithLeadingBlanks;
-PROCEDURE testSplitCmdLineParameter_simpleThreeParts;
-PROCEDURE testSplitCmdLineParameter_quoted;
-PROCEDURE testSplitCmdLineParameter_quotedPart;
-PROCEDURE testSplitCmdLineParameter_quotedPartIncludingQuoteAtStart;
-PROCEDURE testSplitCmdLineParameter_quotedPartIncludingQuoteInside;
-PROCEDURE testSplitCmdLineParameter_quotedPartIncludingQuoteAtEnd;
-PROCEDURE testSplitCmdLineParameter_TwoQuotedParts;
-PROCEDURE testSplitCmdLineParameter_TwoQuotesAtStartEnd;
-PROCEDURE testSplitCmdLineParameter_Failure_TwoQuotesAtEnd;
-PROCEDURE testSplitCmdLineParameter_TwoQuotedPartsMissingClosedQuote;
-PROCEDURE testSplitCmdLineParameter_1Quote;
-PROCEDURE testSplitCmdLineParameter_2Quote;
-PROCEDURE testSplitCmdLineParameter_3Quote;
-PROCEDURE testSplitCmdLineParameter_4Quote;
-PROCEDURE testSplitCmdLineParameter_5Quote;
-PROCEDURE testSplitCmdLineParameter_6Quote;
+  FUNCTION getCmdLineParameterUnitTests : TList;
 
-PROCEDURE testParseCmdLine_Empty;
-
-PROCEDURE testParseCmdLine_QuestionMark;
-PROCEDURE testParseCmdLine_lowerH;
-PROCEDURE testParseCmdLine_upperH;
-PROCEDURE testParseCmdLine_lowerHelp;
-PROCEDURE testParseCmdLine_upperHELP;
-
-PROCEDURE testParseCmdLine_lowerS;
-PROCEDURE testParseCmdLine_upperS;
-PROCEDURE testParseCmdLine_emptyS;
-PROCEDURE testParseCmdLine_emptyColonS;
-PROCEDURE testParseCmdLine_withoutColonS;
-PROCEDURE testParseCmdLine_doubleColonS;
-
-PROCEDURE testParseCmdLine_lowerG;
-PROCEDURE testParseCmdLine_upperG;
-PROCEDURE testParseCmdLine_emptyG;
-PROCEDURE testParseCmdLine_emptyColonG;
-PROCEDURE testParseCmdLine_withoutColonG;
-PROCEDURE testParseCmdLine_doubleColonG;
-
-PROCEDURE testParseCmdLine_Language;
-PROCEDURE testParseCmdLine_HelpManagerNumber;
-PROCEDURE testParseCmdLine_HelpManagerText;
-PROCEDURE testParseCmdLine_OwnerNumber;
-PROCEDURE testParseCmdLine_OwnerTest;
-PROCEDURE testParseCmdLine_Title;
-PROCEDURE testParseCmdLine_WindowPos;
-PROCEDURE testParseCmdLine_WindowPosPercentage;
-PROCEDURE testParseCmdLine_Topic;
 
 Implementation
 
