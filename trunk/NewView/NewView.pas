@@ -9,14 +9,26 @@ Program NewView;
 
 Uses
   Forms,
-  MainForm;
+  Graphics,
+  MainForm,   
+
+  // don't remove this, this stuff is needed internally to
+  // initialize the forms
+  ProductInformationFormUnit,
+  OptionsForm,
+  InformationFormUnit,
+  FileDialogForm,
+  GlobalSearchForm,
+  NoteForm,
+  BookmarksFormUnit,
+  PrintDialogUnit,
+  SearchDirectoriesFormUnit;
 
 {$r NewView.scu}
 
 Begin
   Application.Create;
-  Application.CreateForm (TMainForm, MainForm);
+  Application.CreateForm(TMainForm, MainForm);
   Application.Run;
   Application.Destroy;
 End.
-
