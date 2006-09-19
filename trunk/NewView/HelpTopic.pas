@@ -24,6 +24,8 @@ uses
 const
   DefaultGroupIndex = 0;
 
+  RTF_NewLine = #10;
+
   // placeholder for font table entry, indiciating user fixed font should be substituted
   SubstituteFixedFont: pointer = 1;
 
@@ -253,6 +255,7 @@ uses
   ACLUtility, ACLStringUtility, ACLProfile, ACLFileIOUtility,
   AStringUtilityUnit,
   ACLLanguageUnit,
+  StringUtilsUnit,
   SettingsUnit;
 
 const
@@ -543,7 +546,7 @@ begin
   if ( BitmapFlags and $10 ) = 0 then
   begin
     // NOT runin, new lines before and after
-    Result := #10 + Result + #10;
+    Result := RTF_NewLine + Result + RTF_NewLine;
   end;
 
 end;
@@ -900,6 +903,7 @@ var
   ProgramLink: string;
   ProgramPath: string;
   ProgramFilename: string;
+  ProgramInfo : TSerializableStringList;
 
   OutputString: string;
 begin
@@ -922,7 +926,7 @@ begin
       Margin := integer( ( pData + 2 )^ );
       GetMarginTag( Margin, State.FontState, OutputString, false );
       OutputString := OutputString
-                      + #10;
+                      + RTF_NewLine;
     end;
 
     ecSetLeftMarginFit:
@@ -1048,9 +1052,13 @@ begin
                         + FullDoubleQuote( ProgramLink )
                         + '>'
       else
+        ProgramInfo := TSerializableStringList.create;
+        ProgramInfo.add(ProgramPath);
+        ProgramInfo.add(ProgramLink);
         OutputString := '<blue><link program '
-                        + FullDoubleQuote( ProgramPath + ' ' + ProgramLink )
-                        + '>'
+                        + ProgramInfo.getSerializedString
+                        + '>';
+        ProgramInfo.destroy;
     end;
 
     ecLinkEnd:
@@ -1064,7 +1072,7 @@ begin
     begin
       State.FontState := fsFixed;
       State.InCharGraphics := true;
-      OutputString := #10 + #10 + '<tt><wrap no>';
+      OutputString := RTF_NewLine + RTF_NewLine + '<tt><wrap no>';
       State.Spacing := false;
       WordsOnLine := 0;
     end;
@@ -1073,7 +1081,7 @@ begin
     begin
       State.FontState := fsNormal;
       State.InCharGraphics := false;
-      OutputString := '</tt><wrap yes>' + #10;
+      OutputString := '</tt><wrap yes>' + RTF_NewLine;
       State.Spacing := true;
     end;
 
@@ -1087,7 +1095,9 @@ begin
                                     BitmapOffset,
                                     BitmapFlags,
                                     ImageOffsets );
-      if State.Spacing then
+      if State.Spacing
+         AND (OutputString[Length(OutputString)] <> RTF_NewLine) // no space after a line break
+      then
         OutputString := OutputString + ' ';
     end;
 
@@ -1115,19 +1125,19 @@ begin
         0, // just in case - to match image alignment oddities
         1:
         begin
-          OutputString := #10 + '<align left>';
+          OutputString := RTF_NewLine + '<align left>';
           State.Alignment := itaLeft;
         end;
 
         2:
         begin
-          OutputString := #10 + '<align right>';
+          OutputString := RTF_NewLine + '<align right>';
           State.Alignment := itaRight;
         end;
 
         4:
         begin
-          OutputString := #10 + '<align center>';
+          OutputString := RTF_NewLine + '<align center>';
           State.Alignment := itaCenter;
         end;
       end;
@@ -1737,10 +1747,10 @@ begin
               State.Alignment := itaLeft;
               Text.AddString( '<align left>' );
             end;
-            Text.AddString( #10 );
+            Text.AddString(RTF_NewLine);
 
             if WordsOnLine > 0 then
-              Text.AddString( #10 );
+              Text.AddString(RTF_NewLine);
 
             if not State.InCharGraphics then
               State.Spacing := true;
@@ -1751,7 +1761,7 @@ begin
           IPF_CENTER:
           begin
             CheckForAutoURL( Text, State );
-            Text.AddString( #10 + '<align center>' );
+            Text.addString( RTF_NewLine + '<align center>' );
             State.Alignment := itaCenterOnePara;
           end;
 
@@ -1769,7 +1779,7 @@ begin
               State.Alignment := itaLeft;
               Text.AddString( '<align left>' );
             end;
-            Text.AddString( #10 );
+            Text.AddString( RTF_NewLine );
             if not State.InCharGraphics then
               State.Spacing := true;
             WordsOnLine := 0;
@@ -1779,9 +1789,7 @@ begin
           begin
             CheckForAutoURL( Text, State );
             if State.Spacing then
-              Text.AddString( '  ' )
-            else
-              Text.AddString( ' ' );
+              Text.AddString( '  ' );
           end;
 
           IPF_ESC:
@@ -2271,7 +2279,7 @@ begin
       Margin := integer( ( pData + 2 )^ );
       GetMarginTag( Margin, State.FontState, OutputString, false );
       OutputString := OutputString
-                      + #10;
+                      + RTF_NewLine;
     end;
 
     ecSetLeftMarginFit:

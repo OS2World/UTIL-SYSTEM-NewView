@@ -2,10 +2,6 @@
 
 ApplicationIcon=D:\PROGS\SIBYL\BIN\default.ico
 
-[Breakpoints]
-
-Breakpoint1=..\.\STRINGUTILSUNIT.PAS|86
-
 [Browser Files]
 
 File0=SYSTEM
@@ -102,10 +98,12 @@ Platform=Standard
 
 [Last Closed Files]
 
-File0=.\CmdLineParameterUnitTests.pas
-File1=.\HelpTopicTests.pas
-File2=..\.\CmdLineParameterUnit.pas
-File3=D:\PROGS\SIBYL\SOURCE\SPCC\SYSUTILS.PAS
+File0=..\..\.\SIBYL\SPCC\SYSUTILS.PAS
+File1=..\..\.\SIBYL\SPCC\CLASSES.PAS
+File2=.\CmdLineParameterUnitTests.pas
+File3=.\HelpTopicTests.pas
+File4=..\.\CmdLineParameterUnit.pas
+File5=D:\PROGS\SIBYL\SOURCE\SPCC\SYSUTILS.PAS
 
 [Last Open Files]
 
@@ -113,7 +111,7 @@ File0=.\newviewtests.pas
 File0.Left=-4
 File0.Bottom=-5
 File0.Width=1243
-File0.Height=477
+File0.Height=538
 File0.Column=1
 File0.Line=49
 File1=.\StringUtilsUnitTests.pas
@@ -127,30 +125,16 @@ File2=.\testassert.pas
 File2.Left=-4
 File2.Bottom=-5
 File2.Width=1243
-File2.Height=477
+File2.Height=538
 File2.Column=1
 File2.Line=31
 File3=..\.\StringUtilsUnit.pas
 File3.Left=-4
 File3.Bottom=-5
 File3.Width=1243
-File3.Height=477
+File3.Height=538
 File3.Column=109
 File3.Line=94
-File4=..\..\.\SIBYL\SPCC\SYSUTILS.PAS
-File4.Left=-4
-File4.Bottom=-5
-File4.Width=1243
-File4.Height=477
-File4.Column=1
-File4.Line=1868
-File5=..\..\.\SIBYL\SPCC\CLASSES.PAS
-File5.Left=-4
-File5.Bottom=-5
-File5.Width=1243
-File5.Height=477
-File5.Column=1
-File5.Line=1951
 
 [Linker Options]
 
