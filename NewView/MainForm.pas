@@ -832,6 +832,8 @@ uses
   ACLProfile,
   ACLDialogs,
   ACLString,
+  RunProgramUnit,
+  StringUtilsUnit,
 
   // Components
   RichTextPrintUnit,
@@ -5507,6 +5509,7 @@ var
   ProgramPath: string;
   URL: string;
   LinkDetails: string;
+  ProgramInfo : TSerializableStringList;
 Begin
   if StrLeft( LinkString, 4 ) = 'note' then
   begin
@@ -5516,13 +5519,14 @@ Begin
   end
   else if StrLeft( LinkString, 7 ) = 'program' then
   begin
-    ProgramLink := StrUnDoubleQuote( StrRightFrom( LinkString, 9 ) );
-    // todo: unescape quotes
-    ProgramPath := ExtractNextValue( ProgramLink, ' ' );
-    Exec( ProgramPath,
-          ProgramLink );
-    SetStatus( 'Launched '
-               + ProgramPath );
+    ProgramInfo := TSerializableStringList.create;
+    ProgramInfo.readValuesFromSerializedString(StrRightFrom( LinkString, 9 ));
+    ProgramPath := ProgramInfo.get(0);
+    ProgramLink := ProgramInfo.get(1);
+    TSerializableStringList.destroy;
+    // call LaunchProgram here to inherit the environment
+    LaunchProgram(ProgramPath, ProgramLink, '');
+    SetStatus( 'Launched ' + ProgramPath );
   end
   else if StrLeft( LinkString, 3 ) = 'url' then
   begin
