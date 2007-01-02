@@ -2,7 +2,7 @@ Unit CmdLineParameterUnit;
 
 // NewView - a new OS/2 Help Viewer
 // Copyright 2006 Ronald Brill (rbri at rbri dot de)
-// This software is released under the Gnu Public License - see readme.txt
+// This software is released under the GNU Public License - see readme.txt
 
 // Helper functions to address the command line parameters newview
 // is started with
@@ -16,13 +16,14 @@ uses
   SysUtils,
   Classes,
   PMWIN,
-  ACLStringUtility,
-  ACLProfile,
-  ACLFileUtility;
+  StringUtilsUnit,
+  DebugUnit;
 
  CONST
      SUCCESS = 0;
      ERROR_UNMATCHED_QUOTE = -1;
+
+ TYPE EParsingFailed=CLASS(Exception);
 
  TYPE
      TWindowPosition = record
@@ -34,11 +35,10 @@ uses
  TYPE
      TCmdLineParameters = class
      private
+       commandLine : String;
        showUsageFlag : boolean;
-       searchTextFlag : boolean;
-       searchText : string;
-       globalSearchTextFlag : boolean;
-       globalSearchText : string;
+       searchFlag : boolean;
+       globalSearchFlag : boolean;
        language : string;
        helpManagerFlag : boolean;
        helpManagerWindow : integer;
@@ -47,14 +47,18 @@ uses
        ownerWindow : integer;
        windowTitle : string;
        fileNames : string;
-       topics : string;
+       searchText : string;
+
+       currentParsePosition : integer;
+
+       FUNCTION ReadNextPart(const aParseString : String; const aSetOfDelimiterChars : TSetOfChars): String;
+       FUNCTION handleParamWithValue(const aCmdLineString : String; const aSwitch : String; var aValue : String) : Boolean;
 
      public
+       PROPERTY getCommandLine : String read commandLine;
        PROPERTY getShowUsageFlag : boolean read showUsageFlag;
-       PROPERTY getSearchTextFlag : boolean read searchTextFlag;
-       PROPERTY getSearchText : string read searchText;
-       PROPERTY getGlobalSearchTextFlag : boolean read globalSearchTextFlag;
-       PROPERTY getGlobalSearchText : string read globalSearchText;
+       PROPERTY getSearchFlag : boolean read searchFlag;
+       PROPERTY getGlobalSearchFlag : boolean read globalSearchFlag;
        PROPERTY getLanguage : string read language;
        PROPERTY getHelpManagerFlag : boolean read helpManagerFlag;
        FUNCTION setHelpManagerFlag(aNewValue : boolean) : boolean;
@@ -64,39 +68,18 @@ uses
        PROPERTY getOwnerWindow : integer read ownerWindow;
        PROPERTY getWindowTitle : string read windowTitle;
        PROPERTY getFileNames : string read fileNames;
-       PROPERTY getTopics : string read topics;
-       PROCEDURE parseCmdLine(aSplittedCmdLine : TStringList);
+       PROPERTY getSearchText : string read searchText;
+
+       PROCEDURE parseCmdLine(aCmdLineString : String);
+     private
+       PROCEDURE parseSwitch(aCmdLineString : String);
   end;
 
- // returns a string containing the whole
- // command line parametes
- FUNCTION nativeOS2GetCmdLineParameter : STRING;
+  // returns a string containing the whole
+  // command line parametes
+  FUNCTION nativeOS2GetCmdLineParameter : STRING;
 
- // returns a string containing the whole
- // command line parametes
- FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringList) : integer;
 
- // Return true if param matches the form
- // /Flag:value
- // dash (-) can be used instead of slash (/)
- // colon can be omitted
- FUNCTION MatchValueParam( const aParam: string; const aFlag: string; var aValue: string): boolean;
-
- // Return true if param matches the form
- // /Flag
- // dash (-) can be used instead of slash (/)
- FUNCTION MatchFlagParam( const aParam: string; const aFlag: string): boolean;
-
- // Extract a single element of a window position spec
- // - take a value from comma-separated list
- // - convert to numeric
- // - if the number ends with P then take as
- //   a percentage of given dimension
- FUNCTION ExtractPositionElement(Var aParamValue: string; aScreenDimension: longint) : longint;
-
- // Extract a specified window position:
- // X,Y,W,H
- FUNCTION ExtractPositionSpec(aParamValue: string; Var aPosition: TWindowPosition ): boolean;
 Implementation
 
   FUNCTION TCmdLineParameters.setHelpManagerFlag(aNewValue : boolean) : boolean;
@@ -106,350 +89,378 @@ Implementation
   end;
 
 
-  procedure TCmdLineParameters.parseCmdLine(aSplittedCmdLine : TStringList);
+  procedure TCmdLineParameters.parseCmdLine(aCmdLineString : String);
   var
-      tmpParamIndex : integer;
-      tmpParameter  : string;
-      tmpParameterValue : string;
+    tmpState : (SWITCH, FILENAME, FILENAME_QUOTE, TEXT);
+    tmpCurrentChar : char;
   begin
-      ProfileEvent( 'ParseCommandLineParameters started' );
+     LogEvent(LogStartup, 'ParseCommandLine: "' + aCmdLineString + '"');
 
-      // reset the whole object
-      showUsageFlag := false;
-      searchTextFlag := false;
-      searchText := '';
-      globalSearchTextFlag := false;
-      globalSearchText := '';
-      language := '';
-      helpManagerFlag := false;
-      helpManagerWindow := 0;
-      windowPositionFlag := false;
-      // windowPosition;
-      ownerWindow := 0;
-      windowTitle := '';
+     // store the original string for debugging
+     commandLine := aCmdLineString;
 
-      filenames := '';
-      topics := '';
+     // reset the whole object
+     showUsageFlag := false;
+     searchFlag := false;
+     globalSearchFlag := false;
+     language := '';
+     helpManagerFlag := false;
+     helpManagerWindow := 0;
+     windowPositionFlag := false;
+     ownerWindow := 0;
+     windowTitle := '';
+     searchText := '';
+     filenames := '';
 
-      // start parsing
-      for tmpParamIndex := 0 to aSplittedCmdLine.Count -1 do
-      begin
-          tmpParameter := aSplittedCmdLine[tmpParamIndex];
+     try
+       // start parsing
+       tmpState := FILENAME;
+       currentParsePosition := 1;
+       while currentParsePosition <= length(aCmdLineString) do
+       begin
+         tmpCurrentChar := aCmdLineString[currentParsePosition];
 
-          if    MatchFlagParam(tmpParameter, '?')
-                or MatchFlagParam(tmpParameter, 'H')
-                or MatchFlagParam(tmpParameter, 'HELP') then
-          begin
-              showUsageFlag := true
-          end
-          else if MatchValueParam(tmpParameter, 'G', globalSearchText) then
-          begin
-              globalSearchTextFlag := true;
-          end
-          else if MatchValueParam(tmpParameter, 'S', searchText) then
-          begin
-              searchTextFlag := true;
-          end
-          else if MatchValueParam(tmpParameter, 'LANG', language) then
-          begin
-              // nothing to do
-          end
-          else if MatchValueParam(tmpParameter, 'HM', tmpParameterValue) then
-          begin
-              try
-                  helpManagerWindow := StrToInt(tmpParameterValue);
-                  helpManagerFlag := true;
-              except
-                  // ignore invalid window value
-              end;
-          end
-          else if MatchValueParam(tmpParameter, 'OWNER', tmpParameterValue) then
-          begin
-              try
-                  ownerWindow := StrToInt(tmpParameterValue);
-              except
-                  // ignore invalid owner value
-              end;
-          end
-          else if MatchValueParam(tmpParameter, 'TITLE', windowTitle) then
-          begin
-              // nothing to do
-          end
-          else if MatchFlagParam(tmpParameter, 'PROFILE') then
-          begin
-              StartProfile(GetLogFilesDir + 'newview.prf' );
-          end
-          else if MatchValueParam(tmpParameter, 'POS', tmpParameterValue ) then
-          begin
-               // set window position/size
-               if ExtractPositionSpec(tmpParameterValue, windowPosition) then
-               begin
-                   windowPositionFlag := true;
-               end
-               else
-               begin
-                   // invalid...
-                   showUsageFlag := true;
-               end;
-          end
-          else
-          begin
-               if length(filenames) = 0 then
-               begin
-                   // filename
-                   fileNames := tmpParameter;
-               end
-               else
-               begin
-                   // search (topic) parameter... append all remaining thingies
-                   if topics <> '' then
+         Case tmpCurrentChar of
+           ' ' :
+             begin
+               Case tmpState of
+                 SWITCH :
+                 begin
+                   tmpState := FILENAME;
+                   inc(currentParsePosition);
+                 end;
+                 FILENAME :
+                 begin
+                   if length(fileNames) > 0 then
                    begin
-                       topics := topics + ' ';
+                     tmpState := TEXT;
                    end;
-                   topics := topics + tmpParameter;
+                   inc(currentParsePosition);
+                 end;
+                 FILENAME_QUOTE :
+                 begin
+                   filenames := filenames + tmpCurrentChar;
+                   inc(currentParsePosition);
+                 end;
+                 TEXT :
+                 begin
+                   searchText := searchText + tmpCurrentChar;
+                   inc(currentParsePosition);
+                 end;
                end;
-          end;
+             end;
+
+           '/', '-' :
+             begin
+               Case tmpState of
+                 SWITCH :
+                 begin
+                   tmpState := SWITCH;
+                   parseSwitch(aCmdLineString);
+                 end;
+                 FILENAME :
+                 begin
+                   if length(fileNames) < 1 then
+                   begin
+                     tmpState := SWITCH;
+                     parseSwitch(aCmdLineString);
+                   end
+                   else
+                   begin
+                     filenames := filenames + tmpCurrentChar;
+                     inc(currentParsePosition);
+                   end;
+                 end;
+                 FILENAME_QUOTE :
+                 begin
+                   filenames := filenames + tmpCurrentChar;
+                   inc(currentParsePosition);
+                 end;
+               else
+                 begin
+                   searchText := searchText + tmpCurrentChar;
+                   inc(currentParsePosition);
+                 end;
+               end;
+             end;
+
+           '"' :
+             begin
+               Case tmpState of
+                 SWITCH :
+                 begin
+                   // syntax error
+                   raise EParsingFailed.Create('Unsupported switch');
+                 end;
+                 FILENAME :
+                 begin
+                   tmpState := FILENAME_QUOTE;
+                   inc(currentParsePosition);
+                 end;
+                 FILENAME_QUOTE :
+                 begin
+                   tmpState := FILENAME;
+                   inc(currentParsePosition);
+                 end;
+                 TEXT :
+                 begin
+                   searchText := searchText + tmpCurrentChar;
+                   inc(currentParsePosition);
+                 end;
+               end;
+             end;
+
+           else
+             begin
+               Case tmpState of
+                 SWITCH :
+                 begin
+                   // syntax error
+                   raise EParsingFailed.Create('Unsupported switch');
+                 end;
+                 FILENAME :
+                 begin
+                   fileNames := fileNames + tmpCurrentChar;
+                   inc(currentParsePosition);
+                 end;
+                 FILENAME_QUOTE :
+                 begin
+                   filenames := filenames + tmpCurrentChar;
+                   inc(currentParsePosition);
+                 end;
+               else
+               begin
+                 searchText := searchText + tmpCurrentChar;
+                 inc(currentParsePosition);
+               end;
+             end;
+           end;
+        end;
       end;
 
-      ProfileEvent('Parameters parsed');
-      ProfileEvent('  Filename(s): ' + fileNames);
-      ProfileEvent('  Topic(s): ' + topics);
-      ProfileEvent( '...done' );
+    except
+        on e:EParsingFailed do
+        begin
+          showUsageFlag := true;
+        end;
+    end;
+
+    // remove leading blanks from search text
+    searchText := StrTrim(searchText);
+
+    LogEvent(LogStartup, 'Parameters parsed');
+    LogEvent(LogStartup, '  Filename(s): "' + fileNames + '"');
+    LogEvent(LogStartup, '  Search Text: "' + searchText + '"');
   end;
 
 
-FUNCTION nativeOS2GetCmdLineParameter : STRING;
+  FUNCTION TCmdLineParameters.ReadNextPart(const aParseString : String; const aSetOfDelimiterChars : TSetOfChars): String;
   VAR
-     tmpPtib : PTIB;       /* thread information block */
-     tmpPpib : PPIB;       /* process information block */
-     tmpCmd  : PCHAR;
-     tmpResult : PCHAR;
-
+    i : integer;
+    tmpChar : char;
   BEGIN
-     DosGetInfoBlocks(tmpPtib, tmpPpib);
-     tmpCmd := tmpPpib^.pib_pchcmd;
-     tmpResult := tmpCmd + StrLen(tmpCmd) + 1;
-     nativeOS2GetCmdLineParameter := StrPas(tmpResult);
+    result := '';
+    for i:= currentParsePosition to length(aParseString) do
+    begin
+      tmpChar := aParseString[i];
+      if tmpChar in aSetOfDelimiterChars then
+      begin
+        i := length(aParseString); // stop parsing
+      end
+      else
+      begin
+        result := result + tmpChar;
+      end;
+    end;
   END;
 
 
-FUNCTION splitCmdLineParameter(aCmdLineString : String; var aResult : TStringList) : integer;
- CONST
-     STATE_BEFORE = 0;
-     STATE_INSIDE = 1;
-     STATE_START_QUOTE = 2;
-     STATE_INSIDE_QUOTED = 3;
-     STATE_INSIDE_QUOTED_START_QUOTE = 4;
+
+  Function TCmdLineParameters.handleParamWithValue(const aCmdLineString : String; const aSwitch : String; var aValue : String) : Boolean;
+  var
+    tmpText : String;
+    tmpSwitchLength : integer;
+  begin
+    tmpSwitchLength := Length(aSwitch);
+    tmpText := copy(aCmdLineString, currentParsePosition + 1, tmpSwitchLength);
+    tmpText := lowercase(tmpText);
+
+    if (lowercase(aSwitch) = tmpText) then
+    begin
+      currentParsePosition := currentParsePosition + 1 + tmpSwitchLength;
+      if aCmdLineString[currentParsePosition] = ':' then
+      begin
+        inc(currentParsePosition);
+      end;
+
+      aValue := readNextPart(aCmdLineString, [' ', '-', '/']);
+      currentParsePosition := currentParsePosition + length(aValue);
+      result := true;
+      exit;
+    end;
+    result := false;
+  end;
+
+
+  Function ParseWindowPositionPart(const aPart: String; const aScreenDimension: longint): longint;
+  Var
+    tmpPart : String;
+  Begin
+    if aPart = '' then
+      raise EParsingFailed.Create('Missing position element');
+
+    if StrEndsWithIgnoringCase(aPart, 'P') then
+    begin
+      tmpPart := copy(aPart, 1, length(aPart)-1);
+      if tmpPart = '' then
+        raise EParsingFailed.Create('Missing position element');
+
+      Result := StrToInt(tmpPart);
+      if Result < 0 then
+        Result := 0;
+      if Result > 100 then
+        Result := 100;
+      Result := Round(Result / 100 * aScreenDimension);
+    end
+    else
+    begin
+      Result := StrToInt(aPart);
+    end;
+  end;
+
+  Function ParseWindowPosition(const aParamValue: String): TWindowPosition;
+  Var
+    tmpParts : TStringList;
+  Begin
+    tmpParts := TStringList.Create;
+    StrExtractStrings(tmpParts, aParamValue, [','], '\');
+
+    result.Left := ParseWindowPositionPart(tmpParts[0], WinQuerySysValue(HWND_DESKTOP, SV_CXSCREEN));
+    result.Bottom := ParseWindowPositionPart(tmpParts[1], WinQuerySysValue(HWND_DESKTOP, SV_CYSCREEN));
+
+    result.Width := ParseWindowPositionPart(tmpParts[2], WinQuerySysValue(HWND_DESKTOP, SV_CXSCREEN));
+    if result.Width < 50 then
+      result.Width := 50;
+
+    result.Height := ParseWindowPositionPart(tmpParts[3], WinQuerySysValue(HWND_DESKTOP, SV_CYSCREEN));
+    if result.Height < 50 then
+      result.Height := 50;
+
+    tmpParts.Destroy;
+  end;
+
+
+  Procedure TCmdLineParameters.parseSwitch(aCmdLineString : String);
+  var
+    tmpCurrentChar : char;
+    tmpText : String;
+    tmpValue : String;
+  begin
+    // lang
+    if handleParamWithValue(aCmdLineString, 'lang', tmpValue) then
+    begin
+      language := tmpValue;
+      exit;
+    end;
+
+    // title
+    if handleParamWithValue(aCmdLineString, 'title', tmpValue) then
+    begin
+      windowTitle := tmpValue;
+      exit;
+    end;
+
+    // HM
+    if handleParamWithValue(aCmdLineString, 'hm', tmpValue) then
+    begin
+      try
+        helpManagerWindow := StrToInt(tmpValue);
+        helpManagerFlag := true;
+      except
+        on e:Exception do
+        begin
+          showUsageFlag := true;
+        end;
+      end;
+      exit;
+    end;
+
+    // owner
+    if handleParamWithValue(aCmdLineString, 'owner', tmpValue) then
+    begin
+      try
+        ownerWindow := StrToInt(tmpValue);
+      except
+        on e:Exception do
+        begin
+          showUsageFlag := true;
+        end;
+      end;
+      exit;
+    end;
+
+    // pos
+    if handleParamWithValue(aCmdLineString, 'pos', tmpValue) then
+    begin
+      windowPosition := ParseWindowPosition(tmpValue);
+      windowPositionFlag := true;
+      exit;
+    end;
+
+    // check the next char
+    tmpCurrentChar := aCmdLineString[currentParsePosition + 1];
+    Case tmpCurrentChar of
+      'h', 'H', '?' :
+        begin
+          currentParsePosition := currentParsePosition + 2;
+          showUsageFlag := true;
+
+          // check for 'help'
+          tmpText := copy(aCmdLineString, currentParsePosition, 3);
+          tmpText := lowercase(tmpText);
+
+          if ('elp' = tmpText) then
+          begin
+            currentParsePosition := currentParsePosition + 3;
+          end;
+        end;
+
+      's', 'S' :
+        begin
+          currentParsePosition := currentParsePosition + 2;
+          searchFlag := true;
+        end;
+
+      'g', 'G' :
+        begin
+          currentParsePosition := currentParsePosition + 2;
+          globalSearchFlag := true;
+        end;
+
+      else
+        begin
+          raise EParsingFailed.Create('Unsupported switch');
+        end;
+      end;
+  end;
+
+
+  FUNCTION nativeOS2GetCmdLineParameter : STRING;
   VAR
-     i : Integer;
-     tmpCurrentChar : char;
-     tmpState : INTEGER;
-     tmpCurrentCommand : String;
+    tmpPtib : PTIB;       // thread information block
+    tmpPpib : PPIB;       // process information block
+    tmpCmd  : PCHAR;
+    tmpResult : PCHAR;
 
   BEGIN
-     result := SUCCESS;
-     aResult.Clear;
-
-     tmpState := STATE_BEFORE;
-     tmpCurrentCommand := '';
-     for i:=1 to length(aCmdLineString) do
-     begin
-          tmpCurrentChar := aCmdLineString[i];
-
-          Case tmpCurrentChar of
-          ' ' :
-            begin
-               Case tmpState of
-               STATE_BEFORE : {do nothing};
-               STATE_INSIDE :
-                 begin
-                    aResult.add(tmpCurrentCommand);
-                    tmpCurrentCommand := '';
-                    tmpState := STATE_BEFORE;
-                 end;
-               STATE_INSIDE_QUOTED_START_QUOTE :
-                 begin
-                    aResult.add(tmpCurrentCommand);
-                    tmpCurrentCommand := '';
-                    tmpState := STATE_BEFORE;
-                 end;
-               ELSE
-                 begin
-                    tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
-                 end;
-               end;
-            end;
-
-          '"' :
-            begin
-               Case tmpState of
-               STATE_START_QUOTE :
-                 begin
-                    tmpState := STATE_INSIDE_QUOTED_START_QUOTE;
-                 end;
-               STATE_INSIDE_QUOTED :
-                    tmpState := STATE_INSIDE_QUOTED_START_QUOTE;
-               STATE_INSIDE_QUOTED_START_QUOTE :
-                 begin
-                    tmpState := STATE_INSIDE_QUOTED;
-                    tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
-                 end;
-               ELSE
-                    tmpState := STATE_START_QUOTE;
-               end;
-            end;
-          ELSE
-            begin
-               Case tmpState of
-               STATE_BEFORE :
-                 begin
-                    tmpState := STATE_INSIDE;
-                    tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
-                 end;
-               STATE_INSIDE :
-                 begin
-                    tmpState := STATE_INSIDE;
-                    tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
-                 end;
-               STATE_START_QUOTE :
-                 begin
-                    tmpState := STATE_INSIDE_QUOTED;
-                    tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
-                 end;
-               STATE_INSIDE_QUOTED :
-                 begin
-                    tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
-                 end;
-               STATE_INSIDE_QUOTED_START_QUOTE :
-                 begin
-                    tmpState := STATE_INSIDE;
-                    tmpCurrentCommand := tmpCurrentCommand + tmpCurrentChar;
-                 end;
-               end;
-            end;
-          end;
-     end;
-
-     Case tmpState of
-     STATE_BEFORE : { nothing to do};
-     STATE_INSIDE :
-       begin
-          aResult.add(tmpCurrentCommand);
-       end;
-     STATE_START_QUOTE :
-       begin
-          result := ERROR_UNMATCHED_QUOTE;
-       end;
-     STATE_INSIDE_QUOTED_START_QUOTE :
-       begin
-          if (0 < length(tmpCurrentCommand)) then
-          begin
-            aResult.add(tmpCurrentCommand);
-          end;
-       end;
-     STATE_INSIDE_QUOTED :
-       begin
-          result := ERROR_UNMATCHED_QUOTE;
-          if (0 < length(tmpCurrentCommand)) then
-          begin
-            aResult.add(tmpCurrentCommand);
-          end;
-       end;
-     ELSE
-       begin
-          result := ERROR_UNMATCHED_QUOTE;
-          if (0 < length(tmpCurrentCommand)) then
-          begin
-            aResult.add(tmpCurrentCommand);
-          end;
-       end;
-     end;
+    // ask the system
+    DosGetInfoBlocks(tmpPtib, tmpPpib);
+    tmpCmd := tmpPpib^.pib_pchcmd;
+    // the fist element (null terminated) is the
+    // called command itself
+    // skip to the next null terminated string
+    // these are the parameters
+    tmpResult := tmpCmd + StrLen(tmpCmd) + 1;
+    result := StrPas(tmpResult);
   END;
-
-
-FUNCTION MatchValueParam( const aParam: string; const aFlag: string; var aValue: string ): boolean;
-begin
-  Result := false;
-
-  if aParam = '' then
-    exit;
-
-  if     ( aParam[ 1 ] <> '/' )
-     and ( aParam[ 1 ] <> '-' ) then
-    exit;
-
-  if CompareText(copy(aParam, 2, length(aFlag)), aFlag) <> 0 then
-    exit;
-
-  Result := true;
-
-  aValue := copy(aParam, 2 + length(aFlag), length(aParam));
-  if aValue <> '' then
-    if aValue[ 1 ] = ':' then
-      delete(aValue, 1, 1 );
-end;
-
-
-FUNCTION MatchFlagParam(const aParam: string; const aFlag: string ): boolean;
-begin
-  Result := false;
-
-  if aParam = '' then
-    exit;
-
-  if     (aParam[ 1 ] <> '/' )
-     and (aParam[ 1 ] <> '-' ) then
-    exit;
-  Result := CompareText(copy(aParam, 2, length(aParam)-1), aFlag) = 0;
-end;
-
-
-FUNCTION ExtractPositionElement(Var aParamValue: string; aScreenDimension: longint ): longint;
-var
-  tmpElement: string;
-begin
-  tmpElement := ExtractNextValue(aParamValue, ',' );
-  if tmpElement = '' then
-    raise Exception.Create('Missing position element');
-  if StrEnds('P', tmpElement) then
-  begin
-    Delete(tmpElement, length(tmpElement), 1);
-    if tmpElement = '' then
-      raise Exception.Create('Missing position element');
-    Result := StrToInt(tmpElement);
-    if Result < 0 then
-      Result := 0;
-    if Result > 100 then
-      Result := 100;
-    Result := Round(Result / 100 * aScreenDimension);
-  end
-  else
-  begin
-    Result := StrToInt(tmpElement);
-  end;
-end;
-
-FUNCTION SystemMetrics(aSystemMetric : LONG) : LongInt;
-Begin
-  Result := WinQuerySysValue(HWND_DESKTOP, aSystemMetric);
-end;
-
-FUNCTION ExtractPositionSpec(aParamValue: string; Var aPosition: TWindowPosition ): boolean;
-begin
-  try
-    aPosition.Left := ExtractPositionElement(aParamValue, SystemMetrics(SV_CXSCREEN));
-    aPosition.Bottom := ExtractPositionElement(aParamValue, SystemMetrics(SV_CYSCREEN));
-    aPosition.Width := ExtractPositionElement(aParamValue, SystemMetrics(SV_CXSCREEN));
-    if aPosition.Width < 50 then
-      aPosition.Width := 50;
-    aPosition.Height := ExtractPositionElement(aParamValue, SystemMetrics(SV_CYSCREEN));
-    if aPosition.Height < 50 then
-      aPosition.Height := 50;
-    Result := true;
-  except
-    Result := false;
-  end;
-end;
-
-
 END.
