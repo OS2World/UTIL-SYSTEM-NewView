@@ -155,9 +155,9 @@ Implementation
 
 uses
   BseErr,
+  DebugUnit,
   ACLStringUtility,
   ACLFileIOUtility,
-  ACLProfile,
   ACLLanguageUnit;
 
 // Load "missing" bitmap
@@ -219,7 +219,7 @@ end;
 
 constructor THelpFile.Create( const FileName: string );
 begin
-  ProfileEvent( 'Helpfile Load: ' + FileName );
+  LogEvent(LogParse, 'Helpfile Load: ' + FileName);
 
   _FileName := FileName;
 
@@ -337,7 +337,7 @@ end;
 
 procedure THelpFile.ReadHeader;
 begin
-  ProfileEvent( 'Read header' );
+  LogEvent(LogParse, 'Read header');
 
   ReadFileBlock( _pHeader,
                  0,
@@ -370,7 +370,7 @@ var
   pEntry: pTTOCEntryStart;
   pEnd: pTTOCEntryStart;
 begin
-  ProfileEvent( 'Read contents' );
+  LogEvent(LogParse, 'Read contents');
 
   if _pHeader^.ntoc = 0 then
     exit; // explicit check required since ntoc is unsigned
@@ -419,7 +419,7 @@ var
   p: pbyte;
   pEnd: pbyte;
 begin
-  ProfileEvent( 'Read dictionary' );
+  LogEvent(LogParse, 'Read dictionary');
 
   if _pHeader^.ndict = 0 then
     exit; // explicit check required since ndict is unsigned
@@ -474,7 +474,7 @@ var
   pEnd: pointer;
   pIndexData: pointer;
 begin
-  ProfileEvent( 'Read index' );
+  LogEvent(LogParse, 'Read index');
 
   _Index := TStringList.Create;
 
@@ -528,11 +528,11 @@ var
   SearchTableOffset: longint;
   SearchTableRecordLengthIs16Bit: boolean;
 begin
-  ProfileEvent( 'Read search table' );
+  LogEvent(LogParse, 'Read search table');
 
   if _pHeader^.SearchLen = 0 then
   begin
-    ProfileEvent( 'Read search table' );
+    LogEvent(LogParse, 'Read search table (len = 0');
     exit;
   end;
 

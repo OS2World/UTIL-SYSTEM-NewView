@@ -49,12 +49,12 @@ Implementation
 uses
   Dos,
   SysUtils,
+  DebugUnit,
   PMWin,
   ACLUtility,
   ACLStringUtility,
   ACLFileUtility,
   AStringUtilityUnit,
-  ACLProfile,
   HelpManagerUnit;
 
 // Look for any items that are actually specifiying environment
@@ -66,7 +66,7 @@ var
   Item: string;
   EnvironmentVarValue: string;
 begin
-  ProfileEvent( 'Translating environment vars' );
+  LogEvent(LogStartup, 'Translating environment vars' );
   for i := 0 to Items.Count - 1 do
   begin
     Item := Items[ i ];
@@ -74,12 +74,12 @@ begin
     Item := StrUnQuote( Item ); // remove single quotes
     Item := StrUnDoubleQuote( Item ); // remove double quotes
 
-    ProfileEvent( '  Item: ' + Item );
+    LogEvent(LogStartup, '  Item: ' + Item );
     EnvironmentVarValue := GetEnv( Uppercase( Item ) );
     if DosError = 0 then
     begin
       // environment var exists - use it's value
-      ProfileEvent( '    Translated: ' + EnvironmentVarValue );
+      LogEvent(LogStartup, '    Translated: ' + EnvironmentVarValue );
       while EnvironmentVarValue <> '' do
       begin
          Item := ExtractNextValue( EnvironmentVarValue, '+' );
@@ -250,7 +250,7 @@ begin
   FileItems := TStringList.Create;
   Filenames := TStringList.Create;
 
-  StringToList(cmdLineParameters.getFileNames, FileItems, '+' );
+  StringToList(CmdLineParameters.getFileNames, FileItems, '+' );
   TranslateIPFEnvironmentVars( FileItems, FileNames );
 
   for i := 0 to FileNames.Count - 1 do
@@ -319,7 +319,6 @@ end;
 function Startup: boolean;
 var
   tmpCmdLine: String;
-  tmpSplittedCmdLine : TStringList;
   tmpRc : Integer;
 
   ExistingWindow: HWND;
@@ -332,13 +331,9 @@ begin
 
   // parse parameters into Parameters object
   tmpCmdLine := nativeOS2GetCmdLineParameter;
-  tmpSplittedCmdLine := TStringList.Create;
-  tmpRc := splitCmdLineParameter(tmpCmdLine, tmpSplittedCmdLine);
 
   CmdLineParameters := TCmdLineParameters.Create;
-  CmdLineParameters.parseCmdLine(tmpSplittedCmdLine);
-
-  tmpSplittedCmdLine.Destroy;
+  CmdLineParameters.parseCmdLine(tmpCmdLine);
 
   ExistingWindow := FindExistingWindow;
 
@@ -354,18 +349,19 @@ begin
 
     WinSetFocus( HWND_DESKTOP, ExistingWindow );
 
-    if CmdLineParameters.getTopics <> '' then
+    // if CmdLineParameters.getTopics <> '' then
+    if not CmdLineParameters.getSearchFlag AND not CmdLineParameters.getGlobalSearchFlag then
     begin
       PostNewViewTextMessage( ExistingWindow,
                               NHM_SEARCH,
-                              CmdLineParameters.getTopics);
+                              CmdLineParameters.getSearchText);
     end;
 
-    if CmdLineParameters.getGlobalSearchTextFlag then
+    if CmdLineParameters.getGlobalSearchFlag then
     begin
       PostNewViewTextMessage( ExistingWindow,
                               NHM_GLOBAL_SEARCH,
-                              CmdLineParameters.getGlobalSearchText );
+                              CmdLineParameters.getSearchText );
     end;
 
     if CmdLineParameters.getShowUsageFlag then

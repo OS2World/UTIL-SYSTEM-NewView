@@ -136,11 +136,11 @@ Implementation
 
 Uses
   SysUtils,
+  DebugUnit,
   Dos,
   ACLFileUtility,
   ACLUtility,
   ACLStringUtility,
-  ACLProfile,
   ControlsUtility;
 
 Const
@@ -191,13 +191,13 @@ end;
 procedure CloseIniFile( Var IniFIle: TMyIniFile );
 begin
   try
-    ProfileEvent( 'Calling IniFile.Destroy' );
+    LogEvent(LogSettings, 'Calling IniFile.Destroy');
     IniFile.Destroy;
   except
     on E: Exception do
     begin
       // don't care if we can't save settings.
-      ProfileEvent( '  Exception: ' + E.Message );
+      LogEvent(LogSettings, '  Exception: ' + E.Message );
     end;
   end;
 end;
@@ -415,7 +415,7 @@ Var
   MRUItemSection: string;
 
 Begin
-  ProfileEvent( 'SaveSettings' );
+  LogEvent(LogSettings, 'SaveSettings' );
   GetIniFile( IniFile );
   with IniFile do
   begin
@@ -562,7 +562,7 @@ Begin
     end;
   end;
   CloseIniFile( IniFile );
-  ProfileEvent( ' Done' );
+  LogEvent(LogSettings, ' Done' );
 
 End;
 
