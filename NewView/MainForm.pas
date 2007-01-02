@@ -829,11 +829,11 @@ uses
   ACLFileUtility,
   ACLFileIOUtility,
   ACLUtility,
-  ACLProfile,
   ACLDialogs,
   ACLString,
   RunProgramUnit,
   StringUtilsUnit,
+  DebugUnit,
 
   // Components
   RichTextPrintUnit,
@@ -1159,7 +1159,7 @@ var
 Begin
   if SettingFont or StartingUp then
     exit;
-  ProfileEvent( 'SetTopicFont' );
+  LogEvent(LogSettings, 'SetTopicFont');
 
   SettingFont := true;
 
@@ -1170,14 +1170,14 @@ Begin
   else
     Settings.NormalFont := NewFont;
 
-  ProfileEvent( 'Saving settings' );
+  LogEvent(LogSettings, 'Saving settings');
 
   SaveSettings;
-  ProfileEvent( 'Applying settings' );
+  LogEvent(LogSettings, 'Applying settings');
   ApplySettings;
 
   SettingFont := false;
-  ProfileEvent( 'SetTopicFont done' );
+  LogEvent(LogSettings, 'SetTopicFont done');
 End;
 
 Procedure TMainForm.ContentsOutlineOnFontChange (Sender: TObject);
@@ -2262,34 +2262,19 @@ End;
 Procedure TMainForm.DebugShowParamsMIOnClick (Sender: TObject);
 var
   i: integer;
-  tmpCmdLine: String;
-  tmpSplittedCmdLine : TStringList;
   tmpRc : Integer;
   tmpWindowPosition : TWindowPosition;
 Begin
   with InformationForm.InformationMemo do
   begin
-    tmpCmdLine := nativeOS2GetCmdLineParameter;
-    tmpSplittedCmdLine := TStringList.Create;
 
     Lines.Clear;
-    Lines.Add(ParameterCountLabel +IntToStr(tmpSplittedCmdLine.count));
-    tmpRc := splitCmdLineParameter(tmpCmdLine, tmpSplittedCmdLine);
-    for i := 0 to tmpSplittedCmdLine.Count -1 do
-      Lines.Add( ' '
-                 + IntToStr( i )
-                 + ' ['
-                 + tmpSplittedCmdLine[i]
-                 + ']' );
-
-    tmpSplittedCmdLine.Destroy;
     Lines.Add('');
     Lines.Add('parsed infos:');
     Lines.Add('getShowUsageFlag: ' + boolToStr(CmdLineParameters.getShowUsageFlag));
-    Lines.Add('getSearchTextFlag: ' + boolToStr(CmdLineParameters.getSearchTextFlag));
+    Lines.Add('getSearchFlag: ' + boolToStr(CmdLineParameters.getSearchFlag));
     Lines.Add('getSearchText: ' + CmdLineParameters.getSearchText);
-    Lines.Add('getGlobalSearchTextFlag: ' + boolToStr(CmdLineParameters.getGlobalSearchTextFlag));
-    Lines.Add('getGlobalSearchText: ' + CmdLineParameters.getGlobalSearchText);
+    Lines.Add('getGlobalSearchFlag: ' + boolToStr(CmdLineParameters.getGlobalSearchFlag));
     Lines.Add('getLanguage: ' + CmdLineParameters.getLanguage);
     Lines.Add('getHelpManagerFlag: ' + boolToStr(CmdLineParameters.getHelpManagerFlag));
     Lines.Add('getHelpManagerFlag: ' + boolToStr(CmdLineParameters.getHelpManagerFlag));
@@ -2305,8 +2290,6 @@ Begin
     Lines.Add('getOwnerWindow: ' + intToStr(CmdLineParameters.getOwnerWindow));
     Lines.Add('getWindowTitle: ' + CmdLineParameters.getWindowTitle);
     Lines.Add('getFileNames: ' + CmdLineParameters.getFileNames);
-    Lines.Add('getTopics: ' + CmdLineParameters.getTopics);
-
   end;
 
   InformationForm.ShowModal;
@@ -2917,7 +2900,7 @@ var
   HighlightWordSequences: TList;
   FileIndex: longint;
 Begin
-  ProfileEvent( 'DisplayTopicInWindow' );
+  LogEvent(LogDisplay, 'DisplayTopicInWindow');
 
   SetWaitCursor;
 
@@ -3019,7 +3002,7 @@ End;
 Procedure TMainForm.MainFormOnCloseQuery (Sender: TObject;
   Var CanClose: Boolean);
 Begin
-  ProfileEvent( '-------- Shutdown ----------' );
+  LogEvent(LogShutdown, '-------- Shutdown ----------');
 
 
   if OKToCloseFile then
@@ -3514,7 +3497,7 @@ var
   BookmarksFileName: string;
   S: string;
 begin
-  ProfileEvent( 'Load bookmarks for ' + HelpFile.Filename );
+  LogEvent(LogSettings, 'Load bookmarks for ' + HelpFile.Filename);
 
   BookmarksFileName:= ChangeFileExt( HelpFile.FileName, '.bmk' );
 
@@ -3563,7 +3546,7 @@ var
   FileIndex: integer;
   HelpFile: THelpFile;
 begin
-  ProfileEvent( 'Save notes' );
+  LogEvent(LogSettings, 'Save notes');
 
   for FileIndex := 0 to CurrentOpenFiles.Count - 1 do
   begin
@@ -3580,7 +3563,7 @@ var
   BookmarksFileName: string;
   BookmarkCount: integer;
 begin
-  ProfileEvent( 'Save bookmarks for ' + HelpFile.Filename );
+  LogEvent(LogSettings, 'Save bookmarks for ' + HelpFile.Filename);
 
   BookmarksFileName:= ChangeFileExt( HelpFile.FileName, '.bmk' );
 
@@ -3643,46 +3626,43 @@ end;
 
 Procedure TMainForm.MainFormOnDestroy (Sender: TObject);
 Begin
-  ProfileEvent( 'MainFormOnDestroy' );
+  LogEvent(LogShutdown, 'MainFormOnDestroy');
 
-  ProfileEvent( 'Write window position' );
-
+  LogEvent(LogSettings, 'Write window position');
   WriteWindowPos( self );
 
-  ProfileEvent( 'Update colors' );
+  LogEvent(LogSettings, 'Update colors');
   GetColors;
 
-  ProfileEvent( 'Save settings' );
-
+  LogEvent(LogSettings, 'Save settings');
   SaveSettings;
-
-  ProfileEvent( '  Done' );
+  LogEvent(LogSettings, 'Save settings done');
 
   // else- don't save position/size if doing own help
 
   TopicText.Destroy;
 
-  ProfileEvent( 'Destroy MRU menu items' );
+  LogEvent(LogShutdown, 'Destroy MRU menu items');
   MRUMenuItems.Destroy;
 
-  ProfileEvent( 'Destroy navigate to menu items' );
+  LogEvent(LogShutdown, 'Destroy navigate to menu items');
   NavigateToMenuItems.Destroy;
 
-  ProfileEvent( 'Destroy pagehistory' );
+  LogEvent(LogShutdown, 'Destroy pagehistory');
   PageHistory.Destroy;
 
-  ProfileEvent( 'Clear/destroy notes' );
+  LogEvent(LogShutdown, 'Clear/destroy notes');
   ClearNotes;
   Notes.Destroy;
 
-  ProfileEvent( 'Clear/destroy bookmarks' );
+  LogEvent(LogShutdown, 'Clear/destroy bookmarks');
   ClearBookmarks;
   Bookmarks.Destroy;
 
-  ProfileEvent( 'Destroy bookmark menu items' );
+  LogEvent(LogShutdown, 'Destroy bookmark menu items');
   BookmarksMenuItems.Destroy;
 
-  ProfileEvent( 'Destroy files/index/windows' );
+  LogEvent(LogShutdown, 'Destroy files/index/windows');
   CurrentOpenFiles.Destroy;
   DisplayedIndex.Destroy;
   Windows.Destroy;
@@ -3701,20 +3681,20 @@ Begin
   if g_CurrentLanguageFile <> nil then
     g_CurrentLanguageFile.Destroy;
 
-  ProfileEvent( 'Close global filelist' );
+  LogEvent(LogShutdown, 'Close global filelist');
   GlobalFilelist.Destroy;
 
-  ProfileEvent( 'Close shared memory' );
+  LogEvent(LogShutdown, 'Close shared memory');
   SharedMemory.Destroy;
 
   AllFilesWordSequences.Destroy;
 
-  ProfileEvent( 'MainFormOnDestroy done' );
+  LogEvent(LogShutdown, 'MainFormOnDestroy done');
 End;
 
 Procedure TMainForm.MainFormOnSetupShow (Sender: TObject);
 Begin
-  ProfileEvent( 'OnSetupShow' );
+  LogEvent(LogSettings, 'OnSetupShow');
   TabSet.TabIndex := 0;
   Notebook.PageIndex := 0;
 End;
@@ -3842,10 +3822,9 @@ end;
 Procedure TMainForm.MainFormOnCreate (Sender: TObject);
 var
   tmpCmdLine: String;
-  tmpSplittedCmdLine : TStringList;
   tmpRc : Integer;
 Begin
-  ProfileEvent( 'MainFormOnCreate' );
+  LogEvent(LogStartup, 'MainFormOnCreate');
 
   StartingUp := true;
 
@@ -3857,11 +3836,9 @@ Begin
 
   // parse parameters into Parameters object
   tmpCmdLine := nativeOS2GetCmdLineParameter;
-  tmpSplittedCmdLine := TStringList.Create;
-  tmpRc := splitCmdLineParameter(tmpCmdLine, tmpSplittedCmdLine);
   CmdLineParameters := TCmdLineParameters.Create;
-  CmdLineParameters.parseCmdLine(tmpSplittedCmdLine);
-  tmpSplittedCmdLine.destroy;
+  CmdLineParameters.parseCmdLine(tmpCmdLine);
+
   RegisterForLanguages( OnLanguageEvent );
 
   // if debug is not enabled, get rid of the debug menu and separator.
@@ -3884,7 +3861,7 @@ Begin
 
   ContentsOutline.SmoothScroll := false;
 
-  ProfileEvent( 'Choosing default font: Trying WarpSans' );
+  LogEvent(LogStartup, 'Choosing default font: Trying WarpSans');
 
   Font := GetNiceDefaultFont;
 
@@ -3895,7 +3872,7 @@ Begin
   // NOTE: SPCC will copy this font to TApplication
   // in TApplication.Run
 
-  ProfileEvent( 'Starting NewView: MainFormOnCreate' );
+  LogEvent(LogStartup, 'Starting NewView: MainFormOnCreate');
 
   Application.OnHint := OnHint;
 
@@ -3927,25 +3904,24 @@ Begin
   MRUMenuItems := TList.Create;
   NavigateToMenuItems := TList.Create;
 
-  ProfileEvent( 'Loading settings' );
+  LogEvent(LogSettings, 'Loading settings');
 
   LoadSettings;
   SetShowLeftPanel( ShowLeftPanel ); // update menu
 
   // load default strings
-  ProfileEvent( 'Loading language' );
+  LogEvent(LogSettings, 'Loading language');
 
   if CmdLineParameters.getLanguage <> '' then
     LoadAutoLanguage( 'newview', CmdLineParameters.getLanguage )
   else
     LoadDefaultLanguage( 'newview' );
 
-  ProfileEvent( 'Applying settings' );
-
+  LogEvent(LogSettings, 'Applying settings');
   ApplySettings;
 
   // default position is centered..
-  ProfileEvent( 'Set default position' );
+  LogEvent(LogSettings, 'Set default position');
   if Width > Screen.Width then
     Width := Screen.Width;
   if Height > Screen.Height then
@@ -3953,19 +3929,18 @@ Begin
   Left := ( Screen.Width - Width ) div 2;
   Bottom := ( Screen.Height - Height ) div 2;
 
-  ProfileEvent( 'ReadWindowPos' );
-
+  LogEvent(LogSettings, 'ReadWindowPos');
   ReadWindowPos( Self );
 
   PositionWindow;
 
-  ProfileEvent( 'Creating MRU list' );
+  LogEvent(LogSettings, 'Creating MRU list');
 
   CreateMRUMenuItems;
 
   CloseFile;
 
-  ProfileEvent( 'OnCreate done' );
+  LogEvent(LogStartup, 'OnCreate done');
 
   if CmdLineParameters.getWindowPositionFlag then
   begin
@@ -3977,7 +3952,7 @@ Begin
                        false );
   end;
 
-  ProfileEvent( 'MainFormOnCreate Done' );
+  LogEvent(LogStartup, 'MainFormOnCreate Done');
 End;
 
 Procedure TMainForm.ApplySettings;
@@ -4074,12 +4049,12 @@ Procedure TMainForm.MainFormOnShow (Sender: TObject);
 Begin
   EnableCallstackLogging( true );
 
-  ProfileEvent( 'MainFormOnShow' );
+  LogEvent(LogStartup, 'MainFormOnShow');
 
   if CmdLineParameters.getOwnerWindow <> NULLHANDLE then
   begin
-    ProfileEvent( 'Setting owner: '
-                  + IntToStr( CmdLineParameters.getOwnerWindow ) );
+    LogEvent(LogStartup, 'Setting owner: '
+                  + IntToStr( CmdLineParameters.getOwnerWindow));
     WinSetOwner( Frame.Handle,
                  CmdLineParameters.getOwnerWindow );
 
@@ -4087,19 +4062,18 @@ Begin
 
   if CmdLineParameters.getHelpManagerFlag then
   begin
-    ProfileEvent( '  Help Manager Title: '
+    LogEvent(LogStartup, '  Help Manager Title: '
                   + StrNPas( pSharedStruct ^. Title,
                              SHARED_STRUCT_TITLE_SIZE ) );
     HelpManagerVersion := StrNPas( pSharedStruct ^. Version,
                                    SHARED_STRUCT_VERSION_SIZE );
-    ProfileEvent( '  Help Manager Version: '
-                  + HelpManagerVersion );
+    LogEvent(LogStartup, '  Help Manager Version: ' + HelpManagerVersion );
 
   end;
 
   CoolBar.SetMinConstButtonWidth;
 
-  ProfileEvent( 'Post WM_OPENED' );
+  LogEvent(LogStartup, 'Post WM_OPENED');
 
   ResetProgress;
 
@@ -4188,7 +4162,7 @@ begin
 
   LoadSupportDLL;
 
-  ProfileEvent( 'WMOpened: SetLayout' );
+  LogEvent(LogStartup, 'WMOpened: SetLayout');
 
   if CmdLineParameters.getHelpManagerFlag then
     FShowLeftPanel := Settings.ShowLeftPanel_Help
@@ -4200,23 +4174,23 @@ begin
 //  ProfileEvent( 'Apply settings' );
 //  ApplySettings;
 
-  ProfileEvent( 'Enable controls' );
+  LogEvent(LogStartup, 'Enable controls');
   EnableControls;
 
 //  ProfileEvent( 'ReadWindowPos' );
 //  ReadWindowPos( Self );
 
-  ProfileEvent( 'Finish paint' );
+  LogEvent(LogStartup, 'Finish paint');
   Update;
 
   if not CmdLineParameters.getHelpManagerFlag then
   begin
-    ProfileEvent( 'Check environment vars' );
+    LogEvent(LogStartup, 'Check environment vars');
     CheckEnvironmentVars;
 
     if CmdLineParameters.getShowUsageFlag then
     begin
-      ProfileEvent( 'Showing usage' );
+      LogEvent(LogStartup, 'Showing usage');
       ShowUsage;
       exit;
     end;
@@ -4232,11 +4206,11 @@ begin
     // TODO rbri remove type conversion
     StringToList(cmdLineParameters.getFileNames, Filenames, '+' );
 
-    ProfileEvent( 'Call OpenFiles' );
+    LogEvent(LogStartup, 'Call OpenFiles');
 
     OpenFirstTopic := true;
-    if    ( CmdLineParameters.getTopics <> '' )
-       or CmdLineParameters.getSearchTextFlag then
+    if ( CmdLineParameters.getSearchText <> '' )
+       or CmdLineParameters.getSearchFlag then
       // if we're going to search, don't open first topic
       OpenFirstTopic := false;
 
@@ -4252,32 +4226,32 @@ begin
 
     Filenames.Destroy;
 
-    if CmdLineParameters.getTopics <> '' then
+    if CmdLineParameters.getSearchText <> '' then
     begin
       // search in contents only!
-      ProfileEvent( 'Do startup topic search' );
+      LogEvent(LogStartup, 'Do startup topic search');
 
-      StartupTopicSearch( CmdLineParameters.getTopics );
+      StartupTopicSearch( CmdLineParameters.getSearchText );
     end
-    else if CmdLineParameters.getSearchTextFlag then
+    else if CmdLineParameters.getSearchFlag then
     begin
       // search in specified files
-      ProfileEvent( 'Do search for topic' );
+      LogEvent(LogStartup, 'Do search for topic');
       DisplaySearch;
 
       SearchFor( CmdLineParameters.getSearchText );
     end;
   end;
 
-  if CmdLineParameters.getGlobalSearchTextFlag then
+  if CmdLineParameters.getGlobalSearchFlag then
   begin
     // Global search
-    ProfileEvent( 'Do global search: ' + CmdLineParameters.getGlobalSearchText );
-    DoGlobalSearch( CmdLineParameters.getGlobalSearchText );
+    LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getSearchText );
+    DoGlobalSearch( CmdLineParameters.getSearchText );
   end;
 
   if     ( length(CmdLineParameters.getFileNames) = 0 )
-     and ( not CmdLineParameters.getGlobalSearchTextFlag ) then
+     and ( not CmdLineParameters.getSearchFlag ) then
   begin
     // user hasn't requested any particular file
     // at startup, so if the option is still set,
@@ -4298,7 +4272,7 @@ begin
 
   end;
 
-  ProfileEvent( 'Open finished' );
+  LogEvent(LogStartup, 'Open finished');
 
   if CmdLineParameters.getHelpManagerFlag then
   begin
@@ -4312,7 +4286,7 @@ begin
 
   StartingUp := false;
 
-  ProfileEvent( 'RUN PROGRAM' );
+  LogEvent(LogStartup, 'RUN PROGRAM');
 end;
 
 Procedure TMainForm.MainFormOnResize (Sender: TObject);
@@ -4400,15 +4374,15 @@ Begin
                       - CoolbarSpace
                       - Notebook.Bottom;
 
-  ProfileEvent( 'TMainForm.SetLayout' );
-  ProfileEvent( '  RealClientHeight: '  + IntToStr( RealClientHeight ) );
+  LogEvent(LogStartup, 'TMainForm.SetLayout');
+  LogEvent(LogStartup, '  RealClientHeight: '  + IntToStr( RealClientHeight ));
 
-  ProfileEvent( '  Form Width: '  + IntToStr( Width ) );
-  ProfileEvent( '  Form Height: '  + IntToStr( Height ) );
-  ProfileEvent( '  Form ClientWidth: '  + IntToStr( ClientWidth ) );
-  ProfileEvent( '  Form ClientHeight: '  + IntToStr( ClientHeight ) );
-  ProfileEvent( '  CoolBar.Height: '  + IntToStr( CoolBar.Height ) );
-  ProfileEvent( '  CoolBar.Bottom: '  + IntToStr( CoolBar.Bottom ) );
+  LogEvent(LogStartup, '  Form Width: '  + IntToStr( Width ));
+  LogEvent(LogStartup, '  Form Height: '  + IntToStr( Height ) );
+  LogEvent(LogStartup, '  Form ClientWidth: '  + IntToStr( ClientWidth ) );
+  LogEvent(LogStartup, '  Form ClientHeight: '  + IntToStr( ClientHeight ) );
+  LogEvent(LogStartup, '  CoolBar.Height: '  + IntToStr( CoolBar.Height ) );
+  LogEvent(LogStartup, '  CoolBar.Bottom: '  + IntToStr( CoolBar.Bottom ) );
 
   if CurrentOpenFiles.Count > 0 then
     VSplitBar.Width := Max( 5, Canvas.TextWidth( ' ' ) )
@@ -4448,9 +4422,9 @@ Begin
   DisplayPanel.Left:= VSplitBar.Left + VSplitBar.Width;
   DisplayPanel.Width:= ClientWidth - DisplayPanel.Left;
   DisplayPanel.Height := RealClientHeight;
-  ProfileEvent( '  DisplayPanel.Width: '  + IntToStr( DisplayPanel.Width ) );
-  ProfileEvent( '  DisplayPanel.Height: '  + IntToStr( DisplayPanel.Height ) );
-  ProfileEvent( '  DisplayPanel.Bottom: '  + IntToStr( DisplayPanel.Bottom ) );
+  LogEvent(LogStartup, '  DisplayPanel.Width: '  + IntToStr( DisplayPanel.Width ) );
+  LogEvent(LogStartup, '  DisplayPanel.Height: '  + IntToStr( DisplayPanel.Height ) );
+  LogEvent(LogStartup, '  DisplayPanel.Bottom: '  + IntToStr( DisplayPanel.Bottom ) );
 
   ProgressBar.Left:= 1;
   ProgressBar.Bottom:= 1;
@@ -5776,12 +5750,12 @@ var
   HelpFile: THelpFile;
 begin
   ContentsOutline.BeginUpdate;
-  ProfileEvent( 'Load contents outline' );
+  LogEvent(LogStartup, 'Load contents outline');
 
   // we don't clear it first, to allow adding additional files
   // into the contents tree
 
-  ProfileEvent( 'Loop files' );
+  LogEvent(LogStartup, 'Loop files');
 
   FirstNode := nil;
 
@@ -5790,7 +5764,7 @@ begin
   for FileIndex:= 0 to Files.Count - 1 do
   begin
     HelpFile := Files[ FileIndex ];
-    ProfileEvent( 'File ' + IntToStr( FileIndex ) );
+    LogEvent(LogStartup, 'File ' + IntToStr( FileIndex ) );
     TopicIndex := 0;
     while TopicIndex < HelpFile.TopicCount do
     begin
@@ -5825,23 +5799,23 @@ begin
       end;
     end;
   end;
-  ProfileEvent( '  EndUpdate' );
+  LogEvent(LogStartup, '  EndUpdate' );
   ContentsOutline.EndUpdate;
 
   if Settings.OpenWithExpandedContents then
   begin
-    ProfileEvent( '  Expand all contents' );
+    LogEvent(LogStartup, '  Expand all contents' );
     ContentsOutline.ExpandAll
   end
   else if ContentsOutline.ChildCount = 1 then
   begin
-    ProfileEvent( '  Expand first node' );
+    LogEvent(LogStartup, '  Expand first node' );
     // Contents has only one top level node... expand it
     FirstNode.Expand;
   end;
 
   ContentsLoaded := true;
-  ProfileEvent( '  Contents loaded' );
+  LogEvent(LogStartup, '  Contents loaded' );
 
 end;
 
@@ -5859,14 +5833,14 @@ var
   FileNoteCount: integer;
 
 begin
-  ProfileEvent( 'Save notes for ' + HelpFile.Filename );
+  LogEvent(LogStartup, 'Save notes for ' + HelpFile.Filename );
 
   if not HelpFile.NotesLoaded then
     // we never loaded the notes/displayed a topic from this file
     // so don't do anything.
     exit;
 
-  ProfileEvent( 'Really saving' );
+  LogEvent(LogStartup, 'Really saving' );
 
   NotesFileName := ChangeFileExt( HelpFile.FileName, '.nte' );
 
@@ -5952,7 +5926,7 @@ var
   NoteText: TAString;
 
 begin
-  ProfileEvent( 'Load notes for ' + HelpFile.Filename );
+  LogEvent(LogStartup, 'Load notes for ' + HelpFile.Filename );
 
   if HelpFile.NotesLoaded then
     exit;
@@ -6118,34 +6092,33 @@ var
 begin
   StopPrinting;
 
-  ProfileEvent( 'Set Caption' );
+  LogEvent(LogShutdown, 'Set Caption' );
   MainTitle := '';
   SetMainCaption;
 
-  ProfileEvent( 'Close Windows' );
+  LogEvent(LogShutdown, 'Close Windows' );
   CloseWindows;
-  ProfileEvent( 'Set selected node to nil' );
 
+  LogEvent(LogShutdown, 'Set selected node to nil' );
   ContentsOutline.SelectedNode:= Nil;
 
   M1:= MemAvail;
 
-  ProfileEvent( 'Clear contents outline' );
-
+  LogEvent(LogShutdown, 'Clear contents outline' );
   ContentsOutline.Clear;
 
-  ProfileEvent( 'Free contents: ' + IntToStr( MemAvail - M1 ) );
+  LogEvent(LogShutdown, 'Free contents: ' + IntToStr( MemAvail - M1 ) );
   M1:= MemAvail;
 
   DisplayedIndex.Clear;
   IndexListBox.Clear;
-  ProfileEvent( 'Clear index ' + IntToStr( MemAvail - M1 ) );
+  LogEvent(LogShutdown, 'Clear index ' + IntToStr( MemAvail - M1 ) );
   M1:= MemAvail;
 
   NotesListBox.Clear;
   SearchResultsListBox.Clear;
 
-  ProfileEvent( 'Notes, search etc ' + IntToStr( MemAvail - M1 ) );
+  LogEvent(LogShutdown, 'Notes, search etc ' + IntToStr( MemAvail - M1 ) );
   M1:= MemAvail;
 
   // First save notes and bookmarks.
@@ -6158,7 +6131,7 @@ begin
 
   ClearAllWordSequences;
 
-  ProfileEvent( 'Destroy helpfile objects' );
+  LogEvent(LogShutdown, 'Destroy helpfile objects' );
 
   // Now destroy help files
   for FileIndex := 0 to CurrentOpenFiles.Count - 1 do
@@ -6171,21 +6144,21 @@ begin
 
   CurrentOpenFiles.Clear;
 
-  ProfileEvent( 'Destroy helpfiles ' + IntToStr( MemAvail - M1 ) );
+  LogEvent(LogShutdown, 'Destroy helpfiles ' + IntToStr( MemAvail - M1 ) );
   M1 := MemAvail;
 
-  ProfileEvent( 'Clear notes' );
+  LogEvent(LogShutdown, 'Clear notes' );
   ClearNotes;
 
-  ProfileEvent( 'Clear bookmarks' );
+  LogEvent(LogShutdown, 'Clear bookmarks' );
   ClearBookmarks;
 
   ClearPageHistory;
 
-  ProfileEvent( 'Enable controls' );
+  LogEvent(LogShutdown, 'Enable controls' );
   EnableControls;
 
-  ProfileEvent( 'CloseFile done' );
+  LogEvent(LogShutdown, 'CloseFile done' );
 
 end;
 
@@ -6240,11 +6213,11 @@ var
 
   i : longint;
 begin
-  ProfileEvent( 'Create index' );
+  LogEvent(LogStartup, 'Create index' );
 
   SetWaitCursor;
 
-  ProfileEvent( '  Get/sort lists' );
+  LogEvent(LogStartup, '  Get/sort lists' );
 
   ProgressBar.Position := 70;
   SetStatus( 'Building index... ' );
@@ -6293,7 +6266,7 @@ begin
   DisplayedIndex.Clear;
   ProgressBar.Position := 80;
 
-  ProfileEvent( '  Merge lists' );
+  LogEvent(LogStartup, '  Merge lists' );
 
   pLastEntry := NullStr;
   while true do
@@ -6396,14 +6369,14 @@ begin
   end;
 
   ProgressBar.Position := 95;
-  ProfileEvent( '  Display index (count = '
+  LogEvent(LogStartup, '  Display index (count = '
                 + IntToStr( DisplayedIndex.Count )
                 + ')' );
 
   // Now display the final index list
   IndexListBox.Items.Assign( DisplayedIndex );
 
-  ProfileEvent( '  Tidy up' );
+  LogEvent(LogStartup, '  Tidy up' );
 
   IndexLists.Destroy;
 
@@ -6414,7 +6387,7 @@ begin
   ClearWaitCursor;
 
   SetStatus( 'Index loaded' );
-  ProfileEvent( '  Done' );
+  LogEvent(LogStartup, '  Done' );
 end;
 
 Procedure TMainForm.OnHelpFileLoadProgress( n, outof: integer;
@@ -6526,13 +6499,13 @@ var
   CurrentMaxFileHandles: ULONG;
   RequiredFileHandles: LONG;
 begin
-  ProfileEvent( 'LoadFiles' );
+  LogEvent(LogStartup, 'LoadFiles' );
 
   LoadingFilenameList := TStringList.Create;
 
   TranslateIPFEnvironmentVars( FileNames, LoadingFilenameList );
 
-  ProfileEvent( 'Finding files' );
+  LogEvent(LogStartup, 'Finding files' );
 
   ProgressBar.Show;
 
@@ -6541,17 +6514,17 @@ begin
   for FileIndex := 0 to LoadingFilenameList.Count - 1 do
   begin
     FileName := LoadingFilenameList[ FileIndex ];
-    ProfileEvent( '  File: ' + FileName );
+    LogEvent(LogStartup, '  File: ' + FileName );
 
     // Find the help file, if possible
     FullFilePath := FindHelpFile( Filename );
     if FullFilePath <> '' then
     begin
-      ProfileEvent( '    Full path: ' + FullFilePath );
+      LogEvent(LogStartup, '    Full path: ' + FullFilePath );
     end
     else
     begin
-      ProfileEvent( '    File not found' );
+      LogEvent(LogStartup, '    File not found' );
       FullFilePath := FileName; // we'll complain later.
     end;
     LoadingFilenameList[ FileIndex ] := FullFilePath;
@@ -6578,7 +6551,7 @@ begin
   for FileIndex := 0 to LoadingFilenameList.Count - 1 do
   begin
     Filename := LoadingFilenameList[ FileIndex ];
-    ProfileEvent( '  Loading: ' + Filename );
+    LogEvent(LogStartup, '  Loading: ' + Filename );
     try
       LoadingFileIndex := FileIndex;
 
@@ -6658,7 +6631,7 @@ var
   HelpFile: THelpFile;
   FileIndex: longint;
 begin
-  ProfileEvent( 'DisplayFiles' );
+  LogEvent(LogStartup, 'DisplayFiles' );
   // Now load the various parts of the file(s)
   // into the user interface
   ProgressBar.Position := 50;
@@ -6692,7 +6665,7 @@ begin
   ProgressBar.Position := 100;
   SetStatus( LoadingStatusDone );
 
-  ProfileEvent( 'DisplayFiles Done' );
+  LogEvent(LogStartup, 'DisplayFiles Done' );
 
 end;
 
@@ -6703,7 +6676,7 @@ var
   HelpFiles: TList;
   FirstContentsNode: TNode;
 begin
-  ProfileEvent( 'OpenFiles' );
+  LogEvent(LogStartup, 'OpenFiles' );
 
   if not OKToCloseFile then
     exit;
@@ -6760,7 +6733,7 @@ begin
   // Select first contents node if there is one
   if FirstContentsNode <> nil then
   begin
-    ProfileEvent( '  Select first node' );
+    LogEvent(LogStartup, '  Select first node' );
     ContentsOutline.SelectedNode := FirstContentsNode;
   end;
 
@@ -6774,11 +6747,11 @@ begin
 
   if DisplayFirstTopic then
   begin
-    ProfileEvent( 'Display first topic' );
+    LogEvent(LogStartup, 'Display first topic' );
     DisplaySelectedContentsTopic;
   end;
 
-  ProfileEvent( 'OpenFiles complete' );
+  LogEvent(LogStartup, 'OpenFiles complete' );
 end;
 
 Function TMainForm.OpenAdditionalFiles( const FileNames: TStrings;
@@ -6787,7 +6760,7 @@ var
   HelpFiles: TList;
   FirstNewContentsNode: TNode;
 begin
-  ProfileEvent( 'OpenAdditionalFiles' );
+  LogEvent(LogStartup, 'OpenAdditionalFiles' );
 
   if not OKToCloseFile then
     exit;
@@ -6828,7 +6801,7 @@ begin
   if DisplayFirstTopic then
     DisplaySelectedContentsTopic;
 
-  ProfileEvent( 'OpenAdditionalFiles complete' );
+  LogEvent(LogStartup, 'OpenAdditionalFiles complete' );
 end;
 
 Procedure TMainForm.OpenMIOnClick (Sender: TObject);
