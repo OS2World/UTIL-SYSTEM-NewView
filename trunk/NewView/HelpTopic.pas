@@ -252,7 +252,7 @@ Implementation
 
 uses
   SysUtils,
-  ACLUtility, ACLStringUtility, ACLProfile, ACLFileIOUtility,
+  ACLUtility, ACLStringUtility, ACLFileIOUtility,
   AStringUtilityUnit,
   ACLLanguageUnit,
   StringUtilsUnit,

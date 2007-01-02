@@ -47,8 +47,8 @@ Implementation
 
 uses
   SysUtils,
+  DebugUnit,
   ACLStringUtility,
-  ACLProfile,
   HelpTopic;
 
 type
@@ -359,7 +359,7 @@ begin
   begin
     Term := Query.Term[ TermIndex ];
 
-    ProfileEvent( 'Searching for term "'
+    LogEvent(LogSearch, 'Searching for term "'
                   + Term.Text
                   + '", '
                   + IntToStr( Term.Parts.Count )
@@ -378,7 +378,7 @@ begin
     begin
       TermPart := Term.Parts[ TermPartIndex ];
 
-      ProfileEvent( '  Searching for [' + TermPart + ']' );
+      LogEvent(LogSearch, '  Searching for [' + TermPart + ']' );
 
       AllocUInt32Array( DictionaryRelevances,
                         HelpFile.DictionaryCount );
@@ -415,7 +415,7 @@ begin
       // For each word in the dictionary that matches
       // this search term part, search topic texts
 
-      ProfileEvent( '  Dictionary search done' );
+      LogEvent(LogSearch, '  Dictionary search done' );
       ClearUInt32Array( TopicsMatchingTermPart,
                         TopicCount );
 
@@ -440,7 +440,7 @@ begin
         end
       end;
 
-      ProfileEvent( 'TOpic searches done' );
+      LogEvent(LogSearch, 'Topic searches done' );
 
       if TermPartIndex = 0 then
         // first part, just copy
@@ -459,7 +459,7 @@ begin
     // Now we have searched the dictionary and worked out matching topics
     // for all parts of the term. Now combine all together
 
-    ProfileEvent( 'Checking for sequences' );
+    LogEvent(LogSearch, 'Checking for sequences' );
     for TopicIndex := 0 to TopicCount - 1 do
     begin
       if TopicsMatchingTerm[ TopicIndex ] > 0 then
@@ -493,13 +493,13 @@ begin
 
     // Search titles and index
 
-    ProfileEvent( '  Searching titles' );
+    LogEvent(LogSearch, '  Searching titles' );
     SearchTopicTitles( HelpFile, Term.Text, TopicsMatchingTerm );
 
-    ProfileEvent( '  Searching index' );
+    LogEvent(LogSearch, '  Searching index' );
     SearchIndex( HelpFile, Term.Text, TopicsMatchingTerm );
 
-    ProfileEvent( '  Combining' );
+    LogEvent(LogSearch, '  Combining' );
     case Term.CombineMethod of
       cmOptional:
         AddUInt32Array( TopicsMatchingTerm,
@@ -529,7 +529,7 @@ begin
     // loop for next term...
   end;
 
-  ProfileEvent( 'Search completed, converting to list' );
+  LogEvent(LogSearch, 'Search completed, converting to list' );
 
   // Now convert to list form.
 
@@ -546,14 +546,14 @@ begin
     end;
   end;
 
-  ProfileEvent( 'Freeing arrays' );
+  LogEvent(LogSearch, 'Freeing arrays' );
   FreeUInt32Array( TopicRelevances, TopicCount );
   FreeUInt32Array( TopicsExcluded, TopicCount );
   FreeUInt32Array( TopicsMatchingTerm, TopicCount );
   FreeUInt32Array( TopicsMatchingTermPart, TopicCount );
   FreeUInt32Array( TopicsMatchingDictWord, TopicCount );
 
-  ProfileEvent( 'Done' );
+  LogEvent(LogSearch, 'Done' );
 end;
 
 Initialization

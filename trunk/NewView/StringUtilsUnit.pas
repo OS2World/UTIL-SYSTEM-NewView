@@ -11,7 +11,13 @@ Interface
 uses
  Classes;
 
- TYPE
+const
+  StrCR = chr(13);
+  StrLF = chr(10);
+  StrCRLF = StrCR + StrLF;
+
+
+  TYPE
      TSerializableStringList = class
      private
        stringList : TStringList;
@@ -26,9 +32,35 @@ uses
        PROCEDURE readValuesFromSerializedString(const aSerializedString : String);
   end;
 
+  TYPE
+    TSetOfChars = set of char;
+
   // prefices all occurences of one of the chars in aStringWithChars with anEscape char
   // if the escapeChar itself is found, then it is doubled
-  Function escapeAllCharsBy(Const aReceiver: String; const aStringWithChars: String; const anEscapeChar: char): String;
+  Function StrEscapeAllCharsBy(Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char): String;
+
+  // Extract all fields in a String given a set of delimiter characters and
+  // an optional escape character usable to escape field delimits.
+  // Example:
+  //     StrExtractStrings('1x2x3\x4', "x", '\') ->
+  //     returns 4 strings: "1", "", "2" and "3x4"
+  Procedure StrExtractStrings(Var aResult : TStringList; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+
+  // removes all occurences of char from aSetOfChars from the beginning
+  // end the end of a String.
+  Function StrTrimChars(const aReceiver: String; const aSetOfChars: TSetOfChars): String;
+
+  // removes all blanks from beginning and end
+  Function StrTrim(const aReceiver: String): String;
+
+  // returns true if the String ends with the provides one
+  // this is case SENSITIVE
+  Function StrEndsWith(const aReceiver: String; const anEndString: String): Boolean;
+
+  // returns true if the String ends with the provides one
+  // this is case INsensitive
+  Function StrEndsWithIgnoringCase(const aString: String; const anEndString: String): Boolean;
+
 
 Implementation
 
@@ -70,47 +102,77 @@ Implementation
     for i := 0 To stringList.count-1 do
     begin
       if (i > 0) then result := result + '&';
-      result := result + escapeAllCharsBy(stringList[i], '&', '\');
+      result := result + StrEscapeAllCharsBy(stringList[i], ['&'], '\');
     end;
   end;
 
 
   PROCEDURE TSerializableStringList.readValuesFromSerializedString(const aSerializedString : String);
-  Var
-    i : Integer;
-    tmpChar,tmpNextChar : Char;
-    tmpPart: String;
-  begin
+  Begin
     if (length(aSerializedString) < 1) then exit;
 
     stringList.destroy;
     stringList := TStringList.Create;
+    StrExtractStrings(stringList, aSerializedString, ['&'], '\');
+  end;
+
+
+  // ----------------------------------------------------------
+
+
+  Function StrEscapeAllCharsBy(Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char): String;
+  Var
+    i : Integer;
+    tmpChar : Char;
+  Begin
+    Result := '';
+
+    for i := 1 To length(aReceiver) do
+    begin
+      tmpChar := aReceiver[i];
+
+      if (tmpChar = anEscapeChar) or (tmpChar IN aSetOfChars) then
+        result := result + anEscapeChar + tmpChar
+      else
+        result := result + tmpChar;
+    end;
+  end;
+
+
+  Procedure StrExtractStrings(Var aResult: TStringList; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+  Var
+    i : Integer;
+    tmpChar,tmpNextChar : Char;
+    tmpPart: String;
+  Begin
+    if (length(aReceiver) < 1) then exit;
+
     tmpPart := '';
 
     i := 1;
-    while i <= length(aSerializedString) do
+    while i <= length(aReceiver) do
     begin
-      tmpChar := aSerializedString[i];
-      if i < length(aSerializedString) then
-        tmpNextChar := aSerializedString[i+1]
+      tmpChar := aReceiver[i];
+      if i < length(aReceiver) then
+        tmpNextChar := aReceiver[i+1]
       else
         tmpNextChar := #0;
 
-      if (tmpChar = '\') and (tmpNextChar = '\') then
+      if (tmpChar = anEscapeChar) and (tmpNextChar = anEscapeChar) then
       begin
-        tmpPart := tmpPart + '\';
+        tmpPart := tmpPart + anEscapeChar;
         i := i + 2;
       end
       else
-        if (tmpChar = '\') and (tmpNextChar = '&') then
+        if (tmpChar = anEscapeChar) and (tmpNextChar IN aSetOfChars) then
         begin
-          tmpPart := tmpPart + '&';
+          tmpPart := tmpPart + tmpNextChar;
           i := i + 2;
         end
         else
-          if (tmpChar = '&') then
+          if (tmpChar IN aSetOfChars) then
           begin
-            stringList.add(tmpPart);
+            aResult.add(tmpPart);
             tmpPart := '';
             i := i + 1;
           end
@@ -120,30 +182,98 @@ Implementation
             i := i + 1;
           end;
     end;
-    stringList.add(tmpPart);
+    aResult.add(tmpPart);
   end;
 
-  // ----------------------------------------------------------
 
-  Function escapeAllCharsBy(Const aReceiver: String; const aStringWithChars: String; const anEscapeChar: char): String;
+  Function StrTrimChars(const aReceiver: String; const aSetOfChars: TSetOfChars): String;
   Var
-    i : Integer;
-    tmpChar : Char;
+    i : Longint;
+    j : Longint;
   Begin
-    Result := '';
-
-    if (length(aStringWithChars) > 0) then
+    i := 1;
+    while i < Length(aReceiver) do
     begin
-      for i := 1 To length(aReceiver) do
-      begin
-        tmpChar := aReceiver[i];
-
-        if ((tmpChar = anEscapeChar) or (pos(tmpChar, aStringWithChars) > 0)) then
-          result := result + anEscapeChar + tmpChar
-        else
-          result := result + tmpChar;
-      end;
+      if aReceiver[i] in aSetOfChars then
+        inc(i)
+       else
+         break;
     end;
+
+    j := Length(aReceiver);
+    while j >= i do
+    begin
+      if aReceiver[j] in aSetOfChars then
+        dec(j)
+      else
+        break;
+    end;
+
+    result := Copy(aReceiver, i, j-i+1);
+  end;
+
+
+  Function StrTrim(const aReceiver: String): String;
+  Begin
+    result := StrTrimChars(aReceiver, [' ']);
+  end;
+
+
+  Function StrEndsWith(const aReceiver: String; const anEndString: String): Boolean;
+  Var
+    tmpStringPos : Longint;
+    tmpMatchPos : Longint;
+  Begin
+    tmpStringPos := length(aReceiver);
+    tmpMatchPos := length(anEndString);
+
+    if tmpMatchPos > tmpStringPos then
+    begin
+      result := false;
+      exit;
+    end;
+
+    while tmpMatchPos > 0 do
+    begin
+      if aReceiver[tmpStringPos] <> anEndString[tmpMatchPos] then
+      begin
+        result := false;
+        exit;
+      end;
+      dec(tmpMatchPos);
+      dec(tmpStringPos);
+    end;
+
+    result := true;
+  end;
+
+
+  Function StrEndsWithIgnoringCase(const aReceiver: String; const anEndString: String): Boolean;
+  Var
+    tmpStringPos : Longint;
+    tmpMatchPos : Longint;
+  Begin
+    tmpStringPos := length(aString);
+    tmpMatchPos := length(anEndString);
+
+    if tmpMatchPos > tmpStringPos then
+    begin
+      result := false;
+      exit;
+    end;
+
+    while tmpMatchPos > 0 do
+    begin
+      if upcase(aString[tmpStringPos]) <> upcase(anEndString[tmpMatchPos]) then
+      begin
+        result := false;
+        exit;
+      end;
+      dec(tmpMatchPos);
+      dec(tmpStringPos);
+    end;
+
+    result := true;
   end;
 
 END.

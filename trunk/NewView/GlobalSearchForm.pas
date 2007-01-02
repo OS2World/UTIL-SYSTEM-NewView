@@ -141,8 +141,8 @@ Implementation
 
 uses
   SysUtils,
+  DebugUnit,
   ACLFileUtility,
-  ACLProfile,
   ACLDialogs,
   ControlsUtility,
   DriveInfoUnit,
@@ -498,7 +498,7 @@ Begin
   // MatchingTopics.Add( nil ); // artificial crash
   MatchingTopics := TList.Create;
 
-  ProfileEvent( 'Getting files' );
+  LogEvent(LogParse, 'Getting files');
 
   // make sure we ignore duplicate files...
   Files.Sorted := true;
@@ -534,13 +534,13 @@ Begin
     end;
   end;
 
-  ProfileEvent( ' Searching ' + IntToStr( Files.Count ) + ' files' );
+  LogEvent(LogParse, ' Searching ' + IntToStr( Files.Count ) + ' files');
   for FileIndex := 0 to Files.Count - 1 do
   begin
     if ThreadManager.StopRequested then
       break;
     Filename := Files[ FileIndex ];
-    ProfileEvent( Filename );
+    LogEvent(LogParse, Filename);
     ThreadManager.UpdateProgress( 10 + FileIndex * 95 div Files.Count,
                                   100,
                                   SearchingFileMsg
@@ -552,13 +552,13 @@ Begin
                                   + ')...' );
 
     try
-      ProfileEvent( ' Create THelpFile' );
+      LogEvent(LogParse, ' Create THelpFile');
       HelpFile := THelpFile.Create( FileName );
 
-      ProfileEvent( ' Helpfile created' );
+      LogEvent(LogParse, ' Helpfile created');
       MatchingTopics.Clear;
 
-      ProfileEvent( ' Search file' );
+      LogEvent(LogParse, ' Search file');
       SearchHelpFile( HelpFile,
                       Query,
                       MatchingTopics,
@@ -567,7 +567,7 @@ Begin
 
       if MatchingTopics.Count > 0 then
       begin
-        ProfileEvent( '  Sort results' );
+        LogEvent(LogParse, '  Sort results');
         // Create a searchresult object to send back to main thread.
         SearchResult := TSearchResult.Create;
         SearchResult.Filename := HelpFile.Filename;
@@ -576,12 +576,12 @@ Begin
         SearchResult.MatchingTopics.Assign( MatchingTopics );
 
         SearchResult.MatchingTopics.Sort( TopicRelevanceCompare );
-        ProfileEvent( '  Display results' );
+        LogEvent(LogParse, '  Display results');
 
         ThreadManager.SendData( '', SearchResult );
       end;
 
-      ProfileEvent( 'Unload helpfile' );
+      LogEvent(LogParse, 'Unload helpfile');
       HelpFile.Destroy;
 
     except
@@ -597,7 +597,7 @@ Begin
     end;
 
   end;
-  ProfileEvent( 'search completed' );
+  LogEvent(LogParse, 'search completed');
   ThreadManager.UpdateProgress( 100, 100, DoneMsg );
   Files.Destroy;
 
@@ -607,7 +607,7 @@ Begin
   SearchParameters.Destroy;
 
   Result := nil;
-  ProfileEvent( 'done' );
+  LogEvent(LogParse, 'done');
 End;
 
 Procedure TGlobalSearchForm.ClearResults;
