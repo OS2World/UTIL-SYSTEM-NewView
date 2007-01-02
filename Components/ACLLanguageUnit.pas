@@ -131,7 +131,9 @@ uses
   Dos, SysUtils, // system
   StdCtrls, Buttons, ExtCtrls, TabCtrls, Dialogs,
   Coolbar2, Multicolumnlistbox,
-  ACLUtility, ACLStringUtility, ACLProfile, ACLFileUtility;
+  ACLUtility, ACLStringUtility,
+//  ACLProfile,
+  ACLFileUtility;
 
 var
   g_LanguageCallbacks: TList;
@@ -737,49 +739,46 @@ var
   MajorLanguage: string;
   MinorLanguage: string;
 begin
-  ProfileEvent( 'LoadDefaultLanguage' );
+//  ProfileEvent( 'LoadDefaultLanguage' );
 
   LanguageVar := GetEnv( 'LANG' );
 
-  ProfileEvent( '  LANG='
-                + LanguageVar );
+//  ProfileEvent( '  LANG=' + LanguageVar );
   if LanguageVar = '' then
     LanguageVar := 'EN_US';
 
   MajorLanguage := ExtractNextValue( LanguageVar, '_' );
   MinorLanguage := ExtractNextValue( LanguageVar, '_' );
 
-  ProfileEvent( '  MajorLanguage='
-                + MajorLanguage );
-  ProfileEvent( '  MinorLanguage='
-                + MinorLanguage );
+//  ProfileEvent( '  MajorLanguage=' + MajorLanguage );
+//  ProfileEvent( '  MinorLanguage=' + MinorLanguage );
 
   // note there might be some other stuff on the end of LANG
   // such as ES_ES_EURO...
 
   if MinorLanguage <> '' then
   begin
-    ProfileEvent( '  Trying Major_Minor' );
+//    ProfileEvent( '  Trying Major_Minor' );
     if LoadAutoLanguage( AppName,
                          MajorLanguage
                          + '_'
                          + MinorLanguage ) then
     begin
       // found a specifc language
-      ProfileEvent( '    Found' );
+//      ProfileEvent( '    Found' );
       exit;
     end;
   end;
 
-  ProfileEvent( '  Trying Major only' );
+//  ProfileEvent( '  Trying Major only' );
   // try generic language?
   if LoadAutoLanguage( AppName, MajorLanguage ) then
   begin
-    ProfileEvent( '    Found' );
+//    ProfileEvent( '    Found' );
   end
   else
   begin
-    ProfileEvent( '    No language found, using default' );
+//    ProfileEvent( '    No language found, using default' );
 
     // load defaults
     LoadLanguage( '' );

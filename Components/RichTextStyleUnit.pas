@@ -143,7 +143,8 @@ Implementation
 
 uses
   SysUtils,
-  ACLStringUtility, ACLProfile;
+  ACLStringUtility;
+//  ACLProfile;
 
 Procedure ApplyStyle( const Style: TTextDrawStyle;
                       FontManager: TCanvasFontManager );
@@ -524,11 +525,11 @@ End;
 
 Procedure TRichTextSettings.SetHeading1Font( NewFont: TFont );
 begin
-  ProfileEvent( 'TRichTextSettings.SetHeading1Font' );
+//  ProfileEvent( 'TRichTextSettings.SetHeading1Font' );
   AssignFont( FHeading1Font, NewFont );
 
-  if FHeading1FOnt = nil then
-    ProfileEvent( '  Set to nil' );
+//  if FHeading1FOnt = nil then
+//    ProfileEvent( '  Set to nil' );
 
 end;
 

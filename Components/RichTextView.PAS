@@ -428,7 +428,7 @@ Implementation
 
 Uses
   SysUtils, PMWin, BseDos, Dos, ClipBrd, Printers,
-  ACLStringUtility, ACLString, ACLProfile,
+  ACLStringUtility, ACLString,
   ControlScrolling, ControlsUtility,
   RichTextDocumentUnit, RichTextDisplayUnit;
 
@@ -723,7 +723,7 @@ begin
   Msg.Handled := true;
   Msg.Result :=
     CopySelectionToBuffer( PChar( Msg.Param1 ),
-                           Msg.Param2 ); 
+                           Msg.Param2 );
 end;
 
 Procedure TRichTextView.SetDebug( Debug: boolean );
