@@ -47,6 +47,7 @@ uses
        ownerWindow : integer;
        windowTitle : string;
        fileNames : string;
+       fileNamesRaw : string;
        searchText : string;
 
        currentParsePosition : integer;
@@ -68,6 +69,7 @@ uses
        PROPERTY getOwnerWindow : integer read ownerWindow;
        PROPERTY getWindowTitle : string read windowTitle;
        PROPERTY getFileNames : string read fileNames;
+       PROPERTY getFileNamesRaw : string read fileNamesRaw;
        PROPERTY getSearchText : string read searchText;
 
        PROCEDURE parseCmdLine(aCmdLineString : String);
@@ -110,7 +112,8 @@ Implementation
      ownerWindow := 0;
      windowTitle := '';
      searchText := '';
-     filenames := '';
+     fileNames := '';
+     fileNamesRaw := '';
 
      try
        // start parsing
@@ -139,7 +142,8 @@ Implementation
                  end;
                  FILENAME_QUOTE :
                  begin
-                   filenames := filenames + tmpCurrentChar;
+                   fileNames := fileNames + tmpCurrentChar;
+                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
                    inc(currentParsePosition);
                  end;
                  TEXT :
@@ -167,13 +171,15 @@ Implementation
                    end
                    else
                    begin
-                     filenames := filenames + tmpCurrentChar;
+                     fileNames := fileNames + tmpCurrentChar;
+                     fileNamesRaw := fileNamesRaw + tmpCurrentChar;
                      inc(currentParsePosition);
                    end;
                  end;
                  FILENAME_QUOTE :
                  begin
-                   filenames := filenames + tmpCurrentChar;
+                   fileNames := fileNames + tmpCurrentChar;
+                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
                    inc(currentParsePosition);
                  end;
                else
@@ -195,11 +201,13 @@ Implementation
                  FILENAME :
                  begin
                    tmpState := FILENAME_QUOTE;
+                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
                    inc(currentParsePosition);
                  end;
                  FILENAME_QUOTE :
                  begin
                    tmpState := FILENAME;
+                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
                    inc(currentParsePosition);
                  end;
                  TEXT :
@@ -221,11 +229,13 @@ Implementation
                  FILENAME :
                  begin
                    fileNames := fileNames + tmpCurrentChar;
+                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
                    inc(currentParsePosition);
                  end;
                  FILENAME_QUOTE :
                  begin
-                   filenames := filenames + tmpCurrentChar;
+                   fileNames := fileNames + tmpCurrentChar;
+                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
                    inc(currentParsePosition);
                  end;
                else

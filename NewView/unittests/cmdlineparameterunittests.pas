@@ -30,6 +30,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Empty', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Empty', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Empty', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Empty', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Empty', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -51,6 +52,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_QuestionMark', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_QuestionMark', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_QuestionMark', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_QuestionMark', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_QuestionMark', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -73,6 +75,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_lowerH', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_lowerH', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_lowerH', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_lowerH', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_lowerH', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -95,6 +98,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_upperH', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_upperH', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_upperH', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_upperH', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_upperH', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -117,6 +121,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_lowerHelp', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_lowerHelp', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_lowerHelp', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_lowerHelp', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_lowerHelp', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -139,6 +144,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_upperHELP', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_upperHELP', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_upperHELP', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_upperHELP', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_upperHELP', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -161,6 +167,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_upperHE', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_upperHE', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_upperHE', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_upperHE', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_upperHE', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -183,6 +190,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_h_between', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_h_between', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_h_between', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_h_between', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_h_between', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -205,6 +213,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_h_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_h_between_withSpace', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_h_between_withSpace', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_h_between_withSpace', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_h_between_withSpace', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -227,6 +236,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_lowerS', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_lowerS', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_lowerS', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_lowerS', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_lowerS', 'search', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -249,6 +259,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_upperS', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_upperS', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_upperS', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_upperS', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_upperS', 'seArch', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -272,6 +283,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_upperS_withBlank', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_upperS_withBlank', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_upperS_withBlank', 'FilE', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_upperS_withBlank', 'FilE', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_upperS_withBlank', 'seArch', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -294,6 +306,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_emptyS', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_emptyS', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_emptyS', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_emptyS', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_emptyS', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -316,6 +329,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_s_between', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_s_between', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_s_between', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_s_between', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_s_between', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -338,6 +352,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_s_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_s_between_withSpace', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_s_between_withSpace', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_s_between_withSpace', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_s_between_withSpace', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -360,6 +375,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_help_and_s', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_help_and_s', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_help_and_s', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_help_and_s', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_help_and_s', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -382,6 +398,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_s_and_help', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_s_and_help', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_s_and_help', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_s_and_help', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_s_and_help', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -404,6 +421,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_help_and_s_without_blank', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_help_and_s_without_blank', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_help_and_s_without_blank', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_help_and_s_without_blank', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_help_and_s_without_blank', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -427,6 +445,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_lowerG', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_lowerG', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_lowerG', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_lowerG', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_lowerG', 'search', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -449,6 +468,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_upperG', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_upperG', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_upperG', 'fiLe', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_upperG', 'fiLe', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_upperG', 'seArch', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -471,6 +491,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_emptyG', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_emptyG', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_emptyG', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_emptyG', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_emptyG', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -493,6 +514,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_g_between', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_g_between', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_g_between', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_g_between', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_g_between', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -515,6 +537,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_g_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_g_between_withSpace', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_g_between_withSpace', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_g_between_withSpace', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_g_between_withSpace', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -537,6 +560,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Language', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Language', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Language', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Language', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Language', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -559,6 +583,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Language_Empty', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Language_Empty', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Language_Empty', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Language_Empty', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Language_Empty', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -581,6 +606,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Language_Empty_WithColon', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Language_Empty_WithColon', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Language_Empty_WithColon', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Language_Empty_WithColon', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Language_Empty_WithColon', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -603,6 +629,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Language_WithFile', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Language_WithFile', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Language_WithFile', 'filE', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Language_WithFile', 'filE', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Language_WithFile', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -625,6 +652,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Language_between', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Language_between', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Language_between', 'filE', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Language_between', 'filE', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Language_between', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -647,6 +675,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Language_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Language_between_withSpace', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Language_between_withSpace', 'filE', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Language_between_withSpace', 'filE', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Language_between_withSpace', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -669,6 +698,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_HelpManagerNumber', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -691,6 +721,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_WithoutColon', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_WithoutColon', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_WithoutColon', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_HelpManagerNumber_WithoutColon', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_WithoutColon', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -713,6 +744,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_HelpManagerNumber', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -735,6 +767,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_between', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_between', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_between', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_HelpManagerNumber_between', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_between', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -757,6 +790,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_between_withSpace', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_between_withSpace', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_HelpManagerNumber_between_withSpace', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_between_withSpace', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -779,6 +813,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_OwnerNumber', 1234, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_OwnerNumber', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_OwnerNumber', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_OwnerNumber', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_OwnerNumber', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -800,7 +835,8 @@ Implementation
     assertEqualsInt('testParseCmdLine_OwnerNumber_WithoutColon', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_OwnerNumber_WithoutColon', 134, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_OwnerNumber_WithoutColon', '', tmpCmdLineParameters.getWindowTitle);
-    assertEqualsString('testParseCmdLine_OwnerNumber', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_OwnerNumber_WithoutColon', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_OwnerNumber_WithoutColon', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_OwnerNumber_WithoutColon', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -823,6 +859,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_OwnerNumber_Invalid', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_OwnerNumber_Invalid', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_OwnerNumber_Invalid', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_OwnerNumber_Invalid', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_OwnerNumber_Invalid', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -845,6 +882,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_OwnerNumber_between', 14, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_OwnerNumber_between', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_OwnerNumber_between', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_OwnerNumber_between', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_OwnerNumber_between', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -867,6 +905,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_OwnerNumber_between_withSpace', 14, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_OwnerNumber_between_withSpace', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_OwnerNumber_between_withSpace', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_OwnerNumber_between_withSpace', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_OwnerNumber_between_withSpace', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -889,6 +928,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Title', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Title', 'Test', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Title', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Title', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Title', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -911,6 +951,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Title_WithoutColon', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Title_WithoutColon', 'titlE', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Title_WithoutColon', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Title_WithoutColon', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Title_WithoutColon', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -933,6 +974,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Title_Empty', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Title_Empty', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Title_Empty', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Title_Empty', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Title_Empty', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -955,6 +997,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Title_between', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Title_between', 'tItlE', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Title_between', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Title_between', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Title_between', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -977,6 +1020,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Title_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Title_between_withSpace', 'tItlE', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Title_between_withSpace', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Title_between_withSpace', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Title_between_withSpace', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1002,6 +1046,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_WindowPos', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_WindowPos', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_WindowPos', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_WindowPos', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_WindowPos', '', tmpCmdLineParameters.getSearchText);
 
     assertTrue('testParseCmdLine_WindowPos', tmpCmdLineParameters.getWindowPositionFlag);
@@ -1033,6 +1078,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_WindowPosPercentage', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_WindowPosPercentage', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_WindowPosPercentage', '', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_WindowPosPercentage', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_WindowPosPercentage', '', tmpCmdLineParameters.getSearchText);
 
     assertTrue('testParseCmdLine_WindowPosPercentage', tmpCmdLineParameters.getWindowPositionFlag);
@@ -1062,6 +1108,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_Topic', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_Topic', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_Topic', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_Topic', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Topic', 'topi1 topi2', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1084,6 +1131,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_file', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_file', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_file', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_file', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_file', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1106,6 +1154,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_fileLeadingBlanks', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_fileLeadingBlanks', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_fileLeadingBlanks', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_fileLeadingBlanks', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_fileLeadingBlanks', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1128,6 +1177,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_fileTrailingBlanks', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_fileTrailingBlanks', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_fileTrailingBlanks', 'file', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_fileTrailingBlanks', 'file', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_fileTrailingBlanks', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1150,6 +1200,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_fileQuoted', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_fileQuoted', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_fileQuoted', 'fi -h le', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_fileQuoted', '"fi -h le"', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_fileQuoted', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1172,6 +1223,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_fileQuotedMissingClosedQuote', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_fileQuotedMissingClosedQuote', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_fileQuotedMissingClosedQuote', 'fi -h le', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_fileQuotedMissingClosedQuote', '"fi -h le', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_fileQuotedMissingClosedQuote', '', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1194,6 +1246,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_fileQuotedAndText', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_fileQuotedAndText', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_fileQuotedAndText', 'fi -h le', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_fileQuotedAndText', '"fi -h le"', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_fileQuotedAndText', 'serachText', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1216,6 +1269,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_fileQuotedAndTextManyBlanks', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_fileQuotedAndTextManyBlanks', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_fileQuotedAndTextManyBlanks', 'fi -h le', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_fileQuotedAndTextManyBlanks', '"fi -h le"', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_fileQuotedAndTextManyBlanks', 'serachText', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1238,6 +1292,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_fileQuotedInside', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_fileQuotedInside', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_fileQuotedInside', 'testfi -h letes', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_fileQuotedInside', 'test"fi -h le"tes', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_fileQuotedInside', 'serachText', tmpCmdLineParameters.getSearchText);
   END;
 
@@ -1260,6 +1315,7 @@ Implementation
     assertEqualsInt('testParseCmdLine_SwitchAndFileQuoted', 0, tmpCmdLineParameters.getOwnerWindow);
     assertEqualsString('testParseCmdLine_SwitchAndFileQuoted', '', tmpCmdLineParameters.getWindowTitle);
     assertEqualsString('testParseCmdLine_SwitchAndFileQuoted', 'fi -h le', tmpCmdLineParameters.getFileNames);
+    assertEqualsString('testParseCmdLine_SwitchAndFileQuoted', '"fi -h le"', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_SwitchAndFileQuoted', 'serachText', tmpCmdLineParameters.getSearchText);
   END;
 
