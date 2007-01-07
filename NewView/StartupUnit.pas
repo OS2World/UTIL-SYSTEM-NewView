@@ -172,64 +172,6 @@ begin
   Result := FindDefaultLanguageHelpFile( 'NewView' );
 end;
 
-// Extract a single element of a window position spec
-// - take a value from comma-separated list
-// - convert to numeric
-// - if the number ends with P then take as
-//   a percentage of given dimension
-Function ExtractPositionElement( Var ParamValue: string;
-                                 ScreenDimension: longint ): longint;
-var
-  Element: string;
-begin
-  Element := ExtractNextValue( ParamValue, ',' );
-  if Element = '' then
-    raise Exception.Create( 'Missing position element' );
-  if StrEnds( 'P', Element ) then
-  begin
-    Delete( Element, Length( Element ), 1 );
-    if Element = '' then
-      raise Exception.Create( 'Missing position element' );
-    Result := StrToInt( Element );
-    if Result < 0 then
-      Result := 0;
-    if Result > 100 then
-      Result := 100;
-    Result := Round( Result / 100 * ScreenDimension );
-  end
-  else
-  begin
-    Result := StrToInt( Element );
-  end;
-end;
-
-Function SystemMetrics(sm:LONG):LongInt;
-Begin
-  Result := WinQuerySysValue(HWND_DESKTOP,sm);
-end;
-
-// Extract a specified window position:
-// X,Y,W,H
-Function ExtractPositionSpec( ParamValue: string;
-                              Var Position: TWindowPosition ): boolean;
-begin
-  try
-    Position.Left := ExtractPositionElement( ParamValue, SystemMetrics(SV_CXSCREEN) );
-    Position.Bottom := ExtractPositionElement( ParamValue, SystemMetrics(SV_CYSCREEN) );
-    Position.Width := ExtractPositionElement( ParamValue, SystemMetrics(SV_CXSCREEN) );
-    if Position.Width < 50 then
-      Position.Width := 50;
-    Position.Height := ExtractPositionElement( ParamValue, SystemMetrics(SV_CYSCREEN) );
-    if Position.Height < 50 then
-
-      Position.Height := 50;
-    Result := true;
-  except
-    Result := false;
-  end;
-end;
-
-
 // If another instance already has the files open
 // activate it and return true.
 function FindExistingWindow: HWND;
