@@ -2261,8 +2261,6 @@ End;
 
 Procedure TMainForm.DebugShowParamsMIOnClick (Sender: TObject);
 var
-  i: integer;
-  tmpRc : Integer;
   tmpWindowPosition : TWindowPosition;
 Begin
   with InformationForm.InformationMemo do
@@ -3822,7 +3820,6 @@ end;
 Procedure TMainForm.MainFormOnCreate (Sender: TObject);
 var
   tmpCmdLine: String;
-  tmpRc : Integer;
 Begin
   LogEvent(LogStartup, 'MainFormOnCreate');
 
@@ -4192,41 +4189,56 @@ begin
     begin
       LogEvent(LogStartup, 'Showing usage');
       ShowUsage;
+
+      if FileExists( GetOwnHelpFileName ) then
+        OpenFile( GetOwnHelpFileName, '', true );
+
       exit;
     end;
   end;
 
   HelpManagerWindows.Add( pointer( CmdLineParameters.getHelpManagerWindow ) );
 
-  if length(CmdLineParameters.getFileNames) > 0 then
+  if CmdLineParameters.getFileNames <> '' then
   begin
     // open specified files
     Filenames := TStringList.Create;
 
-    // TODO rbri remove type conversion
+    // TODO use StrExtractStrings
     StringToList(cmdLineParameters.getFileNames, Filenames, '+' );
 
     LogEvent(LogStartup, 'Call OpenFiles');
 
     OpenFirstTopic := true;
+
     if ( CmdLineParameters.getSearchText <> '' )
        or CmdLineParameters.getSearchFlag then
       // if we're going to search, don't open first topic
       OpenFirstTopic := false;
 
     if CmdLineParameters.getHelpManagerFlag then
+    begin
       // don't open first topic if we're online help
       // in case we are wanting to show a specific topic
       // - saves time/flicker
       OpenFirstTopic := false;
+    end;
 
+    if NOT (  CmdLineParameters.getGlobalSearchFlag
+              AND (CmdLineParameters.getSearchText = '')
+           )
+    then
+    begin
     OpenFiles( Filenames,
                CmdLineParameters.getWindowTitle,
                OpenFirstTopic );
+    end;
 
     Filenames.Destroy;
 
-    if CmdLineParameters.getSearchText <> '' then
+    if not CmdLineParameters.getSearchFlag
+       and not CmdLineParameters.getGlobalSearchFlag
+       and (CmdLineParameters.getSearchText <> '') then
     begin
       // search in contents only!
       LogEvent(LogStartup, 'Do startup topic search');
@@ -4246,8 +4258,18 @@ begin
   if CmdLineParameters.getGlobalSearchFlag then
   begin
     // Global search
-    LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getSearchText );
-    DoGlobalSearch( CmdLineParameters.getSearchText );
+    if (CmdLineParameters.getSearchText = '')
+      AND (CmdLineParameters.getFileNamesRaw <> '')
+    then
+    begin
+      LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getFileNamesRaw );
+      DoGlobalSearch( CmdLineParameters.getFileNamesRaw );
+    end
+    else
+    begin
+      LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getSearchText );
+      DoGlobalSearch( CmdLineParameters.getSearchText );
+    end;
   end;
 
   if     ( length(CmdLineParameters.getFileNames) = 0 )
@@ -4259,17 +4281,6 @@ begin
     if Settings.StartupHelp then
       if FileExists( GetOwnHelpFileName ) then
         OpenFile( GetOwnHelpFileName, '', true );
-  end;
-
-  if CurrentOpenFiles.Count = 0 then
-  begin
-     // maybe...
-//    EnsureGlobalSearchFormLoaded;
-
-//    GlobalSearchForm.Parent := DisplayPanel;
-//    GlobalSearchForm.Show;
-//    GlobalSearchForm.WindowState := wsMaximized;
-
   end;
 
   LogEvent(LogStartup, 'Open finished');

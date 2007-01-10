@@ -20,7 +20,7 @@ say "* - contents tab is selected                                            *"
 say "* - all contents are collapsed                                          *"
 say "* - 'Introduction' is selected and visible at the right                 *"
 say "*************************************************************************"
-"start newview"
+"start ..\build\newview\newview"
 pull
 
 
@@ -34,7 +34,7 @@ say "* - contents tab is selected                                            *"
 say "* - all contents are collapsed                                          *"
 say "* - 'Introduction' is selected and visible at the right                 *"
 say "*************************************************************************"
-"start newview cmdref"
+"start ..\build\newview\newview cmdref"
 pull
 
 
@@ -48,7 +48,7 @@ say "* - contents tab is selected                                            *"
 say "* - only 'OS/2 Commands by name' is expanded                            *"
 say "*   and 'COPY' is selected                                              *"
 say "*************************************************************************"
-"start newview cmdref copy"
+"start ..\build\newview\newview cmdref copy"
 pull
 
 
@@ -63,7 +63,55 @@ say "* - 'COPY' is selected and visible at the right                         *"
 say "* - on contents tab only 'OS/2 Commands by name' is expanded            *"
 say "*   and 'COPY' is selected                                              *"
 say "*************************************************************************"
-"start newview /s:copy cmdref"
+"start ..\build\newview\newview /s cmdref copy"
+pull
+
+
+say "*************************************************************************"
+say "* newview /s cmdref                                                     *"
+say "*                                                                       *"
+say "* Expected                                                              *"
+say "* NewView start and shows the 'Command Reference' help                  *"
+say "* - left navigation is shown                                            *"
+say "* - no hits visible and the right part is empty                         *"
+say "* - 'COPY' is selected and visible at the right                         *"
+say "* - all contents are collapsed                                          *"
+say "*************************************************************************"
+"start ..\build\newview\newview /s cmdref"
+pull
+
+
+say "*************************************************************************"
+say "* newview /s cmdref net access                                          *"
+say "*                                                                       *"
+say "* Expected                                                              *"
+say "* NewView start and shows the 'Command Reference' help                  *"
+say "* - left navigation is shown                                            *"
+say "* - search tab is selected                                              *"
+say "*     ('net access' is visible in the search entry field)               *"
+say "* - search was done for net OR access                                   *"
+say "* - 'NET ACCESS' is selected and visible at the right                   *"
+say "* - on contents tab only 'LAN Server Commands' is expanded              *"
+say "*   and 'NET ACCESS' is selected                                        *"
+say "*************************************************************************"
+"start ..\build\newview\newview /s cmdref net access"
+pull
+
+
+say "*************************************************************************"
+say "* newview /s cmdref net access                                          *"
+say "*                                                                       *"
+say "* Expected                                                              *"
+say "* NewView start and shows the 'Command Reference' help                  *"
+say "* - left navigation is shown                                            *"
+say "* - search tab is selected                                              *"
+say "*     ('""net access""' is visible in the search entry field)           *"
+say "* - search was done for net AND access                                  *"
+say "* - 'NET ACCESS' is selected and visible at the right                   *"
+say "* - on contents tab only 'LAN Server Commands' is expanded              *"
+say "*   and 'NET ACCESS' is selected                                        *"
+say "*************************************************************************"
+'start ..\build\newview\newview /s cmdref "net access"'
 pull
 
 
@@ -78,6 +126,38 @@ say "* - all contents are collapsed                                          *"
 say "* - 'Introduction' is selected and visible at the right                 *"
 say "* - The 'Search all fieles' dialog is opend and searches for copy       *"
 say "*************************************************************************"
-"start newview /g:copy cmdref"
+"start ..\build\newview\newview /g cmdref copy"
 pull
+
+
+say "*************************************************************************"
+say "* newview /g copy                                                       *"
+say "*                                                                       *"
+say "* Expected                                                              *"
+say "* NewView start and shows the 'Command Reference' help                  *"
+say "* - left navigation is shown                                            *"
+say "* - contents tab is selected                                            *"
+say "* - all contents are collapsed                                          *"
+say "* - 'Introduction' is selected and visible at the right                 *"
+say "* - The 'Search all fieles' dialog is opend and searches for copy       *"
+say "*************************************************************************"
+"start ..\build\newview\newview /g copy"
+pull
+
+
+say "*************************************************************************"
+say "* newview -h                                                            *"
+say "*                                                                       *"
+say "* Expected                                                              *"
+say "* NewView start and shows the NewView help.                             *"
+say "* - command line dialog is shown                                        *"
+say "* - left navigation is shown                                            *"
+say "* - contents tab is selected                                            *"
+say "* - all contents are collapsed                                          *"
+say "* - 'Introduction' is selected and visible at the right                 *"
+say "*************************************************************************"
+"start ..\build\newview\newview -h"
+pull
+
+
 
