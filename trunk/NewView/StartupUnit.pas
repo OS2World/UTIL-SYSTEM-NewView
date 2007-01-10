@@ -261,8 +261,6 @@ end;
 function Startup: boolean;
 var
   tmpCmdLine: String;
-  tmpRc : Integer;
-
   ExistingWindow: HWND;
 begin
   // open shared memory
@@ -286,8 +284,6 @@ begin
 
     // destroy global list - nobody else will
     GlobalFilelist.Destroy;
-    // TODO rbri maybe we need the next line
-    // Parameters.FilenamesParam.Destroy;
 
     WinSetFocus( HWND_DESKTOP, ExistingWindow );
 
@@ -303,7 +299,7 @@ begin
     begin
       PostNewViewTextMessage( ExistingWindow,
                               NHM_GLOBAL_SEARCH,
-                              CmdLineParameters.getSearchText );
+                              CmdLineParameters.getSearchText);
     end;
 
     if CmdLineParameters.getShowUsageFlag then
