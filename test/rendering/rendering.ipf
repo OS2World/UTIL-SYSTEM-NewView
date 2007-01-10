@@ -132,6 +132,12 @@ with new text
 .*
 .*
 .**********************************************************
+:h2.Text Color II
+:p.Now text with a :color fc=default bc=palegray.F1:color fc=default bc=default.
+ and the rest of the sentence.
+.*
+.*
+.**********************************************************
 :h2.Text For"mating
 :p.
 Test
