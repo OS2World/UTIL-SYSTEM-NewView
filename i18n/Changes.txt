@@ -1,10 +1,14 @@
 NewView release changes
 
-V2.19
+V2.19 beta3
+- There was a blank at the beginning of a paragraph
+  after a graphic. Fixed
+- In some other situations there was a blank to much at
+  the beginning of a paragraph. Fixed
 - More examples added to the description for the command
   line parameters/options in the online help.
 - Some small formating changes in the online help.
-- Numbering changed
+- Version numbering changed
 - Menu entry 'Save as IPF' translated to german
 - some backup files removed
 - ACLCtl10.DLL, ACLCtl10.h, ACLCtl10.pas, ACLCtl10.zip removed form my
