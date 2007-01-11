@@ -27,8 +27,6 @@ function AccessSharedMemory: TSuballocatedSharedMemory;
 // False if it should immediately exit.
 function Startup: boolean;
 
-function GetOwnHelpFileName: string;
-
 // Look for any items that are actually specifiying environment
 // variables, and expand them to the contents of the variables
 Procedure TranslateIPFEnvironmentVars( Items: TStrings;
@@ -167,10 +165,6 @@ begin
   end;
 end;
 
-function GetOwnHelpFileName: string;
-begin
-  Result := FindDefaultLanguageHelpFile( 'NewView' );
-end;
 
 // If another instance already has the files open
 // activate it and return true.

@@ -4189,56 +4189,42 @@ begin
     begin
       LogEvent(LogStartup, 'Showing usage');
       ShowUsage;
-
-      if FileExists( GetOwnHelpFileName ) then
-        OpenFile( GetOwnHelpFileName, '', true );
-
-      exit;
     end;
   end;
 
   HelpManagerWindows.Add( pointer( CmdLineParameters.getHelpManagerWindow ) );
 
-  if CmdLineParameters.getFileNames <> '' then
+  if CmdLineParameters.getInterpretedFileNames <> '' then
   begin
     // open specified files
     Filenames := TStringList.Create;
 
     // TODO use StrExtractStrings
-    StringToList(cmdLineParameters.getFileNames, Filenames, '+' );
+    StringToList(cmdLineParameters.getInterpretedFileNames, Filenames, '+' );
 
     LogEvent(LogStartup, 'Call OpenFiles');
 
     OpenFirstTopic := true;
 
-    if ( CmdLineParameters.getSearchText <> '' )
-       or CmdLineParameters.getSearchFlag then
+    if ( CmdLineParameters.getInterpretedSearchText <> '' )
+       OR CmdLineParameters.getSearchFlag
+       OR CmdLineParameters.getHelpManagerFlag
+    then
       // if we're going to search, don't open first topic
-      OpenFirstTopic := false;
-
-    if CmdLineParameters.getHelpManagerFlag then
-    begin
       // don't open first topic if we're online help
       // in case we are wanting to show a specific topic
       // - saves time/flicker
       OpenFirstTopic := false;
-    end;
 
-    if NOT (  CmdLineParameters.getGlobalSearchFlag
-              AND (CmdLineParameters.getSearchText = '')
-           )
-    then
-    begin
     OpenFiles( Filenames,
                CmdLineParameters.getWindowTitle,
                OpenFirstTopic );
-    end;
 
     Filenames.Destroy;
 
     if not CmdLineParameters.getSearchFlag
        and not CmdLineParameters.getGlobalSearchFlag
-       and (CmdLineParameters.getSearchText <> '') then
+       and (CmdLineParameters.getInterpretedSearchText <> '') then
     begin
       // search in contents only!
       LogEvent(LogStartup, 'Do startup topic search');
@@ -4251,36 +4237,16 @@ begin
       LogEvent(LogStartup, 'Do search for topic');
       DisplaySearch;
 
-      SearchFor( CmdLineParameters.getSearchText );
+      SearchFor( CmdLineParameters.getInterpretedSearchText );
     end;
   end;
 
-  if CmdLineParameters.getGlobalSearchFlag then
+  if NOT CmdLineParameters.getShowUsageFlag
+     AND CmdLineParameters.getGlobalSearchFlag then
   begin
     // Global search
-    if (CmdLineParameters.getSearchText = '')
-      AND (CmdLineParameters.getFileNamesRaw <> '')
-    then
-    begin
-      LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getFileNamesRaw );
-      DoGlobalSearch( CmdLineParameters.getFileNamesRaw );
-    end
-    else
-    begin
-      LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getSearchText );
-      DoGlobalSearch( CmdLineParameters.getSearchText );
-    end;
-  end;
-
-  if     ( length(CmdLineParameters.getFileNames) = 0 )
-     and ( not CmdLineParameters.getSearchFlag ) then
-  begin
-    // user hasn't requested any particular file
-    // at startup, so if the option is still set,
-    // load the NewView help file
-    if Settings.StartupHelp then
-      if FileExists( GetOwnHelpFileName ) then
-        OpenFile( GetOwnHelpFileName, '', true );
+    LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getFileNamesRaw );
+    DoGlobalSearch( CmdLineParameters.getInterpretedSearchText );
   end;
 
   LogEvent(LogStartup, 'Open finished');
