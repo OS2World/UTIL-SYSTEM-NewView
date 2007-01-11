@@ -73,16 +73,57 @@ uses
        PROPERTY getSearchText : string read searchText;
 
        PROCEDURE parseCmdLine(aCmdLineString : String);
+
+       FUNCTION getInterpretedFileNames: String;
+       FUNCTION getInterpretedSearchText: String;
      private
        PROCEDURE parseSwitch(aCmdLineString : String);
   end;
 
+  FUNCTION getOwnHelpFileName: String;
+
   // returns a string containing the whole
   // command line parametes
-  FUNCTION nativeOS2GetCmdLineParameter : STRING;
+  FUNCTION nativeOS2GetCmdLineParameter : String;
 
 
 Implementation
+uses
+  ACLFileUtility;
+
+  FUNCTION TCmdLineParameters.getInterpretedFileNames: String;
+  var
+    tmpOwnHelpFileName : String;
+  begin
+    result := getFileNames;
+
+    if getGlobalSearchFlag
+       AND (getSearchText = '')
+    then
+    begin
+      result := '';
+      exit;
+    end;
+
+
+    tmpOwnHelpFileName := FindDefaultLanguageHelpFile('NewView');
+    if (result = '') AND
+      FileExists(tmpOwnHelpFileName)
+    then
+      result := tmpOwnHelpFileName;
+  end;
+
+
+  FUNCTION TCmdLineParameters.getInterpretedSearchText: String;
+  begin
+    result := getSearchText;
+
+    if getGlobalSearchFlag
+       AND (result = '')
+    then
+      result := getFileNamesRaw;
+  end;
+
 
   FUNCTION TCmdLineParameters.setHelpManagerFlag(aNewValue : boolean) : boolean;
   begin
@@ -452,6 +493,12 @@ Implementation
           raise EParsingFailed.Create('Unsupported switch');
         end;
       end;
+  end;
+
+
+  FUNCTION getOwnHelpFileName: String;
+  begin
+    result := FindDefaultLanguageHelpFile('NewView');
   end;
 
 
