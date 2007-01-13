@@ -10,6 +10,9 @@ Uses
   OS2def,
   PMShl,
   PmWin,
+  SysUtils,
+  DebugUnit,
+  CmdLineParameterUnit,
   StartupUnit;
 
 {$R ViewStub}
@@ -40,23 +43,20 @@ imports
                     APIENTRY;         'PMSHAPI' index 119;
 end;
 
+var
+    tmpCmdLine : String;
+    tmpPCharCmdLine : PChar;
+
 Begin
+  LogEvent(LogViewStub, 'Starting' );
+
   if Startup then
   begin
     // Want a new instance.
 
-    // Get address of parameters, ignoring first (exename).
-    ASM
-      MOV ESI, SYSTEM.ArgStart    // Get start of parameters
-
-      // read over exe name (until first null byte)
-!rrloop:
-      LODSB
-      CMP AL,0
-      JNE !rrloop
-
-      MOV Parameters, ESI
-    End;
+    tmpCmdLine := nativeOS2GetCmdLineParameter;
+    tmpPCharCmdLine := StrAlloc(length(tmpCmdLine) + 1);
+    StrPCopy(tmpPCharCmdLine, tmpCmdLine);
 
     // set up details for launching newview
     With Details do
@@ -76,9 +76,13 @@ Begin
 
     _WinStartApp( NULLHANDLE, // no notify window
                   Details,
-                  Parameters, // use these rather than Details parameters,
+                  tmpPCharCmdLine, // use these rather than Details parameters,
                               // cause PM was swallowing /? the other way!!
                   nil, // reserved
                   0 );
+
+    StrDispose(tmpPCharCmdLine);
+
   end;
+  LogEvent(LogViewStub, 'Finished' );
 End.
