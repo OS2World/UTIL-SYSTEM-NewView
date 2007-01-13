@@ -179,14 +179,14 @@ var
 begin
   Result := NULLHANDLE;
 
-  if length(CmdLineParameters.getFileNames) = 0 then
+  if length(CmdLineParameters.getInterpretedFileNames) = 0 then
     // not loading files; nothing to check
     exit;
 
   FileItems := TStringList.Create;
   Filenames := TStringList.Create;
 
-  StringToList(CmdLineParameters.getFileNames, FileItems, '+' );
+  StringToList(CmdLineParameters.getInterpretedFileNames, FileItems, '+' );
   TranslateIPFEnvironmentVars( FileItems, FileNames );
 
   for i := 0 to FileNames.Count - 1 do
@@ -281,19 +281,22 @@ begin
 
     WinSetFocus( HWND_DESKTOP, ExistingWindow );
 
-    // if CmdLineParameters.getTopics <> '' then
-    if not CmdLineParameters.getSearchFlag AND not CmdLineParameters.getGlobalSearchFlag then
+    // topic search
+    if not CmdLineParameters.getSearchFlag
+       AND not CmdLineParameters.getGlobalSearchFlag
+       AND (CmdLineParameters.getInterpretedSearchText <> '')
+    then
     begin
       PostNewViewTextMessage( ExistingWindow,
                               NHM_SEARCH,
-                              CmdLineParameters.getSearchText);
+                              CmdLineParameters.getInterpretedSearchText);
     end;
 
     if CmdLineParameters.getGlobalSearchFlag then
     begin
       PostNewViewTextMessage( ExistingWindow,
                               NHM_GLOBAL_SEARCH,
-                              CmdLineParameters.getSearchText);
+                              CmdLineParameters.getInterpretedSearchText);
     end;
 
     if CmdLineParameters.getShowUsageFlag then
