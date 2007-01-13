@@ -2278,6 +2278,9 @@ Begin
     Lines.Add('getHelpManagerFlag: ' + boolToStr(CmdLineParameters.getHelpManagerFlag));
     Lines.Add('getHelpManagerWindow: ' + intToStr(CmdLineParameters.getHelpManagerWindow));
     Lines.Add('getWindowPositionFlag: ' + boolToStr(CmdLineParameters.getWindowPositionFlag));
+    Lines.Add('getFileNames: ' + CmdLineParameters.getFileNames);
+    Lines.Add('getInterpretedSearchText: ' + CmdLineParameters.getInterpretedSearchText);
+    Lines.Add('getInterpretedFileNames: ' + CmdLineParameters.getInterpretedFileNames);
 
     tmpWindowPosition := CmdLineParameters.getWindowPosition;
     Lines.Add('getWindowPosition: ');
@@ -2287,7 +2290,6 @@ Begin
     Lines.Add('    height: ' + intToStr(tmpWindowPosition.height));
     Lines.Add('getOwnerWindow: ' + intToStr(CmdLineParameters.getOwnerWindow));
     Lines.Add('getWindowTitle: ' + CmdLineParameters.getWindowTitle);
-    Lines.Add('getFileNames: ' + CmdLineParameters.getFileNames);
   end;
 
   InformationForm.ShowModal;
@@ -4245,7 +4247,7 @@ begin
      AND CmdLineParameters.getGlobalSearchFlag then
   begin
     // Global search
-    LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getFileNamesRaw );
+    LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getInterpretedSearchText);
     DoGlobalSearch( CmdLineParameters.getInterpretedSearchText );
   end;
 
