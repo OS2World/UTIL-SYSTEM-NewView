@@ -13,8 +13,8 @@ function GetAppVersion: string;
 Implementation
 
 const
-  Version =        'V2.19.beta3'; // $SS_REQUIRE_NEW_VERSION$
-  BldLevelVersion = '2.19.beta3'; // Embedded for IBM BLDLEVEL tool
+  Version =        'V2.19.beta4'; // $SS_REQUIRE_NEW_VERSION$
+  BldLevelVersion = '2.19.beta4'; // Embedded for IBM BLDLEVEL tool
 
 // RELEASE PROCESS
 // - notify translators
