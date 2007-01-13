@@ -25,7 +25,8 @@ end;
 
   // -- Logging --
   Type
-    LogAspect = (LogStartup, LogShutdown, LogSettings, LogParse, LogDisplay, LogSearch);
+    LogAspect = (LogStartup, LogShutdown, LogSettings, LogParse, LogDisplay, LogSearch, LogViewStub);
+    LogAspects = SET OF LogAspect;
 
   Procedure LogEvent(const aLogAspect: LogAspect; const anEventDescription: String);
 
@@ -42,6 +43,16 @@ end;
   // the time since timer start to PMPrintF
   // Procedure PrfTraceEvent(const anEventDescription: String);
 
+const
+  activeLogAspects : LogAspects = [
+                                        LogStartup
+//                                        LogShutdown,
+//                                        LogSettings,
+//                                        LogParse,
+//                                        LogDisplay,
+//                                        LogSearch,
+//                                        LogViewStub
+                                  ];
 
 var
   startTime : ULONG;
@@ -58,6 +69,7 @@ Implementation
       LogParse    :  result := 'Parse';
       LogDisplay  :  result := 'Display';
       LogSearch   :  result := 'Search';
+      LogViewStub :  result := 'ViewStub';
       else           result := 'Unknown';
       end;
   End;
@@ -71,13 +83,16 @@ Implementation
 {$endif}
   Begin
 {$ifdef DEBUG}
-    tmpMessage := 'Log[' + GetAspectPrefix(aLogAspect) + ']  ' + anEventDescription;
+    if (aLogAspect IN activeLogAspects) then
+    begin
+      tmpMessage := 'Log[' + GetAspectPrefix(aLogAspect) + ']  ' + anEventDescription;
 
-    tmpPCharMessage := StrAlloc(length(tmpMessage) + 1);
-    StrPCopy(tmpPCharMessage, tmpMessage);
+      tmpPCharMessage := StrAlloc(length(tmpMessage) + 1);
+      StrPCopy(tmpPCharMessage, tmpMessage);
 
-    PmPrintfString(tmpPCharMessage);
-    StrDispose(tmpPCharMessage);
+      PmPrintfString(tmpPCharMessage);
+      StrDispose(tmpPCharMessage);
+    end;
 {$endif}
   end;
 
