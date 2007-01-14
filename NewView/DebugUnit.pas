@@ -25,7 +25,7 @@ end;
 
   // -- Logging --
   Type
-    LogAspect = (LogStartup, LogShutdown, LogSettings, LogParse, LogDisplay, LogSearch, LogViewStub);
+    LogAspect = (LogStartup, LogShutdown, LogSettings, LogParse, LogDisplay, LogSearch, LogViewStub, LogObjConstDest);
     LogAspects = SET OF LogAspect;
 
   Procedure LogEvent(const aLogAspect: LogAspect; const anEventDescription: String);
@@ -45,13 +45,14 @@ end;
 
 const
   activeLogAspects : LogAspects = [
-                                        LogStartup
+                                        LogStartup,
 //                                        LogShutdown,
 //                                        LogSettings,
 //                                        LogParse,
 //                                        LogDisplay,
 //                                        LogSearch,
-//                                        LogViewStub
+                                        LogViewStub,
+                                        LogObjConstDest
                                   ];
 
 var
@@ -63,14 +64,15 @@ Implementation
   Function GetAspectPrefix(const aLogAspect: LogAspect): String;
   Begin
     Case aLogAspect of
-      LogStartup  :  result := 'Startup';
-      LogShutdown :  result := 'Start';
-      LogSettings :  result := 'Settings';
-      LogParse    :  result := 'Parse';
-      LogDisplay  :  result := 'Display';
-      LogSearch   :  result := 'Search';
-      LogViewStub :  result := 'ViewStub';
-      else           result := 'Unknown';
+      LogStartup      :  result := 'Startup';
+      LogShutdown     :  result := 'Start';
+      LogSettings     :  result := 'Settings';
+      LogParse        :  result := 'Parse';
+      LogDisplay      :  result := 'Display';
+      LogSearch       :  result := 'Search';
+      LogViewStub     :  result := 'ViewStub';
+      LogObjConstDest :  result := 'ObjConstDest';
+      else               result := 'Unknown';
       end;
   End;
 

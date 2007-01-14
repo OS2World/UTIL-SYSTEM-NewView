@@ -11,8 +11,12 @@ Uses
   PMShl,
   PmWin,
   SysUtils,
+  Classes,
   DebugUnit,
+  GlobalFilelistUnit,
   CmdLineParameterUnit,
+  HelpManagerUnit,
+  StringUtilsUnit,
   StartupUnit;
 
 {$R ViewStub}
@@ -44,20 +48,103 @@ imports
 end;
 
 var
-    tmpCmdLine : String;
-    tmpPCharCmdLine : PChar;
+  tmpCmdLine : String;
+  tmpPCharCmdLine : PChar;
+  tmpCmdLineParameters: TCmdLineParameters;
+  tmpExistingWindow: HWND;
+
+
+  // If another instance already has the files open
+  // activate it and return true.
+  Function FindExistingWindow(aCmdLineParameters : TCmdLineParameters) : HWND;
+  var
+    tmpFileItems: TStringList;
+    tmpFilenames: TStringList;
+    tmpFullFilePath: string;
+    i: longint;
+
+    FileWindow: HWND;
+  begin
+    result := NULLHANDLE;
+
+    if aCmdLineParameters.getInterpretedFileNames = '' then
+      // not loading files; nothing to check
+      exit;
+
+    tmpFileItems := TStringList.Create;
+    tmpFilenames := TStringList.Create;
+
+    StrExtractStrings(tmpFileItems, aCmdLineParameters.getInterpretedFileNames, ['+'], #0);
+    TranslateIPFEnvironmentVars(tmpFileItems, tmpFileNames );
+
+    for i := 0 to tmpFileNames.Count - 1 do
+    begin
+      tmpFullFilePath := FindHelpFile( tmpFilenames[ i ] );
+      if tmpFullFilePath <> '' then
+      begin
+        FileWindow := GlobalFilelist.FindFile(tmpFullFilePath);
+
+        if FileWindow = NULLHANDLE then
+        begin
+          // not found - stop searching.
+          Result := NULLHANDLE; // no match
+          break;
+        end;
+
+        // found it
+
+        // is it the same as any previous match?
+        if Result <> NULLHANDLE then
+        begin
+          if FileWindow <> Result then
+          begin
+            // no, so we don't have a match.
+            // NOTE: We just excluded something: if the same file is
+            // open in multiple windows then we may not check all combinations
+            Result := NULLHANDLE; // no match
+            break;
+          end;
+        end
+        else
+        begin
+          // no match yet - store this one
+          result := FileWindow;
+        end;
+      end;
+    end;
+
+    tmpFilenames.Destroy;
+    tmpFileItems.Destroy;
+  end;
+
+
 
 Begin
   LogEvent(LogViewStub, 'Starting' );
 
-  if Startup then
+  // open shared memory
+  SharedMemory := AccessSharedMemory;
+
+  // get access to the system-global filelist
+  GlobalFilelist := TGlobalFilelist.Create;
+
+  // parse parameters into Parameters object
+  tmpCmdLine := nativeOS2GetCmdLineParameter;
+
+  tmpCmdLineParameters := TCmdLineParameters.Create;
+  tmpCmdLineParameters.parseCmdLine(tmpCmdLine);
+
+  tmpExistingWindow := FindExistingWindow(tmpCmdLineParameters);
+
+  if tmpExistingWindow = NULLHANDLE then
   begin
     // Want a new instance.
+    LogEvent(LogViewStub, 'Starting a new NewView instance');
 
-    tmpCmdLine := nativeOS2GetCmdLineParameter;
     tmpPCharCmdLine := StrAlloc(length(tmpCmdLine) + 1);
     StrPCopy(tmpPCharCmdLine, tmpCmdLine);
 
+    LogEvent(LogViewStub, 'CmdLine for NewView exe: ' + tmpCmdLine);
     // set up details for launching newview
     With Details do
     begin
@@ -82,7 +169,57 @@ Begin
                   0 );
 
     StrDispose(tmpPCharCmdLine);
+  end
+  else
+  begin
+    // the file is already opend in a running instance
+    LogEvent(LogViewStub, 'Adequate running NewView instance found');
+
+    WinSetFocus( HWND_DESKTOP, tmpExistingWindow );
+
+    // search and topic search
+    // topic search is also handled this way
+    // at the moment there is no support for a
+    // seperate window message
+    if not tmpCmdLineParameters.getGlobalSearchFlag
+       AND (tmpCmdLineParameters.getInterpretedSearchText <> '')
+    then
+    begin
+      PostNewViewTextMessage( tmpExistingWindow,
+                              NHM_SEARCH,
+                              tmpCmdLineParameters.getInterpretedSearchText);
+    end;
+
+    if tmpCmdLineParameters.getGlobalSearchFlag then
+    begin
+      PostNewViewTextMessage( tmpExistingWindow,
+                              NHM_GLOBAL_SEARCH,
+                              tmpCmdLineParameters.getInterpretedSearchText);
+    end;
+
+    if tmpCmdLineParameters.getShowUsageFlag then
+    begin
+      WinPostMsg( tmpExistingWindow,
+               NHM_SHOW_USAGE,
+               0,
+               0 );
+    end;
+
+    if tmpCmdLineParameters.getHelpManagerFlag then
+    begin
+      // tell the new help manager instance to talk to the
+      // other viewer
+      WinPostMsg( tmpCmdLineParameters.getHelpManagerWindow,
+               NHM_VIEWER_READY,
+               tmpExistingWindow,
+               0 );
+    end;
 
   end;
+
+  // destroy global list
+  GlobalFilelist.Destroy;
+
+  tmpCmdLineParameters.Destroy;
   LogEvent(LogViewStub, 'Finished' );
 End.
