@@ -812,6 +812,7 @@ Type
 
 Var
   MainForm: TMainForm;
+  CmdLineParameters : TCmdLineParameters;
 
 Implementation
 
@@ -2269,6 +2270,7 @@ Begin
     Lines.Clear;
     Lines.Add('');
     Lines.Add('parsed infos:');
+
     Lines.Add('getShowUsageFlag: ' + boolToStr(CmdLineParameters.getShowUsageFlag));
     Lines.Add('getSearchFlag: ' + boolToStr(CmdLineParameters.getSearchFlag));
     Lines.Add('getSearchText: ' + CmdLineParameters.getSearchText);

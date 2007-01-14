@@ -49,11 +49,14 @@ type
 implementation
 
 uses
+  DebugUnit,
   ACLStringUtility,
   SysUtils;
 
 constructor TGlobalFilelist.Create;
 begin
+  LogEvent(LogObjConstDest, '+ TGlobalFilelist.Create');
+
   FMem := TSuballocatedSharedMemory.Create( 'NEWVIEW_GLOBAL_FILELIST',
                                             GLOBAL_FILELIST_SIZE,
                                             4 ); // space for head pointer
@@ -67,6 +70,8 @@ end;
 
 destructor TGlobalFilelist.Destroy;
 begin
+  LogEvent(LogObjConstDest, '- TGlobalFilelist.Destroy');
+
   FMem.Destroy;
   FMutex.Destroy;
 end;
