@@ -26,8 +26,8 @@ var
   Parameters: pchar;
 
 Const
-  Vendor = 'Aaron Lawrence';
-  BldLevelVersion = '1.1.1';
+  Vendor = 'Aaron Lawrence, Ronald Brill';
+  BldLevelVersion = '1.1.2';
   Description = 'NewView Stub';
 
   // BLDLevel - compatible - mostly
