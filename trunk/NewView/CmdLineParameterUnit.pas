@@ -54,6 +54,7 @@ uses
 
        FUNCTION ReadNextPart(const aParseString : String; const aSetOfDelimiterChars : TSetOfChars): String;
        FUNCTION handleParamWithValue(const aCmdLineString : String; const aSwitch : String; var aValue : String) : Boolean;
+       PROCEDURE parseSwitch(aCmdLineString : String);
 
      public
        PROPERTY getCommandLine : String read commandLine;
@@ -76,8 +77,6 @@ uses
 
        FUNCTION getInterpretedFileNames: String;
        FUNCTION getInterpretedSearchText: String;
-     private
-       PROCEDURE parseSwitch(aCmdLineString : String);
   end;
 
   FUNCTION getOwnHelpFileName: String;
