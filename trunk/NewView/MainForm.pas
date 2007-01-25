@@ -2266,32 +2266,10 @@ var
 Begin
   with InformationForm.InformationMemo do
   begin
-
     Lines.Clear;
     Lines.Add('');
-    Lines.Add('parsed infos:');
 
-    Lines.Add('getShowUsageFlag: ' + boolToStr(CmdLineParameters.getShowUsageFlag));
-    Lines.Add('getSearchFlag: ' + boolToStr(CmdLineParameters.getSearchFlag));
-    Lines.Add('getSearchText: ' + CmdLineParameters.getSearchText);
-    Lines.Add('getGlobalSearchFlag: ' + boolToStr(CmdLineParameters.getGlobalSearchFlag));
-    Lines.Add('getLanguage: ' + CmdLineParameters.getLanguage);
-    Lines.Add('getHelpManagerFlag: ' + boolToStr(CmdLineParameters.getHelpManagerFlag));
-    Lines.Add('getHelpManagerFlag: ' + boolToStr(CmdLineParameters.getHelpManagerFlag));
-    Lines.Add('getHelpManagerWindow: ' + intToStr(CmdLineParameters.getHelpManagerWindow));
-    Lines.Add('getWindowPositionFlag: ' + boolToStr(CmdLineParameters.getWindowPositionFlag));
-    Lines.Add('getFileNames: ' + CmdLineParameters.getFileNames);
-    Lines.Add('getInterpretedSearchText: ' + CmdLineParameters.getInterpretedSearchText);
-    Lines.Add('getInterpretedFileNames: ' + CmdLineParameters.getInterpretedFileNames);
-
-    tmpWindowPosition := CmdLineParameters.getWindowPosition;
-    Lines.Add('getWindowPosition: ');
-    Lines.Add('    left:   ' + intToStr(tmpWindowPosition.left));
-    Lines.Add('    bottom: ' + intToStr(tmpWindowPosition.bottom));
-    Lines.Add('    width: ' + intToStr(tmpWindowPosition.width));
-    Lines.Add('    height: ' + intToStr(tmpWindowPosition.height));
-    Lines.Add('getOwnerWindow: ' + intToStr(CmdLineParameters.getOwnerWindow));
-    Lines.Add('getWindowTitle: ' + CmdLineParameters.getWindowTitle);
+    CmdLineParameters.writeDetailsTo(Lines);
   end;
 
   InformationForm.ShowModal;
@@ -4233,7 +4211,7 @@ begin
       // search in contents only!
       LogEvent(LogStartup, 'Do startup topic search');
 
-      StartupTopicSearch( CmdLineParameters.getSearchText );
+      StartupTopicSearch( CmdLineParameters.getInterpretedSearchText );
     end
     else if CmdLineParameters.getSearchFlag then
     begin
@@ -5393,6 +5371,8 @@ var
   LinkedProgram: string;
   URL: string;
   LinkDetails: string;
+  ProgramInfo : TSerializableStringList;
+  ProgramPath, ProgramLink : string;
 Begin
   if StrLeft( LinkString, 4 ) = 'note' then
   begin
@@ -5400,9 +5380,15 @@ Begin
   end
   else if StrLeft( LinkString, 7 ) = 'program' then
   begin
+    ProgramInfo := TSerializableStringList.create;
+    ProgramInfo.readValuesFromSerializedString(StrRightFrom( LinkString, 9 ));
+    ProgramPath := ProgramInfo.get(0);
+    ProgramLink := ProgramInfo.get(1);
+    TSerializableStringList.destroy;
+    // call LaunchProgram here to inherit the environment
+
     LinkedProgram := StrRightFrom( LinkString, 9 );
-    SetStatus( LinkMsg
-               + LinkedProgram );
+    SetStatus( LinkMsg + ' ' + ProgramPath + ' ' + ProgramLink);
   end
   else if StrLeft( LinkString, 3 ) = 'url' then
   begin
@@ -5480,6 +5466,7 @@ Begin
     ProgramLink := ProgramInfo.get(1);
     TSerializableStringList.destroy;
     // call LaunchProgram here to inherit the environment
+    LogEvent(LogDisplay, 'LaunchProgram: "' + ProgramPath + '" "' + ProgramLink + '"');
     LaunchProgram(ProgramPath, ProgramLink, '');
     SetStatus( 'Launched ' + ProgramPath );
   end
