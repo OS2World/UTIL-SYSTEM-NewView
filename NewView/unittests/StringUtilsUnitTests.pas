@@ -215,18 +215,21 @@ Implementation
     tmpResult.add('"test"');
     tmpResult.add('');
     tmpResult.add('abc\&');
+    tmpResult.add('\config.sys');
+
     tmpResult.add('');
 
     tmpSerialized := tmpResult.getSerializedString;
 
     tmpResult.readValuesFromSerializedString(tmpSerialized);
 
-    assertEqualsInt('testTSerializableStringList_readValuesFromSerializedString_2', 5, tmpResult.getCount);
+    assertEqualsInt('testTSerializableStringList_readValuesFromSerializedString_2', 6, tmpResult.getCount);
     assertEqualsString('testTSerializableStringList_readValuesFromSerializedString_2', '&test&', tmpResult.get(0));
     assertEqualsString('testTSerializableStringList_readValuesFromSerializedString_2', '"test"', tmpResult.get(1));
     assertEqualsString('testTSerializableStringList_readValuesFromSerializedString_2', '', tmpResult.get(2));
     assertEqualsString('testTSerializableStringList_readValuesFromSerializedString_2', 'abc\&', tmpResult.get(3));
-    assertEqualsString('testTSerializableStringList_readValuesFromSerializedString_2', '', tmpResult.get(4));
+    assertEqualsString('testTSerializableStringList_readValuesFromSerializedString_2', '\config.sys', tmpResult.get(4));
+    assertEqualsString('testTSerializableStringList_readValuesFromSerializedString_2', '', tmpResult.get(5));
 
     tmpResult.Destroy;
   END;
@@ -634,6 +637,25 @@ Implementation
   END;
 
 
+  PROCEDURE testBoolToStr_true;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := BoolToStr(true);
+
+    assertEqualsString('testBoolToStr_true', 'True', tmpResult);
+  END;
+
+
+  PROCEDURE testBoolToStr_false;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := BoolToStr(false);
+
+    assertEqualsString('testBoolToStr_false', 'False', tmpResult);
+  END;
+
   // ----------------------------------------------------------
 
 
@@ -697,6 +719,8 @@ Implementation
     result.add(@testStrEndsWithIgnoringCase_StringMatch);
     result.add(@testStrEndsWithIgnoringCase_StringMatchCaseInSensitive);
 
+    result.add(@testBoolToStr_true);
+    result.add(@testBoolToStr_false);
   END;
 
 END.

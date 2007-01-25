@@ -55,6 +55,8 @@ uses
        FUNCTION ReadNextPart(const aParseString : String; const aSetOfDelimiterChars : TSetOfChars): String;
        FUNCTION handleParamWithValue(const aCmdLineString : String; const aSwitch : String; var aValue : String) : Boolean;
        PROCEDURE parseSwitch(aCmdLineString : String);
+       PROPERTY getFileNames : string read fileNames;
+       PROPERTY getSearchText : string read searchText;
 
      public
        PROPERTY getCommandLine : String read commandLine;
@@ -69,10 +71,9 @@ uses
        PROPERTY getWindowPosition : TWindowPosition read windowPosition;
        PROPERTY getOwnerWindow : integer read ownerWindow;
        PROPERTY getWindowTitle : string read windowTitle;
-       PROPERTY getFileNames : string read fileNames;
        PROPERTY getFileNamesRaw : string read fileNamesRaw;
-       PROPERTY getSearchText : string read searchText;
 
+       PROCEDURE writeDetailsTo(aStrings : TStrings);
        PROCEDURE parseCmdLine(aCmdLineString : String);
 
        FUNCTION getInterpretedFileNames: String;
@@ -89,6 +90,37 @@ uses
 Implementation
 uses
   ACLFileUtility;
+
+  PROCEDURE TCmdLineParameters.writeDetailsTo(aStrings : TStrings);
+  var
+    tmpWindowPosition : TWindowPosition;
+  begin
+    aStrings.Add('parsed infos:');
+
+    aStrings.Add('getShowUsageFlag: ' + boolToStr(getShowUsageFlag));
+    aStrings.Add('getSearchFlag: ' + boolToStr(getSearchFlag));
+    aStrings.Add('getSearchText: ' + getSearchText);
+    aStrings.Add('getGlobalSearchFlag: ' + boolToStr(getGlobalSearchFlag));
+    aStrings.Add('getLanguage: ' + getLanguage);
+    aStrings.Add('getHelpManagerFlag: ' + boolToStr(getHelpManagerFlag));
+    aStrings.Add('getHelpManagerFlag: ' + boolToStr(getHelpManagerFlag));
+    aStrings.Add('getHelpManagerWindow: ' + intToStr(getHelpManagerWindow));
+    aStrings.Add('getWindowPositionFlag: ' + boolToStr(getWindowPositionFlag));
+    aStrings.Add('getFileNames: ' + getFileNames);
+    aStrings.Add('getInterpretedSearchText: ' + getInterpretedSearchText);
+    aStrings.Add('getInterpretedFileNames: ' + getInterpretedFileNames);
+
+    tmpWindowPosition := getWindowPosition;
+    aStrings.Add('getWindowPosition: '
+                        + intToStr(tmpWindowPosition.left) + ', '
+                        + intToStr(tmpWindowPosition.bottom) + ', '
+                        + intToStr(tmpWindowPosition.width) + ', '
+                        + intToStr(tmpWindowPosition.height)
+                );
+    aStrings.Add('getOwnerWindow: ' + intToStr(getOwnerWindow));
+    aStrings.Add('getWindowTitle: ' + getWindowTitle);
+  end;
+
 
   FUNCTION TCmdLineParameters.getInterpretedFileNames: String;
   var
@@ -121,6 +153,15 @@ uses
        AND (result = '')
     then
       result := getFileNamesRaw;
+
+    if not getGlobalSearchFlag
+       AND (not getSearchFlag)
+    then
+    begin
+      result := StrTrim(result);
+      result := StrTrimChars(result, ['"']);
+    end;
+
   end;
 
 

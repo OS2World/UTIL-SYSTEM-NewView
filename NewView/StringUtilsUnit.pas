@@ -61,11 +61,18 @@ const
   // this is case INsensitive
   Function StrEndsWithIgnoringCase(const aString: String; const anEndString: String): Boolean;
 
+  Function BoolToStr(const aBoolean : boolean ): string;
+
 
 Implementation
 
+  uses
+    DebugUnit;
+
   constructor TSerializableStringList.Create;
   begin
+    LogEvent(LogObjConstDest, 'TSerializableStringList createdestroy');
+
     inherited Create;
     stringList := TStringList.Create;
   end;
@@ -73,7 +80,9 @@ Implementation
 
   destructor TSerializableStringList.Destroy;
   begin
-    stringList.Destroy;
+    LogEvent(LogObjConstDest, 'TSerializableStringList destroy');
+    if Nil <> stringList then stringList.Destroy;
+
     inherited Destroy;
   end;
 
@@ -111,7 +120,9 @@ Implementation
   Begin
     if (length(aSerializedString) < 1) then exit;
 
-    stringList.destroy;
+    LogEvent(LogObjConstDest, 'readValuesFromSerializedString');
+    stringList.Destroy;
+    LogEvent(LogObjConstDest, 'readValuesFromSerializedString destroy done');
     stringList := TStringList.Create;
     StrExtractStrings(stringList, aSerializedString, ['&'], '\');
   end;
@@ -274,6 +285,14 @@ Implementation
     end;
 
     result := true;
+  end;
+
+  Function BoolToStr(const aBoolean : boolean ): string;
+  begin
+    if aBoolean then
+      Result := 'True'
+    else
+      Result := 'False';
   end;
 
 END.
