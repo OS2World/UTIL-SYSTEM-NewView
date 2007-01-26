@@ -1048,10 +1048,13 @@ begin
          or StrStarts( 'explore', ProgramFilename ) // web explorer?
          or StrStarts( 'mozilla', ProgramFilename )
          then
+      begin
         OutputString := '<blue><link url '
                         + FullDoubleQuote( ProgramLink )
-                        + '>'
+                        + '>';
+      end
       else
+      begin
         ProgramInfo := TSerializableStringList.create;
         ProgramInfo.add(ProgramPath);
         ProgramInfo.add(ProgramLink);
@@ -1059,6 +1062,7 @@ begin
                         + ProgramInfo.getSerializedString
                         + '>';
         ProgramInfo.destroy;
+      end;
     end;
 
     ecLinkEnd:
