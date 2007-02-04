@@ -58,6 +58,29 @@ Implementation
   END;
 
 
+  PROCEDURE testParseCmdLine_QuotedQuestionMark;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '"-?"';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertTrue('testParseCmdLine_QuestionMark', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_QuestionMark', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_QuestionMark', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_QuestionMark', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuestionMark', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_QuestionMark', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_QuestionMark', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_QuestionMark', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_QuestionMark', 'C:\ecs\help\NewView.hlp', tmpCmdLineParameters.getInterpretedFileNames);
+    assertEqualsString('testParseCmdLine_QuestionMark', '', tmpCmdLineParameters.getFileNamesRaw);
+    assertEqualsString('testParseCmdLine_QuestionMark', '', tmpCmdLineParameters.getInterpretedSearchText);
+  END;
+
+
   PROCEDURE testParseCmdLine_lowerH;
   VAR
     tmpCmdLineString : String;
@@ -1084,10 +1107,10 @@ Implementation
 
     assertTrue('testParseCmdLine_WindowPosPercentage', tmpCmdLineParameters.getWindowPositionFlag);
     tmpWindowPosition := tmpCmdLineParameters.getWindowPosition;
-    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 1280, tmpWindowPosition.left);
-    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 1024, tmpWindowPosition.bottom);
-    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 640, tmpWindowPosition.width);
-    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 512, tmpWindowPosition.height);
+    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 1600, tmpWindowPosition.left);
+    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 1200, tmpWindowPosition.bottom);
+    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 800, tmpWindowPosition.width);
+    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 600, tmpWindowPosition.height);
   END;
 
 
@@ -1351,6 +1374,7 @@ Implementation
     result.add(@testParseCmdLine_Empty);
 
     result.add(@testParseCmdLine_QuestionMark);
+    result.add(@testParseCmdLine_QuotedQuestionMark);
     result.add(@testParseCmdLine_lowerH);
     result.add(@testParseCmdLine_upperH);
     result.add(@testParseCmdLine_lowerHelp);
