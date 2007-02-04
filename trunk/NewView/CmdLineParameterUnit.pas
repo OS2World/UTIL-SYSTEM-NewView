@@ -50,11 +50,9 @@ uses
        fileNamesRaw : string;
        searchText : string;
 
-       currentParsePosition : integer;
-
-       FUNCTION ReadNextPart(const aParseString : String; const aSetOfDelimiterChars : TSetOfChars): String;
-       FUNCTION handleParamWithValue(const aCmdLineString : String; const aSwitch : String; var aValue : String) : Boolean;
-       PROCEDURE parseSwitch(aCmdLineString : String);
+//       FUNCTION ReadNextPart(const aParseString : String; const aSetOfDelimiterChars : TSetOfChars): String;
+       FUNCTION handleSwitchWithValue(const aSwitchString : String; const aSwitch : String; var aValue : String) : Boolean;
+       PROCEDURE parseSwitch(aSwitchString : String);
        PROPERTY getFileNames : string read fileNames;
        PROPERTY getSearchText : string read searchText;
 
@@ -95,6 +93,7 @@ uses
   var
     tmpWindowPosition : TWindowPosition;
   begin
+    aStrings.Add('''' + getCommandLine + '''');
     aStrings.Add('parsed infos:');
 
     aStrings.Add('getShowUsageFlag: ' + boolToStr(getShowUsageFlag));
@@ -122,7 +121,7 @@ uses
   end;
 
 
-  FUNCTION TCmdLineParameters.getInterpretedFileNames: String;
+  Function TCmdLineParameters.getInterpretedFileNames: String;
   var
     tmpOwnHelpFileName : String;
   begin
@@ -145,7 +144,7 @@ uses
   end;
 
 
-  FUNCTION TCmdLineParameters.getInterpretedSearchText: String;
+  Function TCmdLineParameters.getInterpretedSearchText: String;
   begin
     result := getSearchText;
 
@@ -165,17 +164,22 @@ uses
   end;
 
 
-  FUNCTION TCmdLineParameters.setHelpManagerFlag(aNewValue : boolean) : boolean;
+  Function TCmdLineParameters.setHelpManagerFlag(aNewValue : boolean) : boolean;
   begin
        helpManagerFlag := aNewValue;
        result := helpManagerFlag;
   end;
 
 
-  procedure TCmdLineParameters.parseCmdLine(aCmdLineString : String);
+  Procedure TCmdLineParameters.parseCmdLine(aCmdLineString : String);
   var
-    tmpState : (SWITCH, FILENAME, FILENAME_QUOTE, TEXT);
+    tmpState : (WHITESPACE, QUOTE, SWITCH, FILENAME, TEXT);
+    tmpCurrentParsePosition : integer;
+    tmpQuoted : boolean;
     tmpCurrentChar : char;
+    tmpWhitespace : String;
+    tmpQuote : String;
+    tmpSwitch : String;
   begin
      LogEvent(LogStartup, 'ParseCommandLine: "' + aCmdLineString + '"');
 
@@ -198,136 +202,203 @@ uses
 
      try
        // start parsing
-       tmpState := FILENAME;
-       currentParsePosition := 1;
-       while currentParsePosition <= length(aCmdLineString) do
+       tmpState := WHITESPACE;
+       tmpWhitespace := '';
+       tmpSwitch := '';
+       tmpQuote := '';
+       tmpQuoted := false;
+       tmpCurrentParsePosition := 1;
+       while tmpCurrentParsePosition <= length(aCmdLineString) do
        begin
-         tmpCurrentChar := aCmdLineString[currentParsePosition];
+         tmpCurrentChar := aCmdLineString[tmpCurrentParsePosition];
 
          Case tmpCurrentChar of
            ' ' :
-             begin
-               Case tmpState of
-                 SWITCH :
+           begin
+             Case tmpState of
+
+               WHITESPACE :
+               begin
+                 tmpWhitespace := tmpWhitespace + tmpCurrentChar;
+               end;
+
+               QUOTE :
+               begin
+                 tmpQuote := tmpQuote + tmpCurrentChar;
+               end;
+
+               SWITCH :
+               begin
+                 if tmpQuoted then
                  begin
-                   tmpState := FILENAME;
-                   inc(currentParsePosition);
-                 end;
-                 FILENAME :
+                   tmpSwitch := tmpSwitch + tmpCurrentChar;
+                 end
+                 else
                  begin
-                   if length(fileNames) > 0 then
-                   begin
-                     tmpState := TEXT;
-                   end;
-                   inc(currentParsePosition);
-                 end;
-                 FILENAME_QUOTE :
+                   parseSwitch(tmpSwitch);
+                   tmpState := WHITESPACE;
+                   tmpWhitespace := tmpCurrentChar;
+                 end
+               end;
+
+               FILENAME :
+               begin
+                 if tmpQuoted then
                  begin
                    fileNames := fileNames + tmpCurrentChar;
                    fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                   inc(currentParsePosition);
-                 end;
-                 TEXT :
+                 end
+                 else
+                 begin
+                   tmpState := WHITESPACE;
+                   tmpWhitespace := tmpCurrentChar;
+                 end
+               end;
+
+               TEXT :
+               begin
+                 if tmpQuoted then
                  begin
                    searchText := searchText + tmpCurrentChar;
-                   inc(currentParsePosition);
-                 end;
+                 end
+                 else
+                 begin
+                   tmpState := WHITESPACE;
+                   tmpWhitespace := tmpCurrentChar;
+                 end
                end;
              end;
+           end;
 
            '/', '-' :
-             begin
-               Case tmpState of
-                 SWITCH :
-                 begin
-                   tmpState := SWITCH;
-                   parseSwitch(aCmdLineString);
-                 end;
-                 FILENAME :
-                 begin
-                   if length(fileNames) < 1 then
-                   begin
-                     tmpState := SWITCH;
-                     parseSwitch(aCmdLineString);
-                   end
-                   else
-                   begin
-                     fileNames := fileNames + tmpCurrentChar;
-                     fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                     inc(currentParsePosition);
-                   end;
-                 end;
-                 FILENAME_QUOTE :
-                 begin
-                   fileNames := fileNames + tmpCurrentChar;
-                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                   inc(currentParsePosition);
-                 end;
-               else
-                 begin
-                   searchText := searchText + tmpCurrentChar;
-                   inc(currentParsePosition);
-                 end;
+           begin
+             Case tmpState of
+               WHITESPACE :
+               begin
+                 tmpState := SWITCH;
+                 tmpSwitch := '';
                end;
-             end;
 
-           '"' :
-             begin
-               Case tmpState of
-                 SWITCH :
-                 begin
-                   // syntax error
-                   raise EParsingFailed.Create('Unsupported switch');
-                 end;
-                 FILENAME :
-                 begin
-                   tmpState := FILENAME_QUOTE;
-                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                   inc(currentParsePosition);
-                 end;
-                 FILENAME_QUOTE :
-                 begin
-                   tmpState := FILENAME;
-                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                   inc(currentParsePosition);
-                 end;
-                 TEXT :
-                 begin
-                   searchText := searchText + tmpCurrentChar;
-                   inc(currentParsePosition);
-                 end;
+               QUOTE :
+               begin
+                 tmpState := SWITCH;
+                 tmpSwitch := '';
                end;
-             end;
 
-           else
-             begin
-               Case tmpState of
-                 SWITCH :
-                 begin
-                   // syntax error
-                   raise EParsingFailed.Create('Unsupported switch');
-                 end;
-                 FILENAME :
-                 begin
-                   fileNames := fileNames + tmpCurrentChar;
-                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                   inc(currentParsePosition);
-                 end;
-                 FILENAME_QUOTE :
-                 begin
-                   fileNames := fileNames + tmpCurrentChar;
-                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                   inc(currentParsePosition);
-                 end;
-               else
+               SWITCH :
+               begin
+                 parseSwitch(tmpSwitch);
+                 tmpSwitch := '';
+               end;
+
+               FILENAME :
+               begin
+                 fileNames := fileNames + tmpCurrentChar;
+                 fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+               end;
+
+               TEXT :
                begin
                  searchText := searchText + tmpCurrentChar;
-                 inc(currentParsePosition);
+               end;
+             end;
+           end;
+
+           '"' :
+           begin
+             if tmpQuoted then
+             begin
+               tmpQuoted := false;
+               Case tmpState of
+                 FILENAME :
+                 begin
+                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                 end;
+               end;
+             end
+             else
+             begin
+               Case tmpState of
+                 WHITESPACE :
+                 begin
+                   tmpState := QUOTE;
+                   tmpQuote := tmpCurrentChar;
+                 end;
+                 FILENAME :
+                 begin
+                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                 end;
+               end;
+               tmpQuoted := true;
+             end;
+           end;
+
+           // any other char
+           else
+           begin
+             Case tmpState of
+
+               WHITESPACE :
+               begin
+                 if length(fileNames) > 0 then
+                 begin
+                   tmpState := TEXT;
+                   searchText := searchText + tmpWhitespace + tmpCurrentChar;
+                 end
+                 else
+                 begin
+                   tmpState := FILENAME;
+                   fileNames := fileNames + tmpCurrentChar;
+                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                 end;
+               end;
+
+               QUOTE :
+               begin
+                 if length(fileNames) > 0 then
+                 begin
+                   tmpState := TEXT;
+                   searchText := searchText + tmpWhitespace + tmpCurrentChar;
+                 end
+                 else
+                 begin
+                   tmpState := FILENAME;
+                   fileNames := fileNames + tmpCurrentChar;
+                   fileNamesRaw := fileNamesRaw + tmpQuote + tmpCurrentChar;
+                 end;
+               end;
+
+               SWITCH :
+               begin
+                 tmpSwitch := tmpSwitch + tmpCurrentChar;
+               end;
+
+               FILENAME :
+               begin
+                 fileNames := fileNames + tmpCurrentChar;
+                 fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+               end;
+
+               TEXT :
+               begin
+                 searchText := searchText + tmpCurrentChar;
                end;
              end;
            end;
         end;
+        inc(tmpCurrentParsePosition);
       end;
+
+      // ok all chars are processed, but maybe we have something to do
+      Case tmpState of
+        SWITCH :
+        begin
+          parseSwitch(tmpSwitch);
+        end;
+     end;
+
+
+     // TODO remove interpreted
 
     except
         on e:EParsingFailed do
@@ -345,6 +416,7 @@ uses
   end;
 
 
+{
   FUNCTION TCmdLineParameters.ReadNextPart(const aParseString : String; const aSetOfDelimiterChars : TSetOfChars): String;
   VAR
     i : integer;
@@ -364,28 +436,29 @@ uses
       end;
     end;
   END;
+}
 
 
-
-  Function TCmdLineParameters.handleParamWithValue(const aCmdLineString : String; const aSwitch : String; var aValue : String) : Boolean;
+  Function TCmdLineParameters.handleSwitchWithValue(const aSwitchString : String; const aSwitch : String; var aValue : String) : Boolean;
   var
     tmpText : String;
+    tmpValueStartPos : integer;
     tmpSwitchLength : integer;
   begin
     tmpSwitchLength := Length(aSwitch);
-    tmpText := copy(aCmdLineString, currentParsePosition + 1, tmpSwitchLength);
+    tmpText := copy(aSwitchString, 1, tmpSwitchLength);
     tmpText := lowercase(tmpText);
 
     if (lowercase(aSwitch) = tmpText) then
     begin
-      currentParsePosition := currentParsePosition + 1 + tmpSwitchLength;
-      if aCmdLineString[currentParsePosition] = ':' then
+      tmpValueStartPos := tmpSwitchLength;
+      inc(tmpValueStartPos);
+      if aSwitchString[tmpValueStartPos] = ':' then
       begin
-        inc(currentParsePosition);
+        inc(tmpValueStartPos);
       end;
 
-      aValue := readNextPart(aCmdLineString, [' ', '-', '/']);
-      currentParsePosition := currentParsePosition + length(aValue);
+      aValue := copy(aSwitchString, tmpValueStartPos, Length(aSwitchString) - tmpValueStartPos+ 1);
       result := true;
       exit;
     end;
@@ -441,28 +514,28 @@ uses
   end;
 
 
-  Procedure TCmdLineParameters.parseSwitch(aCmdLineString : String);
+  Procedure TCmdLineParameters.parseSwitch(aSwitchString : String);
   var
     tmpCurrentChar : char;
     tmpText : String;
     tmpValue : String;
   begin
     // lang
-    if handleParamWithValue(aCmdLineString, 'lang', tmpValue) then
+    if handleSwitchWithValue(aSwitchString, 'lang', tmpValue) then
     begin
       language := tmpValue;
       exit;
     end;
 
     // title
-    if handleParamWithValue(aCmdLineString, 'title', tmpValue) then
+    if handleSwitchWithValue(aSwitchString, 'title', tmpValue) then
     begin
       windowTitle := tmpValue;
       exit;
     end;
 
     // HM
-    if handleParamWithValue(aCmdLineString, 'hm', tmpValue) then
+    if handleSwitchWithValue(aSwitchString, 'hm', tmpValue) then
     begin
       try
         helpManagerWindow := StrToInt(tmpValue);
@@ -477,7 +550,7 @@ uses
     end;
 
     // owner
-    if handleParamWithValue(aCmdLineString, 'owner', tmpValue) then
+    if handleSwitchWithValue(aSwitchString, 'owner', tmpValue) then
     begin
       try
         ownerWindow := StrToInt(tmpValue);
@@ -491,7 +564,7 @@ uses
     end;
 
     // pos
-    if handleParamWithValue(aCmdLineString, 'pos', tmpValue) then
+    if handleSwitchWithValue(aSwitchString, 'pos', tmpValue) then
     begin
       windowPosition := ParseWindowPosition(tmpValue);
       windowPositionFlag := true;
@@ -499,32 +572,29 @@ uses
     end;
 
     // check the next char
-    tmpCurrentChar := aCmdLineString[currentParsePosition + 1];
+    // TODO check for other invalid chars
+    tmpCurrentChar := aSwitchString[1];
     Case tmpCurrentChar of
       'h', 'H', '?' :
         begin
-          currentParsePosition := currentParsePosition + 2;
           showUsageFlag := true;
 
           // check for 'help'
-          tmpText := copy(aCmdLineString, currentParsePosition, 3);
-          tmpText := lowercase(tmpText);
+//          tmpText := copy(aCmdLineString, 2, 3);
+//          tmpText := lowercase(tmpText);
 
-          if ('elp' = tmpText) then
-          begin
-            currentParsePosition := currentParsePosition + 3;
-          end;
+//          if ('elp' = tmpText) then
+//          begin
+//          end;
         end;
 
       's', 'S' :
         begin
-          currentParsePosition := currentParsePosition + 2;
           searchFlag := true;
         end;
 
       'g', 'G' :
         begin
-          currentParsePosition := currentParsePosition + 2;
           globalSearchFlag := true;
         end;
 
