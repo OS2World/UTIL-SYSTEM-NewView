@@ -41,7 +41,7 @@ uses
        globalSearchFlag : boolean;
        language : string;
        helpManagerFlag : boolean;
-       helpManagerWindow : integer;
+       helpManagerWindow : HWND;
        windowPositionFlag: boolean;
        windowPosition: TWindowPosition;
        ownerWindow : integer;
@@ -64,7 +64,7 @@ uses
        PROPERTY getLanguage : string read language;
        PROPERTY getHelpManagerFlag : boolean read helpManagerFlag;
        FUNCTION setHelpManagerFlag(aNewValue : boolean) : boolean;
-       PROPERTY getHelpManagerWindow : integer read helpManagerWindow;
+       PROPERTY getHelpManagerWindow : HWND read helpManagerWindow;
        PROPERTY getWindowPositionFlag : boolean read windowPositionFlag;
        PROPERTY getWindowPosition : TWindowPosition read windowPosition;
        PROPERTY getOwnerWindow : integer read ownerWindow;
@@ -102,8 +102,7 @@ uses
     aStrings.Add('getGlobalSearchFlag: ' + boolToStr(getGlobalSearchFlag));
     aStrings.Add('getLanguage: ' + getLanguage);
     aStrings.Add('getHelpManagerFlag: ' + boolToStr(getHelpManagerFlag));
-    aStrings.Add('getHelpManagerFlag: ' + boolToStr(getHelpManagerFlag));
-    aStrings.Add('getHelpManagerWindow: ' + intToStr(getHelpManagerWindow));
+    aStrings.Add('getHelpManagerWindow: ' + LongWordToStr(getHelpManagerWindow));
     aStrings.Add('getWindowPositionFlag: ' + boolToStr(getWindowPositionFlag));
     aStrings.Add('getFileNames: ' + getFileNames);
     aStrings.Add('getInterpretedSearchText: ' + getInterpretedSearchText);
