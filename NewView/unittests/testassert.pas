@@ -9,6 +9,7 @@ uses
 
   PROCEDURE assertEqualsString(aTestDescription : String; anExpectedValue : String; aRealValue : String);
   PROCEDURE assertEqualsInt(aTestDescription : String; anExpectedValue : INTEGER; aRealValue : INTEGER);
+  PROCEDURE assertEqualsLongWord(aTestDescription : String; anExpectedValue : LongWord; aRealValue : LongWord);
   PROCEDURE assertTrue(aTestDescription : String; aRealValue : Boolean);
   PROCEDURE assertFalse(aTestDescription : String; aRealValue : Boolean);
 
@@ -32,6 +33,25 @@ Implementation
 
 
   PROCEDURE assertEqualsInt(aTestDescription : String; anExpectedValue : INTEGER; aRealValue : INTEGER);
+  VAR
+    tmpMessage : String;
+    tmpIntString : String;
+  BEGIN
+    if (aRealValue <> anExpectedValue) then
+    begin
+      tmpMessage := 'Failed: ' + aTestDescription + ' Expected: ''';
+      Str(anExpectedValue, tmpIntString);
+      tmpMessage := tmpMessage + tmpIntString;
+      tmpMessage := tmpMessage + ''' but it was: ''';
+      Str(aRealValue, tmpIntString);
+      tmpMessage := tmpMessage + tmpIntString;
+      tmpMessage := tmpMessage + '''';
+      raise EAssertFailed.Create(tmpMessage);
+    end;
+  END;
+
+
+  PROCEDURE assertEqualsLongWord(aTestDescription : String; anExpectedValue : LongWord; aRealValue : LongWord);
   VAR
     tmpMessage : String;
     tmpIntString : String;

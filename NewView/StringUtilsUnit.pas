@@ -61,6 +61,11 @@ const
   // this is case INsensitive
   Function StrEndsWithIgnoringCase(const aString: String; const anEndString: String): Boolean;
 
+  // the IntToStr generates wrong results
+  // in normal cases IntToStr returns a negative value
+  // and somtimes completly wrong values
+  Function LongWordToStr(const aLongWord: LongWord) : String;
+
   Function BoolToStr(const aBoolean : boolean ): string;
 
 
@@ -286,6 +291,41 @@ Implementation
 
     result := true;
   end;
+
+  Function LongWordToStr(const aLongWord: LongWord) : String;
+  Var
+    l : LongWord;
+    i : Integer;
+  Begin
+    Result := '';
+    l := aLongWord;
+
+    if l = 0 then
+    begin
+      result := '0';
+      exit;
+    end;
+
+    while l > 0 do
+    begin
+      i := l mod 10;
+      l := l div 10;
+      Case i of
+           0 : result := '0' + result;
+           1 : result := '1' + result;
+           2 : result := '2' + result;
+           3 : result := '3' + result;
+           4 : result := '4' + result;
+           5 : result := '5' + result;
+           6 : result := '6' + result;
+           7 : result := '7' + result;
+           8 : result := '8' + result;
+           9 : result := '9' + result;
+      end;
+    end;
+
+  end;
+
 
   Function BoolToStr(const aBoolean : boolean ): string;
   begin

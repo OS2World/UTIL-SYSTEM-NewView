@@ -637,6 +637,36 @@ Implementation
   END;
 
 
+  PROCEDURE testLongWordToStr_Zero;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := LongWordToStr(0);
+
+    assertEqualsString('testLongWordToStr_Zero', '0', tmpResult);
+  END;
+
+
+  PROCEDURE testLongWordToStr_Four;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := LongWordToStr(4);
+
+    assertEqualsString('testLongWordToStr_Four', '4', tmpResult);
+  END;
+
+  PROCEDURE testLongWordToStr_Max;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := LongWordToStr(4294967295);
+
+    assertEqualsString('testLongWordToStr_Max', '4294967295', tmpResult);
+  END;
+
+
+
   PROCEDURE testBoolToStr_true;
   VAR
     tmpResult : String;
@@ -718,6 +748,10 @@ Implementation
     result.add(@testStrEndsWithIgnoringCase_StringEqualLengthMatch);
     result.add(@testStrEndsWithIgnoringCase_StringMatch);
     result.add(@testStrEndsWithIgnoringCase_StringMatchCaseInSensitive);
+
+    result.add(@testLongWordToStr_Zero);
+    result.add(@testLongWordToStr_Four);
+    result.add(@testLongWordToStr_Max);
 
     result.add(@testBoolToStr_true);
     result.add(@testBoolToStr_false);
