@@ -312,6 +312,29 @@ Implementation
   END;
 
 
+  PROCEDURE testParseCmdLine_QuotedS;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '"-S" FilE seArch';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_QuotedS', tmpCmdLineParameters.getShowUsageFlag);
+    assertTrue('testParseCmdLine_QuotedS', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_QuotedS', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_QuotedS', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedS', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_QuotedS', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_QuotedS', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_QuotedS', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_QuotedS', 'FilE', tmpCmdLineParameters.getInterpretedFileNames);
+    assertEqualsString('testParseCmdLine_QuotedS', 'FilE', tmpCmdLineParameters.getFileNamesRaw);
+    assertEqualsString('testParseCmdLine_QuotedS', 'seArch', tmpCmdLineParameters.getInterpretedSearchText);
+  END;
+
+
   PROCEDURE testParseCmdLine_emptyS;
   VAR
     tmpCmdLineString : String;
@@ -497,6 +520,29 @@ Implementation
   END;
 
 
+  PROCEDURE testParseCmdLine_QuotedG;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '-G';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_QuotedG', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_QuotedG', tmpCmdLineParameters.getSearchFlag);
+    assertTrue('testParseCmdLine_QuotedG', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_QuotedG', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedG', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_QuotedG', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_QuotedG', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_QuotedG', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_QuotedG', '', tmpCmdLineParameters.getInterpretedFileNames);
+    assertEqualsString('testParseCmdLine_QuotedG', '', tmpCmdLineParameters.getFileNamesRaw);
+    assertEqualsString('testParseCmdLine_QuotedG', '', tmpCmdLineParameters.getInterpretedSearchText);
+  END;
+
+
   PROCEDURE testParseCmdLine_emptyG;
   VAR
     tmpCmdLineString : String;
@@ -658,6 +704,52 @@ Implementation
   END;
 
 
+  PROCEDURE testParseCmdLine_QuotedLanguage;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '"-lang:DE" filE';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_QuotedLanguage', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_QuotedLanguage', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_QuotedLanguage', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_QuotedLanguage', 'DE', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedLanguage', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_QuotedLanguage', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_QuotedLanguage', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_QuotedLanguage', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_QuotedLanguage', 'filE', tmpCmdLineParameters.getInterpretedFileNames);
+    assertEqualsString('testParseCmdLine_QuotedLanguage', 'filE', tmpCmdLineParameters.getFileNamesRaw);
+    assertEqualsString('testParseCmdLine_QuotedLanguage', '', tmpCmdLineParameters.getInterpretedSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_QuotedLanguage2;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '-lang:"DE" filE';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_QuotedLanguage2', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_QuotedLanguage2', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_QuotedLanguage2', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_QuotedLanguage2', 'DE', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedLanguage2', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_QuotedLanguage2', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_QuotedLanguage2', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_QuotedLanguage2', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_QuotedLanguage2', 'filE', tmpCmdLineParameters.getInterpretedFileNames);
+    assertEqualsString('testParseCmdLine_QuotedLanguage2', 'filE', tmpCmdLineParameters.getFileNamesRaw);
+    assertEqualsString('testParseCmdLine_QuotedLanguage2', '', tmpCmdLineParameters.getInterpretedSearchText);
+  END;
+
+
   PROCEDURE testParseCmdLine_Language_between;
   VAR
     tmpCmdLineString : String;
@@ -724,6 +816,29 @@ Implementation
     assertEqualsString('testParseCmdLine_HelpManagerNumber', 'C:\ecs\help\NewView.hlp', tmpCmdLineParameters.getInterpretedFileNames);
     assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getInterpretedSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_HelpManagerBigNumber;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '-Hm:2147484546';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_HelpManagerBigNumber', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_HelpManagerBigNumber', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_HelpManagerBigNumber', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_HelpManagerBigNumber', '', tmpCmdLineParameters.getLanguage);
+    assertTrue('testParseCmdLine_HelpManagerBigNumber', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_HelpManagerBigNumber', 2147484546, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_HelpManagerBigNumber', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_HelpManagerBigNumber', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_HelpManagerBigNumber', 'C:\ecs\help\NewView.hlp', tmpCmdLineParameters.getInterpretedFileNames);
+    assertEqualsString('testParseCmdLine_HelpManagerBigNumber', '', tmpCmdLineParameters.getFileNamesRaw);
+    assertEqualsString('testParseCmdLine_HelpManagerBigNumber', '', tmpCmdLineParameters.getInterpretedSearchText);
   END;
 
 
@@ -1000,6 +1115,75 @@ Implementation
     assertEqualsString('testParseCmdLine_Title_Empty', 'C:\ecs\help\NewView.hlp', tmpCmdLineParameters.getInterpretedFileNames);
     assertEqualsString('testParseCmdLine_Title_Empty', '', tmpCmdLineParameters.getFileNamesRaw);
     assertEqualsString('testParseCmdLine_Title_Empty', '', tmpCmdLineParameters.getInterpretedSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_QuotedTitle;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '"-Title:Test Title"';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_QuotedTitle', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_QuotedTitle', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_QuotedTitle', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_QuotedTitle', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedTitle', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_QuotedTitle', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_QuotedTitle', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_QuotedTitle', 'Test Title', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_QuotedTitle', 'C:\ecs\help\NewView.hlp', tmpCmdLineParameters.getInterpretedFileNames);
+    assertEqualsString('testParseCmdLine_QuotedTitle', '', tmpCmdLineParameters.getFileNamesRaw);
+    assertEqualsString('testParseCmdLine_QuotedTitle', '', tmpCmdLineParameters.getInterpretedSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_QuotedTitle2;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '-Title:"Test Title"';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_QuotedTitle2', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_QuotedTitle2', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_QuotedTitle2', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_QuotedTitle2', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedTitle2', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_QuotedTitle2', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_QuotedTitle2', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_QuotedTitle2', 'Test Title', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_QuotedTitle2', 'C:\ecs\help\NewView.hlp', tmpCmdLineParameters.getInterpretedFileNames);
+    assertEqualsString('testParseCmdLine_QuotedTitle2', '', tmpCmdLineParameters.getFileNamesRaw);
+    assertEqualsString('testParseCmdLine_QuotedTitle2', '', tmpCmdLineParameters.getInterpretedSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_QuotedTitle_AfterFile;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := 'cmdref "-Title:Test Title"';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_QuotedTitle_AfterFile', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_QuotedTitle_AfterFile', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_QuotedTitle_AfterFile', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_QuotedTitle_AfterFile', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedTitle_AfterFile', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_QuotedTitle_AfterFile', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_QuotedTitle_AfterFile', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_QuotedTitle_AfterFile', 'Test Title', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_QuotedTitle_AfterFile', 'cmdref', tmpCmdLineParameters.getInterpretedFileNames);
+    assertEqualsString('testParseCmdLine_QuotedTitle_AfterFile', 'cmdref', tmpCmdLineParameters.getFileNamesRaw);
+    assertEqualsString('testParseCmdLine_QuotedTitle_AfterFile', '', tmpCmdLineParameters.getInterpretedSearchText);
   END;
 
 
@@ -1386,6 +1570,7 @@ Implementation
     result.add(@testParseCmdLine_lowerS);
     result.add(@testParseCmdLine_upperS);
     result.add(@testParseCmdLine_upperS_withBlank);
+    result.add(@testParseCmdLine_QuotedS);
     result.add(@testParseCmdLine_emptyS);
 
     result.add(@testParseCmdLine_s_between);
@@ -1396,6 +1581,7 @@ Implementation
 
     result.add(@testParseCmdLine_lowerG);
     result.add(@testParseCmdLine_upperG);
+    result.add(@testParseCmdLine_QuotedG);
     result.add(@testParseCmdLine_emptyG);
     result.add(@testParseCmdLine_g_between);
     result.add(@testParseCmdLine_g_between_withSpace);
@@ -1405,10 +1591,13 @@ Implementation
     result.add(@testParseCmdLine_Language_Empty);
     result.add(@testParseCmdLine_Language_Empty_WithColon);
     result.add(@testParseCmdLine_Language_WithFile);
+    result.add(@testParseCmdLine_QuotedLanguage);
+    result.add(@testParseCmdLine_QuotedLanguage2);
     result.add(@testParseCmdLine_Language_between);
     result.add(@testParseCmdLine_Language_between_withSpace);
 
     result.add(@testParseCmdLine_HelpManagerNumber);
+    result.add(@testParseCmdLine_HelpManagerBigNumber);
     result.add(@testParseCmdLine_HelpManagerNumber_WithoutColon);
     result.add(@testParseCmdLine_HelpManagerNumber_Invalid);
     result.add(@testParseCmdLine_HelpManagerNumber_between);
@@ -1424,6 +1613,9 @@ Implementation
     result.add(@testParseCmdLine_Title);
     result.add(@testParseCmdLine_Title_WithoutColon);
     result.add(@testParseCmdLine_Title_Empty);
+    result.add(@testParseCmdLine_QuotedTitle);
+    result.add(@testParseCmdLine_QuotedTitle2);
+    result.add(@testParseCmdLine_QuotedTitle_AfterFile);
     result.add(@testParseCmdLine_Title_between);
     result.add(@testParseCmdLine_Title_between_withSpace);
 
