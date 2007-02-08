@@ -4210,7 +4210,7 @@ begin
        and (CmdLineParameters.getInterpretedSearchText <> '') then
     begin
       // search in contents only!
-      LogEvent(LogStartup, 'Do startup topic search');
+      LogEvent(LogStartup, 'Do startup topic search for: "' + CmdLineParameters.getInterpretedSearchText + '"');
 
       StartupTopicSearch( CmdLineParameters.getInterpretedSearchText );
     end
