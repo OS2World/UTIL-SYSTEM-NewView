@@ -175,8 +175,8 @@ Type
 
     property Title: string read GetTitle write SetTitle;
     property TitlePtr: pstring read GetTitlePtr;
-    procedure SetTitleFromMem( const p: pointer; const Len: byte );
 
+    procedure SetTitleFromMem( const p: pointer; const Len: byte );
     // Main function for retrieving text for topic.
     // HighlightSequences: list of sequences to highlight
     // if nil then ignored.
@@ -221,8 +221,6 @@ Type
 
     procedure SaveToIPF( Var f: TextFile;
                          ImageOffsets: TList );
-
-  public
 
     Links: TList; // only valid after GetText
 
