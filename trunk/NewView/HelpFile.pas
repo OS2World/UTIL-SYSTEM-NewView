@@ -699,35 +699,65 @@ end;
 function THelpFile.FindTopicByTitleStartsWith( const SearchText: string ): TTopic;
 var
   i: longint;
-  Topic: TTopic;
+  tmpTopic: TTopic;
+  tmpLevel : integer;
+  tmpMore : boolean;
 begin
   result := nil;
-  for i := 0 to _Topics.Count - 1 do
-  begin
-    Topic := _Topics[ i ];
-    if StrStarts( SearchText, Topic.TitlePtr ^ ) then
+
+  tmpLevel := 0;
+  repeat
+    tmpMore := false;
+    inc(tmpLevel);
+    for i := 0 to _Topics.Count - 1 do
     begin
-      result := Topic;
-      exit;
+      tmpTopic := _Topics[i];
+      if tmpLevel = tmpTopic.ContentsLevel then
+      begin
+        if StrStarts( SearchText, tmpTopic.TitlePtr ^ ) then
+        begin
+          result := tmpTopic;
+          exit;
+        end;
+      end;
+      if tmpLevel < tmpTopic.ContentsLevel then
+      begin
+        tmpMore := True;
+      end;
     end;
-  end;
+  until NOT tmpMore;
 end;
 
 function THelpFile.FindTopicByTitleContains( const SearchText: string ): TTopic;
 var
   i: longint;
-  Topic: TTopic;
+  tmpTopic: TTopic;
+  tmpLevel : integer;
+  tmpMore : boolean;
 begin
   result := nil;
-  for i := 0 to _Topics.Count - 1 do
-  begin
-    Topic := _Topics[ i ];
-    if CaseInsensitivePos( SearchText, Topic.TitlePtr ^ ) > 0 then
+
+  tmpLevel := 0;
+  repeat
+    tmpMore := false;
+    inc(tmpLevel);
+    for i := 0 to _Topics.Count - 1 do
     begin
-      result := Topic;
-      exit;
+      tmpTopic := _Topics[i];
+      if tmpLevel = tmpTopic.ContentsLevel then
+      begin
+        if CaseInsensitivePos( SearchText, tmpTopic.TitlePtr ^ ) > 0 then
+        begin
+          result := tmpTopic;
+          exit;
+        end;
+      end;
+      if tmpLevel < tmpTopic.ContentsLevel then
+      begin
+        tmpMore := True;
+      end;
     end;
-  end;
+  until NOT tmpMore;
 end;
 
 procedure THelpFile.FindResourceIDsForTopic( Topic: TTopic;
