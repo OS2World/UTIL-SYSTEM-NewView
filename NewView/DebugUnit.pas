@@ -25,7 +25,17 @@ end;
 
   // -- Logging --
   Type
-    LogAspect = (LogStartup, LogShutdown, LogSettings, LogParse, LogDisplay, LogSearch, LogViewStub, LogObjConstDest);
+    LogAspect = (       LogStartup,
+                        LogShutdown,
+                        LogSettings,
+                        LogParse,
+                        LogDisplay,
+                        LogSearch,
+                        LogNHM,
+                        LogViewStub,
+                        LogObjConstDest,
+                        LogDebug
+    );
     LogAspects = SET OF LogAspect;
 
   Procedure LogEvent(const aLogAspect: LogAspect; const anEventDescription: String);
@@ -45,14 +55,16 @@ end;
 
 const
   activeLogAspects : LogAspects = [
-                                        LogStartup,
+//                                        LogStartup,
 //                                        LogShutdown,
 //                                        LogSettings,
 //                                        LogParse,
 //                                        LogDisplay,
 //                                        LogSearch,
-                                        LogViewStub,
-                                        LogObjConstDest
+                                          LogNHM,
+//                                        LogViewStub,
+//                                        LogObjConstDest,
+                                          LogDebug
                                   ];
 
 var
@@ -70,8 +82,10 @@ Implementation
       LogParse        :  result := 'Parse';
       LogDisplay      :  result := 'Display';
       LogSearch       :  result := 'Search';
+      LogNHM          :  result := 'NewHelpManager';
       LogViewStub     :  result := 'ViewStub';
       LogObjConstDest :  result := 'ObjConstDest';
+      LogDebug        :  result := 'Debug';
       else               result := 'Unknown';
       end;
   End;
