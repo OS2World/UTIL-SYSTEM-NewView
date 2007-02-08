@@ -1759,15 +1759,18 @@ function TMainForm.DisplayTopicByResourceID( ID: uint16 ): boolean;
 var
   Topic: TTopic;
 begin
+  LogEvent(LogDebug, 'DisplayTopicByResourceID id:' + IntToStr(ID));
   Topic := FindTopicByResourceID( ID );
   if Topic = nil then
   begin
+    LogEvent(LogDebug, 'DisplayTopicByResourceID - topic not found');
     Result := false;
     exit;
   end;
 
   result := true;
 
+  LogEvent(LogDebug, 'DisplayTopicByResourceID topic: "' + Topic.Title + '"');
   DisplayTopic( Topic );
 end;
 
@@ -2261,8 +2264,6 @@ Begin
 End;
 
 Procedure TMainForm.DebugShowParamsMIOnClick (Sender: TObject);
-var
-  tmpWindowPosition : TWindowPosition;
 Begin
   with InformationForm.InformationMemo do
   begin
@@ -6840,6 +6841,7 @@ end;
 
 Procedure TMainForm.NHMDisplayIndex( Var Msg: TMessage );
 begin
+  LogEvent(LogNHM, 'NHMDisplayIndex');
   RestoreWindow;
   DisplayIndex;
   // if nothing is being display already...
@@ -6850,17 +6852,22 @@ end;
 
 Procedure TMainForm.NHMDisplayContents( Var Msg: TMessage );
 begin
+  LogEvent(LogNHM, 'NHMDisplayContents');
   RestoreWindow;
   DisplayContents;
   // if nothing is being display already...
   if Windows.Count = 0 then
+  begin
     // display first topic
     DisplaySelectedContentsTopic;
+  end;
 end;
 
 Procedure TMainForm.NHMTopicByResourceID( Var Msg: TMessage );
 begin
+  LogEvent(LogNHM, 'NHMTopicByResourceID');
   RestoreWindow;
+  DisplayContents;
   DisplayTopicByResourceID( Msg.Param1 );
 end;
 
@@ -6870,12 +6877,14 @@ var
   PanelName: string;
   Topic: TTopic;
 begin
+  LogEvent(LogNHM, 'NHMTopicByPanelName');
   RestoreWindow;
 
   pMessageMem := pchar( Msg.Param1 );
   PanelName := StrPas( pMessageMem );
   SharedMemory.Free( pMessageMem );
 
+  LogEvent(LogNHM, '....NHMTopicByPanelName panel:' + PanelName);
   Topic := FindTopicByName( PanelName );
   if Topic = nil then
     Topic := FindTopicByGlobalName( PanelName );
@@ -6892,6 +6901,7 @@ Procedure TMainForm.NHMSearch( Var Msg: TMessage );
 var
   pSearchText: pchar;
 begin
+  LogEvent(LogNHM, 'NHMSearch');
   RestoreWindow;
 
   pSearchText := pstring( Msg.Param1 );
@@ -6903,6 +6913,7 @@ Procedure TMainForm.NHMGlobalSearch( Var Msg: TMessage );
 var
   pSearchText: pchar;
 begin
+  LogEvent(LogNHM, 'NHMGlobalSearch');
   RestoreWindow;
 
   pSearchText := pstring( Msg.Param1 );
@@ -6912,6 +6923,7 @@ end;
 
 Procedure TMainForm.NHMShowUsage( Var Msg: TMessage );
 begin
+  LogEvent(LogNHM, 'NHMShowUsage');
   RestoreWindow;
   ShowUsage;
 end;
@@ -6920,6 +6932,7 @@ Procedure TMainForm.NHMSetFiles( Var Msg: TMessage );
 var
   pFileNames: pchar;
 begin
+  LogEvent(LogNHM, 'NHMSetFiles');
   // NOT restoring window here because this is not something the user should see...
   pFileNames := pstring( Msg.Param1 );
   OpenFilesFromTextList( StrPas( pFileNames ), false );
@@ -6930,6 +6943,7 @@ Procedure TMainForm.NHMSetTitle( Var Msg: TMessage );
 var
   pTitle: pchar;
 begin
+  LogEvent(LogNHM, 'NHMSetTitle');
   pTitle := pstring( Msg.Param1 );
   MainTitle := StrPas( pTitle );
   SharedMemory.Free( pTitle );
@@ -6941,6 +6955,7 @@ Procedure TMainForm.NHMTest( Var Msg: TMessage );
 var
   ps: pstring;
 begin
+  LogEvent(LogNHM, 'NHMTest');
   ps := PString( Msg.Param1 );
   ShowMessage( 'Got test message: ' + ps^ );
   SharedMemory.Free( ps );
