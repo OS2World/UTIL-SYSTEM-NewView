@@ -1,14 +1,12 @@
 Unit DebugUnit;
 
 // NewView - a new OS/2 Help Viewer
-// Copyright 2006 Ronald Brill (rbri at rbri dot de)
+// Copyright 2006/2007 Ronald Brill (rbri at rbri dot de)
 // This software is released under the GNU Public License - see readme.txt
 
 // Helper functions for debugging
 
 Interface
-
-{$define DEBUG}
 
 
 uses
@@ -17,11 +15,6 @@ uses
   PMWin,
   SysUtils;
 
-{$ifdef DEBUG}
-imports
-  Function PmPrintfString(aString:PChar):BYTE; APIENTRY; 'PMPRINTF' NAME 'PmPrintfString';
-end;
-{$endif}
 
   // -- Logging --
   Type
@@ -53,25 +46,73 @@ end;
   // the time since timer start to PMPrintF
   // Procedure PrfTraceEvent(const anEventDescription: String);
 
-const
-  activeLogAspects : LogAspects = [
-//                                        LogStartup,
-//                                        LogShutdown,
-//                                        LogSettings,
-//                                        LogParse,
-//                                        LogDisplay,
-//                                        LogSearch,
-                                          LogNHM,
-//                                        LogViewStub,
-//                                        LogObjConstDest,
-                                          LogDebug
-                                  ];
+  Procedure SetLogAspects(const aCommaSeparatedListOfAspectNames : String);
+
 
 var
   startTime : ULONG;
   lastTime : ULONG;
+  PMPrintfModuleHandle : HMODULE;
+  PMPrintfString : Function(aString : PChar) : ULONG; APIENTRY;
+  activeLogAspects : LogAspects;
+
+
 
 Implementation
+uses
+  BseDos,
+  StringUtilsUnit;
+
+  FUNCTION LoadPMPrinfFLib : integer;
+  Var
+    tmpDllName : CString;
+    tmpErrorInfo : CString;
+    tmpProcedureName : CSTRING;
+    tmpProcedureAddress : POINTER;
+    tmpRC : APIRET;
+
+  begin
+    PMPrintfString := nil;
+
+    tmpDllName:='PMPRINTF';
+    tmpRC := DosLoadModule(tmpErrorInfo, 255, tmpDllName, PMPrintfModuleHandle);
+    if tmpRC <> 0 then
+    begin
+        PMPrintfModuleHandle := 0;
+        result := 0;
+        exit;
+    end;
+
+    tmpProcedureName := 'PmPrintfString';
+    tmpRC := DosQueryProcAddr(PMPrintfModuleHandle, 0, tmpProcedureName, tmpProcedureAddress);
+    if tmpRC <> 0 then
+    begin
+      DosFreeModule(PMPrintfModuleHandle);
+      PMPrintfModuleHandle := 0;
+      result := 0;
+      exit;
+    end;
+
+    PMPrintfString := tmpProcedureAddress;
+    result := 0;
+  end;
+
+
+  Procedure PMPrintf(const aString : String);
+  Var
+    tmpPCharMessage : PChar;
+  Begin
+    if (0 <> PMPrintfModuleHandle) then
+    begin
+      tmpPCharMessage := StrAlloc(length(aString) + 1);
+      StrPCopy(tmpPCharMessage, aString);
+
+      PmPrintfString(tmpPCharMessage);
+
+      StrDispose(tmpPCharMessage);
+    end;
+  end;
+
 
   Function GetAspectPrefix(const aLogAspect: LogAspect): String;
   Begin
@@ -91,28 +132,42 @@ Implementation
   End;
 
 
+  Procedure SetLogAspects(const aCommaSeparatedListOfAspectNames : String);
+  Var
+    tmpAspects : TStringList;
+    i : Integer;
+  Begin
+    tmpAspects := TStringList.Create;
+    StrExtractStrings(tmpAspects, aCommaSeparatedListOfAspectNames, [','], #0);
+
+    for i:=0 to tmpAspects.count-1 do
+    begin
+      if tmpAspects[i] = 'LogStartup'      then activeLogAspects := activeLogAspects + [ LogStartup ];
+      if tmpAspects[i] = 'LogShutdown'     then activeLogAspects := activeLogAspects + [ LogShutdown ];
+      if tmpAspects[i] = 'LogSettings'     then activeLogAspects := activeLogAspects + [ LogSettings ];
+      if tmpAspects[i] = 'LogParse'        then activeLogAspects := activeLogAspects + [ LogParse ];
+      if tmpAspects[i] = 'LogDisplay'      then activeLogAspects := activeLogAspects + [ LogDisplay ];
+      if tmpAspects[i] = 'LogSearch'       then activeLogAspects := activeLogAspects + [ LogSearch ];
+      if tmpAspects[i] = 'LogNHM'          then activeLogAspects := activeLogAspects + [ LogNHM ];
+      if tmpAspects[i] = 'LogViewStub'     then activeLogAspects := activeLogAspects + [ LogViewStub ];
+      if tmpAspects[i] = 'LogObjConstDest' then activeLogAspects := activeLogAspects + [ LogObjConstDest ];
+      if tmpAspects[i] = 'LogDebug'        then activeLogAspects := activeLogAspects + [ LogDebug ];
+    end;
+
+    tmpAspects.Destroy;
+  End;
+
+
   Procedure LogEvent(const aLogAspect: LogAspect; const anEventDescription: String);
-{$ifdef DEBUG}
   Var
     tmpMessage : String;
-    tmpPCharMessage : PChar;
-{$endif}
   Begin
-{$ifdef DEBUG}
     if (aLogAspect IN activeLogAspects) then
     begin
       tmpMessage := 'Log[' + GetAspectPrefix(aLogAspect) + ']  ' + anEventDescription;
-
-      tmpPCharMessage := StrAlloc(length(tmpMessage) + 1);
-      StrPCopy(tmpPCharMessage, tmpMessage);
-
-      PmPrintfString(tmpPCharMessage);
-      StrDispose(tmpPCharMessage);
+      PmPrintf(tmpMessage);
     end;
-{$endif}
   end;
-
-
 
 
   Function GetSystemMSCount: ULONG;
@@ -123,11 +178,10 @@ Implementation
 
   Procedure PrfStartTimer;
   Begin
-{$ifdef DEBUG}
     startTime := GetSystemMSCount;
     lastTime := startTime;
-{$endif}
   End;
+
 
   Procedure PrfStopTimer;
   Begin
@@ -135,24 +189,19 @@ Implementation
 
 
   Procedure PrfTraceEvent(const anEventDescription: String);
-{$ifdef DEBUG}
   Var
     tmpTime : ULONG;
     tmpMessage : String;
-    tmpPCharMessage : PChar;
-{$endif}
   Begin
-{$ifdef DEBUG}
     tmpTime := GetSystemMSCount;
     tmpMessage := 'Prf: ' + IntToStr(tmpTime - lastTime) + 'ms ' + anEventDescription + IntToStr(tmpTime - startTime) + 'ms since start';
 
-    tmpPCharMessage := StrAlloc(length(tmpMessage) + 1);
-    StrPCopy(tmpPCharMessage, tmpMessage);
-
-    PmPrintfString(tmpPCharMessage);
-    StrDispose(tmpPCharMessage);
+    PMPrintf(tmpMessage);
 
     lastTime := GetSystemMSCount;
-{$endif}
   end;
+
+
+  Initialization
+    LoadPMPrinfFLib;
 END.

@@ -20,8 +20,8 @@ uses
   DebugUnit;
 
  CONST
-     SUCCESS = 0;
-     ERROR_UNMATCHED_QUOTE = -1;
+   ENV_DEBUG = 'NEWVIEW_DEBUG';
+
 
  TYPE EParsingFailed=CLASS(Exception);
 
@@ -50,7 +50,6 @@ uses
        fileNamesRaw : string;
        searchText : string;
 
-//       FUNCTION ReadNextPart(const aParseString : String; const aSetOfDelimiterChars : TSetOfChars): String;
        FUNCTION handleSwitchWithValue(const aSwitchString : String; const aSwitch : String; var aValue : String) : Boolean;
        PROCEDURE parseSwitch(aSwitchString : String);
        PROPERTY getFileNames : string read fileNames;
@@ -87,6 +86,7 @@ uses
 
 Implementation
 uses
+  DOS,
   ACLFileUtility;
 
   PROCEDURE TCmdLineParameters.writeDetailsTo(aStrings : TStrings);
@@ -159,7 +159,6 @@ uses
       result := StrTrim(result);
       result := StrTrimChars(result, ['"']);
     end;
-
   end;
 
 
@@ -180,210 +179,220 @@ uses
     tmpQuote : String;
     tmpSwitch : String;
   begin
-     LogEvent(LogStartup, 'ParseCommandLine: "' + aCmdLineString + '"');
+    // first adjust logging
+    if GetEnv(ENV_DEBUG) = '' then
+    begin
+      // TODO set boolean
+    end
+    else
+    begin
+      SetLogAspects(GetEnv(ENV_DEBUG));
+    end;
 
-     // store the original string for debugging
-     commandLine := aCmdLineString;
+    LogEvent(LogStartup, 'ParseCommandLine: "' + aCmdLineString + '"');
 
-     // reset the whole object
-     showUsageFlag := false;
-     searchFlag := false;
-     globalSearchFlag := false;
-     language := '';
-     helpManagerFlag := false;
-     helpManagerWindow := 0;
-     windowPositionFlag := false;
-     ownerWindow := 0;
-     windowTitle := '';
-     searchText := '';
-     fileNames := '';
-     fileNamesRaw := '';
+    // store the original string for debugging
+    commandLine := aCmdLineString;
 
-     try
-       // start parsing
-       tmpState := WHITESPACE;
-       tmpWhitespace := '';
-       tmpSwitch := '';
-       tmpQuote := '';
-       tmpQuoted := false;
-       tmpCurrentParsePosition := 1;
-       while tmpCurrentParsePosition <= length(aCmdLineString) do
-       begin
-         tmpCurrentChar := aCmdLineString[tmpCurrentParsePosition];
+    // reset the whole object
+    showUsageFlag := false;
+    searchFlag := false;
+    globalSearchFlag := false;
+    language := '';
+    helpManagerFlag := false;
+    helpManagerWindow := 0;
+    windowPositionFlag := false;
+    ownerWindow := 0;
+    windowTitle := '';
+    searchText := '';
+    fileNames := '';
+    fileNamesRaw := '';
 
-         Case tmpCurrentChar of
-           ' ' :
-           begin
-             Case tmpState of
+    try
+      // start parsing
+      tmpState := WHITESPACE;
+      tmpWhitespace := '';
+      tmpSwitch := '';
+      tmpQuote := '';
+      tmpQuoted := false;
+      tmpCurrentParsePosition := 1;
+      while tmpCurrentParsePosition <= length(aCmdLineString) do
+      begin
+        tmpCurrentChar := aCmdLineString[tmpCurrentParsePosition];
 
-               WHITESPACE :
-               begin
-                 tmpWhitespace := tmpWhitespace + tmpCurrentChar;
-               end;
+        Case tmpCurrentChar of
+          ' ' :
+          begin
+            Case tmpState of
 
-               QUOTE :
-               begin
-                 tmpQuote := tmpQuote + tmpCurrentChar;
-               end;
+              WHITESPACE :
+              begin
+                tmpWhitespace := tmpWhitespace + tmpCurrentChar;
+              end;
 
-               SWITCH :
-               begin
-                 if tmpQuoted then
-                 begin
-                   tmpSwitch := tmpSwitch + tmpCurrentChar;
-                 end
-                 else
-                 begin
-                   parseSwitch(tmpSwitch);
-                   tmpState := WHITESPACE;
-                   tmpWhitespace := tmpCurrentChar;
-                 end
-               end;
+              QUOTE :
+              begin
+                tmpQuote := tmpQuote + tmpCurrentChar;
+              end;
 
-               FILENAME :
-               begin
-                 if tmpQuoted then
-                 begin
-                   fileNames := fileNames + tmpCurrentChar;
-                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                 end
-                 else
-                 begin
-                   tmpState := WHITESPACE;
-                   tmpWhitespace := tmpCurrentChar;
-                 end
-               end;
+              SWITCH :
+              begin
+                if tmpQuoted then
+                begin
+                  tmpSwitch := tmpSwitch + tmpCurrentChar;
+                end
+                else
+                begin
+                  parseSwitch(tmpSwitch);
+                  tmpState := WHITESPACE;
+                  tmpWhitespace := tmpCurrentChar;
+                end
+              end;
 
-               TEXT :
-               begin
-                 if tmpQuoted then
-                 begin
-                   searchText := searchText + tmpCurrentChar;
-                 end
-                 else
-                 begin
-                   tmpState := WHITESPACE;
-                   tmpWhitespace := tmpCurrentChar;
-                 end
-               end;
-             end;
-           end;
+              FILENAME :
+              begin
+                if tmpQuoted then
+                begin
+                  fileNames := fileNames + tmpCurrentChar;
+                  fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                end
+                else
+                begin
+                  tmpState := WHITESPACE;
+                  tmpWhitespace := tmpCurrentChar;
+                end
+              end;
 
-           '/', '-' :
-           begin
-             Case tmpState of
-               WHITESPACE :
-               begin
-                 tmpState := SWITCH;
-                 tmpSwitch := '';
-               end;
+              TEXT :
+              begin
+                if tmpQuoted then
+                begin
+                  searchText := searchText + tmpCurrentChar;
+                end
+                else
+                begin
+                  tmpState := WHITESPACE;
+                  tmpWhitespace := tmpCurrentChar;
+                end
+              end;
+            end;
+          end;
 
-               QUOTE :
-               begin
-                 tmpState := SWITCH;
-                 tmpSwitch := '';
-               end;
+          '/', '-' :
+          begin
+            Case tmpState of
+              WHITESPACE :
+              begin
+                tmpState := SWITCH;
+                tmpSwitch := '';
+              end;
 
-               SWITCH :
-               begin
-                 parseSwitch(tmpSwitch);
-                 tmpSwitch := '';
-               end;
+              QUOTE :
+              begin
+                tmpState := SWITCH;
+                tmpSwitch := '';
+              end;
 
-               FILENAME :
-               begin
-                 fileNames := fileNames + tmpCurrentChar;
-                 fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-               end;
+              SWITCH :
+              begin
+                parseSwitch(tmpSwitch);
+                tmpSwitch := '';
+              end;
 
-               TEXT :
-               begin
-                 searchText := searchText + tmpCurrentChar;
-               end;
-             end;
-           end;
+              FILENAME :
+              begin
+                fileNames := fileNames + tmpCurrentChar;
+                fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+              end;
 
-           '"' :
-           begin
-             if tmpQuoted then
-             begin
-               tmpQuoted := false;
-               Case tmpState of
-                 FILENAME :
-                 begin
-                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                 end;
-               end;
-             end
-             else
-             begin
-               Case tmpState of
-                 WHITESPACE :
-                 begin
-                   tmpState := QUOTE;
-                   tmpQuote := tmpCurrentChar;
-                 end;
-                 FILENAME :
-                 begin
-                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                 end;
-               end;
-               tmpQuoted := true;
-             end;
-           end;
+              TEXT :
+              begin
+                searchText := searchText + tmpCurrentChar;
+              end;
+            end;
+          end;
 
-           // any other char
-           else
-           begin
-             Case tmpState of
+          '"' :
+          begin
+            if tmpQuoted then
+            begin
+              tmpQuoted := false;
+              Case tmpState of
+                FILENAME :
+                begin
+                  fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                end;
+              end;
+            end
+            else
+            begin
+              Case tmpState of
+                WHITESPACE :
+                begin
+                  tmpState := QUOTE;
+                  tmpQuote := tmpCurrentChar;
+                end;
+                FILENAME :
+                begin
+                  fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                end;
+              end;
+              tmpQuoted := true;
+            end;
+          end;
 
-               WHITESPACE :
-               begin
-                 if length(fileNames) > 0 then
-                 begin
-                   tmpState := TEXT;
-                   searchText := searchText + tmpWhitespace + tmpCurrentChar;
-                 end
-                 else
-                 begin
-                   tmpState := FILENAME;
-                   fileNames := fileNames + tmpCurrentChar;
-                   fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-                 end;
-               end;
+          // any other char
+          else
+          begin
+            Case tmpState of
 
-               QUOTE :
-               begin
-                 if length(fileNames) > 0 then
-                 begin
-                   tmpState := TEXT;
-                   searchText := searchText + tmpWhitespace + tmpCurrentChar;
-                 end
-                 else
-                 begin
-                   tmpState := FILENAME;
-                   fileNames := fileNames + tmpCurrentChar;
-                   fileNamesRaw := fileNamesRaw + tmpQuote + tmpCurrentChar;
-                 end;
-               end;
+              WHITESPACE :
+              begin
+                if length(fileNames) > 0 then
+                begin
+                  tmpState := TEXT;
+                  searchText := searchText + tmpWhitespace + tmpCurrentChar;
+                end
+                else
+                begin
+                  tmpState := FILENAME;
+                  fileNames := fileNames + tmpCurrentChar;
+                  fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                end;
+              end;
 
-               SWITCH :
-               begin
-                 tmpSwitch := tmpSwitch + tmpCurrentChar;
-               end;
+              QUOTE :
+              begin
+                if length(fileNames) > 0 then
+                begin
+                  tmpState := TEXT;
+                  searchText := searchText + tmpWhitespace + tmpCurrentChar;
+                end
+                else
+                begin
+                  tmpState := FILENAME;
+                  fileNames := fileNames + tmpCurrentChar;
+                  fileNamesRaw := fileNamesRaw + tmpQuote + tmpCurrentChar;
+                end;
+              end;
 
-               FILENAME :
-               begin
-                 fileNames := fileNames + tmpCurrentChar;
-                 fileNamesRaw := fileNamesRaw + tmpCurrentChar;
-               end;
+              SWITCH :
+              begin
+                tmpSwitch := tmpSwitch + tmpCurrentChar;
+              end;
 
-               TEXT :
-               begin
-                 searchText := searchText + tmpCurrentChar;
-               end;
-             end;
-           end;
+              FILENAME :
+              begin
+                fileNames := fileNames + tmpCurrentChar;
+                fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+              end;
+
+              TEXT :
+              begin
+                searchText := searchText + tmpCurrentChar;
+              end;
+            end;
+          end;
         end;
         inc(tmpCurrentParsePosition);
       end;
@@ -394,11 +403,8 @@ uses
         begin
           parseSwitch(tmpSwitch);
         end;
-     end;
-
-
-     // TODO remove interpreted
-
+      end;
+      // TODO remove interpreted
     except
         on e:EParsingFailed do
         begin
@@ -413,29 +419,6 @@ uses
     LogEvent(LogStartup, '  Filename(s): "' + fileNames + '"');
     LogEvent(LogStartup, '  Search Text: "' + searchText + '"');
   end;
-
-
-{
-  FUNCTION TCmdLineParameters.ReadNextPart(const aParseString : String; const aSetOfDelimiterChars : TSetOfChars): String;
-  VAR
-    i : integer;
-    tmpChar : char;
-  BEGIN
-    result := '';
-    for i:= currentParsePosition to length(aParseString) do
-    begin
-      tmpChar := aParseString[i];
-      if tmpChar in aSetOfDelimiterChars then
-      begin
-        i := length(aParseString); // stop parsing
-      end
-      else
-      begin
-        result := result + tmpChar;
-      end;
-    end;
-  END;
-}
 
 
   Function TCmdLineParameters.handleSwitchWithValue(const aSwitchString : String; const aSwitch : String; var aValue : String) : Boolean;
@@ -516,7 +499,6 @@ uses
   Procedure TCmdLineParameters.parseSwitch(aSwitchString : String);
   var
     tmpCurrentChar : char;
-    tmpText : String;
     tmpValue : String;
   begin
     // lang
@@ -577,14 +559,6 @@ uses
       'h', 'H', '?' :
         begin
           showUsageFlag := true;
-
-          // check for 'help'
-//          tmpText := copy(aCmdLineString, 2, 3);
-//          tmpText := lowercase(tmpText);
-
-//          if ('elp' = tmpText) then
-//          begin
-//          end;
         end;
 
       's', 'S' :
