@@ -1,8 +1,8 @@
 Unit StringUtilsUnit;
 
 // NewView - a new OS/2 Help Viewer
-// Copyright 2006 Ronald Brill (rbri at rbri dot de)
-// This software is released under the Gnu Public License - see readme.txt
+// Copyright 2006-2007 Ronald Brill (rbri at rbri dot de)
+// This software is released under the GNU Public License - see readme.txt
 
 // Helper functions to work with strings
 
