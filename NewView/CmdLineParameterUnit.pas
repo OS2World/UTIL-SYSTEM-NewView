@@ -75,6 +75,7 @@ CONST
        PROPERTY getSearchText : string read searchText;
 
        PROCEDURE writeDetailsTo(aStrings : TStrings);
+       PROCEDURE logDetails;
        PROCEDURE parseCmdLine(aCmdLineString : String);
   end;
 
@@ -119,6 +120,38 @@ uses
                 );
     aStrings.Add('  ownerWindow: ' + intToStr(getOwnerWindow));
     aStrings.Add('  windowTitle: ' + getWindowTitle);
+  end;
+
+
+  PROCEDURE TCmdLineParameters.LogDetails;
+  var
+    tmpWindowPosition : TWindowPosition;
+  begin
+    LogEvent(LogStartup, '''' + commandLine + '''');
+    LogEvent(LogStartup, 'isDebugEnabled: ' + boolToStr(isDebugEnabled));
+    LogEvent(LogStartup, 'parsed infos:');
+
+    LogEvent(LogStartup, '  showUsageFlag: ' + boolToStr(getShowUsageFlag));
+    LogEvent(LogStartup, '  searchFlag: ' + boolToStr(getSearchFlag));
+    LogEvent(LogStartup, '  fileNames: ' + getFileNames);
+    LogEvent(LogStartup, '  parsedFileNames: ' + getParsedFileNames);
+    LogEvent(LogStartup, '  searchText: ' + getSearchText);
+    LogEvent(LogStartup, '  parsedSearchText: ' + getParsedSearchText);
+    LogEvent(LogStartup, '  globalSearchFlag: ' + boolToStr(getGlobalSearchFlag));
+    LogEvent(LogStartup, '  language: ' + getLanguage);
+    LogEvent(LogStartup, '  helpManagerFlag: ' + boolToStr(getHelpManagerFlag));
+    LogEvent(LogStartup, '  helpManagerWindow: ' + LongWordToStr(getHelpManagerWindow));
+    LogEvent(LogStartup, '  windowPositionFlag: ' + boolToStr(getWindowPositionFlag));
+
+    tmpWindowPosition := getWindowPosition;
+    LogEvent(LogStartup, '  windowPosition: '
+                        + intToStr(tmpWindowPosition.left) + ', '
+                        + intToStr(tmpWindowPosition.bottom) + ', '
+                        + intToStr(tmpWindowPosition.width) + ', '
+                        + intToStr(tmpWindowPosition.height)
+                );
+    LogEvent(LogStartup, '  ownerWindow: ' + intToStr(getOwnerWindow));
+    LogEvent(LogStartup, '  windowTitle: ' + getWindowTitle);
   end;
 
 
@@ -409,8 +442,7 @@ uses
     end;
 
     LogEvent(LogStartup, 'Parameters parsed');
-    LogEvent(LogStartup, '  Filename(s): "' + fileNames + '"');
-    LogEvent(LogStartup, '  Search Text: "' + searchText + '"');
+    LogDetails;
   end;
 
 
