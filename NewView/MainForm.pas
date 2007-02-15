@@ -3822,7 +3822,7 @@ Begin
   RegisterForLanguages( OnLanguageEvent );
 
   // if debug is not enabled, get rid of the debug menu and separator.
-  if GetEnv( 'NEWVIEW_DEBUG' ) = '' then
+  if CmdLineParameters.isDebugEnabled then
   begin
     ToolsDebugSep.Destroy;
     ToolsDebugMenu.Destroy;
@@ -4177,19 +4177,19 @@ begin
 
   HelpManagerWindows.Add( pointer( CmdLineParameters.getHelpManagerWindow ) );
 
-  if CmdLineParameters.getInterpretedFileNames <> '' then
+  if CmdLineParameters.getFileNames <> '' then
   begin
     // open specified files
     Filenames := TStringList.Create;
 
     // TODO use StrExtractStrings
-    StringToList(cmdLineParameters.getInterpretedFileNames, Filenames, '+' );
+    StringToList(cmdLineParameters.getFileNames, Filenames, '+' );
 
     LogEvent(LogStartup, 'Call OpenFiles');
 
     OpenFirstTopic := true;
 
-    if ( CmdLineParameters.getInterpretedSearchText <> '' )
+    if ( CmdLineParameters.getSearchText <> '' )
        OR CmdLineParameters.getSearchFlag
        OR CmdLineParameters.getHelpManagerFlag
     then
@@ -4207,12 +4207,12 @@ begin
 
     if not CmdLineParameters.getSearchFlag
        and not CmdLineParameters.getGlobalSearchFlag
-       and (CmdLineParameters.getInterpretedSearchText <> '') then
+       and (CmdLineParameters.getSearchText <> '') then
     begin
       // search in contents only!
-      LogEvent(LogStartup, 'Do startup topic search for: "' + CmdLineParameters.getInterpretedSearchText + '"');
+      LogEvent(LogStartup, 'Do startup topic search for: "' + CmdLineParameters.getSearchText + '"');
 
-      StartupTopicSearch( CmdLineParameters.getInterpretedSearchText );
+      StartupTopicSearch( CmdLineParameters.getSearchText );
     end
     else if CmdLineParameters.getSearchFlag then
     begin
@@ -4220,7 +4220,7 @@ begin
       LogEvent(LogStartup, 'Do search for topic');
       DisplaySearch;
 
-      SearchFor( CmdLineParameters.getInterpretedSearchText );
+      SearchFor( CmdLineParameters.getSearchText );
     end;
   end;
 
@@ -4228,8 +4228,8 @@ begin
      AND CmdLineParameters.getGlobalSearchFlag then
   begin
     // Global search
-    LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getInterpretedSearchText);
-    DoGlobalSearch( CmdLineParameters.getInterpretedSearchText );
+    LogEvent(LogStartup, 'Do global search: ' + CmdLineParameters.getSearchText);
+    DoGlobalSearch( CmdLineParameters.getSearchText );
   end;
 
   LogEvent(LogStartup, 'Open finished');

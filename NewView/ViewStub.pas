@@ -67,14 +67,14 @@ var
   begin
     result := NULLHANDLE;
 
-    if aCmdLineParameters.getInterpretedFileNames = '' then
+    if aCmdLineParameters.getFileNames = '' then
       // not loading files; nothing to check
       exit;
 
     tmpFileItems := TStringList.Create;
     tmpFilenames := TStringList.Create;
 
-    StrExtractStrings(tmpFileItems, aCmdLineParameters.getInterpretedFileNames, ['+'], #0);
+    StrExtractStrings(tmpFileItems, aCmdLineParameters.getFileNames, ['+'], #0);
     TranslateIPFEnvironmentVars(tmpFileItems, tmpFileNames );
 
     for i := 0 to tmpFileNames.Count - 1 do
@@ -182,19 +182,19 @@ Begin
     // at the moment there is no support for a
     // seperate window message
     if not tmpCmdLineParameters.getGlobalSearchFlag
-       AND (tmpCmdLineParameters.getInterpretedSearchText <> '')
+       AND (tmpCmdLineParameters.getSearchText <> '')
     then
     begin
       PostNewViewTextMessage( tmpExistingWindow,
                               NHM_SEARCH,
-                              tmpCmdLineParameters.getInterpretedSearchText);
+                              tmpCmdLineParameters.getSearchText);
     end;
 
     if tmpCmdLineParameters.getGlobalSearchFlag then
     begin
       PostNewViewTextMessage( tmpExistingWindow,
                               NHM_GLOBAL_SEARCH,
-                              tmpCmdLineParameters.getInterpretedSearchText);
+                              tmpCmdLineParameters.getSearchText);
     end;
 
     if tmpCmdLineParameters.getShowUsageFlag then

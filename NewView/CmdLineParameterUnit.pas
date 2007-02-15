@@ -19,8 +19,8 @@ uses
   StringUtilsUnit,
   DebugUnit;
 
- CONST
-   ENV_DEBUG = 'NEWVIEW_DEBUG';
+CONST
+  ENV_DEBUG = 'NEWVIEW_DEBUG';
 
 
  TYPE EParsingFailed=CLASS(Exception);
@@ -46,17 +46,20 @@ uses
        windowPosition: TWindowPosition;
        ownerWindow : integer;
        windowTitle : string;
+       parsedFileNames : string;
+       parsedRawFileNames : string;
        fileNames : string;
-       fileNamesRaw : string;
+       parsedSearchText : string;
        searchText : string;
+       debugEnabled : boolean;
 
        FUNCTION handleSwitchWithValue(const aSwitchString : String; const aSwitch : String; var aValue : String) : Boolean;
        PROCEDURE parseSwitch(aSwitchString : String);
-       PROPERTY getFileNames : string read fileNames;
-       PROPERTY getSearchText : string read searchText;
+       PROPERTY getParsedFileNames : string read parsedFileNames;
+       PROPERTY getParsedSearchText : string read parsedSearchText;
 
      public
-       PROPERTY getCommandLine : String read commandLine;
+       PROPERTY isDebugEnabled : boolean read debugEnabled;
        PROPERTY getShowUsageFlag : boolean read showUsageFlag;
        PROPERTY getSearchFlag : boolean read searchFlag;
        PROPERTY getGlobalSearchFlag : boolean read globalSearchFlag;
@@ -68,13 +71,11 @@ uses
        PROPERTY getWindowPosition : TWindowPosition read windowPosition;
        PROPERTY getOwnerWindow : integer read ownerWindow;
        PROPERTY getWindowTitle : string read windowTitle;
-       PROPERTY getFileNamesRaw : string read fileNamesRaw;
+       PROPERTY getFileNames : string read fileNames;
+       PROPERTY getSearchText : string read searchText;
 
        PROCEDURE writeDetailsTo(aStrings : TStrings);
        PROCEDURE parseCmdLine(aCmdLineString : String);
-
-       FUNCTION getInterpretedFileNames: String;
-       FUNCTION getInterpretedSearchText: String;
   end;
 
   FUNCTION getOwnHelpFileName: String;
@@ -93,72 +94,31 @@ uses
   var
     tmpWindowPosition : TWindowPosition;
   begin
-    aStrings.Add('''' + getCommandLine + '''');
+    aStrings.Add('''' + commandLine + '''');
+    aStrings.Add('isDebugEnabled: ' + boolToStr(isDebugEnabled));
     aStrings.Add('parsed infos:');
 
-    aStrings.Add('getShowUsageFlag: ' + boolToStr(getShowUsageFlag));
-    aStrings.Add('getSearchFlag: ' + boolToStr(getSearchFlag));
-    aStrings.Add('getSearchText: ' + getSearchText);
-    aStrings.Add('getGlobalSearchFlag: ' + boolToStr(getGlobalSearchFlag));
-    aStrings.Add('getLanguage: ' + getLanguage);
-    aStrings.Add('getHelpManagerFlag: ' + boolToStr(getHelpManagerFlag));
-    aStrings.Add('getHelpManagerWindow: ' + LongWordToStr(getHelpManagerWindow));
-    aStrings.Add('getWindowPositionFlag: ' + boolToStr(getWindowPositionFlag));
-    aStrings.Add('getFileNames: ' + getFileNames);
-    aStrings.Add('getInterpretedSearchText: ' + getInterpretedSearchText);
-    aStrings.Add('getInterpretedFileNames: ' + getInterpretedFileNames);
+    aStrings.Add('  showUsageFlag: ' + boolToStr(getShowUsageFlag));
+    aStrings.Add('  searchFlag: ' + boolToStr(getSearchFlag));
+    aStrings.Add('  fileNames: ' + getFileNames);
+    aStrings.Add('  parsedFileNames: ' + getParsedFileNames);
+    aStrings.Add('  searchText: ' + getSearchText);
+    aStrings.Add('  parsedSearchText: ' + getParsedSearchText);
+    aStrings.Add('  globalSearchFlag: ' + boolToStr(getGlobalSearchFlag));
+    aStrings.Add('  language: ' + getLanguage);
+    aStrings.Add('  helpManagerFlag: ' + boolToStr(getHelpManagerFlag));
+    aStrings.Add('  helpManagerWindow: ' + LongWordToStr(getHelpManagerWindow));
+    aStrings.Add('  windowPositionFlag: ' + boolToStr(getWindowPositionFlag));
 
     tmpWindowPosition := getWindowPosition;
-    aStrings.Add('getWindowPosition: '
+    aStrings.Add('  windowPosition: '
                         + intToStr(tmpWindowPosition.left) + ', '
                         + intToStr(tmpWindowPosition.bottom) + ', '
                         + intToStr(tmpWindowPosition.width) + ', '
                         + intToStr(tmpWindowPosition.height)
                 );
-    aStrings.Add('getOwnerWindow: ' + intToStr(getOwnerWindow));
-    aStrings.Add('getWindowTitle: ' + getWindowTitle);
-  end;
-
-
-  Function TCmdLineParameters.getInterpretedFileNames: String;
-  var
-    tmpOwnHelpFileName : String;
-  begin
-    result := getFileNames;
-
-    if getGlobalSearchFlag
-       AND (getSearchText = '')
-    then
-    begin
-      result := '';
-      exit;
-    end;
-
-
-    tmpOwnHelpFileName := FindDefaultLanguageHelpFile('NewView');
-    if (result = '') AND
-      FileExists(tmpOwnHelpFileName)
-    then
-      result := tmpOwnHelpFileName;
-  end;
-
-
-  Function TCmdLineParameters.getInterpretedSearchText: String;
-  begin
-    result := getSearchText;
-
-    if getGlobalSearchFlag
-       AND (result = '')
-    then
-      result := getFileNamesRaw;
-
-    if not getGlobalSearchFlag
-       AND (not getSearchFlag)
-    then
-    begin
-      result := StrTrim(result);
-      result := StrTrimChars(result, ['"']);
-    end;
+    aStrings.Add('  ownerWindow: ' + intToStr(getOwnerWindow));
+    aStrings.Add('  windowTitle: ' + getWindowTitle);
   end;
 
 
@@ -178,11 +138,13 @@ uses
     tmpWhitespace : String;
     tmpQuote : String;
     tmpSwitch : String;
+    tmpOwnHelpFileName : String;
   begin
     // first adjust logging
+    debugEnabled := false;
     if GetEnv(ENV_DEBUG) = '' then
     begin
-      // TODO set boolean
+      debugEnabled := true;
     end
     else
     begin
@@ -204,9 +166,9 @@ uses
     windowPositionFlag := false;
     ownerWindow := 0;
     windowTitle := '';
-    searchText := '';
-    fileNames := '';
-    fileNamesRaw := '';
+    parsedSearchText := '';
+    parsedFileNames := '';
+    parsedRawFileNames := '';
 
     try
       // start parsing
@@ -253,8 +215,8 @@ uses
               begin
                 if tmpQuoted then
                 begin
-                  fileNames := fileNames + tmpCurrentChar;
-                  fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                  parsedFileNames := parsedFileNames + tmpCurrentChar;
+                  parsedRawFileNames := parsedRawFileNames + tmpCurrentChar;
                 end
                 else
                 begin
@@ -267,7 +229,7 @@ uses
               begin
                 if tmpQuoted then
                 begin
-                  searchText := searchText + tmpCurrentChar;
+                  parsedSearchText := parsedSearchText + tmpCurrentChar;
                 end
                 else
                 begin
@@ -301,13 +263,13 @@ uses
 
               FILENAME :
               begin
-                fileNames := fileNames + tmpCurrentChar;
-                fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                parsedFileNames := parsedFileNames + tmpCurrentChar;
+                parsedRawFileNames := parsedRawFileNames + tmpCurrentChar;
               end;
 
               TEXT :
               begin
-                searchText := searchText + tmpCurrentChar;
+                parsedSearchText := parsedSearchText + tmpCurrentChar;
               end;
             end;
           end;
@@ -320,12 +282,17 @@ uses
               Case tmpState of
                 FILENAME :
                 begin
-                  fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                  parsedRawFileNames := parsedRawFileNames + tmpCurrentChar;
+                end;
+                TEXT :
+                begin
+                  parsedSearchText := parsedSearchText + tmpCurrentChar;
                 end;
               end;
             end
             else
             begin
+              tmpQuoted := true;
               Case tmpState of
                 WHITESPACE :
                 begin
@@ -334,10 +301,9 @@ uses
                 end;
                 FILENAME :
                 begin
-                  fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                  parsedRawFileNames := parsedRawFileNames + tmpCurrentChar;
                 end;
               end;
-              tmpQuoted := true;
             end;
           end;
 
@@ -348,31 +314,31 @@ uses
 
               WHITESPACE :
               begin
-                if length(fileNames) > 0 then
+                if length(parsedFileNames) > 0 then
                 begin
                   tmpState := TEXT;
-                  searchText := searchText + tmpWhitespace + tmpCurrentChar;
+                  parsedSearchText := parsedSearchText + tmpWhitespace + tmpCurrentChar;
                 end
                 else
                 begin
                   tmpState := FILENAME;
-                  fileNames := fileNames + tmpCurrentChar;
-                  fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                  parsedFileNames := parsedFileNames + tmpCurrentChar;
+                  parsedRawFileNames := parsedRawFileNames + tmpCurrentChar;
                 end;
               end;
 
               QUOTE :
               begin
-                if length(fileNames) > 0 then
+                if length(parsedFileNames) > 0 then
                 begin
                   tmpState := TEXT;
-                  searchText := searchText + tmpWhitespace + tmpCurrentChar;
+                  parsedSearchText := parsedSearchText + tmpQuote + tmpCurrentChar;
                 end
                 else
                 begin
                   tmpState := FILENAME;
-                  fileNames := fileNames + tmpCurrentChar;
-                  fileNamesRaw := fileNamesRaw + tmpQuote + tmpCurrentChar;
+                  parsedFileNames := parsedFileNames + tmpCurrentChar;
+                  parsedRawFileNames := parsedRawFileNames + tmpQuote + tmpCurrentChar;
                 end;
               end;
 
@@ -383,13 +349,13 @@ uses
 
               FILENAME :
               begin
-                fileNames := fileNames + tmpCurrentChar;
-                fileNamesRaw := fileNamesRaw + tmpCurrentChar;
+                parsedFileNames := parsedFileNames + tmpCurrentChar;
+                parsedRawFileNames := parsedRawFileNames + tmpCurrentChar;
               end;
 
               TEXT :
               begin
-                searchText := searchText + tmpCurrentChar;
+                parsedSearchText := parsedSearchText + tmpCurrentChar;
               end;
             end;
           end;
@@ -404,7 +370,6 @@ uses
           parseSwitch(tmpSwitch);
         end;
       end;
-      // TODO remove interpreted
     except
         on e:EParsingFailed do
         begin
@@ -412,8 +377,36 @@ uses
         end;
     end;
 
-    // remove leading blanks from search text
-    searchText := StrTrim(searchText);
+    // remove blanks
+    fileNames := StrTrim(getParsedFileNames);
+    searchText := StrTrim(getParsedSearchText);
+
+    if getGlobalSearchFlag
+       AND (getParsedSearchText = '')
+    then
+    begin
+      fileNames := '';
+      searchText := parsedRawFileNames;
+    end
+    else
+    begin
+      if fileNames = '' then
+      begin
+        tmpOwnHelpFileName := FindDefaultLanguageHelpFile('NewView');
+        if FileExists(tmpOwnHelpFileName)
+        then
+          fileNames := tmpOwnHelpFileName;
+      end;
+    end;
+
+    // to be compatible with the old one we have to ignore
+    // the quotes
+    if not getGlobalSearchFlag
+       AND (not getSearchFlag)
+    then
+    begin
+      searchText := StrTrimChars(searchText, ['"']);
+    end;
 
     LogEvent(LogStartup, 'Parameters parsed');
     LogEvent(LogStartup, '  Filename(s): "' + fileNames + '"');
