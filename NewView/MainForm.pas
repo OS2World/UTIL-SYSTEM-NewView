@@ -826,12 +826,10 @@ uses
 
   // Library
   ACLStringUtility,
-  AStringUtilityUnit,
   ACLFileUtility,
   ACLFileIOUtility,
   ACLUtility,
   ACLDialogs,
-  ACLString,
   RunProgramUnit,
   StringUtilsUnit,
   DebugUnit,
@@ -1503,8 +1501,8 @@ Begin
   Language.LL( Apply, UsageTitle, 'UsageTitle', 'NewView Command Line' );
   Language.LL( Apply, UsageText1, 'UsageText1', 'Usage: ' );
   Language.LL( Apply, UsageText2, 'UsageText2', 'NewView <filename> [<topic>]' );
-  Language.LL( Apply, UsageText3, 'UsageText3', ' /s:<text> Do search for <text>' );
-  Language.LL( Apply, UsageText4, 'UsageText4', ' /g:<text> Do global search for <text>' );
+  Language.LL( Apply, UsageText3, 'UsageText3', ' /s Do search for <topic>' );
+  Language.LL( Apply, UsageText4, 'UsageText4', ' /g Do global search for <topic>' );
   Language.LL( Apply, UsageText5, 'UsageText5', ' /pos:l,b,w,h Set window position' );
   Language.LL( Apply, UsageText6, 'UsageText6', ' /lang:<lang> Load UI language' );
   Language.LL( Apply, UsageText7, 'UsageText7', ' /title:<title> Set window title' );
