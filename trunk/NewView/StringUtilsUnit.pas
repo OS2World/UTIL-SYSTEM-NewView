@@ -44,7 +44,18 @@ const
   // Example:
   //     StrExtractStrings('1x2x3\x4', "x", '\') ->
   //     returns 4 strings: "1", "", "2" and "3x4"
-  Procedure StrExtractStrings(Var aResult : TStringList; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+  Procedure StrExtractStrings(Var aResult : TStrings; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+
+  // same as StrExtractStrings but ignores empty strings
+  Procedure StrExtractStringsIgnoreEmpty(Var aResult : TStrings; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+
+  // removes all occurences of char from aSetOfChars from the beginning
+  // of a String.
+  Function StrTrimLeftChars(const aReceiver: String; const aSetOfChars: TSetOfChars): String;
+
+  // removes all occurences of char from aSetOfChars from the end
+  // of a String.
+  Function StrTrimRightChars(const aReceiver: String; const aSetOfChars: TSetOfChars): String;
 
   // removes all occurences of char from aSetOfChars from the beginning
   // end the end of a String.
@@ -52,6 +63,9 @@ const
 
   // removes all blanks from beginning and end
   Function StrTrim(const aReceiver: String): String;
+
+  // Returns the aCount leftmost chars of aString
+  Function StrLeft(const aString : String; const aCount : Integer) : String;
 
   // returns true if the String ends with the provides one
   // this is case SENSITIVE
@@ -113,7 +127,7 @@ Implementation
     i : Integer;
   begin
     result := '';
-    for i := 0 To stringList.count-1 do
+    for i := 0 to stringList.count-1 do
     begin
       if (i > 0) then result := result + '&';
       result := result + StrEscapeAllCharsBy(stringList[i], ['&'], '\');
@@ -155,7 +169,11 @@ Implementation
   end;
 
 
-  Procedure StrExtractStrings(Var aResult: TStringList; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+  Procedure PrivateStrExtractStrings(   Var aResult: TStrings;
+                                        const aReceiver: String;
+                                        const aSetOfChars: TSetOfChars;
+                                        const anEscapeChar: char;
+                                        const anIgnoreEmptyFlag : boolean);
   Var
     i : Integer;
     tmpChar,tmpNextChar : Char;
@@ -188,7 +206,10 @@ Implementation
         else
           if (tmpChar IN aSetOfChars) then
           begin
-            aResult.add(tmpPart);
+            if (NOT anIgnoreEmptyFlag) OR ('' <> tmpPart) then
+            begin
+              aResult.add(tmpPart);
+            end;
             tmpPart := '';
             i := i + 1;
           end
@@ -198,7 +219,72 @@ Implementation
             i := i + 1;
           end;
     end;
-    aResult.add(tmpPart);
+
+    if (NOT anIgnoreEmptyFlag) OR ('' <> tmpPart) then
+    begin
+      aResult.add(tmpPart);
+    end;
+  end;
+
+
+  Procedure StrExtractStrings(Var aResult: TStrings; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+  Begin
+    PrivateStrExtractStrings(aResult, aReceiver, aSetOfChars, anEscapeChar, false);
+  end;
+
+
+  Procedure StrExtractStringsIgnoreEmpty(Var aResult: TStrings; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+  Begin
+    PrivateStrExtractStrings(aResult, aReceiver, aSetOfChars, anEscapeChar, true);
+  end;
+
+
+  Function StrTrimLeftChars(const aReceiver: String; const aSetOfChars: TSetOfChars): String;
+  Var
+    i : Longint;
+  Begin
+    i := 1;
+    // mem optimization
+    if aReceiver[i] in aSetOfChars then
+    begin
+      while i <= Length(aReceiver) do
+      begin
+        if aReceiver[i] in aSetOfChars then
+          inc(i)
+        else
+          break;
+      end;
+      result := Copy(aReceiver, i, Length(aReceiver)-i+1);
+    end
+    else
+    begin
+      result := aReceiver;
+    end;
+  end;
+
+
+  Function StrTrimRightChars(const aReceiver: String; const aSetOfChars: TSetOfChars): String;
+  Var
+    i : Longint;
+  Begin
+    i := Length(aReceiver);
+
+    // mem optimization
+    if aReceiver[i] in aSetOfChars then
+    begin
+      while i > 0 do
+      begin
+        if aReceiver[i] in aSetOfChars then
+          dec(i)
+        else
+          break;
+      end;
+      result := Copy(aReceiver, 1, i);
+    end
+    else
+    begin
+      result := aReceiver;
+    end;
   end;
 
 
@@ -206,32 +292,60 @@ Implementation
   Var
     i : Longint;
     j : Longint;
+    tmpNeedCopy : boolean;
   Begin
+    tmpNeedCopy := false;
     i := 1;
     while i < Length(aReceiver) do
     begin
       if aReceiver[i] in aSetOfChars then
-        inc(i)
-       else
-         break;
+      begin
+        inc(i);
+        tmpNeedCopy := true;
+      end
+      else
+      begin
+        break;
+      end;
     end;
 
     j := Length(aReceiver);
     while j >= i do
     begin
       if aReceiver[j] in aSetOfChars then
-        dec(j)
+      begin
+        dec(j);
+        tmpNeedCopy := true;
+      end
       else
+      begin
         break;
+      end;
     end;
 
-    result := Copy(aReceiver, i, j-i+1);
+    if tmpNeedCopy then
+    begin
+      result := Copy(aReceiver, i, j-i+1);
+    end
+    else
+    begin
+      result := aReceiver;
+    end;
   end;
 
 
   Function StrTrim(const aReceiver: String): String;
   Begin
     result := StrTrimChars(aReceiver, [' ']);
+  end;
+
+
+  Function StrLeft(const aString : String; const aCount : Integer) : String;
+  Begin
+    if aCount >= Length(aString) then
+      Result := aString
+    else
+      Result := copy(aString, 1, aCount);
   end;
 
 

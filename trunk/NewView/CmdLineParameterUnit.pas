@@ -77,9 +77,8 @@ CONST
        PROCEDURE writeDetailsTo(aStrings : TStrings);
        PROCEDURE logDetails;
        PROCEDURE parseCmdLine(aCmdLineString : String);
+       FUNCTION getOwnHelpFileName: String;
   end;
-
-  FUNCTION getOwnHelpFileName: String;
 
   // returns a string containing the whole
   // command line parametes
@@ -89,7 +88,7 @@ CONST
 Implementation
 uses
   DOS,
-  ACLFileUtility;
+  FileUtilsUnit;
 
   PROCEDURE TCmdLineParameters.writeDetailsTo(aStrings : TStrings);
   var
@@ -425,7 +424,7 @@ uses
     begin
       if fileNames = '' then
       begin
-        tmpOwnHelpFileName := FindDefaultLanguageHelpFile('NewView');
+        tmpOwnHelpFileName := getOwnHelpFileName;
         if FileExists(tmpOwnHelpFileName)
         then
           fileNames := tmpOwnHelpFileName;
@@ -604,9 +603,17 @@ uses
   end;
 
 
-  FUNCTION getOwnHelpFileName: String;
+  FUNCTION TCmdLineParameters.getOwnHelpFileName: String;
+  var
+    tmpLanguage : String;
   begin
-    result := FindDefaultLanguageHelpFile('NewView');
+    tmpLanguage := getLanguage;
+    if tmpLanguage = '' then
+    begin
+      tmpLanguage := GetEnv(LanguageEnvironmentVar)
+    end;
+
+    result := FindDefaultLanguageHelpFile('NewView', tmpLanguage);
   end;
 
 

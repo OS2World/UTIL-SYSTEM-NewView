@@ -7,7 +7,7 @@ uses
   TestAssert,
   StringUtilsUnit;
 
- FUNCTION getStringUtilsUnitTests : TList;
+  FUNCTION getStringUtilsUnitTests : TList;
 
 
 Implementation
@@ -278,6 +278,9 @@ Implementation
   END;
 
 
+  // ------------------------------------------------------
+
+
   PROCEDURE testStrExtractStrings_EmptyReceiver;
   VAR
     tmpResult : TStringList;
@@ -407,6 +410,263 @@ Implementation
   END;
 
 
+  // ------------------------------------------------------
+
+
+  PROCEDURE testStrExtractStringsIgnoreEmpty_EmptyReceiver;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStringsIgnoreEmpty(tmpResult, '', ['x'], '\');
+
+    assertEqualsInt('testStrExtractStringsIgnoreEmpty_EmptyReceiver', 0, tmpResult.count);
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsIgnoreEmpty_OnlyOnePart;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStringsIgnoreEmpty(tmpResult, 'abcd', ['x'], '\');
+
+    assertEqualsInt('testStrExtractStringsIgnoreEmpty_OnlyOnePart', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_OnlyOnePart', 'abcd', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsIgnoreEmpty_ManyParts;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStringsIgnoreEmpty(tmpResult, 'abxcd', ['x'], '\');
+
+    assertEqualsInt('testStrExtractStringsIgnoreEmpty_ManyParts', 2, tmpResult.count);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_ManyParts', 'ab', tmpResult[0]);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_ManyParts', 'cd', tmpResult[1]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsIgnoreEmpty_StartWithDelimiter;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStringsIgnoreEmpty(tmpResult, 'xab', ['x'], '\');
+
+    assertEqualsInt('testStrExtractStringsIgnoreEmpty_StartWithDelimiter', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_StartWithDelimiter', 'ab', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsIgnoreEmpty_EndWithDelimiter;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStringsIgnoreEmpty(tmpResult, 'abx', ['x'], '\');
+
+    assertEqualsInt('testStrExtractStringsIgnoreEmpty_EndWithDelimiter', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_EndWithDelimiter', 'ab', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsIgnoreEmpty_EmptyPartInside;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStringsIgnoreEmpty(tmpResult, 'axxb', ['x'], '\');
+
+    assertEqualsInt('testStrExtractStringsIgnoreEmpty_EmptyPartInside', 2, tmpResult.count);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_EmptyPartInside', 'a', tmpResult[0]);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_EmptyPartInside', 'b', tmpResult[1]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsIgnoreEmpty_NoDelimiter;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStringsIgnoreEmpty(tmpResult, 'axxb', [], '\');
+
+    assertEqualsInt('testStrExtractStringsIgnoreEmpty_NoDelimiter', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_NoDelimiter', 'axxb', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsIgnoreEmpty_EscapedDelimiter;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStringsIgnoreEmpty(tmpResult, 'a\xb', ['x'], '\');
+
+    assertEqualsInt('testStrExtractStringsIgnoreEmpty_EscapedDelimiter', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_EscapedDelimiter', 'axb', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+  PROCEDURE testStrExtractStringsIgnoreEmpty_EscapedEscapeChar;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStringsIgnoreEmpty(tmpResult, 'a\\xb', ['x'], '\');
+
+    assertEqualsInt('testStrExtractStringsIgnoreEmpty_EscapedEscapeChar', 2, tmpResult.count);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_EscapedEscapeChar', 'a\', tmpResult[0]);
+    assertEqualsString('testStrExtractStringsIgnoreEmpty_EscapedEscapeChar', 'b', tmpResult[1]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testTrimLeftChars_Empty;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimLeftChars('', ['b', 'x']);
+
+    assertEqualsString('testTrimLeftChars_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimLeftChars_RemoveAll;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimLeftChars('bxxxbx', ['b', 'x']);
+
+    assertEqualsString('testTrimLeftChars_RemoveAll', '', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimLeftChars_OneLeft;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimLeftChars('bxy', ['b', 'x']);
+
+    assertEqualsString('testTrimLeftChars_OneLeft', 'y', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimLeftChars_LeftOnly;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimLeftChars('bxbxxay', ['b', 'x']);
+
+    assertEqualsString('testTrimLeftChars_LeftOnly', 'ay', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimLeftChars_CharsInside;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimLeftChars('bxabxvvx', ['b', 'x']);
+
+    assertEqualsString('testTrimLeftChars_CharsInside', 'abxvvx', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimLeftChars_Nothing;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimLeftChars('acdef', ['b', 'x']);
+
+    assertEqualsString('testTrimLeftChars_Nothing', 'acdef', tmpResult);
+  END;
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testTrimRightChars_Empty;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimRightChars('', ['b', 'x']);
+
+    assertEqualsString('testTrimRightChars_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimRightChars_RemoveAll;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimRightChars('bxxxbx', ['b', 'x']);
+
+    assertEqualsString('testTrimRightChars_RemoveAll', '', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimRightChars_OneLeft;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimRightChars('ybx', ['b', 'x']);
+
+    assertEqualsString('testTrimRightChars_OneLeft', 'y', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimRightChars_RightOnly;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimRightChars('aybxbxx', ['b', 'x']);
+
+    assertEqualsString('testTrimRightChars_RightOnly', 'ay', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimRightChars_CharsInside;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimRightChars('abxvvxb', ['b', 'x']);
+
+    assertEqualsString('testTrimRightChars_CharsInside', 'abxvv', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimRightChars_Nothing;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimRightChars('acdef', ['b', 'x']);
+
+    assertEqualsString('testTrimRightChars_Nothing', 'acdef', tmpResult);
+  END;
+
+
+  // -------------------------------------------------------------------
+
   PROCEDURE testTrimChars_Empty;
   VAR
     tmpResult : String;
@@ -424,6 +684,26 @@ Implementation
     tmpResult := StrTrimChars('bxxxbx', ['b', 'x']);
 
     assertEqualsString('testTrimChars_RemoveAll', '', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimChars_OneLeftFromLeft;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimChars('bxa', ['b', 'x']);
+
+    assertEqualsString('testTrimChars_OneLeftFromLeft', 'a', tmpResult);
+  END;
+
+
+  PROCEDURE testTrimChars_OneLeftFromRight;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrTrimChars('abx', ['b', 'x']);
+
+    assertEqualsString('testTrimChars_OneLeftFromRight', 'a', tmpResult);
   END;
 
 
@@ -467,6 +747,9 @@ Implementation
   END;
 
 
+  // -------------------------------------------------------------------
+
+
   PROCEDURE testTrim;
   VAR
     tmpResult : String;
@@ -475,6 +758,59 @@ Implementation
 
     assertEqualsString('testTrim', 'a bc', tmpResult);
   END;
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testStrLeft_Empty;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeft('', 1);
+
+    assertEqualsString('testStrLeft_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeft_Nothing;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeft('abc', 0);
+
+    assertEqualsString('testStrLeft_Nothing', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeft_WholeString;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeft('abc', 3);
+
+    assertEqualsString('testStrLeft_WholeString', 'abc', tmpResult);
+  END;
+
+  PROCEDURE testStrLeft_ToManyRequested;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeft('abc', 5);
+
+    assertEqualsString('testStrLeft_ToManyRequested', 'abc', tmpResult);
+  END;
+
+  PROCEDURE testStrLeft_Part;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeft('abcdef', 2);
+
+    assertEqualsString('testStrLeft_Part', 'ab', tmpResult);
+  END;
+
+  // -------------------------------------------------------------------
 
 
   PROCEDURE testStrEndsWith_BothEmpty;
@@ -723,13 +1059,46 @@ Implementation
     result.add(@testStrExtractStrings_EscapedDelimiter);
     result.add(@testStrExtractStrings_EscapedEscapeChar);
 
+    result.add(@testStrExtractStringsIgnoreEmpty_EmptyReceiver);
+    result.add(@testStrExtractStringsIgnoreEmpty_OnlyOnePart);
+    result.add(@testStrExtractStringsIgnoreEmpty_ManyParts);
+    result.add(@testStrExtractStringsIgnoreEmpty_StartWithDelimiter);
+    result.add(@testStrExtractStringsIgnoreEmpty_EndWithDelimiter);
+    result.add(@testStrExtractStringsIgnoreEmpty_EmptyPartInside);
+    result.add(@testStrExtractStringsIgnoreEmpty_NoDelimiter);
+    result.add(@testStrExtractStringsIgnoreEmpty_EscapedDelimiter);
+    result.add(@testStrExtractStringsIgnoreEmpty_EscapedEscapeChar);
+
+    result.add(@testTrimLeftChars_Empty);
+    result.add(@testTrimLeftChars_RemoveAll);
+    result.add(@testTrimLeftChars_OneLeft);
+    result.add(@testTrimLeftChars_LeftOnly);
+    result.add(@testTrimLeftChars_CharsInside);
+    result.add(@testTrimLeftChars_Nothing);
+
+    result.add(@testTrimRightChars_Empty);
+    result.add(@testTrimRightChars_RemoveAll);
+    result.add(@testTrimRightChars_OneLeft);
+    result.add(@testTrimRightChars_RightOnly);
+    result.add(@testTrimRightChars_CharsInside);
+    result.add(@testTrimRightChars_Nothing);
+
     result.add(@testTrimChars_Empty);
     result.add(@testTrimChars_RemoveAll);
+    result.add(@testTrimChars_OneLeftFromLeft);
+    result.add(@testTrimChars_OneLeftFromRight);
     result.add(@testTrimChars_LeftOnly);
     result.add(@testTrimChars_RightOnly);
     result.add(@testTrimChars_CharsInside);
     result.add(@testTrimChars_Nothing);
+
     result.add(@testTrim);
+
+    result.add(@testStrLeft_Empty);
+    result.add(@testStrLeft_Nothing);
+    result.add(@testStrLeft_WholeString);
+    result.add(@testStrLeft_ToManyRequested);
+    result.add(@testStrLeft_Part);
 
     result.add(@testStrEndsWith_BothEmpty);
     result.add(@testStrEndsWith_StringEmpty);

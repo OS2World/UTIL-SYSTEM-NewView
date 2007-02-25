@@ -59,6 +59,7 @@ var
 
 
 Implementation
+
 uses
   BseDos,
   StringUtilsUnit;

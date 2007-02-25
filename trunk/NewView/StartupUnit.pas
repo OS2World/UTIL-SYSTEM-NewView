@@ -47,8 +47,8 @@ uses
   DebugUnit,
   PMWin,
   ACLStringUtility,
-  ACLFileUtility,
-  HelpManagerUnit;
+  HelpManagerUnit,
+  FileUtilsUnit;
 
 // Look for any items that are actually specifiying environment
 // variables, and expand them to the contents of the variables
@@ -94,12 +94,6 @@ Function FindHelpFile( FileName: string ): string;
 var
   AlternativeFileName: string;
 begin
-  if FileName = OWN_HELP_MARKER then
-  begin
-    Result := GetOwnHelpFileName;
-    exit;
-  end;
-
   Result := '';
 
   AlternativeFileName := '';
