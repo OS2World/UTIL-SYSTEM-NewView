@@ -142,7 +142,6 @@ Implementation
 uses
   SysUtils,
   DebugUnit,
-  ACLFileUtility,
   ACLDialogs,
   ControlsUtility,
   DriveInfoUnit,
@@ -152,7 +151,8 @@ uses
   SearchUnit,
   SearchDirectoriesFormUnit,
   SettingsUnit,
-  InformationFormUnit;
+  InformationFormUnit,
+  FileUtilsUnit;
 
 type
   // Used to store filenames in outline
@@ -516,21 +516,18 @@ Begin
     if StrEnds( '...', Dir ) then
     begin
       Dir := StrLeftWithout( Dir, 3 );
-      ListDirectoryRecursiveAdditive2( Dir,
+      ListFilesInDirectoryRecursiveWithTermination(
+                                       Dir,
                                        '*.inf;*.hlp',
-                                       Dir, // want full paths
                                        Files,
-                                       nil, // don't care to know subdirs
                                        ThreadManager.StopRequested,
                                        true ); // check termination
     end
     else
     begin
-      ListDirectoryAdditive( Dir,
-                             '*.inf;*.hlp',
-                             Dir, // want full paths
-                             Files,
-                             nil ); // don't care to know subdirs
+      ListFilesInDirectory( Dir,
+                            '*.inf;*.hlp',
+                            Files);
     end;
   end;
 

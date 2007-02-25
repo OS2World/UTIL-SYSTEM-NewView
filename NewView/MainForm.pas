@@ -826,13 +826,14 @@ uses
 
   // Library
   ACLStringUtility,
-  ACLFileUtility,
   ACLFileIOUtility,
   ACLUtility,
   ACLDialogs,
   RunProgramUnit,
   StringUtilsUnit,
   DebugUnit,
+
+  FileUtilsUnit,
 
   // Components
   RichTextPrintUnit,
@@ -1317,7 +1318,7 @@ Begin
 
   DropObject := Source as TExternalDragDropObject;
 
-  g_ExternalLinkFileName := AddSlash( DropObject.ContainerName )
+  g_ExternalLinkFileName := AddDirectorySeparator( DropObject.ContainerName )
                             + DropObject.SourceFilename;
   g_ExternalLinkTopic := '';
   g_ExternalLinkSourceFilename := ''; // don't care
@@ -2681,7 +2682,7 @@ var
   Topic: TTopic;
 begin
   // try in same dir as source file
-  FilePath := AddSlash( ExtractFilePath( g_ExternalLinkSourceFilename ) )
+  FilePath := AddDirectorySeparator( ExtractFilePath( g_ExternalLinkSourceFilename ) )
               + g_ExternalLinkFilename;
 
   if not StringsSame( FilePath, g_ExternalLinkSourceFilename ) then
@@ -3806,9 +3807,6 @@ Begin
 
   StartingUp := true;
 
-  Application.HelpFile := GetOwnHelpFilename; // OWN_HELP_MARKER;
-  Application.OnHelp := OnHelp;
-
   SharedMemory := AccessSharedMemory;
   GlobalFilelist := TGlobalFilelist.Create;
 
@@ -3816,6 +3814,9 @@ Begin
   tmpCmdLine := nativeOS2GetCmdLineParameter;
   CmdLineParameters := TCmdLineParameters.Create;
   CmdLineParameters.parseCmdLine(tmpCmdLine);
+
+  Application.HelpFile := CmdLineParameters.GetOwnHelpFilename; // OWN_HELP_MARKER;
+  Application.OnHelp := OnHelp;
 
   RegisterForLanguages( OnLanguageEvent );
 
@@ -6484,7 +6485,15 @@ begin
     LogEvent(LogStartup, '  File: ' + FileName );
 
     // Find the help file, if possible
-    FullFilePath := FindHelpFile( Filename );
+    if Filename = OWN_HELP_MARKER then
+    begin
+      FullFilePath := CmdLineParameters.GetOwnHelpFileName;
+    end
+    else
+    begin
+      FullFilePath := FindHelpFile( Filename );
+    end;
+
     if FullFilePath <> '' then
     begin
       LogEvent(LogStartup, '    Full path: ' + FullFilePath );
@@ -6787,7 +6796,7 @@ begin
 
   if Settings.UseOriginalDialogs then
   begin
-    SystemOpenDialog.Filename := AddSlash( Settings.LastOpenDirectory ) + '*.hlp;*.inf';
+    SystemOpenDialog.Filename := AddDirectorySeparator( Settings.LastOpenDirectory ) + '*.hlp;*.inf';
     if not SystemOpenDialog.Execute then
       exit;
 

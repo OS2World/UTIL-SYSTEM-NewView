@@ -123,7 +123,7 @@ uses
   PmWin,
   SysUtils,
   ACLStringUtility,
-  ACLFileUtility,
+  FileUtilsUnit,
   ACLDialogs,
   ACLString,
   AStringUtilityUnit,
@@ -486,7 +486,7 @@ Begin
   // First, see if it's a directory to change to
   // (in order to support typing directories, either full or relative)
   Directory := DirectoryListBox.Directory;
-  NewDirectory := ACLFileUtility.ExpandPath( Directory, FileNameText );
+  NewDirectory := ExpandPath( Directory, FileNameText );
 
   DosErrorAPI( FERR_DISABLEHARDERR );
 
@@ -520,9 +520,9 @@ Begin
 
     // Work out directory
     FilePath := ExtractFilePath( FileName );
-    FilePath := ACLFileUtility.ExpandPath( Directory, FilePath );
+    FilePath := ExpandPath( Directory, FilePath );
 
-    FileName := AddSlash( FilePath )
+    FileName := AddDirectorySeparator( FilePath )
                 + ExtractFileName( FileName );
     if RequireFileExists then
     begin
@@ -591,10 +591,9 @@ begin
 
   DosErrorAPI( FERR_DISABLEHARDERR );
 
-  ListDirectory( DirectoryListBox.Directory,
-                 FileMask,
-                 Filenames,
-                 nil );
+  ListFilesInDirectory( DirectoryListBox.Directory,
+                        FileMask,
+                        Filenames);
 
   Filenames.Sort;
 
@@ -605,7 +604,7 @@ begin
   begin
     Filename := Filenames[ i ];
 
-    Title := GetHelpFileTitle( AddSlash( DirectoryListBox.Directory )
+    Title := GetHelpFileTitle( AddDirectorySeparator( DirectoryListBox.Directory )
                                + Filename );
 
     FileListBox.Items.Add( Filename
