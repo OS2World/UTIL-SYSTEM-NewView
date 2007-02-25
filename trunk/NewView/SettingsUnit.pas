@@ -138,7 +138,7 @@ Uses
   SysUtils,
   DebugUnit,
   Dos,
-  ACLFileUtility,
+  FileUtilsUnit,
   ACLUtility,
   ACLStringUtility,
   ControlsUtility;
@@ -178,7 +178,7 @@ Begin
   UserIniFile := GetApplicationDir;
   // Note: do NOT combine these two steps. Caused an obscure bug!
   FSplit( UserIniFile, Dir, Name, Ext );
-  Result := AddSlash( Dir ) + IniFileName;
+  Result := AddDirectorySeparator( Dir ) + IniFileName;
 End;
 
 // Note: since Sibyl SPCC 2.1.8.3
