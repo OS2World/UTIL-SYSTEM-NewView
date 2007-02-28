@@ -714,21 +714,43 @@ end;
 
 Procedure TGlobalSearchForm.WMOpened( Var Msg: TMessage );
 begin
+  SearchTextLabel.XAlign := xaLeft;
+  SearchTextLabel.YAlign := yaTop;
+
+  SearchTextEdit.XStretch := xsFrame;
+  SearchTextEdit.YAlign := yaTop;
+  SearchTextEdit.Focus;
+
+  SearchButton.XAlign := xaRight;
+  SearchButton.YAlign := yaTop;
+
+  SearchTextLabel1.XAlign := xaLeft;
+  SearchTextLabel1.YAlign := yaTop;
+
+  SearchLocationComboBox.XStretch := xsFrame;
+  SearchLocationComboBox.YAlign := yaTop;
+
+  SelectDrivesButton.XAlign := xaRight;
+  SelectDrivesButton.YAlign := yaTop;
+
   Bevel.XStretch := xsFrame;
   Bevel.YAlign := yaTop;
 
   LED.XAlign := xaRight;
   LED.YAlign := yaTop;
 
-  SearchTextEdit.XStretch := xsFrame;
+  ResultsLabel.XAlign := xaLeft;
+  ResultsLabel.YAlign := yaTop;
+
   ProgressLabel.XStretch := xsFrame;
+  ProgressLabel.YAlign := yaTop;
+
   ResultsOutline.XStretch := xsFrame;
   ResultsOutline.YStretch := ysFrame;
-  ProgressLabel.YAlign := yaTop;
+
   ProgressBar.XStretch := xsFrame;
   ProgressBar.YAlign := yaBottom;
-  SearchTextEdit.YAlign := yaTop;
-  SearchTextEdit.Focus;
+
 end;
 
 procedure EnsureGlobalSearchFormLoaded;
