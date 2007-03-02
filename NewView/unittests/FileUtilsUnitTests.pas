@@ -572,7 +572,7 @@ Implementation
     ListFilesInDirectory('P:\newview_dev', '*.txt', tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_OneFile', 1, tmpResult.count);
-    assertEqualsString('testListFilesInDirectory_OneFile', 'P:\newview_dev\__readme.txt', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectory_OneFile', '__readme.txt', tmpResult[0]);
 
     tmpResult.Destroy;
   end;
@@ -587,9 +587,9 @@ Implementation
     ListFilesInDirectory('P:\newview_dev', '*.*', tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_ManyFiles', 3, tmpResult.count);
-    assertEqualsString('testListFilesInDirectory_ManyFiles', 'P:\newview_dev\env.cmd', tmpResult[0]);
-    assertEqualsString('testListFilesInDirectory_ManyFiles', 'P:\newview_dev\med.cmd', tmpResult[1]);
-    assertEqualsString('testListFilesInDirectory_ManyFiles', 'P:\newview_dev\__readme.txt', tmpResult[2]);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', 'env.cmd', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', 'med.cmd', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', '__readme.txt', tmpResult[2]);
 
     tmpResult.Destroy;
   end;
@@ -604,8 +604,8 @@ Implementation
     ListFilesInDirectory('P:\newview_dev', '*.txt;*v.cmd', tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_ManyFilter', 2, tmpResult.count);
-    assertEqualsString('testListFilesInDirectory_ManyFilter', 'P:\newview_dev\__readme.txt', tmpResult[0]);
-    assertEqualsString('testListFilesInDirectory_ManyFilter', 'P:\newview_dev\env.cmd', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectory_ManyFilter', '__readme.txt', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectory_ManyFilter', 'env.cmd', tmpResult[1]);
 
     tmpResult.Destroy;
   end;
@@ -656,8 +656,8 @@ Implementation
     ListFilesInDirectoryRecursiveWithTermination('P:\newview_dev\i18n', '*.ipf;*.lng', tmpResult, nil, false);
 
     assertEqualsInt('testListFilesInDirectoryRecursiveWithTermination', 16, tmpResult.count);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'P:\newview_dev\i18n\NewView.ipf', tmpResult[0]);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'P:\newview_dev\i18n\sv\newview_sv.lng', tmpResult[15]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'NewView.ipf', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'newview_sv.lng', tmpResult[15]);
 
     tmpResult.Destroy;
   end;
