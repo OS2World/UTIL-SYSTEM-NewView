@@ -191,8 +191,6 @@ uses
     end;
     tmpDirectories.Destroy;
 
-//    Result := StrTrimRightChars(Result, [DirectorySeparator]);
-
     if Length(Result) = 2 then
     begin
       if Result[2] = ':' then
@@ -373,7 +371,7 @@ uses
       begin
         if tmpSearchResults.Attr And faDirectory = 0 then
         begin
-          aList.Add(AddDirectorySeparatorIfNotEmpty(aDirectory) + tmpSearchResults.Name );
+          aList.Add(tmpSearchResults.Name);
         end;
 
         tmpRC := FindNext(tmpSearchResults);
