@@ -11,7 +11,6 @@ Uses
   CustomCheckListBox, CustomDirOutline,
   CustomListBox, CustomMemo,
   CustomOutline,
-  DirectoryEdit,
   Coolbar2, SplitBar,
   CustomFileControls, CustomFontDialog,
   MultiColumnListBox, CoolBar, Test, HT,
@@ -55,6 +54,7 @@ type
     Button2: TButton;
     Button1: TButton;
     AnOutline: TOutline2;
+    Procedure Edit1OnChange (Sender: TObject);
     Procedure Button16OnClick (Sender: TObject);
     Procedure Button15OnClick (Sender: TObject);
     Procedure Button14OnClick (Sender: TObject);
@@ -104,6 +104,11 @@ uses
   RichTextPrintUnit, RichTextStyleUnit, ACLLanguageUnit, WebBrowserUnit;
 
 {$R DialogIcons}
+
+Procedure TComponentsTestForm.Edit1OnChange (Sender: TObject);
+Begin
+
+End;
 
 Procedure TComponentsTestForm.Button16OnClick (Sender: TObject);
 var
