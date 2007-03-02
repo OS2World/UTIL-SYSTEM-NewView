@@ -6,6 +6,7 @@ uses
   TestAssert,
   CmdLineParameterUnitTests,
   StringUtilsUnitTests,
+  FileUtilsUnitTests,
   HelpTopicTests;
 
 IMPORTS
@@ -34,6 +35,7 @@ BEGIN
   tmpSuites.Add(@getCmdLineParameterUnitTests);
   tmpSuites.Add(@getStringUtilsUnitTests);
 //  tmpSuites.Add(@getHelpTopicTests);
+  tmpSuites.Add(@getFileUtilsUnitTests);
 
   tmpTestNo := -1;
   try
