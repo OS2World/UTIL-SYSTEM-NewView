@@ -101,7 +101,7 @@ uses
   PMWin, Os2Def,
   Dialogs, SysUtils, Printers,
   ControlScrolling, ACLResourceUtility, ACLStringUtility,
-  RichTextPrintUnit, RichTextStyleUnit, ACLLanguageUnit, WebBrowserUnit;
+  RichTextPrintUnit, RichTextStyleUnit, ACLLanguageUnit;
 
 {$R DialogIcons}
 
