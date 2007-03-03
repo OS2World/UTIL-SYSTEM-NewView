@@ -33,7 +33,13 @@ File21=CMDLINEPARAMETERUNIT
 File22=CMDLINEPARAMETERUNITTESTS
 File23=STRINGUTILSUNITTESTS
 File24=FILEUTILSUNITTESTS
-File25=HELPTOPICTESTS
+File25=PMSTDDLG
+File26=PMHELP
+File27=MESSAGES
+File28=FORMS
+File29=RUNPROGRAMUNIT
+File30=WEBBROWSERUNIT
+File31=HELPTOPICTESTS
 
 [Compiler Options]
 
@@ -59,31 +65,31 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\NEWVIEW
+LastDir=P:\NEWVIEW_DEV\COMPONENTS
 OutDir=P:\NEWVIEW_DEV\build\unittest
-LibDir=P:\NEWVIEW_DEV\build\library;P:\NEWVIEW_DEV\build\sibyl\lib
+LibDir=P:\NEWVIEW_DEV\build\library;P:\NEWVIEW_DEV\Components;P:\NEWVIEW_DEV\build\sibyl\lib
 LibSrcDir=P:\NEWVIEW_DEV\NEWVIEW;D:\PROGS\SIBYL\Source\RTL;D:\PROGS\SIBYL\Source\SPCC
 IncSrcDir=
 CompInstallDir=D:\PROGS\SIBYL\Compnt
 
 [Find History]
 
-Find0=testListFilesInDirectory_ManyFiles
-Find1=testAddDirectorySeparator_ManyChars
-Find2=Listfile
-Find3=list
-Find4=DirectoryExists
-Find5=false
-Find6=RemoveRightDirectorySeparator
-Find7=bbb
-Find8=testRemoveRightDirectorySeparator_Empty
-Find9=DirectoryEx
-Find10=directory
-Find11=result.add(@
-Find12=testExpandPath_RootDirForDrive
-Find13=testExpandPath_DriveWithoutSlash
-Find14=abc
-Find15=parentdir
+Find0=trow
+Find1=RunProgramUnit
+Find2=ExtractFilePath
+Find3=SearchPath
+Find4=testListFilesInDirectory_ManyFiles
+Find5=testAddDirectorySeparator_ManyChars
+Find6=Listfile
+Find7=list
+Find8=DirectoryExists
+Find9=false
+Find10=RemoveRightDirectorySeparator
+Find11=bbb
+Find12=testRemoveRightDirectorySeparator_Empty
+Find13=DirectoryEx
+Find14=directory
+Find15=result.add(@
 
 [General]
 
@@ -99,12 +105,12 @@ Platform=Standard
 
 [Last Closed Files]
 
-File0=..\..\.\Library\ACLFindFunctions.pas
-File1=.\testassert.pas
-File2=.\CmdLineParameterUnitTests.pas
-File3=..\.\CmdLineParameterUnit.pas
-File4=..\..\.\Library\ACLFileIOUtility.pas
-File5=D:\PROGS\SIBYL\SOURCE\RTL\SYSTEM.PAS
+File0=..\..\.\COMPONENTS\DialogIcons.rc
+File1=..\..\.\Components\ACLMessageForm.pas
+File2=..\..\.\Components\ACLDialogs.pas
+File3=..\..\.\Library\ACLFindFunctions.pas
+File4=.\testassert.pas
+File5=..\..\.\Library\ACLFileIOUtility.pas
 
 [Last Open Files]
 
@@ -113,15 +119,15 @@ File0.Left=-4
 File0.Bottom=-5
 File0.Width=1306
 File0.Height=548
-File0.Column=43
-File0.Line=55
+File0.Column=18
+File0.Line=10
 File1=..\.\StringUtilsUnit.pas
 File1.Left=-4
 File1.Bottom=-5
 File1.Width=1306
 File1.Height=548
-File1.Column=43
-File1.Line=121
+File1.Column=1
+File1.Line=233
 File2=.\StringUtilsUnitTests.pas
 File2.Left=-4
 File2.Bottom=-5
@@ -141,15 +147,15 @@ File4.Left=-4
 File4.Bottom=-5
 File4.Width=1306
 File4.Height=548
-File4.Column=39
-File4.Line=421
+File4.Column=25
+File4.Line=38
 File5=..\..\.\Library\ACLFileUtility.pas
 File5.Left=-4
 File5.Bottom=-5
 File5.Width=1306
 File5.Height=548
-File5.Column=1
-File5.Line=207
+File5.Column=24
+File5.Line=1005
 File6=..\.\DebugUnit.pas
 File6.Left=-4
 File6.Bottom=-5
@@ -157,6 +163,27 @@ File6.Width=1306
 File6.Height=548
 File6.Column=68
 File6.Line=29
+File7=.\CmdLineParameterUnitTests.pas
+File7.Left=-4
+File7.Bottom=-5
+File7.Width=1306
+File7.Height=548
+File7.Column=29
+File7.Line=1
+File8=..\.\CmdLineParameterUnit.pas
+File8.Left=-4
+File8.Bottom=-5
+File8.Width=1306
+File8.Height=548
+File8.Column=1
+File8.Line=1
+File9=..\.\WebBrowserUnit.pas
+File9.Left=-4
+File9.Bottom=-5
+File9.Width=1306
+File9.Height=548
+File9.Column=13
+File9.Line=1
 
 [Linker Options]
 
@@ -177,7 +204,7 @@ Stack=256
 Primary=.\NewViewTests.pas
 MainFile0=.\NewViewTests.pas
 MainFile0.Ext=.EXE
-MainFile0.Checksum=6912
+MainFile0.Checksum=8448
 MainFile0.Expanded=False
 MainFile0.File0=.\StringUtilsUnitTests.pas
 MainFile0.File1=.\TestAssert.pas
@@ -208,7 +235,12 @@ MainFile0.Dependency20=..\.\CMDLINEPARAMETERUNIT.PAS
 MainFile0.Dependency21=.\CMDLINEPARAMETERUNITTESTS.PAS
 MainFile0.Dependency22=.\STRINGUTILSUNITTESTS.PAS
 MainFile0.Dependency23=.\FILEUTILSUNITTESTS.PAS
-MainFile0.Dependency24=.\HELPTOPICTESTS.PAS
+MainFile0.Dependency24=D:\PROGS\SIBYL\Source\RTL\PMSTDDLG.PAS
+MainFile0.Dependency25=D:\PROGS\SIBYL\Source\RTL\PMHELP.PAS
+MainFile0.Dependency26=D:\PROGS\SIBYL\Source\SPCC\MESSAGES.PAS
+MainFile0.Dependency27=D:\PROGS\SIBYL\Source\SPCC\FORMS.PAS
+MainFile0.Dependency28=..\.\WEBBROWSERUNIT.PAS
+MainFile0.Dependency29=.\HELPTOPICTESTS.PAS
 
 [Replace History]
 

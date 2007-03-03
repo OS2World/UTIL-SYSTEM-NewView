@@ -5472,10 +5472,19 @@ Begin
   end
   else if StrLeft( LinkString, 3 ) = 'url' then
   begin
-    URL := StrRightFrom( LinkString, 5 );
-    LaunchURL( URL );
-    SetStatus( 'Opened '
-               + URL );
+    URL := StrRightFrom(LinkString, 5);
+
+    try
+      LaunchURL(URL);
+    except
+      on E:Exception do
+      begin
+        DoErrorDlg('Error', E.Message);
+      end;
+      else raise;
+    end;
+
+    SetStatus('Opened ' + URL );
   end
   else if StrLeft( LinkString, 8 ) = 'external' then
   begin

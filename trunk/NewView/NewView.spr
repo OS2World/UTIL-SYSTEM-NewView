@@ -169,27 +169,27 @@ CompInstallDir=
 
 [Find History]
 
-Find0=language
-Find1=SelectDrivesButton
-Find2=ResultsOutline
-Find3=ACL
-Find4=ACLFileUtility
-Find5=Cmdl
-Find6=forms
-Find7='NEWVIEW_DEBUG'
-Find8=StrExtractStrings
-Find9=extract
-Find10=Unit
-Find11=TopicByResourceIDMI
-Find12=DebugTopicByResourceIDMI
-Find13=DebugTopic
-Find14=Debug
-Find15=ResourceID
+Find0=Web
+Find1=LaunchURL
+Find2=WebBrowser
+Find3=WebBrowserUnit
+Find4=language
+Find5=SelectDrivesButton
+Find6=ResultsOutline
+Find7=ACL
+Find8=ACLFileUtility
+Find9=Cmdl
+Find10=forms
+Find11='NEWVIEW_DEBUG'
+Find12=StrExtractStrings
+Find13=extract
+Find14=Unit
+Find15=TopicByResourceIDMI
 
 [General]
 
 Version=Sibyl Project Ver2.02
-ProjectName=P:\NEWVIEW_DEV\NEWVIEW\NewView.spr
+ProjectName=P:\NEWVIEW_DEV\NewView\NewView.spr
 ProjectType=Visual
 CompLibName=D:\progs\Sibyl\Bin\CompLib.dll
 Win32CompLibName=D:\progs\Sibyl\Bin\CompLib.dll
@@ -214,8 +214,8 @@ File0.Left=-4
 File0.Bottom=-5
 File0.Width=1306
 File0.Height=548
-File0.Column=1
-File0.Line=70
+File0.Column=75
+File0.Line=5463
 File1=.\StringUtilsUnit.pas
 File1.Left=-4
 File1.Bottom=-5
@@ -270,8 +270,15 @@ File8.Left=-4
 File8.Bottom=-5
 File8.Width=1306
 File8.Height=548
-File8.Column=116
-File8.Line=579
+File8.Column=1
+File8.Line=1
+File9=.\WebBrowserUnit.pas
+File9.Left=-4
+File9.Bottom=-5
+File9.Width=1306
+File9.Height=548
+File9.Column=1
+File9.Line=20
 
 [Linker Options]
 
@@ -289,7 +296,7 @@ Stack=1024
 
 [Project Files]
 
-Primary=.\NewView.pas
+Primary=
 MainFile0=.\NewView.pas
 MainFile0.Ext=.EXE
 MainFile0.Checksum=26624
@@ -413,7 +420,7 @@ MainFile0.Dependency86=..\.\components\CUSTOMFILECONTROLS.PAS
 MainFile0.Dependency87=.\FILEDIALOGFORM.PAS
 MainFile0.Dependency88=.\OPTIONSFORM.PAS
 MainFile0.Dependency89=.\VERSIONUNIT.PAS
-MainFile0.Dependency90=..\.\components\WEBBROWSERUNIT.PAS
+MainFile0.Dependency90=.\WEBBROWSERUNIT.PAS
 MainFile0.Dependency91=.\PRODUCTINFORMATIONFORMUNIT.PAS
 MainFile0.Dependency92=.\NOTEFORM.PAS
 MainFile0.Dependency93=.\SEARCHUNIT.PAS
