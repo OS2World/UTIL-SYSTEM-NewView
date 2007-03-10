@@ -53,7 +53,9 @@ uses
   SysUtils,
   Printers,
   ACLDialogs,
-  ControlsUtility;
+  ControlsUtility,
+  DebugUnit,
+  StringUtilsUnit;
 
 Procedure TNewViewPrintDialog.OKButtonOnClick (Sender: TObject);
 Begin
@@ -73,6 +75,7 @@ End;
 Procedure TNewViewPrintDialog.OnLanguageEvent( Language: TLanguageFile;
                                                const Apply: boolean );
 begin
+  LogEvent(LogI18n, 'TNewViewPrintDialog.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
   Language.LL( Apply, SetupPrinterErrorTitle, 'SetupPrinterErrorTitle', 'Setup Printer' );

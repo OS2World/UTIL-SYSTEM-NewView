@@ -129,7 +129,8 @@ uses
   AStringUtilityUnit,
   ControlsUtility,
   SettingsUnit,
-  HelpFile;
+  HelpFile,
+  DebugUnit;
 
 Imports
   // Redeclared since the Sibyl declaration passes text as a cstring :(
@@ -558,6 +559,7 @@ End;
 Procedure TFileDialogForm.OnLanguageEvent( Language: TLanguageFile;
                                            const Apply: boolean );
 begin
+  LogEvent(LogI18n, 'TFileDialogForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
   Language.LL( Apply, InvalidFilterErrorTitle, 'InvalidFilterErrorTitle', 'File Filter Error' );

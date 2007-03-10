@@ -45,7 +45,9 @@ Implementation
 uses
   VersionUnit,
   ControlsUtility,
-  WebBrowserUnit;
+  WebBrowserUnit,
+  DebugUnit,
+  StringUtilsUnit;
 
 Procedure TProductInformationForm.EmailEditOnClick (Sender: TObject);
 Begin
@@ -65,6 +67,7 @@ End;
 Procedure TProductInformationForm.OnLanguageEvent( Language: TLanguageFile;
                                                    const Apply: boolean );
 begin
+  LogEvent(LogI18n, 'TProductInformationForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
   Language.LL( Apply, VersionMsg, 'VersionMsg', 'Version: ' );

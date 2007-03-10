@@ -139,7 +139,9 @@ uses
   SysUtils,
   ACLUtility,
   ControlsUtility,
-  FileDialogForm;
+  FileDialogForm,
+  DebugUnit,
+  StringUtilsUnit;
 
 Procedure TOptionsForm.OptionsFormOnSetupShow (Sender: TObject);
 Begin
@@ -196,6 +198,7 @@ var
   i: longint;
   ColorItemName: string;
 begin
+  LogEvent(LogI18n, 'TOptionsForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
   if Apply then

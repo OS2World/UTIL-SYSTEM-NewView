@@ -336,27 +336,28 @@ Begin
 
 End;
 
-Procedure TGlobalSearchForm.OnLanguageEvent( Language: TLanguageFile;
-                                             const Apply: boolean );
+Procedure TGlobalSearchForm.OnLanguageEvent(Language: TLanguageFile; const Apply: boolean );
 begin
-  Language.LoadComponentLanguage( self, Apply );
+  LogEvent(LogI18n, 'TGlobalSearchForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
 
-  Language.LL( Apply, SearchCaption, 'SearchCaption', '~Search' );
-  Language.LL( Apply, StopCaption, 'StopCaption', '~Stop' );
-  Language.LL( Apply, NoResultsMsg, 'NoResultsMsg', '(No results found)' );
-  Language.LL( Apply, ScanDirectoriesMsg, 'ScanDirectoriesMsg', 'Finding help files...' );
-  Language.LL( Apply, SearchingFileMsg, 'SearchingFileMsg', 'Searching ' );
-  Language.LL( Apply, OfMsg, 'OfMsg', ' of ' );
-  Language.LL( Apply, DoneMsg, 'DoneMsg', 'Done' );
-  Language.LL( Apply, SearchErrorTitle, 'SearchErrorTitle', 'Search' );
-  Language.LL( Apply, SearchError, 'SearchError', 'Error in search syntax: ' );
+  Language.LoadComponentLanguage(self, Apply);
 
-  Language.LL( Apply, StandardHelpPathsLocation, 'StandardHelpPathsLocation', 'Standard Help Paths' );
-  Language.LL( Apply, FixedDrivesLocation, 'FixedDrivesLocation', 'All Hard Drives' );
-  Language.LL( Apply, SelectedHelpPathsLocation, 'SelectedHelpPathsLocation', 'Selected Help Paths' );
-  Language.LL( Apply, CustomPathsLocation, 'CustomPathsLocation', 'Directory List' );
+  Language.LL(Apply, SearchCaption, 'SearchCaption', '~Search');
+  Language.LL(Apply, StopCaption, 'StopCaption', '~Stop');
+  Language.LL(Apply, NoResultsMsg, 'NoResultsMsg', '(No results found)');
+  Language.LL(Apply, ScanDirectoriesMsg, 'ScanDirectoriesMsg', 'Finding help files...');
+  Language.LL(Apply, SearchingFileMsg, 'SearchingFileMsg', 'Searching ');
+  Language.LL(Apply, OfMsg, 'OfMsg', ' of ');
+  Language.LL(Apply, DoneMsg, 'DoneMsg', 'Done');
+  Language.LL(Apply, SearchErrorTitle, 'SearchErrorTitle', 'Search');
+  Language.LL(Apply, SearchError, 'SearchError', 'Error in search syntax: ');
 
+  Language.LL(Apply, StandardHelpPathsLocation, 'StandardHelpPathsLocation', 'Standard Help Paths');
+  Language.LL(Apply, FixedDrivesLocation, 'FixedDrivesLocation', 'All Hard Drives');
+  Language.LL(Apply, SelectedHelpPathsLocation, 'SelectedHelpPathsLocation', 'Selected Help Paths');
+  Language.LL(Apply, CustomPathsLocation, 'CustomPathsLocation', 'Directory List');
 end;
+
 
 Procedure TGlobalSearchForm.CancelButtonOnClick (Sender: TObject);
 Begin
