@@ -171,16 +171,16 @@ uses
     tmpQuote : String;
     tmpSwitch : String;
     tmpOwnHelpFileName : String;
+    tmpEnvDebug : String;
   begin
     // first adjust logging
     debugEnabled := false;
-    if GetEnv(ENV_DEBUG) = '' then
+    tmpEnvDebug := GetEnv(ENV_DEBUG);
+
+    if tmpEnvDebug <> '' then
     begin
       debugEnabled := true;
-    end
-    else
-    begin
-      SetLogAspects(GetEnv(ENV_DEBUG));
+      SetLogAspects(tmpEnvDebug);
     end;
 
     LogEvent(LogStartup, 'ParseCommandLine: "' + aCmdLineString + '"');
