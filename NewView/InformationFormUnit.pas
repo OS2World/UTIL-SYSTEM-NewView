@@ -34,7 +34,9 @@ Var
 Implementation
 
 Uses
-  ControlsUtility;
+  ControlsUtility,
+  DebugUnit,
+  StringUtilsUnit;
 
 Procedure TInformationForm.InformationFormOnSetupShow (Sender: TObject);
 Begin
@@ -59,6 +61,7 @@ End;
 Procedure TInformationForm.OnLanguageEvent( Language: TLanguageFile;
                                             const Apply: boolean );
 begin
+  LogEvent(LogI18n, 'TInformationForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 end;
 

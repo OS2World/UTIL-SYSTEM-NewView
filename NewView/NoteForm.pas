@@ -41,7 +41,9 @@ Implementation
 
 uses
   SysUtils,
-  ControlsUtility;
+  ControlsUtility,
+  DebugUnit,
+  StringUtilsUnit;
 
 Procedure TNoteForm.NoteFormOnSetupShow (Sender: TObject);
 Begin
@@ -51,6 +53,7 @@ End;
 Procedure TNoteForm.OnLanguageEvent( Language: TLanguageFile;
                                      const Apply: boolean );
 begin
+  LogEvent(LogI18n, 'TNoteForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 end;
 

@@ -51,7 +51,9 @@ Var
 Implementation
 
 Uses
-  ControlsUtility;
+  ControlsUtility,
+  DebugUnit,
+  StringUtilsUnit;
 
 Procedure TSearchDirectoriesForm.SearchDirectoriesFormOnSetupShow (Sender: TObject);
 Begin
@@ -109,6 +111,7 @@ End;
 Procedure TSearchDirectoriesForm.OnLanguageEvent( Language: TLanguageFile;
                                                    const Apply: boolean );
 begin
+  LogEvent(LogI18n, 'TSearchDirectoriesForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 end;
 

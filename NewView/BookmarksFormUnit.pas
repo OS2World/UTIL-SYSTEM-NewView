@@ -66,7 +66,8 @@ uses
   PMWin,
   ControlsUtility,
   ACLDialogs,
-  ACLStringUtility;
+  ACLStringUtility,
+  DebugUnit;
 
 Procedure TBookmarksForm.BookmarksFormOnSetupShow (Sender: TObject);
 Begin
@@ -83,6 +84,7 @@ End;
 Procedure TBookmarksForm.OnLanguageEvent( Language: TLanguageFile;
                                           const Apply: boolean );
 begin
+  LogEvent(LogI18n, 'TBookmarksForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
   Language.LL( Apply, DeleteBookmarkTitle, 'DeleteBookmarkTitle', 'Delete Bookmark' );

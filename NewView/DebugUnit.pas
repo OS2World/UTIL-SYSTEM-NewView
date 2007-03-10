@@ -21,6 +21,7 @@ uses
     LogAspect = (       LogStartup,
                         LogShutdown,
                         LogSettings,
+                        LogI18n,
                         LogParse,
                         LogDisplay,
                         LogSearch,
@@ -118,17 +119,18 @@ uses
   Function GetAspectPrefix(const aLogAspect: LogAspect): String;
   Begin
     Case aLogAspect of
-      LogStartup      :  result := 'Startup';
-      LogShutdown     :  result := 'Start';
-      LogSettings     :  result := 'Settings';
-      LogParse        :  result := 'Parse';
-      LogDisplay      :  result := 'Display';
-      LogSearch       :  result := 'Search';
-      LogNHM          :  result := 'NewHelpManager';
-      LogViewStub     :  result := 'ViewStub';
-      LogObjConstDest :  result := 'ObjConstDest';
-      LogDebug        :  result := 'Debug';
-      else               result := 'Unknown';
+      LogStartup      : result := 'Startup';
+      LogShutdown     : result := 'Start';
+      LogSettings     : result := 'Settings';
+      LogI18n         : result := 'I18n';
+      LogParse        : result := 'Parse';
+      LogDisplay      : result := 'Display';
+      LogSearch       : result := 'Search';
+      LogNHM          : result := 'NewHelpManager';
+      LogViewStub     : result := 'ViewStub';
+      LogObjConstDest : result := 'ObjConstDest';
+      LogDebug        : result := 'Debug';
+      else              result := 'Unknown';
       end;
   End;
 
@@ -146,6 +148,7 @@ uses
       if tmpAspects[i] = 'LogStartup'      then activeLogAspects := activeLogAspects + [ LogStartup ];
       if tmpAspects[i] = 'LogShutdown'     then activeLogAspects := activeLogAspects + [ LogShutdown ];
       if tmpAspects[i] = 'LogSettings'     then activeLogAspects := activeLogAspects + [ LogSettings ];
+      if tmpAspects[i] = 'LogI18n'         then activeLogAspects := activeLogAspects + [ LogI18n ];
       if tmpAspects[i] = 'LogParse'        then activeLogAspects := activeLogAspects + [ LogParse ];
       if tmpAspects[i] = 'LogDisplay'      then activeLogAspects := activeLogAspects + [ LogDisplay ];
       if tmpAspects[i] = 'LogSearch'       then activeLogAspects := activeLogAspects + [ LogSearch ];
