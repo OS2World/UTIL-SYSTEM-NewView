@@ -16,7 +16,7 @@ ApplicationIcon=
 
 [Breakpoints]
 
-Breakpoint0=.\GLOBALSEARCHFORM.PAS|344
+Breakpoint2=.\MAINFORM.PAS|3064
 
 [Browser Files]
 
@@ -151,7 +151,7 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\NEWVIEW
+LastDir=P:\NEWVIEW_DEV\NewView
 OutDir=P:\newview_dev\build\newview
 LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\components;P:\newview_dev\build\library
 LibSrcDir=P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl;P:\newview_dev\library;P:\newview_dev\components
@@ -169,22 +169,22 @@ CompInstallDir=
 
 [Find History]
 
-Find0=Web
-Find1=LaunchURL
-Find2=WebBrowser
-Find3=WebBrowserUnit
-Find4=language
-Find5=SelectDrivesButton
-Find6=ResultsOutline
-Find7=ACL
-Find8=ACLFileUtility
-Find9=Cmdl
-Find10=forms
-Find11='NEWVIEW_DEBUG'
-Find12=StrExtractStrings
-Find13=extract
-Find14=Unit
-Find15=TopicByResourceIDMI
+Find0=LoadAutoLanguage
+Find1=FindDefaultLanguageHelpFile
+Find2=oncreate
+Find3=onLanguage
+Find4=onLanaguage
+Find5=getOwnHelp
+Find6=Web
+Find7=LaunchURL
+Find8=WebBrowser
+Find9=WebBrowserUnit
+Find10=language
+Find11=SelectDrivesButton
+Find12=ResultsOutline
+Find13=ACL
+Find14=ACLFileUtility
+Find15=Cmdl
 
 [General]
 
@@ -200,12 +200,12 @@ Platform=OS/2
 
 [Last Closed Files]
 
-File0=.\BookmarksFormUnit.pas
-File1=.\SettingsUnit.pas
-File2=.\MiscUnit.pas
-File3=..\.\LIBRARY\RunProgramUnit.pas
-File4=.\HelpTopic.pas
-File5=.\HelpFile.pas
+File0=..\.\SIBYL\RTL\SYSTEM.PAS
+File1=..\.\SIBYL\SPCC\FORMS.PAS
+File2=..\.\COMPONENTS\ACLLanguageUnit.pas
+File3=.\NoteForm.pas
+File4=.\OptionsForm.pas
+File5=.\TextSearchQuery.pas
 
 [Last Open Files]
 
@@ -214,15 +214,15 @@ File0.Left=-4
 File0.Bottom=-5
 File0.Width=1306
 File0.Height=548
-File0.Column=75
-File0.Line=5463
+File0.Column=7
+File0.Line=3915
 File1=.\StringUtilsUnit.pas
 File1.Left=-4
 File1.Bottom=-5
 File1.Width=1306
 File1.Height=548
-File1.Column=21
-File1.Line=158
+File1.Column=17
+File1.Line=83
 File2=.\StartupUnit.pas
 File2.Left=-4
 File2.Bottom=-5
@@ -235,50 +235,43 @@ File3.Left=-4
 File3.Bottom=-5
 File3.Width=1306
 File3.Height=548
-File3.Column=47
-File3.Line=414
+File3.Column=52
+File3.Line=605
 File4=.\DebugUnit.pas
 File4.Left=-4
 File4.Bottom=-5
 File4.Width=1306
 File4.Height=548
-File4.Column=44
-File4.Line=7
+File4.Column=36
+File4.Line=131
 File5=.\NewView.pas
 File5.Left=-4
 File5.Bottom=-5
 File5.Width=1306
 File5.Height=548
-File5.Column=4
-File5.Line=34
+File5.Column=1
+File5.Line=32
 File6=.\GlobalSearchForm.pas
 File6.Left=-4
 File6.Bottom=-5
 File6.Width=1306
 File6.Height=548
-File6.Column=39
-File6.Line=339
+File6.Column=1
+File6.Line=425
 File7=.\FileUtilsUnit.pas
 File7.Left=-4
 File7.Bottom=-5
 File7.Width=1306
 File7.Height=548
-File7.Column=25
-File7.Line=362
-File8=.\FileDialogForm.pas
+File7.Column=3
+File7.Line=84
+File8=.\SearchDirectoriesFormUnit.pas
 File8.Left=-4
 File8.Bottom=-5
 File8.Width=1306
 File8.Height=548
-File8.Column=1
-File8.Line=1
-File9=.\WebBrowserUnit.pas
-File9.Left=-4
-File9.Bottom=-5
-File9.Width=1306
-File9.Height=548
-File9.Column=1
-File9.Line=20
+File8.Column=72
+File8.Line=103
 
 [Linker Options]
 
@@ -296,11 +289,11 @@ Stack=1024
 
 [Project Files]
 
-Primary=
+Primary=.\NewView.pas
 MainFile0=.\NewView.pas
 MainFile0.Ext=.EXE
 MainFile0.Checksum=26624
-MainFile0.Expanded=False
+MainFile0.Expanded=True
 MainFile0.File0=.\BookmarksFormUnit.pas
 MainFile0.File1=.\DataTypes.pas
 MainFile0.File2=.\GlobalFilelistUnit.pas
