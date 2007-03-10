@@ -3821,7 +3821,7 @@ Begin
   RegisterForLanguages( OnLanguageEvent );
 
   // if debug is not enabled, get rid of the debug menu and separator.
-  if CmdLineParameters.isDebugEnabled then
+  if not CmdLineParameters.isDebugEnabled then
   begin
     ToolsDebugSep.Destroy;
     ToolsDebugMenu.Destroy;
@@ -3891,10 +3891,28 @@ Begin
   // load default strings
   LogEvent(LogSettings, 'Loading language');
 
-  if CmdLineParameters.getLanguage <> '' then
-    LoadAutoLanguage( 'newview', CmdLineParameters.getLanguage )
+  // the user likes to have english
+  // the normal automatic will fall back to
+  // the environment setting but in the special
+  // case we have to start the default
+  if CmdLineParameters.getLanguage = 'en' then
+  begin
+    LoadLanguage('');
+  end
   else
-    LoadDefaultLanguage( 'newview' );
+  begin
+    if CmdLineParameters.getLanguage <> '' then
+    begin
+      if not LoadAutoLanguage('newview', CmdLineParameters.getLanguage) then
+      begin
+        LoadDefaultLanguage('newview');
+      end
+    end
+    else
+    begin
+      LoadDefaultLanguage('newview');
+    end;
+  end;
 
   LogEvent(LogSettings, 'Applying settings');
   ApplySettings;
