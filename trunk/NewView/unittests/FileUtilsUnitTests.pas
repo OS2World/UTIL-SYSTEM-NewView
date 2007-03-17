@@ -542,8 +542,7 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.jonas', tmpResult);
-    ListFilesInDirectory('P:\newview_dev', '*.jonas', tmpResult);
+    ListFilesInDirectory('P:\newview_dev', '*.jonas', false, tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_NoFiles', 0, tmpResult.count);
   end;
@@ -555,7 +554,7 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '', tmpResult);
+    ListFilesInDirectory('P:\newview_dev', '', false, tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_EmptyFilter', 0, tmpResult.count);
 
@@ -569,7 +568,7 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.txt', tmpResult);
+    ListFilesInDirectory('P:\newview_dev', '*.txt', false, tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_OneFile', 1, tmpResult.count);
     assertEqualsString('testListFilesInDirectory_OneFile', '__readme.txt', tmpResult[0]);
@@ -584,7 +583,7 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.*', tmpResult);
+    ListFilesInDirectory('P:\newview_dev', '*.*', false, tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_ManyFiles', 3, tmpResult.count);
     assertEqualsString('testListFilesInDirectory_ManyFiles', 'env.cmd', tmpResult[0]);
@@ -601,11 +600,88 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.txt;*v.cmd', tmpResult);
+    ListFilesInDirectory('P:\newview_dev', '*.txt;*v.cmd', false, tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_ManyFilter', 2, tmpResult.count);
     assertEqualsString('testListFilesInDirectory_ManyFilter', '__readme.txt', tmpResult[0]);
     assertEqualsString('testListFilesInDirectory_ManyFilter', 'env.cmd', tmpResult[1]);
+
+    tmpResult.Destroy;
+  end;
+
+
+  // ----------------------------------------------------------
+
+
+  Procedure testListFilesInDirectoryWithDirectoryInResult_NoFiles;
+  var
+    tmpResult : TStringList;
+  begin
+    tmpResult := TStringList.Create;
+
+    ListFilesInDirectory('P:\newview_dev', '*.jonas', true, tmpResult);
+
+    assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_NoFiles', 0, tmpResult.count);
+  end;
+
+
+  Procedure testListFilesInDirectoryWithDirectoryInResult_EmptyFilter;
+  var
+    tmpResult : TStringList;
+  begin
+    tmpResult := TStringList.Create;
+
+    ListFilesInDirectory('P:\newview_dev', '', true, tmpResult);
+
+    assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_EmptyFilter', 0, tmpResult.count);
+
+    tmpResult.Destroy;
+  end;
+
+
+  Procedure testListFilesInDirectoryWithDirectoryInResult_OneFile;
+  var
+    tmpResult : TStringList;
+  begin
+    tmpResult := TStringList.Create;
+
+    ListFilesInDirectory('P:\newview_dev', '*.txt', true, tmpResult);
+
+    assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_OneFile', 1, tmpResult.count);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_OneFile', 'P:\newview_dev\__readme.txt', tmpResult[0]);
+
+    tmpResult.Destroy;
+  end;
+
+
+  Procedure testListFilesInDirectoryWithDirectoryInResult_ManyFiles;
+  var
+    tmpResult : TStringList;
+  begin
+    tmpResult := TStringList.Create;
+
+    ListFilesInDirectory('P:\newview_dev', '*.*', true, tmpResult);
+
+    assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', 3, tmpResult.count);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', 'P:\newview_dev\env.cmd', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', 'P:\newview_dev\med.cmd', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', 'P:\newview_dev\__readme.txt', tmpResult[2]);
+
+    tmpResult.Destroy;
+  end;
+
+
+  Procedure testListFilesInDirectoryWithDirectoryInResult_ManyFilter;
+  var
+    tmpResult : TStringList;
+  begin
+    tmpResult := TStringList.Create;
+
+    ListFilesInDirectory('P:\newview_dev', '*.txt;*v.cmd', true, tmpResult);
+
+    assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', 2, tmpResult.count);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', 'P:\newview_dev\__readme.txt', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', 'P:\newview_dev\env.cmd', tmpResult[1]);
 
     tmpResult.Destroy;
   end;
@@ -647,13 +723,32 @@ Implementation
   // ----------------------------------------------------------
 
 
+  Procedure testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult;
+  var
+    tmpResult : TStringList;
+  begin
+    tmpResult := TStringList.Create;
+
+    ListFilesInDirectoryRecursiveWithTermination('P:\newview_dev\i18n', '*.ipf;*.lng', true, tmpResult, nil, false);
+
+    assertEqualsInt('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', 16, tmpResult.count);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', 'P:\newview_dev\i18n\NewView.ipf', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', 'P:\newview_dev\i18n\sv\newview_sv.lng', tmpResult[15]);
+
+    tmpResult.Destroy;
+  end;
+
+
+  // ----------------------------------------------------------
+
+
   Procedure testListFilesInDirectoryRecursiveWithTermination;
   var
     tmpResult : TStringList;
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectoryRecursiveWithTermination('P:\newview_dev\i18n', '*.ipf;*.lng', tmpResult, nil, false);
+    ListFilesInDirectoryRecursiveWithTermination('P:\newview_dev\i18n', '*.ipf;*.lng', false, tmpResult, nil, false);
 
     assertEqualsInt('testListFilesInDirectoryRecursiveWithTermination', 16, tmpResult.count);
     assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'NewView.ipf', tmpResult[0]);
@@ -919,11 +1014,17 @@ Implementation
     result.add(@testListFilesInDirectory_OneFile);
     result.add(@testListFilesInDirectory_ManyFiles);
     result.add(@testListFilesInDirectory_ManyFilter);
+    result.add(@testListFilesInDirectoryWithDirectoryInResult_NoFiles);
+    result.add(@testListFilesInDirectoryWithDirectoryInResult_EmptyFilter);
+    result.add(@testListFilesInDirectoryWithDirectoryInResult_OneFile);
+    result.add(@testListFilesInDirectoryWithDirectoryInResult_ManyFiles);
+    result.add(@testListFilesInDirectoryWithDirectoryInResult_ManyFilter);
 
     result.add(@testListSubDirectories_None);
     result.add(@testListSubDirectories_Many);
 
     result.add(@testListFilesInDirectoryRecursiveWithTermination);
+    result.add(@testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult);
 
     result.add(@testParentDir_Empty);
     result.add(@testParentDir_Root);

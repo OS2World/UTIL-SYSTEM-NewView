@@ -54,18 +54,23 @@ const
   Function FindDefaultLanguageHelpFile(const anApplicationName: String; const aLanguage : String) : String;
 
   // Breaks up specified Env var path
+  // this always clears the list at the beginning
   Procedure GetDirsInPath(const aPathEnvVar: String; var aList: TStrings);
 
   // searches for all files in aDirectory matching aFilter and add
   // them to aList
   // it is possible to define different filter if you separate them by semicolon
-  Procedure ListFilesInDirectory(const aDirectory: String; const aFilter: String; var aList: TStrings);
+  Procedure ListFilesInDirectory(       const aDirectory : String;
+                                        const aFilter : String;
+                                        const aWithDirectoryFlag : boolean;
+                                        var aList : TStrings);
 
   // searches for all directories in aDirectory and add them to aList
   Procedure ListSubDirectories(const aDirectory: String; var aList: TStrings);
 
   Procedure ListFilesInDirectoryRecursiveWithTermination(const aDirectory : String;
                                                          const aFilter : String;
+                                                         const aWithDirectoryFlag : boolean;
                                                          var aList : TStrings;
                                                          const aTerminateCheck : TTerminateCheck;
                                                          const aUseTerminateCheck : boolean);
@@ -351,12 +356,16 @@ uses
   end;
 
 
-  Procedure ListFilesInDirectory(const aDirectory: String; const aFilter: String; var aList: TStrings);
+  Procedure ListFilesInDirectory(       const aDirectory: String;
+                                        const aFilter: String;
+                                        const aWithDirectoryFlag: boolean;
+                                        var aList: TStrings);
   var
     tmpRC : APIRET;
     tmpSearchResults: TSearchRec;
     tmpMask: String;
     tmpFilterParts : TStringList;
+    tmpDirectory : String;
     i : integer;
   begin
     tmpFilterParts := TStringList.Create;
@@ -365,13 +374,21 @@ uses
     for i:=0 to tmpFilterParts.count-1 do
     begin
       tmpMask := tmpFilterParts[i];
-      tmpRC := FindFirst(AddDirectorySeparator(aDirectory) + tmpMask, faAnyFile, tmpSearchResults);
+      tmpDirectory := AddDirectorySeparator(aDirectory);
+      tmpRC := FindFirst(tmpDirectory + tmpMask, faAnyFile, tmpSearchResults);
 
       while tmpRC = 0 do
       begin
         if tmpSearchResults.Attr And faDirectory = 0 then
         begin
-          aList.Add(tmpSearchResults.Name);
+          if (aWithDirectoryFlag) then
+          begin
+            aList.Add(tmpDirectory + tmpSearchResults.Name);
+          end
+          else
+          begin
+            aList.Add(tmpSearchResults.Name);
+          end;
         end;
 
         tmpRC := FindNext(tmpSearchResults);
@@ -411,6 +428,7 @@ uses
 
   Procedure ListFilesInDirectoryRecursiveWithTermination(const aDirectory : String;
                                                          const aFilter : String;
+                                                         const aWithDirectoryFlag : boolean;
                                                          var aList : TStrings;
                                                          const aTerminateCheck : TTerminateCheck;
                                                          const aUseTerminateCheck : boolean);
@@ -420,7 +438,7 @@ uses
     tmpSubDirectory : String;
   begin
     // at first add all files from the directory itself
-    ListFilesInDirectory(aDirectory, aFilter, aList);
+    ListFilesInDirectory(aDirectory, aFilter, aWithDirectoryFlag, aList);
 
     // now determine all subdirectories
     tmpSubDirectories := TStringList.Create;
@@ -435,7 +453,7 @@ uses
 
       tmpSubDirectory := tmpSubDirectories[i];
 
-      ListFilesInDirectoryRecursiveWithTermination(tmpSubDirectory, aFilter, aList, aTerminateCheck, aUseTerminateCheck);
+      ListFilesInDirectoryRecursiveWithTermination(tmpSubDirectory, aFilter, aWithDirectoryFlag, aList, aTerminateCheck, aUseTerminateCheck);
     end;
     tmpSubDirectories.Destroy;
   end;
