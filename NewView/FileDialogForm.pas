@@ -595,6 +595,7 @@ begin
 
   ListFilesInDirectory( DirectoryListBox.Directory,
                         FileMask,
+                        false,
                         Filenames);
 
   Filenames.Sort;
