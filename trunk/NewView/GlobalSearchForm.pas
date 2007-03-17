@@ -70,7 +70,6 @@ Type
     Procedure SearchInComboBoxOnChange (Sender: TObject);
     Procedure ResultsOutlineOnEnter (Sender: TObject);
     Procedure SearchTextEditOnEnter (Sender: TObject);
-    Procedure ViewHelpPathsButtonOnClick (Sender: TObject);
     Procedure SelectDrivesButtonOnClick (Sender: TObject);
     Procedure GlobalSearchFormOnSetupShow (Sender: TObject);
     Procedure CancelButtonOnClick (Sender: TObject);
@@ -196,36 +195,14 @@ Begin
   SearchButton.Default := true;
 End;
 
-Procedure TGlobalSearchForm.ViewHelpPathsButtonOnClick (Sender: TObject);
-var
-  Dirs: TStringList;
-Begin
-  Dirs := TStringList.Create;
 
-  with InformationForm.InformationMemo do
-  begin
-    Lines.Clear;
-
-    Lines.Add( 'HELP:' );
-    GetDirsInPath( 'HELP', Dirs );
-    Lines.AddStrings( Dirs );
-
-    Lines.Add( '' );
-    Lines.Add( 'BOOKSHELF:' );
-    GetDirsInPath( 'BOOKSHELF', Dirs );
-    Lines.AddStrings( Dirs );
-  end;
-  InformationForm.ShowModal;
-
-  Dirs.Destroy;
-End;
-
-Procedure TGlobalSearchForm.GetSelectedDirectories( List: TStringList );
+Procedure TGlobalSearchForm.GetSelectedDirectories(List: TStringList);
 Var
+  tmpDirectories : TStringList;
+
   DriveNumber: longint;
   DriveType: TDriveType;
   DriveLetter: char;
-  Dirs: TStringList;
   i: longint;
   Dir: string;
   FoundIndex: longint;
@@ -241,29 +218,32 @@ begin
     Ord( gsHelpPaths ),
     Ord( gsSelectedHelpPaths ): // standard or selected help paths
     Begin
-      Dirs := TStringList.Create;
+      tmpDirectories := TStringList.Create;
       List.Sorted := true;
       List.Duplicates := dupIgnore;
 
-      GetDirsInPath( 'HELP', Dirs );
-      List.AddStrings( Dirs );
+      // GetDirsInPath clears the list tmpDirectories
+      GetDirsInPath(HelpPathEnvironmentVar, tmpDirectories);
+      List.AddStrings(tmpDirectories);
 
-      GetDirsInPath( 'BOOKSHELF', Dirs );
-      List.AddStrings( Dirs );
+      GetDirsInPath(BookshelfEnvironmentVar, tmpDirectories);
+      List.AddStrings(tmpDirectories);
 
-      Dirs.Destroy;
+      tmpDirectories.Destroy;
 
+      // for selected paths we have to adjust the selection
       if SearchLocationComboBox.ItemIndex = Ord( gsSelectedHelpPaths ) then
       begin
         // now mark some as non-selected...
         for i := 0 to List.Count - 1 do
         begin
-          Dir := List[ i ];
+          Dir := List[i];
           if not Settings.SearchDirectories.Find( Dir, FoundIndex ) then
-            List.Objects[ i ] := pointer( 1 );
+            List.Objects[i] := pointer(1);
         end;
       end;
     end;
+
 
     Ord( gsFixedDrives ):
     begin
@@ -283,19 +263,20 @@ begin
     Ord( gsCustom ):
     begin
       // already custom...
-      List.Assign( Settings.SearchDirectories );
+      List.Assign(Settings.SearchDirectories);
     end;
   end;
 end;
 
 Procedure TGlobalSearchForm.SelectDrivesButtonOnClick (Sender: TObject);
-Begin
-  GetSelectedDirectories( SearchDirectoriesForm.SelectedFolders );
+begin
+  GetSelectedDirectories(SearchDirectoriesForm.SelectedFolders);
 
   SearchDirectoriesForm.ShowModal;
   if SearchDirectoriesForm.ModalResult <> mrOK then
     exit;
 
+  // there was a selection, so we have to change the dropdown
   if SearchLocationComboBox.ItemIndex = Ord( gsHelpPaths ) then
     SearchLocationComboBox.ItemIndex := Ord( gsSelectedHelpPaths );
 
@@ -305,8 +286,8 @@ Begin
   if SearchDirectoriesForm.CustomDirAdded then
     SearchLocationComboBox.ItemIndex := Ord( gsCustom );
 
+  // update the settings
   Settings.SearchDirectories.Assign( SearchDirectoriesForm.SelectedFolders );
-
   SaveSettings;
 End;
 
@@ -476,69 +457,69 @@ End;
 
 Function TGlobalSearchForm.Search( Parameters: TObject ): TObject;
 var
-  Files: TStringList;
+  Files : TStringList;
   FileIndex: longint;
   Filename: string;
   HelpFile: THelpFile;
   SearchResult: TSearchResult;
   MatchingTopics: TList;
 
-  SearchParameters: TSearchParameters;
+  tmpSearchParameters : TSearchParameters;
   Query: TTextSearchQuery;
   i: longint;
   Dir: string;
 
 Begin
-//  StartProfile( GetLogFilesDir + 'NewViewSearch.prf' );
+  tmpSearchParameters := Parameters as TSearchParameters;
 
-  SearchParameters := Parameters as TSearchParameters;
-
-  Query := SearchParameters.Query;
+  Query := tmpSearchParameters.Query;
   Files := TStringList.Create;
 
-  // MatchingTopics.Add( nil ); // artificial crash
   MatchingTopics := TList.Create;
-
-  LogEvent(LogParse, 'Getting files');
+  LogEvent(LogParse, 'Creating file list');
 
   // make sure we ignore duplicate files...
   Files.Sorted := true;
   Files.CaseSensitive := false;
   Files.Duplicates := dupIgnore;
 
-  for i := 0 to SearchParameters.Directories.Count - 1 do
+  for i := 0 to tmpSearchParameters.Directories.Count - 1 do
   begin
     if ThreadManager.StopRequested then
+    begin
       break;
-    ThreadManager.UpdateProgress( i * 10 div SearchParameters.Directories.Count,
+    end;
+
+    ThreadManager.UpdateProgress( i * 10 div tmpSearchParameters.Directories.Count,
                                   100,
                                   ScanDirectoriesMsg );
-    Dir := SearchParameters.Directories[ i ];
+    Dir := tmpSearchParameters.Directories[ i ];
     if StrEnds( '...', Dir ) then
     begin
       Dir := StrLeftWithout( Dir, 3 );
       ListFilesInDirectoryRecursiveWithTermination(
                                        Dir,
                                        '*.inf;*.hlp',
+                                       true,
                                        Files,
                                        ThreadManager.StopRequested,
                                        true ); // check termination
     end
     else
     begin
-      ListFilesInDirectory( Dir,
-                            '*.inf;*.hlp',
-                            Files);
+      ListFilesInDirectory( Dir, '*.inf;*.hlp', true, Files);
     end;
   end;
 
-  LogEvent(LogParse, ' Searching ' + IntToStr( Files.Count ) + ' files');
   for FileIndex := 0 to Files.Count - 1 do
   begin
     if ThreadManager.StopRequested then
+    begin
       break;
-    Filename := Files[ FileIndex ];
-    LogEvent(LogParse, Filename);
+    end;
+
+    Filename := Files[FileIndex];
+
     ThreadManager.UpdateProgress( 10 + FileIndex * 95 div Files.Count,
                                   100,
                                   SearchingFileMsg
@@ -550,13 +531,8 @@ Begin
                                   + ')...' );
 
     try
-      LogEvent(LogParse, ' Create THelpFile');
       HelpFile := THelpFile.Create( FileName );
-
-      LogEvent(LogParse, ' Helpfile created');
       MatchingTopics.Clear;
-
-      LogEvent(LogParse, ' Search file');
       SearchHelpFile( HelpFile,
                       Query,
                       MatchingTopics,
@@ -565,7 +541,6 @@ Begin
 
       if MatchingTopics.Count > 0 then
       begin
-        LogEvent(LogParse, '  Sort results');
         // Create a searchresult object to send back to main thread.
         SearchResult := TSearchResult.Create;
         SearchResult.Filename := HelpFile.Filename;
@@ -574,12 +549,9 @@ Begin
         SearchResult.MatchingTopics.Assign( MatchingTopics );
 
         SearchResult.MatchingTopics.Sort( TopicRelevanceCompare );
-        LogEvent(LogParse, '  Display results');
-
         ThreadManager.SendData( '', SearchResult );
       end;
 
-      LogEvent(LogParse, 'Unload helpfile');
       HelpFile.Destroy;
 
     except
@@ -595,17 +567,15 @@ Begin
     end;
 
   end;
-  LogEvent(LogParse, 'search completed');
   ThreadManager.UpdateProgress( 100, 100, DoneMsg );
   Files.Destroy;
 
   Query.Destroy;
 
-  SearchParameters.Directories.Destroy;
-  SearchParameters.Destroy;
+  tmpSearchParameters.Directories.Destroy;
+  tmpSearchParameters.Destroy;
 
   Result := nil;
-  LogEvent(LogParse, 'done');
 End;
 
 Procedure TGlobalSearchForm.ClearResults;
@@ -625,6 +595,9 @@ end;
 
 Procedure TGlobalSearchForm.DoSearch;
 var
+  tmpSelectedDirectories : TStringList;
+  i : integer;
+
   SearchText: string;
   Query: TTextSearchQuery;
   SearchParameters: TSearchParameters;
@@ -640,7 +613,7 @@ Begin
     exit;
 
   try
-    Query := TTextSearchQuery.Create( SearchText );
+    Query := TTextSearchQuery.Create(SearchText);
   except
     on e: ESearchSyntaxError do
     begin
@@ -654,11 +627,24 @@ Begin
   ClearResults;
 
   SearchParameters := TSearchParameters.Create;
-  SearchParameters.Directories := TStringList.Create;
 
   SearchParameters.Query := Query;
 
-  GetSelectedDirectories( SearchParameters.Directories );
+  // now the directories to search in
+  SearchParameters.Directories := TStringList.Create;
+
+  tmpSelectedDirectories := TStringList.Create;
+  GetSelectedDirectories(tmpSelectedDirectories);
+
+  // clear the list and add only the selected ones
+  for i := 0 to tmpSelectedDirectories.Count - 1 do
+  begin
+    if tmpSelectedDirectories.Objects[i] = nil then
+    begin
+      SearchParameters.Directories.add(tmpSelectedDirectories[i]);
+    end;
+  end;
+  tmpSelectedDirectories.Destroy;
 
   ThreadManager.StartJob( Search, SearchParameters );
   SearchButton.Caption := StopCaption;
