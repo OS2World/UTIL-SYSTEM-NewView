@@ -75,10 +75,12 @@ If it is specific to a particular help file&comma. then send them to me&comma.
 unless they&apos.re large &lpar.bigger than 1MB&rpar.&per.
 :p.Most of the following information is in the newview&per.log file&comma. but
 it would be helpful if you could include it for verification&colon.
-:p.o NewView version &lpar.Help &endash. Product Information&rpar.
-:p.o The filenames of the help files&per.
-:p.A screenshot may be useful&comma. if the problem is an incorrect or corrupt
+:ul.
+:li.NewView version &lpar.Help &endash. Product Information&rpar.
+:li.The filenames of the help files&per.
+:li.A screenshot may be useful&comma. if the problem is an incorrect or corrupt
 display&per.
+:eul.
 :p.:hp2.Why doesn&apos.t my help file work properly?:ehp2.
 :p.Some of the less used features of the original View program are not
 implemented&per. This is either because I have not got around to it&comma. or
@@ -510,11 +512,25 @@ To perform a AND search enclose the search phrase in double quotes&per.
 :xmp.
   newview &slash.s cmdref &odq.net access&cdq.
 :exmp.
-:lm.
-
-:p.:hp2.&slash.g&colon.&lt.search text&gt.:ehp2.
+:lm margin=1.
+.*
+:p.:hp2.&slash.g:ehp2.
 :p.Performs a :link reftype=hd refid='GlobalSearch'.global search:elink. for the
 given text&comma. on all the help files in your system&per.
+:p.Example&colon.
+.br
+:lm margin=4.
+To search for copy in all help files use
+:xmp.
+  newview &slash.g copy
+:exmp.
+Provide the file name as first parameter if you like to open a help file
+before the search starts.
+:xmp.
+  newview &slash.g cmdref copy
+:exmp.
+:lm margin=1.
+.*
 :p.:hp2.&slash.?:ehp2. or :hp2.&slash.h:ehp2. or :hp2.&slash.help:ehp2.
 :p.Show command line help
 :p.See also&colon. :link reftype=hd refid='AdvancedParameters'.Advanced
@@ -579,32 +595,59 @@ quotes&comma. for example&colon.
 :h2 res=15 id='CommandLineExamples'.
 Command Line Examples
 :p.:hp2.Command Line Examples:ehp2.
-.br
+.*
 :p.The following examples assume that newview is installed as a complete
 replacement and therefore view is actually newview&per.
 :p.:hp2.view cmdref:ehp2.
+:lm margin=4.
 :p.Open the file cmdref&per.inf &lpar.OS&slash.2 Command Reference&rpar. from
 the help path&per.
+:lm margin=1.
+.*
 :p.:hp2.view cmdref&plus.os2ug:ehp2.
+:lm margin=4.
 :p.Open two files&comma. cmdref&per.inf and os2ug&per.inf &lpar.OS&slash.2 User
 Guide&rpar.&comma. in the same window&per.
-:p.The table of contents from os2ug&per.inf is added to the end of the contents
+.br
+The table of contents from os2ug&per.inf is added to the end of the contents
 from cmdref&per.inf&per. The indexes are combined alphabetically&per.
+:lm margin=1.
+.*
 :p.:hp2.view c&colon.&bsl.os2&bsl.book&bsl.os2ug&per.inf:ehp2.
+:lm margin=4.
 :p.Open the file os2ug&per.inf in the c&colon.&bsl.os2&bsl.book directory&per.
+:lm margin=1.
+.*
+:p.:hp2.view &odq.c&colon.&bsl.os2 book&bsl.os2ug&per.inf&cdq.:ehp2.
+:lm margin=4.
+:p.Surround path&sl.file with double quotes if they contain special characters (like blank)&per.
+:lm margin=1.
+.*
 :p.:hp2.view cmdref dir:ehp2.
+:lm margin=4.
 :p.Open the file cmdref &lpar.OS&slash.2 command reference&rpar. and look in
 titles and index for the word "dir"&per. Will show the help page for the DIR
 command&per.
-:p.:hp2.view &slash.s&colon.desktop os2ug:ehp2.
+:lm margin=1.
+.*
+:p.:hp2.view &slash.s os2ug desktop:ehp2.
+:lm margin=4.
 :p.Open the file os2ug&per.inf and search for the word "desktop"&per. The best
 match is shown&per.
-:p.:hp2.view &slash.g&colon.permissions:ehp2.
+:lm margin=1.
+.*
+:p.:hp2.view &slash.g permissions:ehp2.
+:lm margin=4.
 :p.Performs a search of all help files for the word "permissions"&per.
+:lm margin=1.
+.*
 :p.:hp2.set myhelp&eq.cmdref&plus.os2ug&plus.rexx:ehp2.
-:p.:hp2.view myhelp:ehp2.
+.br
+:hp2.view myhelp:ehp2.
+:lm margin=4.
 :p.The first line sets an environment variable MYHELP to contain the names of
 three help files&per. The second line opens the three files&per.
+:lm margin=1.
 .*
 .*
 .* ************************************************************
