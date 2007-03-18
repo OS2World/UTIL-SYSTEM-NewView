@@ -4,33 +4,33 @@ V2.19 rc1
   TODO translation
    - UsageText
 
+- global search in selected help path directories searches in all; fixed
 - starting 'newview -lang:en' produces some problems with translations
-  e.g. in the global search dialog; fixed
+  e.g. in the global search dialog; fixed (#16)
 - some layout problems with the gloabal search dialog are
   fixed (includes the fix for #15)
 - New command line parser
-  The command line syntax is change. Doku and help updates are not
-  finished at the moment.
+  The command line syntax is changed.
   Samples:
-  newview cmdref copy
-  newview /s cmdref copy
-  newview /s cmdref "net access"
-  newview /g cmdref help
-  newview /g help
+    newview cmdref copy
+    newview /s cmdref copy
+    newview /s cmdref "net access"
+    newview /g cmdref help
+    newview /g help
 - many fixes for links
 - other small fixes (see trac)
 - many changes for the debugging support
-- yes we have (223) unit tests! (at the moment manly for the command line)
 
 - There was a blank at the beginning of a paragraph
-  after a graphic. Fixed
+  after a graphic; fixed
 - In some other situations there was a blank to much at
-  the beginning of a paragraph. Fixed
+  the beginning of a paragraph; fixed
 - Version numbering changed
 - Menu entry 'Save as IPF' translated to german
 
 - many refactoring changes to remove unused source and add
   as many unit tests as possible
+  yes we have (229) unit tests! (at the moment manly for the command line)
 - some backup files removed
 - ACLCtl10.DLL, ACLCtl10.h, ACLCtl10.pas, ACLCtl10.zip removed form my
   local build \components directory
