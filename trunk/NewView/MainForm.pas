@@ -6913,6 +6913,7 @@ var
 begin
   LogEvent(LogNHM, 'NHMTopicByPanelName');
   RestoreWindow;
+  DisplayContents;
 
   pMessageMem := pchar( Msg.Param1 );
   PanelName := StrPas( pMessageMem );
