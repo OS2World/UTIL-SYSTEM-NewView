@@ -135,7 +135,8 @@ begin
   begin
     if DirectoriesListBox.Selected[ i ] then
     begin
-      SelectedFolders.Add( DirectoriesListBox.Items[ i ] );
+      LogEvent(LogDebug, 'Adding directory ' + DirectoriesListBox.Items[i]);
+      SelectedFolders.Add( DirectoriesListBox.Items[i] );
     end;
   end;
 end;
@@ -144,7 +145,6 @@ Procedure TSearchDirectoriesForm.SearchDirectoriesFormOnShow (Sender: TObject);
 var
   i: longint;
 Begin
-//  AddButton.Visible := true;
   CustomDirAdded := false;
   OKButton.Default := true;
 
@@ -156,10 +156,6 @@ Begin
     if SelectedFolders.Objects[ i ] = nil then
       DirectoriesListBox.Selected[ i ] := true;
   end;
-  // SelectedFolders
-//  DriveListBox.Clear;
-//   SetAllCheckListItems( DirectoriesListBox, true );
-//  End;
 End;
 
 Initialization
