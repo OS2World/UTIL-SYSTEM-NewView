@@ -66,7 +66,7 @@ uses
   PMWin,
   ControlsUtility,
   ACLDialogs,
-  ACLStringUtility,
+  StringUtilsUnit,
   DebugUnit;
 
 Procedure TBookmarksForm.BookmarksFormOnSetupShow (Sender: TObject);
@@ -133,7 +133,7 @@ Begin
 
   if DoConfirmDlg( DeleteBookmarkTitle,
                    DeleteBookmarkA
-                   + StrDoubleQuote( Bookmark.Name )
+                   + StrInDoubleQuotes(Bookmark.Name)
                    + DeleteBookmarkB ) then
   begin
     BookmarkIndex := BookmarkList.IndexOf( Bookmark );
