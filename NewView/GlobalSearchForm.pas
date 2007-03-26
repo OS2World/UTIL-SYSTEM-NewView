@@ -144,13 +144,13 @@ uses
   ACLDialogs,
   ControlsUtility,
   DriveInfoUnit,
-  ACLStringUtility,
   IPFFileFormatUnit,
   HelpTopic,
   SearchUnit,
   SearchDirectoriesFormUnit,
   SettingsUnit,
   InformationFormUnit,
+  StringUtilsUnit,
   FileUtilsUnit;
 
 type
@@ -494,7 +494,7 @@ Begin
                                   100,
                                   ScanDirectoriesMsg );
     Dir := tmpSearchParameters.Directories[ i ];
-    if StrEnds( '...', Dir ) then
+    if StrEndsWith('...', Dir) then
     begin
       Dir := StrLeftWithout( Dir, 3 );
       ListFilesInDirectoryRecursiveWithTermination(

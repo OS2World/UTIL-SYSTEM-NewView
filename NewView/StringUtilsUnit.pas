@@ -15,6 +15,8 @@ const
   StrCR = chr(13);
   StrLF = chr(10);
   StrCRLF = StrCR + StrLF;
+  Quote = '''';
+  DoubleQuote = '"';
 
 
   TYPE
@@ -42,8 +44,8 @@ const
   // Extract all fields in a String given a set of delimiter characters and
   // an optional escape character usable to escape field delimits.
   // Example:
-  //     StrExtractStrings('1x2x3\x4', "x", '\') ->
-  //     returns 4 strings: "1", "", "2" and "3x4"
+  //     StrExtractStrings('1x2x3\x4', 'x', '\') ->
+  //     returns 4 strings: '1', '', '2' and '3x4'
   Procedure StrExtractStrings(Var aResult : TStrings; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
 
   // same as StrExtractStrings but ignores empty strings
@@ -67,13 +69,27 @@ const
   // Returns the aCount leftmost chars of aString
   Function StrLeft(const aString : String; const aCount : Integer) : String;
 
+  // Returns a copy of the string without aCount chars from right
+  Function StrLeftWithout(const aString : String; const aCount : Integer) : String;
+
+  // Returns a copy of the string including all characters until one from aSetOfChars found
+  Function StrLeftUntil(const aReceiver: String; const aSetOfChars: TSetOfChars) : String;
+
+  // returns true if the String starts with the provides one
+  // this is case SENSITIVE
+  Function StrStartsWith(const aReceiver: String; const aStartString: String): Boolean;
+
+  // returns true if the String starts with the provides one
+  // this is case INsensitive
+  Function StrStartsWithIgnoringCase(const aReceiver: String; const aStartString: String): Boolean;
+
   // returns true if the String ends with the provides one
   // this is case SENSITIVE
   Function StrEndsWith(const aReceiver: String; const anEndString: String): Boolean;
 
   // returns true if the String ends with the provides one
   // this is case INsensitive
-  Function StrEndsWithIgnoringCase(const aString: String; const anEndString: String): Boolean;
+  Function StrEndsWithIgnoringCase(const aReceiver: String; const anEndString: String): Boolean;
 
   // the IntToStr generates wrong results
   // in normal cases IntToStr returns a negative value
@@ -81,6 +97,9 @@ const
   Function LongWordToStr(const aLongWord: LongWord) : String;
 
   Function BoolToStr(const aBoolean : boolean ): string;
+
+  // Returns aString enclosed in double quotes
+  Function StrInDoubleQuotes(const aString : String) : String;
 
 
 Implementation
@@ -349,6 +368,81 @@ Implementation
   end;
 
 
+  Function StrLeftWithout(const aString : String; const aCount : Integer) : String;
+  Begin
+    Result:= copy(aString, 1, length(aString) - aCount );
+  End;
+
+
+  Function StrLeftUntil(const aReceiver: String; const aSetOfChars: TSetOfChars) : String;
+  Var
+    i : integer;
+  Begin
+    Result := aReceiver;
+
+    for i := 1 To Length(aReceiver) do
+    begin
+      if aReceiver[i] in aSetOfChars then
+      begin
+        Result := Copy(aReceiver, 1, i-1 );
+        break;
+      end;
+    end;
+  end;
+
+
+  Function StrStartsWith(const aReceiver: String; const aStartString: String) : Boolean;
+  Var
+    tmpStringPos : integer;
+    tmpStartStringLength : integer;
+  Begin
+    tmpStartStringLength := Length(aStartString);
+
+    if Length(aReceiver) < tmpStartStringLength then
+    begin
+      result := false;
+      exit;
+    end;
+
+    for tmpStringPos := 1 to tmpStartStringLength do
+    begin
+      if aReceiver[tmpStringPos] <> aStartString[tmpStringPos] then
+      begin
+        result := false;
+        exit;
+      end;
+    end;
+
+    result := true;
+  end;
+
+
+  Function StrStartsWithIgnoringCase(const aReceiver: String; const aStartString: String) : Boolean;
+  Var
+    tmpStringPos : integer;
+    tmpStartStringLength : integer;
+  Begin
+    tmpStartStringLength := Length(aStartString);
+
+    if Length(aReceiver) < tmpStartStringLength then
+    begin
+      result := false;
+      exit;
+    end;
+
+    for tmpStringPos := 1 to tmpStartStringLength do
+    begin
+      if UpCase(aReceiver[tmpStringPos]) <> UpCase(aStartString[tmpStringPos]) then
+      begin
+        result := false;
+        exit;
+      end;
+    end;
+
+    result := true;
+  end;
+
+
   Function StrEndsWith(const aReceiver: String; const anEndString: String): Boolean;
   Var
     tmpStringPos : Longint;
@@ -383,7 +477,7 @@ Implementation
     tmpStringPos : Longint;
     tmpMatchPos : Longint;
   Begin
-    tmpStringPos := length(aString);
+    tmpStringPos := length(aReceiver);
     tmpMatchPos := length(anEndString);
 
     if tmpMatchPos > tmpStringPos then
@@ -394,7 +488,7 @@ Implementation
 
     while tmpMatchPos > 0 do
     begin
-      if upcase(aString[tmpStringPos]) <> upcase(anEndString[tmpMatchPos]) then
+      if upcase(aReceiver[tmpStringPos]) <> upcase(anEndString[tmpMatchPos]) then
       begin
         result := false;
         exit;
@@ -405,6 +499,7 @@ Implementation
 
     result := true;
   end;
+
 
   Function LongWordToStr(const aLongWord: LongWord) : String;
   Var
@@ -448,5 +543,11 @@ Implementation
     else
       Result := 'False';
   end;
+
+  Function StrInDoubleQuotes(const aString : String) : String;
+  begin
+    Result := DoubleQuote + aString + DoubleQuote;
+  end;
+
 
 END.

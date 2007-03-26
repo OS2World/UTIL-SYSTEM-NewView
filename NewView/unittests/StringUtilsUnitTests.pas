@@ -810,6 +810,299 @@ Implementation
     assertEqualsString('testStrLeft_Part', 'ab', tmpResult);
   END;
 
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testStrLeftWithout_Empty;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftWithout('', 4);
+
+    assertEqualsString('testStrLeftWithout_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftWithout_ToBig;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftWithout('ab', 4);
+
+    assertEqualsString('testStrLeftWithout_ToBig', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftWithout_Negative;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftWithout('ab', -1);
+
+    assertEqualsString('testStrLeftWithout_Negative', 'ab', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftWithout_All;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftWithout('abdefg', 6);
+
+    assertEqualsString('testStrLeftWithout_All', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftWithout;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftWithout('abdefg', 3);
+
+    assertEqualsString('testStrLeftWithout', 'abd', tmpResult);
+  END;
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testStrLeftUntil_Empty;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftUntil('', ['b', 'x']);
+
+    assertEqualsString('testStrLeftUntil_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftUntil_Empty_EmptyDelimiterSet;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftUntil('', []);
+
+    assertEqualsString('testStrLeftUntil_Empty_EmptyDelimiterSet', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftUntil_EmptyDelimiterSet;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftUntil('abc', []);
+
+    assertEqualsString('testStrLeftUntil_EmptyDelimiterSet', 'abc', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftUntil_FirstIsDelimiter;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftUntil('abc', ['a']);
+
+    assertEqualsString('testStrLeftUntil_FirstIsDelimiter', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftUntil_LastIsDelimiter;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftUntil('abc', ['c']);
+
+    assertEqualsString('testStrLeftUntil_LastIsDelimiter', 'ab', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftUntil_UnusedDelimiter;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftUntil('abc', ['x']);
+
+    assertEqualsString('testStrLeftUntil_UnusedDelimiter', 'abc', tmpResult);
+  END;
+
+
+  PROCEDURE testStrLeftUntil;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrLeftUntil('abcx yz do', ['d', ' ']);
+
+    assertEqualsString('testStrLeftUntil', 'abcx', tmpResult);
+  END;
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testStrStartsWith_BothEmpty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWith('', '');
+
+    assertTrue('testStrStartsWith_BothEmpty', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWith_StringEmpty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWith('', 'end');
+
+    assertFalse('testStrStartsWith_StringEmpty', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWith_MatchEmpty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWith('test', '');
+
+    assertTrue('testStrStartsWith_MatchEmpty', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWith_StringToShort;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWith('test', 'test1');
+
+    assertFalse('testStrStartsWith_StringToShort', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWith_StringEqualLength;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWith('test', 'best');
+
+    assertFalse('testStrStartsWith_StringEqualLength', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWith_StringEqualLengthMatch;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWith('test', 'test');
+
+    assertTrue('testStrStartsWith_StringEqualLengthMatch', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWith_StringMatch;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWith('this is a simple test', 'this');
+
+    assertTrue('testStrStartsWith_StringMatch', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWith_StringMatchCaseSensitive;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWith('This is a simple test', 'tHis');
+
+    assertFalse('testStrStartsWith_StringMatchCaseSensitive', tmpResult);
+  END;
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testStrStartsWithIgnoringCase_BothEmpty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWithIgnoringCase('', '');
+
+    assertTrue('testStrStartsWithIgnoringCase_BothEmpty', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWithIgnoringCase_StringEmpty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWithIgnoringCase('', 'end');
+
+    assertFalse('testStrStartsWithIgnoringCase_StringEmpty', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWithIgnoringCase_MatchEmpty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWithIgnoringCase('test', '');
+
+    assertTrue('testStrStartsWithIgnoringCase_MatchEmpty', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWithIgnoringCase_StringToShort;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWithIgnoringCase('test', 'test1');
+
+    assertFalse('testStrStartsWithIgnoringCase_StringToShort', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWithIgnoringCase_StringEqualLength;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWithIgnoringCase('test', 'best');
+
+    assertFalse('testStrStartsWithIgnoringCase_StringEqualLength', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWithIgnoringCase_StringEqualLengthMatch;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWithIgnoringCase('test', 'test');
+
+    assertTrue('testStrStartsWithIgnoringCase_StringEqualLengthMatch', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWithIgnoringCase_StringMatch;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWithIgnoringCase('This is a simple test', 'This');
+
+    assertTrue('testStrStartsWithIgnoringCase_StringMatch', tmpResult);
+  END;
+
+
+  PROCEDURE testStrStartsWithIgnoringCase_StringMatchCaseInSensitive;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrStartsWithIgnoringCase('ThiS is a simple test', 'THis');
+
+    assertTrue('testStrStartsWithIgnoringCase_StringMatchCaseSensitive', tmpResult);
+  END;
+
+
   // -------------------------------------------------------------------
 
 
@@ -1025,6 +1318,29 @@ Implementation
   // ----------------------------------------------------------
 
 
+  PROCEDURE testStrInDoubleQuotes_Empty;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrInDoubleQuotes('');
+
+    assertEqualsString('testStrInDoubleQuotes_Empty', '""', tmpResult);
+  END;
+
+
+  PROCEDURE testStrInDoubleQuotes;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrInDoubleQuotes('abc');
+
+    assertEqualsString('testStrInDoubleQuotes', '"abc"', tmpResult);
+  END;
+
+
+  // ----------------------------------------------------------
+
+
   FUNCTION getStringUtilsUnitTests : TList;
   BEGIN
     result := TList.Create;
@@ -1100,6 +1416,38 @@ Implementation
     result.add(@testStrLeft_ToManyRequested);
     result.add(@testStrLeft_Part);
 
+    result.add(@testStrLeftWithout_Empty);
+    result.add(@testStrLeftWithout_ToBig);
+    result.add(@testStrLeftWithout_Negative);
+    result.add(@testStrLeftWithout_All);
+    result.add(@testStrLeftWithout);
+
+    result.add(@testStrLeftUntil_Empty);
+    result.add(@testStrLeftUntil_Empty_EmptyDelimiterSet);
+    result.add(@testStrLeftUntil_EmptyDelimiterSet);
+    result.add(@testStrLeftUntil_FirstIsDelimiter);
+    result.add(@testStrLeftUntil_LastIsDelimiter);
+    result.add(@testStrLeftUntil_UnusedDelimiter);
+    result.add(@testStrLeftUntil);
+
+    result.add(@testStrStartsWith_BothEmpty);
+    result.add(@testStrStartsWith_StringEmpty);
+    result.add(@testStrStartsWith_MatchEmpty);
+    result.add(@testStrStartsWith_StringToShort);
+    result.add(@testStrStartsWith_StringEqualLength);
+    result.add(@testStrStartsWith_StringEqualLengthMatch);
+    result.add(@testStrStartsWith_StringMatch);
+    result.add(@testStrStartsWith_StringMatchCaseSensitive);
+
+    result.add(@testStrStartsWithIgnoringCase_BothEmpty);
+    result.add(@testStrStartsWithIgnoringCase_StringEmpty);
+    result.add(@testStrStartsWithIgnoringCase_MatchEmpty);
+    result.add(@testStrStartsWithIgnoringCase_StringToShort);
+    result.add(@testStrStartsWithIgnoringCase_StringEqualLength);
+    result.add(@testStrStartsWithIgnoringCase_StringEqualLengthMatch);
+    result.add(@testStrStartsWithIgnoringCase_StringMatch);
+    result.add(@testStrStartsWithIgnoringCase_StringMatchCaseInSensitive);
+
     result.add(@testStrEndsWith_BothEmpty);
     result.add(@testStrEndsWith_StringEmpty);
     result.add(@testStrEndsWith_MatchEmpty);
@@ -1124,6 +1472,9 @@ Implementation
 
     result.add(@testBoolToStr_true);
     result.add(@testBoolToStr_false);
+
+    result.add(@testStrInDoubleQuotes_Empty);
+    result.add(@testStrInDoubleQuotes);
   END;
 
 END.
