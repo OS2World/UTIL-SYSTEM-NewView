@@ -12,6 +12,7 @@ uses
  Classes;
 
 const
+  StrTAB = chr(9);
   StrCR = chr(13);
   StrLF = chr(10);
   StrCRLF = StrCR + StrLF;
@@ -75,11 +76,11 @@ const
   // Returns a copy of the string including all characters until one from aSetOfChars found
   Function StrLeftUntil(const aReceiver: String; const aSetOfChars: TSetOfChars) : String;
 
-  // returns true if the String starts with the provides one
+  // returns true if the String starts with the provided one
   // this is case SENSITIVE
   Function StrStartsWith(const aReceiver: String; const aStartString: String): Boolean;
 
-  // returns true if the String starts with the provides one
+  // returns true if the String starts with the provided one
   // this is case INsensitive
   Function StrStartsWithIgnoringCase(const aReceiver: String; const aStartString: String): Boolean;
 
@@ -87,9 +88,13 @@ const
   // this is case SENSITIVE
   Function StrEndsWith(const aReceiver: String; const anEndString: String): Boolean;
 
-  // returns true if the String ends with the provides one
+  // returns true if the String ends with the provided one
   // this is case INsensitive
   Function StrEndsWithIgnoringCase(const aReceiver: String; const anEndString: String): Boolean;
+
+  // returns true if the Strings are the same
+  // this is case INsensitive
+  Function StrEqualIgnoringCase(const aReceiver: String; const aSecondString: String): Boolean;
 
   // the IntToStr generates wrong results
   // in normal cases IntToStr returns a negative value
@@ -105,6 +110,7 @@ const
 Implementation
 
   uses
+    SysUtils,
     DebugUnit;
 
   constructor TSerializableStringList.Create;
@@ -498,6 +504,12 @@ Implementation
     end;
 
     result := true;
+  end;
+
+
+  Function StrEqualIgnoringCase(const aReceiver: String; const aSecondString: String): Boolean;
+  begin
+    Result := CompareText(aReceiver, aSecondString) = 0;
   end;
 
 
