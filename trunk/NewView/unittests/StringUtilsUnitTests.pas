@@ -409,6 +409,20 @@ Implementation
     tmpResult.Destroy;
   END;
 
+  PROCEDURE testStrExtractStrings_DelimiterSameAsEscapeChar;
+  VAR
+    tmpResult : TStringList;
+  BEGIN
+    tmpResult := TStringList.Create;
+    StrExtractStrings(tmpResult, 'a;b;;cd;;;', [';'], ';');
+
+    assertEqualsInt('testStrExtractStrings_EscapedEscapeChar', 3, tmpResult.count);
+    assertEqualsString('testStrExtractStrings_EscapedEscapeChar', 'a', tmpResult[0]);
+    assertEqualsString('testStrExtractStrings_EscapedEscapeChar', 'b;cd;', tmpResult[1]);
+    assertEqualsString('testStrExtractStrings_EscapedEscapeChar', '', tmpResult[2]);
+
+    tmpResult.Destroy;
+  END;
 
   // ------------------------------------------------------
 
@@ -1266,6 +1280,67 @@ Implementation
   END;
 
 
+  // ----------------------------------------------------------
+
+
+  PROCEDURE testStrEqualIgnoringCase_BothEmpty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrEqualIgnoringCase('', '');
+
+    assertTrue('testStrEqualIgnoringCase_BothEmpty', tmpResult);
+  END;
+
+
+  PROCEDURE testStrEqualIgnoringCase_FirstEmpty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrEqualIgnoringCase('', 'xy');
+
+    assertFalse('testStrEqualIgnoringCase_FirstEmpty', tmpResult);
+  END;
+
+  PROCEDURE testStrEqualIgnoringCase_SecondEmpty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrEqualIgnoringCase('xy', '');
+
+    assertFalse('testStrEqualIgnoringCase_SecondEmpty', tmpResult);
+  END;
+
+  PROCEDURE testStrEqualIgnoringCase_DifferentLength;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrEqualIgnoringCase('xy', 'xyz');
+
+    assertFalse('testStrEqualIgnoringCase_DifferentLength', tmpResult);
+  END;
+
+  PROCEDURE testStrEqualIgnoringCase_DifferentCase;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrEqualIgnoringCase('xYz', 'xyz');
+
+    assertTrue('testStrEqualIgnoringCase_DifferentCase', tmpResult);
+  END;
+
+  PROCEDURE testStrEqualIgnoringCase;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrEqualIgnoringCase('XYz', 'XYz');
+
+    assertTrue('testStrEqualIgnoringCase', tmpResult);
+  END;
+
+  // ----------------------------------------------------------
+
+
   PROCEDURE testLongWordToStr_Zero;
   VAR
     tmpResult : String;
@@ -1295,6 +1370,8 @@ Implementation
   END;
 
 
+  // ----------------------------------------------------------
+
 
   PROCEDURE testBoolToStr_true;
   VAR
@@ -1314,6 +1391,7 @@ Implementation
 
     assertEqualsString('testBoolToStr_false', 'False', tmpResult);
   END;
+
 
   // ----------------------------------------------------------
 
@@ -1374,6 +1452,7 @@ Implementation
     result.add(@testStrExtractStrings_NoDelimiter);
     result.add(@testStrExtractStrings_EscapedDelimiter);
     result.add(@testStrExtractStrings_EscapedEscapeChar);
+    result.add(@testStrExtractStrings_DelimiterSameAsEscapeChar);
 
     result.add(@testStrExtractStringsIgnoreEmpty_EmptyReceiver);
     result.add(@testStrExtractStringsIgnoreEmpty_OnlyOnePart);
@@ -1465,6 +1544,13 @@ Implementation
     result.add(@testStrEndsWithIgnoringCase_StringEqualLengthMatch);
     result.add(@testStrEndsWithIgnoringCase_StringMatch);
     result.add(@testStrEndsWithIgnoringCase_StringMatchCaseInSensitive);
+
+    result.add(@testStrEqualIgnoringCase_BothEmpty);
+    result.add(@testStrEqualIgnoringCase_FirstEmpty);
+    result.add(@testStrEqualIgnoringCase_SecondEmpty);
+    result.add(@testStrEqualIgnoringCase_DifferentLength);
+    result.add(@testStrEqualIgnoringCase_DifferentCase);
+    result.add(@testStrEqualIgnoringCase);
 
     result.add(@testLongWordToStr_Zero);
     result.add(@testLongWordToStr_Four);

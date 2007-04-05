@@ -47,7 +47,8 @@ Implementation
 uses
   SysUtils,
   ACLUtility,
-  ACLStringUtility;
+  StringUtilsUnit,
+  DebugUnit;
 
 procedure SaveWindowList( Var F: TextFile;
                           Windows: TList;
@@ -166,23 +167,28 @@ end;
 
 constructor TSavedHelpWindow.Load( Var F: TextFile );
 var
-  s: string;
+  tmpString : string;
   TopicIndex: integer;
+  tmpParts : TStringList;
 begin
   inherited Create;
   ChildWindows:= TList.Create;
   Rect:= THelpWindowRect.Create;
 
-  ReadLn( F, S );
+  ReadLn( F, tmpString);
+  tmpParts := TStringList.Create;
+  StrExtractStrings(tmpParts, tmpString, [','], #0);
 
-  TopicIndex   := StrToInt( ExtractNextValue( S, ',' ) );
+  TopicIndex   := StrToInt(tmpParts[0]);
   Topic := HelpFile.Topics[ TopicIndex ];
-  Group        := StrToInt( ExtractNextValue( S, ',' ) );
-  Rect.Left    := StrToInt( ExtractNextValue( S, ',' ) );
-  Rect.Bottom  := StrToInt( ExtractNextValue( S, ',' ) );
-  Rect.Width   := StrToInt( ExtractNextValue( S, ',' ) );
-  Rect.Height  := StrToInt( ExtractNextValue( S, ',' ) );
-  TopCharIndex := StrToInt( ExtractNextValue( S, ',' ) );
+  Group        := StrToInt(tmpParts[1]);
+  Rect.Left    := StrToInt(tmpParts[2]);
+  Rect.Bottom  := StrToInt(tmpParts[3]);
+  Rect.Width   := StrToInt(tmpParts[4]);
+  Rect.Height  := StrToInt(tmpParts[5]);
+  TopCharIndex := StrToInt(tmpParts[6]);
+
+  tmpParts.Destroy;
 
   LoadWindowList( F, ChildWindows, HelpFile );
 end;

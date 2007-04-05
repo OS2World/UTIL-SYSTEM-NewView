@@ -122,7 +122,6 @@ uses
   OS2Def,
   PmWin,
   SysUtils,
-  ACLStringUtility,
   FileUtilsUnit,
   ACLDialogs,
   ACLString,
@@ -130,6 +129,7 @@ uses
   ControlsUtility,
   SettingsUnit,
   HelpFile,
+  StringUtilsUnit,
   DebugUnit;
 
 Imports
@@ -285,7 +285,7 @@ var
   search: string;
   filename: string;
   ShowList: boolean;
-  NameAndTitle: string;
+  tmpNameAndTitle: string;
 Begin
   CompletionsListBox.Items.Clear;
   search := FilenameEdit.Text;
@@ -294,10 +294,10 @@ Begin
   begin
     for i := 0 to FileListBox.Items.Count - 1 do
     begin
-      NameAndTitle := FileListBox.Items[ i ];
-      Filename := ExtractNextValue( NameAndTitle, #9 );
+      tmpNameAndTitle := FileListBox.Items[ i ];
+      Filename := StrLeftUntil(tmpNameAndTitle, [StrTAB]);
 
-      if StrStarts( search, filename ) then
+      if StrStartsWithIgnoringCase(filename, search) then
         CompletionsListBox.Items.Add( filename );
     end;
   end;
@@ -305,7 +305,7 @@ Begin
   ShowList := false;
   if CompletionsListBox.Items.Count = 1 then
   begin
-    if not StringsSame( CompletionsListBox.Items[ 0 ], search ) then
+    if not StrEqualIgnoringCase(CompletionsListBox.Items[0], search) then
       ShowList := true;
   end
   else if CompletionsListBox.Items.Count > 0 then
@@ -435,7 +435,7 @@ Begin
     if FileListBox.Selected[ FileIndex ] then
     begin
       NameAndTitle := FileListBox.Items[ FileIndex ];
-      FileNames.Add( ExtractNextValue( NameAndTitle, #9 ) );
+      FileNames.Add(StrLeftUntil(NameAndTitle, [StrTAB]));
     end;
   end;
   FocussingFile := true;
@@ -470,9 +470,9 @@ Begin
        then
     begin
       DoErrorDlg( InvalidFilterErrorTitle,
-                  StrDoubleQuote( FileNameText )
+                  StrInDoubleQuotes(FileNameText)
                   + InvalidFilterError
-                  + EndLine
+                  + StrCRLF
                   + '  \ / :' );
       exit;
     end;
@@ -610,9 +610,7 @@ begin
     Title := GetHelpFileTitle( AddDirectorySeparator( DirectoryListBox.Directory )
                                + Filename );
 
-    FileListBox.Items.Add( Filename
-                           + #9
-                           + Title );
+    FileListBox.Items.Add(Filename + StrTAB + Title );
   end;
   FileListBox.Items.EndUpdate;
 
