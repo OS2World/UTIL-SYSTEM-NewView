@@ -1419,6 +1419,263 @@ Implementation
   // ----------------------------------------------------------
 
 
+  PROCEDURE testStrExtractStringsQuoted_Empty;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := '';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_Empty', 0, tmpResult.count);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_OnlyWhitespace;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := ' ' + StrTAB + '    ';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_OnlyWhitespace', 0, tmpResult.count);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_OnlyText;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := 'TeXt';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_OnlyText', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_OnlyText', 'TeXt', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_OnlyText2Parts;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := 'TeXt sample';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_OnlyText2Parts', 2, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_OnlyText2Parts', 'TeXt', tmpResult[0]);
+    assertEqualsString('testStrExtractStringsQuoted_OnlyText2Parts', 'sample', tmpResult[1]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_TextAndWhitespace2Parts;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := '  TeXt   ' + StrTAB + StrTAB + '  sample ' + StrTAB;
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_TextAndWhitespace2Parts', 2, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_TextAndWhitespace2Parts', 'TeXt', tmpResult[0]);
+    assertEqualsString('testStrExtractStringsQuoted_TextAndWhitespace2Parts', 'sample', tmpResult[1]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_QuotedText1Part;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := '"TeXt"';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_QuotedText1Part', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_QuotedText1Part', 'TeXt', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_QuotedText1PartNoClosingQuotes;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := '"TeXt';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_QuotedText1PartNoClosingQuotes', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_QuotedText1PartNoClosingQuotes', 'TeXt', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_QuotedText1PartNoClosingQuotesWhitewspace;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := '"TeX t ';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_QuotedText1PartNoClosingQuotesWhitewspace', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_QuotedText1PartNoClosingQuotesWhitewspace', 'TeX t ', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+
+
+  PROCEDURE testStrExtractStringsQuoted_QuotedText1PartQuoteInside;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := '"TeX"t';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_QuotedText1PartQuoteInside', 2, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_QuotedText1PartQuoteInside', 'TeX', tmpResult[0]);
+    assertEqualsString('testStrExtractStringsQuoted_QuotedText1PartQuoteInside', 't', tmpResult[1]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_QuotedText1Part2QuotesInside;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := '"TeX""t"';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_QuotedText1Part2QuotesInside', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_QuotedText1Part2QuotesInside', 'TeX"t', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_QuotedText1Part2Quotes;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := '"""Te X""t"""';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_QuotedText1Part2Quotes', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_QuotedText1Part2Quotes', '"Te X"t"', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_Only1Quote;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := '"';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_Only1Quote', 0, tmpResult.count);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_Only1QuoteAndWhitespace;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := ' " ';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_Only1QuoteAndWhitespace', 1, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_Only1QuoteAndWhitespace', ' ', tmpResult[0]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_QuoteStartsNewPart;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := 'ab"c"';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_QuoteStartsNewPart', 2, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_QuoteStartsNewPart', 'ab', tmpResult[0]);
+    assertEqualsString('testStrExtractStringsQuoted_QuoteStartsNewPart', 'c', tmpResult[1]);
+
+    // note this is not compatible with the old behavior but more consistent
+    // tmpIndex  := 1;
+    // GetNextQuotedValue(tmpString, tmpIndex, s, '"');
+    // assertEqualsString('testGetNextQuotedValue', 'ab"c"', s);
+
+    tmpResult.Destroy;
+  END;
+
+
+  PROCEDURE testStrExtractStringsQuoted_ManyParts;
+  VAR
+    tmpResult : TStringList;
+    tmpString : String;
+  BEGIN
+    tmpResult := TStringList.Create;
+    tmpString := 'ab "c" """d" xy z  ""';
+
+    StrExtractStringsQuoted(tmpResult, tmpString);
+    assertEqualsInt('testStrExtractStringsQuoted_ManyParts', 6, tmpResult.count);
+    assertEqualsString('testStrExtractStringsQuoted_ManyParts', 'ab', tmpResult[0]);
+    assertEqualsString('testStrExtractStringsQuoted_ManyParts', 'c', tmpResult[1]);
+    assertEqualsString('testStrExtractStringsQuoted_ManyParts', '"d', tmpResult[2]);
+    assertEqualsString('testStrExtractStringsQuoted_ManyParts', 'xy', tmpResult[3]);
+    assertEqualsString('testStrExtractStringsQuoted_ManyParts', 'z', tmpResult[4]);
+    assertEqualsString('testStrExtractStringsQuoted_ManyParts', '', tmpResult[5]);
+
+    tmpResult.Destroy;
+  END;
+
+
+  // ----------------------------------------------------------
+
+
+
   FUNCTION getStringUtilsUnitTests : TList;
   BEGIN
     result := TList.Create;
@@ -1561,6 +1818,23 @@ Implementation
 
     result.add(@testStrInDoubleQuotes_Empty);
     result.add(@testStrInDoubleQuotes);
+
+    result.add(@testStrExtractStringsQuoted_Empty);
+    result.add(@testStrExtractStringsQuoted_OnlyWhitespace);
+    result.add(@testStrExtractStringsQuoted_OnlyText);
+    result.add(@testStrExtractStringsQuoted_OnlyText2Parts);
+    result.add(@testStrExtractStringsQuoted_TextAndWhitespace2Parts);
+    result.add(@testStrExtractStringsQuoted_QuotedText1Part);
+    result.add(@testStrExtractStringsQuoted_QuotedText1PartNoClosingQuotes);
+    result.add(@testStrExtractStringsQuoted_QuotedText1PartNoClosingQuotesWhitewspace);
+    result.add(@testStrExtractStringsQuoted_QuotedText1PartQuoteInside);
+    result.add(@testStrExtractStringsQuoted_QuotedText1Part2QuotesInside);
+    result.add(@testStrExtractStringsQuoted_QuotedText1Part2Quotes);
+    result.add(@testStrExtractStringsQuoted_Only1Quote);
+    result.add(@testStrExtractStringsQuoted_Only1QuoteAndWhitespace);
+    result.add(@testStrExtractStringsQuoted_QuoteStartsNewPart);
+    result.add(@testStrExtractStringsQuoted_ManyParts);
+
   END;
 
 END.

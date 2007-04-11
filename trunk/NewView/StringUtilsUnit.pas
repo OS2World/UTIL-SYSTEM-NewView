@@ -16,8 +16,8 @@ const
   StrCR = chr(13);
   StrLF = chr(10);
   StrCRLF = StrCR + StrLF;
-  Quote = '''';
-  DoubleQuote = '"';
+  StrSingleQuote = '''';
+  StrDoubleQuote = '"';
 
 
   TYPE
@@ -106,6 +106,9 @@ const
   // Returns aString enclosed in double quotes
   Function StrInDoubleQuotes(const aString : String) : String;
 
+  // Extract all fields in a String delimited by whitespace (blank or tab).
+  // use double quotes if you need blanks in the strings
+  Procedure StrExtractStringsQuoted(Var aResult: TStrings; const aReceiver: String );
 
 Implementation
 
@@ -556,10 +559,145 @@ Implementation
       Result := 'False';
   end;
 
+
   Function StrInDoubleQuotes(const aString : String) : String;
   begin
-    Result := DoubleQuote + aString + DoubleQuote;
+    Result := StrDoubleQuote + aString + StrDoubleQuote;
   end;
 
 
+  Procedure StrExtractStringsQuoted(Var aResult: TStrings; const aReceiver: String );
+  Var
+    tmpState : (WHITESPACE, INSIDE, START_QUOTE, INSIDE_QUOTED, INSIDE_QUOTED_START_QUOTE);
+    tmpCurrentParsePosition : Integer;
+    tmpCurrentChar : Char;
+    tmpPart : String;
+
+  Begin
+    if (length(aReceiver) < 1) then exit;
+
+    tmpState := WHITESPACE;
+    tmpPart := '';
+
+    tmpCurrentParsePosition := 1;
+
+    for tmpCurrentParsePosition:=1 to length(aReceiver) do
+    begin
+      tmpCurrentChar := aReceiver[tmpCurrentParsePosition];
+
+      Case tmpCurrentChar of
+        ' ', StrTAB :
+        begin
+
+          Case tmpState of
+
+            WHITESPACE :
+            begin
+              // nothing
+            end;
+
+            INSIDE :
+            begin
+              aResult.add(tmpPart);
+              tmpPart := '';
+              tmpState := WHITESPACE;
+            end;
+
+            INSIDE_QUOTED :
+            begin
+              tmpPart := tmpPart + tmpCurrentChar;
+            end;
+
+            START_QUOTE :
+            begin
+              tmpPart := tmpPart + tmpCurrentChar;
+              tmpState := INSIDE_QUOTED;
+            end;
+
+            INSIDE_QUOTED_START_QUOTE :
+            begin
+              aResult.add(tmpPart);
+              tmpPart := '';
+              tmpState := WHITESPACE;
+            end;
+          end;
+        end;
+
+        StrDoubleQuote :
+        begin
+
+          Case tmpState of
+
+            WHITESPACE :
+            begin
+              tmpState := START_QUOTE;
+            end;
+
+            INSIDE :
+            begin
+              aResult.add(tmpPart);
+              tmpPart := '';
+              tmpState := START_QUOTE;
+            end;
+
+            INSIDE_QUOTED :
+            begin
+              tmpState := INSIDE_QUOTED_START_QUOTE;
+            end;
+
+            START_QUOTE :
+            begin
+              tmpState := INSIDE_QUOTED_START_QUOTE;
+            end;
+
+            INSIDE_QUOTED_START_QUOTE :
+            begin
+              tmpPart := tmpPart + tmpCurrentChar;
+              tmpState := INSIDE_QUOTED;
+            end;
+          end;
+        end;
+
+        else
+        begin
+          Case tmpState of
+
+            WHITESPACE :
+            begin
+              tmpPart := tmpPart + tmpCurrentChar;
+              tmpState := INSIDE;
+            end;
+
+            INSIDE, INSIDE_QUOTED :
+            begin
+              tmpPart := tmpPart + tmpCurrentChar;
+            end;
+
+            START_QUOTE :
+            begin
+              tmpPart := tmpPart + tmpCurrentChar;
+              tmpState := INSIDE_QUOTED;
+            end;
+
+            INSIDE_QUOTED_START_QUOTE :
+            begin
+              aResult.add(tmpPart);
+              tmpPart := tmpCurrentChar;
+              tmpState := INSIDE;
+            end;
+          end;
+        end;
+
+      end;
+    end;
+
+    Case tmpState of
+      WHITESPACE, START_QUOTE : {nothing to do};
+
+      INSIDE, INSIDE_QUOTED, INSIDE_QUOTED_START_QUOTE :
+      begin
+        aResult.add(tmpPart);
+      end;
+    end;
+  end;
 END.
