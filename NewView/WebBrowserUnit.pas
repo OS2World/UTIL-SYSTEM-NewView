@@ -47,13 +47,23 @@ const
   end;
 
 
+  Function GetDefaultParameters : String;
+  begin
+    Result := GetUserProfileString(PROFILE_KEY_WPURLDEFAULTSETTINGS, 'DefaultParameters', '');
+  end;
+
+
+
   Procedure LaunchURL(const aURL: String);
   var
     tmpBrowserPath : String;
     tmpBrowserWorkingDir : String;
+    tmpBrowserParameters : String;
   begin
     tmpBrowserPath := GetDefaultBrowserPath;
     tmpBrowserWorkingDir := GetDefaultBrowserWorkingDir;
+    tmpBrowserParameters := GetDefaultParameters;
+
     if tmpBrowserPath = '' then
     begin
       raise Exception.Create('You don''t have a default browser configured.');
@@ -66,7 +76,7 @@ const
 
     ChDir(RemoveRightDirectorySeparator(tmpBrowserWorkingDir));
 
-    LaunchProgram(tmpBrowserPath, aURL, tmpBrowserWorkingDir);
+    LaunchProgram(tmpBrowserPath, tmpBrowserParameters + ' ' + aURL, tmpBrowserWorkingDir);
   end;
 
 Initialization
