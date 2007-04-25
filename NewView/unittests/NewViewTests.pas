@@ -5,6 +5,7 @@ uses
   SysUtils,
   TestAssert,
   CmdLineParameterUnitTests,
+  CharUtilsUnitTests,
   StringUtilsUnitTests,
   FileUtilsUnitTests,
   HelpTopicTests;
@@ -33,6 +34,7 @@ BEGIN
   writeln(tmpTestNoParam);
 
   tmpSuites.Add(@getCmdLineParameterUnitTests);
+  tmpSuites.Add(@getCharUtilsUnitTests);
   tmpSuites.Add(@getStringUtilsUnitTests);
 //  tmpSuites.Add(@getHelpTopicTests);
   tmpSuites.Add(@getFileUtilsUnitTests);
