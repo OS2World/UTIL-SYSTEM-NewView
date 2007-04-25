@@ -1507,6 +1507,49 @@ Implementation
   END;
 
 
+  PROCEDURE testParseCmdLine_ReallyLong;
+  VAR
+    tmpCmdLineString : AnsiString;
+    tmpCmdLineParameters : TCmdLineParameters;
+    i : integer;
+  BEGIN
+    tmpCmdLineString := '-s ';
+
+    // long file name
+    tmpCmdLineString := tmpCmdLineString + 'LongFileName';
+    for i := 1 to 30 do
+    begin
+      tmpCmdLineString := tmpCmdLineString + '0123456789';
+    end;
+
+    // long search text
+    tmpCmdLineString := tmpCmdLineString + ' LongSearchText';
+    for i := 1 to 30 do
+    begin
+      tmpCmdLineString := tmpCmdLineString + '0123456789';
+    end;
+
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_ReallyLong->ShowUsageFlag', tmpCmdLineParameters.getShowUsageFlag);
+    assertTrue('testParseCmdLine_ReallyLong->SearchFlag', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_ReallyLong->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_ReallyLong', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_ReallyLong', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_ReallyLong', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_ReallyLong', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_ReallyLong', '', tmpCmdLineParameters.getWindowTitle);
+
+    assertEqualsInt('testParseCmdLine_ReallyLong', 312, Length(tmpCmdLineParameters.getFileNames));
+    assertEqualsInt('testParseCmdLine_ReallyLong', 314, Length(tmpCmdLineParameters.getSearchText));
+  END;
+
+
+
+  // ----------------------------------------------------------
+
+
   FUNCTION getCmdLineParameterUnitTests : TList;
   BEGIN
     result := TList.Create;
@@ -1592,6 +1635,9 @@ Implementation
 
     result.add(@testParseCmdLine_SwitchAndFileQuoted);
     result.add(@testParseCmdLine_SwitchAndFileAndTextQuoted);
+
+    result.add(@testParseCmdLine_ReallyLong);
+
   END;
 
 END.

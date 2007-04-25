@@ -35,7 +35,7 @@ CONST
  TYPE
      TCmdLineParameters = class
      private
-       commandLine : String;
+       commandLine : AnsiString;
        showUsageFlag : boolean;
        searchFlag : boolean;
        globalSearchFlag : boolean;
@@ -45,18 +45,18 @@ CONST
        windowPositionFlag: boolean;
        windowPosition: TWindowPosition;
        ownerWindow : integer;
-       windowTitle : string;
-       parsedFileNames : string;
-       parsedRawFileNames : string;
-       fileNames : string;
-       parsedSearchText : string;
-       searchText : string;
+       windowTitle : AnsiString;
+       parsedFileNames : AnsiString;
+       parsedRawFileNames : AnsiString;
+       fileNames : AnsiString;
+       parsedSearchText : AnsiString;
+       searchText : AnsiString;
        debugEnabled : boolean;
 
        FUNCTION handleSwitchWithValue(const aSwitchString : String; const aSwitch : String; var aValue : String) : Boolean;
        PROCEDURE parseSwitch(aSwitchString : String);
-       PROPERTY getParsedFileNames : string read parsedFileNames;
-       PROPERTY getParsedSearchText : string read parsedSearchText;
+       PROPERTY getParsedFileNames : AnsiString read parsedFileNames;
+       PROPERTY getParsedSearchText : AnsiString read parsedSearchText;
 
      public
        PROPERTY isDebugEnabled : boolean read debugEnabled;
@@ -70,19 +70,21 @@ CONST
        PROPERTY getWindowPositionFlag : boolean read windowPositionFlag;
        PROPERTY getWindowPosition : TWindowPosition read windowPosition;
        PROPERTY getOwnerWindow : integer read ownerWindow;
-       PROPERTY getWindowTitle : string read windowTitle;
-       PROPERTY getFileNames : string read fileNames;
-       PROPERTY getSearchText : string read searchText;
+       PROPERTY getWindowTitle : AnsiString read windowTitle;
+       PROPERTY getFileNames : AnsiString read fileNames;
+       PROPERTY getSearchText : AnsiString read searchText;
 
        PROCEDURE writeDetailsTo(aStrings : TStrings);
        PROCEDURE logDetails;
-       PROCEDURE parseCmdLine(aCmdLineString : String);
+       PROCEDURE parseCmdLine(aCmdLineString : AnsiString);
        FUNCTION getOwnHelpFileName: String;
   end;
 
   // returns a string containing the whole
   // command line parametes
-  FUNCTION nativeOS2GetCmdLineParameter : String;
+  // this as function has a problem with returning an AnsiString
+  // ! you have to provide an AnsiString (normaly an empty one)
+  PROCEDURE nativeOS2GetCmdLineParameter(aResult : AnsiString);
 
 
 Implementation
@@ -161,16 +163,16 @@ uses
   end;
 
 
-  Procedure TCmdLineParameters.parseCmdLine(aCmdLineString : String);
+  Procedure TCmdLineParameters.parseCmdLine(aCmdLineString : AnsiString);
   var
     tmpState : (WHITESPACE, QUOTE, SWITCH, FILENAME, TEXT);
     tmpCurrentParsePosition : integer;
     tmpQuoted : boolean;
     tmpCurrentChar : char;
-    tmpWhitespace : String;
-    tmpQuote : String;
-    tmpSwitch : String;
-    tmpOwnHelpFileName : String;
+    tmpWhitespace : AnsiString;
+    tmpQuote : AnsiString;
+    tmpSwitch : AnsiString;
+    tmpOwnHelpFileName : AnsiString;
     tmpEnvDebug : String;
   begin
     // first adjust logging
@@ -410,8 +412,8 @@ uses
     end;
 
     // remove blanks
-    fileNames := StrTrim(getParsedFileNames);
-    searchText := StrTrim(getParsedSearchText);
+    fileNames := AnsiStrTrim(getParsedFileNames);
+    searchText := AnsiStrTrim(getParsedSearchText);
 
     if getGlobalSearchFlag
        AND (getParsedSearchText = '')
@@ -437,7 +439,7 @@ uses
        AND (not getSearchFlag)
     then
     begin
-      searchText := StrTrimChars(searchText, ['"']);
+      searchText := AnsiStrTrimChars(searchText, ['"']);
     end;
 
     LogEvent(LogStartup, 'Parameters parsed');
@@ -617,12 +619,13 @@ uses
   end;
 
 
-  FUNCTION nativeOS2GetCmdLineParameter : STRING;
+  PROCEDURE nativeOS2GetCmdLineParameter(aResult : AnsiString);
   VAR
     tmpPtib : PTIB;       // thread information block
     tmpPpib : PPIB;       // process information block
     tmpCmd  : PCHAR;
-    tmpResult : PCHAR;
+    tmpParams : PCHAR;
+    tmpResult : AnsiString;
 
   BEGIN
     // ask the system
@@ -632,7 +635,8 @@ uses
     // called command itself
     // skip to the next null terminated string
     // these are the parameters
-    tmpResult := tmpCmd + StrLen(tmpCmd) + 1;
-    result := StrPas(tmpResult);
+    tmpParams := tmpCmd + StrLen(tmpCmd) + 1;
+
+    AnsiSetString(aResult, tmpParams, StrLen(tmpParams));
   END;
 END.
