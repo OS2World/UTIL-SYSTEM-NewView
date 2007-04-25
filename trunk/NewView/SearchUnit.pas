@@ -48,7 +48,7 @@ Implementation
 uses
   SysUtils,
   DebugUnit,
-  ACLStringUtility,
+  StringUtilsUnit,
   HelpTopic;
 
 type
@@ -108,8 +108,10 @@ begin
   Result := 0;
   OccurrencePos := CaseInsensitivePos( SearchWord, ReferenceWord );
   if OccurrencePos = 0 then
+  begin
     // no match
     exit;
+  end;
 
   Result := MatchedWordRelevance( SearchWord, ReferenceWord );
 end;
@@ -146,7 +148,7 @@ begin
   for DictIndex := 0 to HelpFile.DictionaryCount - 1 do
   begin
     pDictWord := HelpFile.DictionaryWordPtrs[ DictIndex ];
-    if StringsSame( SearchWord, pDictWord^ ) then
+    if StrEqualIgnoringCase( SearchWord, pDictWord^ ) then
       Results[ DictIndex ] := mwExactWord;
   end;
 end;
@@ -165,7 +167,7 @@ begin
   for DictIndex := 0 to HelpFile.DictionaryCount - 1 do
   begin
     DictWord := HelpFile.DictionaryWords[ DictIndex ];
-    if StrStarts( SearchWord, DictWord ) then
+    if StrStartsWithIgnoringCase( SearchWord, DictWord ) then
       Results[ DictIndex ] := MatchedWordRelevance( SearchWord, DictWord );
   end;
 end;
@@ -184,7 +186,7 @@ begin
   for DictIndex := 0 to HelpFile.DictionaryCount - 1 do
   begin
     DictWord := HelpFile.DictionaryWords[ DictIndex ];
-    if StrEnds( SearchWord, DictWord ) then
+    if StrEndsWithIgnoringCase( SearchWord, DictWord ) then
       Results[ DictIndex ] := MatchedWordRelevance( SearchWord, DictWord );
   end;
 end;
@@ -201,18 +203,25 @@ var
   TitleWordIndex: longint;
   WordRelevance: longint;
   TitleWordRelevance: longint;
-  P: longint;
+  tmpTitleWords : TStringList;
+  i : integer;
 begin
+  tmpTitleWords := TStringList.Create;
+
   // Search topic titles
   for TopicIndex:= 0 to HelpFile.TopicCount - 1 do
   begin
     Topic:= HelpFile.Topics[ TopicIndex ];
     pTitle:= Topic.TitlePtr;
     TitleWordIndex := 0;
-    P := 1;
-    while P < Length( pTitle^ ) do
+
+    tmpTitleWords.Clear;
+    StrExtractStringsQuoted(tmpTitleWords, pTitle^);
+
+    for i := 0 to tmpTitleWords.count-1 do
     begin
-      GetNextValue( pTitle^, P, TitleWord, ' ' );
+      TitleWord := tmpTitleWords[i];
+
       WordRelevance := CompareWord( SearchWord,
                                     TitleWord );
       if WordRelevance > 0 then
@@ -220,10 +229,12 @@ begin
         if TitleWordIndex = 0 then
         begin
           // matching the first word is best
-          if P >= Length( pTitle^ ) then
+          if i = tmpTitleWords.count-1 then
+          begin
             // in fact it's the only word
             TitleWordRelevance := mwOnlyTitleWord
                                   * WordRelevance
+          end
           else
             TitleWordRelevance := mwFirstTitleWord
                                   * WordRelevance
@@ -239,6 +250,7 @@ begin
       inc( TitleWordIndex );
     end;
   end;
+  tmpTitleWords.Destroy;
 end;
 
 // Search index entries for given searchword
@@ -253,17 +265,24 @@ var
   IndexEntryWordIndex: longint;
   WordRelevance: longint;
   IndexEntryWordRelevance: longint;
-  P: longint;
+  tmpIndexWords : TStringList;
+  i : integer;
 begin
+  tmpIndexWords := TStringList.Create;
+
   for IndexIndex := 0 to HelpFile.Index.Count - 1 do
   begin
     Topic := HelpFile.Index.Objects[ IndexIndex ] as TTopic;
     pIndexEntry := HelpFile.IndexEntryPtr[ IndexIndex ];
     IndexEntryWordIndex := 0;
-    P := 1;
-    while P < Length( pIndexEntry^ ) do
+
+    tmpIndexWords.Clear;
+    StrExtractStringsQuoted(tmpIndexWords, pIndexEntry^);
+
+    for i := 0 to tmpIndexWords.count-1 do
     begin
-      GetNextValue( pIndexEntry^, P, IndexEntryWord, ' ' );
+      IndexEntryWord := tmpIndexWords[i];
+
       WordRelevance := CompareWord( SearchWord,
                                     IndexEntryWord );
       if WordRelevance > 0 then
@@ -271,10 +290,12 @@ begin
         if IndexEntryWordIndex = 0 then
         begin
           // matching the first word is best
-          if P >= Length( pIndexEntry^ ) then
+          if i = tmpIndexWords.count-1 then
+          begin
             // in fact it's the only word
             IndexEntryWordRelevance := mwOnlyIndexWord
                                        * WordRelevance
+          end
           else
             IndexEntryWordRelevance := mwFirstIndexWord
                                     * WordRelevance
@@ -290,6 +311,8 @@ begin
       inc( IndexEntryWordIndex );
     end;
   end;
+
+  tmpIndexWords.Destroy;
 end;
 
 // ------------------------------------------------------
