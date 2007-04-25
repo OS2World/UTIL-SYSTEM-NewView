@@ -4,6 +4,7 @@ Interface
 
 uses
   Classes,
+  SysUtils,
   TestAssert,
   StringUtilsUnit;
 
@@ -1675,6 +1676,449 @@ Implementation
   // ----------------------------------------------------------
 
 
+  PROCEDURE testCaseInsensitivePos_Empty;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := CaseInsensitivePos('', '');
+
+    assertEqualsInt('testCaseInsensitivePos_Empty', Pos('', ''), tmpResult);
+  END;
+
+
+  PROCEDURE testCaseInsensitivePos_EmptyPart;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := CaseInsensitivePos('', 'abc');
+
+    assertEqualsInt('testCaseInsensitivePos_EmptyPart', Pos('', 'abc'), tmpResult);
+  END;
+
+
+  PROCEDURE testCaseInsensitivePos_EmptyString;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := CaseInsensitivePos('abc', '');
+
+    assertEqualsInt('testCaseInsensitivePos_EmptyString', Pos('abc', ''), tmpResult);
+  END;
+
+
+  PROCEDURE testCaseInsensitivePos_PartLarger;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := CaseInsensitivePos('abc', 'ab');
+
+    assertEqualsInt('testCaseInsensitivePos_PartLarger', Pos('abc', 'ab'), tmpResult);
+  END;
+
+
+  PROCEDURE testCaseInsensitivePos_AtLeft;
+  VAR
+    tmpResult : integer;
+  BEGIN
+    tmpResult := CaseInsensitivePos('abCd', 'aBcDef');
+
+    assertEqualsInt('testCaseInsensitivePos_AtLeft', Pos('abcd', 'abcdef'), tmpResult);
+  END;
+
+
+  PROCEDURE testCaseInsensitivePos_Middle;
+  VAR
+    tmpResult : integer;
+  BEGIN
+    tmpResult := CaseInsensitivePos('abCd', '12aBcDef');
+
+    assertEqualsInt('testCaseInsensitivePos_Middle', Pos('abcd', '12abcdef'), tmpResult);
+  END;
+
+
+  PROCEDURE testCaseInsensitivePos_AtRight;
+  VAR
+    tmpResult : integer;
+  BEGIN
+    tmpResult := CaseInsensitivePos('abCd', 'efaBcD');
+
+    assertEqualsInt('testCaseInsensitivePos_AtRight', Pos('abcd', 'efabcd'), tmpResult);
+  END;
+
+
+  PROCEDURE testCaseInsensitivePos;
+  VAR
+    tmpPart : String;
+    tmpString : String;
+    tmpResult,i : integer;
+  BEGIN
+    tmpPart := '';
+    tmpString := '';
+
+    for i:=1 to 255 do
+    begin
+      tmpPart := tmpPart + char(i);
+      tmpString := tmpString + char(i);
+    end;
+
+    tmpResult := CaseInsensitivePos(tmpPart, UpperCase(tmpString));
+    assertEqualsInt('testCaseInsensitivePos', 1, tmpResult);
+
+    tmpResult := CaseInsensitivePos(UpperCase(tmpPart), tmpString);
+    assertEqualsInt('testCaseInsensitivePos', 1, tmpResult);
+
+    tmpResult := CaseInsensitivePos(tmpPart, LowerCase(tmpString));
+    assertEqualsInt('testCaseInsensitivePos', 1, tmpResult);
+
+    tmpResult := CaseInsensitivePos(LowerCase(tmpPart), tmpString);
+    assertEqualsInt('testCaseInsensitivePos', 1, tmpResult);
+END;
+
+
+  // --------------------
+  // ---- AnsiString ----
+  // --------------------
+
+
+  PROCEDURE testAnsiTrimLeftChars_Empty;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := '';
+    tmpResult := AnsiStrTrimLeftChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimLeftChars_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimLeftChars_RemoveAll;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'bxxxbx';
+    tmpResult := AnsiStrTrimLeftChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimLeftChars_RemoveAll', '', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimLeftChars_OneLeft;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'bxy';
+    tmpResult := AnsiStrTrimLeftChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimLeftChars_OneLeft', 'y', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimLeftChars_LeftOnly;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'bxbxxay';
+    tmpResult := AnsiStrTrimLeftChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimLeftChars_LeftOnly', 'ay', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimLeftChars_CharsInside;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'bxabxvvx';
+    tmpResult := AnsiStrTrimLeftChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimLeftChars_CharsInside', 'abxvvx', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimLeftChars_Nothing;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'acdef';
+    tmpResult := AnsiStrTrimLeftChars('acdef', ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimLeftChars_Nothing', 'acdef', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimLeftChars_ReallyLong;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := '0123456789';
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    assertEqualsInt('testAnsiTrimLeftChars_ReallyLong', 320, Length(tmpValue));
+
+    tmpResult := AnsiStrTrimLeftChars(tmpValue, ['0', '1']);
+
+    assertEqualsInt('testAnsiTrimLeftChars_ReallyLong', 318, Length(tmpResult));
+  END;
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testAnsiTrimRightChars_Empty;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := '';
+    tmpResult := AnsiStrTrimRightChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimRightChars_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimRightChars_RemoveAll;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'bxxxbx';
+    tmpResult := AnsiStrTrimRightChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimRightChars_RemoveAll', '', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimRightChars_OneLeft;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'ybx';
+    tmpResult := AnsiStrTrimRightChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimRightChars_OneLeft', 'y', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimRightChars_RightOnly;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'aybxbxx';
+    tmpResult := AnsiStrTrimRightChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimRightChars_RightOnly', 'ay', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimRightChars_CharsInside;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'abxvvxb';
+    tmpResult := AnsiStrTrimRightChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimRightChars_CharsInside', 'abxvv', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimRightChars_Nothing;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'acdef';
+    tmpResult := AnsiStrTrimRightChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimRightChars_Nothing', 'acdef', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimRightChars_ReallyLong;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := '0123456789';
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    assertEqualsInt('testAnsiTrimRightChars_ReallyLong', 320, Length(tmpValue));
+
+    tmpResult := AnsiStrTrimRightChars(tmpValue, ['8', '9']);
+
+    assertEqualsInt('testAnsiTrimRightChars_ReallyLong', 318, Length(tmpResult));
+  END;
+
+
+  // -------------------------------------------------------------------
+
+  PROCEDURE testAnsiTrimChars_Empty;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := '';
+    tmpResult := AnsiStrTrimChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimChars_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimChars_RemoveAll;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'bxxxbx';
+    tmpResult := AnsiStrTrimChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimChars_RemoveAll', '', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimChars_OneLeftFromLeft;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'bxa';
+    tmpResult := AnsiStrTrimChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimChars_OneLeftFromLeft', 'a', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimChars_OneLeftFromRight;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'abx';
+    tmpResult := AnsiStrTrimChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimChars_OneLeftFromRight', 'a', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimChars_LeftOnly;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'bxbxxay';
+    tmpResult := AnsiStrTrimChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimChars_LeftOnly', 'ay', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimChars_RightOnly;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'aybxbxx';
+    tmpResult := AnsiStrTrimChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimChars_LeftOnly', 'ay', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimChars_CharsInside;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'bxabxvvx';
+    tmpResult := AnsiStrTrimChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimChars_CharsInside', 'abxvv', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimChars_Nothing;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := 'acdef';
+    tmpResult := AnsiStrTrimChars(tmpValue, ['b', 'x']);
+
+    assertEqualsAnsiString('testAnsiTrimChars_Nothing', 'acdef', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrimChars_ReallyLong;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := '0123456789';
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    assertEqualsInt('testAnsiTrimChars_ReallyLong', 320, Length(tmpValue));
+
+    tmpResult := AnsiStrTrimChars(tmpValue, ['8', '9', '0', '1']);
+
+    assertEqualsInt('testAnsiTrimChars_ReallyLong', 316, Length(tmpResult));
+  END;
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testAnsiTrim;
+  VAR
+    tmpResult : String;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := '  a bc ';
+    tmpResult := AnsiStrTrim(tmpValue);
+
+    assertEqualsAnsiString('testAnsiTrim', 'a bc', tmpResult);
+  END;
+
+
+  PROCEDURE testAnsiTrim_ReallyLong;
+  VAR
+    tmpResult : AnsiString;
+    tmpValue : AnsiString;
+  BEGIN
+    tmpValue := '0123456789';
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := tmpValue + tmpValue;
+    tmpValue := '  ' + tmpValue + '    ';
+    assertEqualsInt('testAnsiTrim_ReallyLong', 326, Length(tmpValue));
+
+    tmpResult := AnsiStrTrim(tmpValue);
+
+    assertEqualsInt('testAnsiTrim_ReallyLong', 320, Length(tmpResult));
+  END;
+
+
+  // -------------------------------------------------------------------
+
 
   FUNCTION getStringUtilsUnitTests : TList;
   BEGIN
@@ -1834,6 +2278,50 @@ Implementation
     result.add(@testStrExtractStringsQuoted_Only1QuoteAndWhitespace);
     result.add(@testStrExtractStringsQuoted_QuoteStartsNewPart);
     result.add(@testStrExtractStringsQuoted_ManyParts);
+
+    result.add(@testCaseInsensitivePos_Empty);
+    result.add(@testCaseInsensitivePos_EmptyPart);
+    result.add(@testCaseInsensitivePos_EmptyString);
+    result.add(@testCaseInsensitivePos_PartLarger);
+    result.add(@testCaseInsensitivePos_AtLeft);
+    result.add(@testCaseInsensitivePos_Middle);
+    result.add(@testCaseInsensitivePos_AtRight);
+    result.add(@testCaseInsensitivePos);
+
+  // --------------------
+  // ---- AnsiString ----
+  // --------------------
+
+
+    result.add(@testAnsiTrimLeftChars_Empty);
+    result.add(@testAnsiTrimLeftChars_RemoveAll);
+    result.add(@testAnsiTrimLeftChars_OneLeft);
+    result.add(@testAnsiTrimLeftChars_LeftOnly);
+    result.add(@testAnsiTrimLeftChars_CharsInside);
+    result.add(@testAnsiTrimLeftChars_Nothing);
+    result.add(@testAnsiTrimLeftChars_ReallyLong);
+
+    result.add(@testAnsiTrimRightChars_Empty);
+    result.add(@testAnsiTrimRightChars_RemoveAll);
+    result.add(@testAnsiTrimRightChars_OneLeft);
+    result.add(@testAnsiTrimRightChars_RightOnly);
+    result.add(@testAnsiTrimRightChars_CharsInside);
+    result.add(@testAnsiTrimRightChars_Nothing);
+    result.add(@testAnsiTrimRightChars_ReallyLong);
+
+    result.add(@testAnsiTrimChars_Empty);
+    result.add(@testAnsiTrimChars_RemoveAll);
+    result.add(@testAnsiTrimChars_OneLeftFromLeft);
+    result.add(@testAnsiTrimChars_OneLeftFromRight);
+    result.add(@testAnsiTrimChars_LeftOnly);
+    result.add(@testAnsiTrimChars_RightOnly);
+    result.add(@testAnsiTrimChars_CharsInside);
+    result.add(@testAnsiTrimChars_Nothing);
+    result.add(@testAnsiTrimChars_ReallyLong);
+
+    result.add(@testAnsiTrim);
+    result.add(@testAnsiTrim_ReallyLong);
+
 
   END;
 

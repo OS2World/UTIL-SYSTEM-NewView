@@ -8,6 +8,7 @@ uses
   TYPE EAssertFailed=CLASS(Exception);
 
   PROCEDURE assertEqualsString(aTestDescription : String; anExpectedValue : String; aRealValue : String);
+  PROCEDURE assertEqualsAnsiString(aTestDescription : String; anExpectedValue : AnsiString; aRealValue : AnsiString);
   PROCEDURE assertEqualsInt(aTestDescription : String; anExpectedValue : INTEGER; aRealValue : INTEGER);
   PROCEDURE assertEqualsLongWord(aTestDescription : String; anExpectedValue : LongWord; aRealValue : LongWord);
   PROCEDURE assertTrue(aTestDescription : String; aRealValue : Boolean);
@@ -18,7 +19,23 @@ Implementation
 
   PROCEDURE assertEqualsString(aTestDescription : String; anExpectedValue : String; aRealValue : String);
   VAR
-    tmpMessage : String;
+    tmpMessage : AnsiString;
+  BEGIN
+    if (aRealValue <> anExpectedValue) then
+    begin
+      tmpMessage := 'Failed: ' + aTestDescription + ' Expected: ''';
+      tmpMessage := tmpMessage + anExpectedValue;
+      tmpMessage := tmpMessage + ''' but it was: ''';
+      tmpMessage := tmpMessage + aRealValue;
+      tmpMessage := tmpMessage + '''';
+      raise EAssertFailed.Create(tmpMessage);
+    end;
+  END;
+
+
+  PROCEDURE assertEqualsAnsiString(aTestDescription : String; anExpectedValue : AnsiString; aRealValue : AnsiString);
+  VAR
+    tmpMessage : AnsiString;
   BEGIN
     if (aRealValue <> anExpectedValue) then
     begin

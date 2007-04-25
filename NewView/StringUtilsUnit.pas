@@ -4,17 +4,18 @@ Unit StringUtilsUnit;
 // Copyright 2006-2007 Ronald Brill (rbri at rbri dot de)
 // This software is released under the GNU Public License - see readme.txt
 
-// Helper functions to work with strings
+// Helper functions to work with String and AnsiString
 
 Interface
 
 uses
- Classes;
+  Classes,
+  CharUtilsUnit;
 
 const
-  StrTAB = chr(9);
-  StrCR = chr(13);
-  StrLF = chr(10);
+  StrTAB = CharTAB;
+  StrCR = CharCR;
+  StrLF = CharLF;
   StrCRLF = StrCR + StrLF;
   StrSingleQuote = '''';
   StrDoubleQuote = '"';
@@ -34,9 +35,6 @@ const
        FUNCTION getSerializedString : String;
        PROCEDURE readValuesFromSerializedString(const aSerializedString : String);
   end;
-
-  TYPE
-    TSetOfChars = set of char;
 
   // prefices all occurences of one of the chars in aStringWithChars with anEscape char
   // if the escapeChar itself is found, then it is doubled
@@ -109,6 +107,34 @@ const
   // Extract all fields in a String delimited by whitespace (blank or tab).
   // use double quotes if you need blanks in the strings
   Procedure StrExtractStringsQuoted(Var aResult: TStrings; const aReceiver: String );
+
+
+  // returns the position of aPart in aString
+  // case insensitive
+  Function CaseInsensitivePos(const aPart: String; const aString: String ): longint;
+
+  // --------------------
+  // ---- AnsiString ----
+  // --------------------
+
+  
+  // removes all occurences of char from aSetOfChars from the beginning
+  // of a String.
+  Function AnsiStrTrimLeftChars(const aReceiver: AnsiString; const aSetOfChars: TSetOfChars): AnsiString;
+
+  // removes all occurences of char from aSetOfChars from the end
+  // of a String.
+  Function AnsiStrTrimRightChars(const aReceiver: AnsiString; const aSetOfChars: TSetOfChars): AnsiString;
+
+  // removes all occurences of char from aSetOfChars from the beginning
+  // end the end of a String.
+  Function AnsiStrTrimChars(const aReceiver: AnsiString; const aSetOfChars: TSetOfChars): AnsiString;
+
+  // removes all blanks from beginning and end
+  Function AnsiStrTrim(const aReceiver: AnsiString): AnsiString;
+
+
+
 
 Implementation
 
@@ -269,13 +295,22 @@ Implementation
 
   Function StrTrimLeftChars(const aReceiver: String; const aSetOfChars: TSetOfChars): String;
   Var
-    i : Longint;
+    tmpLength : integer;
+    i : integer;
   Begin
+    tmpLength := Length(aReceiver);
+
+    if 1 > tmpLength then
+    begin
+      result := aReceiver;
+      exit;
+    end;
+
     i := 1;
     // mem optimization
     if aReceiver[i] in aSetOfChars then
     begin
-      while i <= Length(aReceiver) do
+      while i <= tmpLength do
       begin
         if aReceiver[i] in aSetOfChars then
           inc(i)
@@ -293,9 +328,15 @@ Implementation
 
   Function StrTrimRightChars(const aReceiver: String; const aSetOfChars: TSetOfChars): String;
   Var
-    i : Longint;
+    i : integer;
   Begin
     i := Length(aReceiver);
+
+    if 1 > i then
+    begin
+      result := aReceiver;
+      exit;
+    end;
 
     // mem optimization
     if aReceiver[i] in aSetOfChars then
@@ -318,13 +359,20 @@ Implementation
 
   Function StrTrimChars(const aReceiver: String; const aSetOfChars: TSetOfChars): String;
   Var
-    i : Longint;
-    j : Longint;
+    i,j : integer;
     tmpNeedCopy : boolean;
   Begin
+    j := Length(aReceiver);
+
+    if 1 > j then
+    begin
+      result := aReceiver;
+      exit;
+    end;
+
     tmpNeedCopy := false;
     i := 1;
-    while i < Length(aReceiver) do
+    while i < j do
     begin
       if aReceiver[i] in aSetOfChars then
       begin
@@ -337,7 +385,6 @@ Implementation
       end;
     end;
 
-    j := Length(aReceiver);
     while j >= i do
     begin
       if aReceiver[j] in aSetOfChars then
@@ -700,4 +747,240 @@ Implementation
       end;
     end;
   end;
+
+
+  Function CaseInsensitivePos(const aPart: String; const aString: String) : longint;
+  Var
+    EndOfPart: longword;
+  Begin
+    // Result := Pos(UpperCase(aPart), Uppercase(aString));
+
+    // Aarons assembler version :-)
+    Asm
+    //Locals:
+    //a at [EBP+12]
+    //b at [EBP+8]
+
+    // First get and check lengths
+    MOV   ESI, aPart     // get address of aPart into ESI
+    MOV   CL,  [ESI]     // get length of aPart
+    CMP   CL, 0          // if aPart is empty then return null to simulate the behavior of POS
+    JE    !CIP_NoMatch
+
+    MOV   EDI, aString   // get address of aString into EDI
+    MOV   DL,  [EDI]     // get length of aString
+    CMP   CL,  DL
+    JBE   !CIP_PartFitsInString
+
+    // aParta longer than aString so aPart can't be in aString
+
+    !CIP_NoMatch:
+      MOV   EAX, 0
+      LEAVE
+      RETN32 8
+
+    !CIP_PartFitsInString:
+      INC   ESI            // skip length byte in aPart
+      INC   EDI            // skip length byte of aString
+
+    // get ending address of b into EDX
+      MOVZX EDX, DL        // widen DL
+      ADD   EDX, EDI       // add start of aString
+
+    // get ending address of a into EndOfA
+      MOVZX ECX, CL        // widen CL
+      ADD   ECX, ESI       // add start of aPart
+      MOV   EndOfPart, ECX    // store to EndOfPart
+
+      MOV   ECX, EDI       // set start of current match to start of b
+
+      // ESI: current search point in a
+      // EDI: current search point in b
+      // EDX: end of b
+      // ECX: start of current match
+      // available: eax, ebx
+
+      JMP   !CIP_Loop
+
+    !CIP_LoopStart:
+      CMP   EDI, EDX
+      JE    !CIP_NoMatch   // run out of b
+
+      MOV   AL,  [ESI]     // get next char of a
+      INC   ESI            // next in a
+
+      MOV   BL,  [EDI]     // get next char of b
+      INC   EDI            // next in b
+
+    // Convert chars to uppercase
+      CMP   AL,  97
+      JB    !CIP_Upcase1
+      CMP   AL,  122
+      JA    !CIP_Upcase1
+      SUB   AL,  32         // convert lower to upper
+    !CIP_Upcase1:
+
+      CMP   BL,97
+      JB    !CIP_Upcase2
+      CMP   BL,122
+      JA    !CIP_Upcase2
+      SUB   BL,32          // convert lower to upper
+    !CIP_Upcase2:
+
+    // Compare uppercased chars
+      CMP   AL,BL
+      JE    !CIP_Loop
+
+    // different.
+
+    // Back to start of match + 1
+      INC   ECX            // inc start of match
+      MOV   EDI, ECX       // back to start of match in b
+      MOV   ESI, aPart     // back to start of aPart
+      INC   ESI            // skip length
+      JMP   !CIP_LoopStart
+
+    !CIP_Loop:
+
+    // same
+      CMP   ESI, EndOfPart    // have we reached the end of a
+      JB    !CIP_LoopStart
+
+      // Match, return position
+      SUB   ECX, [EBP+8]   // position = ( start of match ) - ( start of b ) + 1
+      MOV   EAX, ECX
+      LEAVE
+      RETN32 8
+    end;
+  end;
+
+
+  // --------------------
+  // ---- AnsiString ----
+  // --------------------
+
+
+  Function AnsiStrTrimLeftChars(const aReceiver: AnsiString; const aSetOfChars: TSetOfChars): AnsiString;
+  Var
+    tmpLength : integer;
+    i : integer;
+  Begin
+    tmpLength := Length(aReceiver);
+
+    if 1 > tmpLength then
+    begin
+      result := aReceiver;
+      exit;
+    end;
+
+    i := 1;
+    // mem optimization
+    if aReceiver[i] in aSetOfChars then
+    begin
+      while i <= tmpLength do
+      begin
+        if aReceiver[i] in aSetOfChars then
+          inc(i)
+        else
+          break;
+      end;
+      result := AnsiCopy(aReceiver, i, Length(aReceiver)-i+1);
+    end
+    else
+    begin
+      result := aReceiver;
+    end;
+  end;
+
+
+  Function AnsiStrTrimRightChars(const aReceiver: AnsiString; const aSetOfChars: TSetOfChars): AnsiString;
+  Var
+    i : integer;
+  Begin
+    i := Length(aReceiver);
+
+    if 1 > i then
+    begin
+      result := aReceiver;
+      exit;
+    end;
+
+    // mem optimization
+    if aReceiver[i] in aSetOfChars then
+    begin
+      while i > 0 do
+      begin
+        if aReceiver[i] in aSetOfChars then
+          dec(i)
+        else
+          break;
+      end;
+      result := AnsiCopy(aReceiver, 1, i);
+    end
+    else
+    begin
+      result := aReceiver;
+    end;
+  end;
+
+
+  Function AnsiStrTrimChars(const aReceiver: AnsiString; const aSetOfChars: TSetOfChars): AnsiString;
+  Var
+    i,j : integer;
+    tmpNeedCopy : boolean;
+  Begin
+    tmpNeedCopy := false;
+
+    j := Length(aReceiver);
+
+    if 1 > j then
+    begin
+      result := aReceiver;
+      exit;
+    end;
+
+    i := 1;
+    while i < j do
+    begin
+      if aReceiver[i] in aSetOfChars then
+      begin
+        inc(i);
+        tmpNeedCopy := true;
+      end
+      else
+      begin
+        break;
+      end;
+    end;
+
+    while j >= i do
+    begin
+      if aReceiver[j] in aSetOfChars then
+      begin
+        dec(j);
+        tmpNeedCopy := true;
+      end
+      else
+      begin
+        break;
+      end;
+    end;
+
+    if tmpNeedCopy then
+    begin
+      result := AnsiCopy(aReceiver, i, j-i+1);
+    end
+    else
+    begin
+      result := aReceiver;
+    end;
+  end;
+
+
+  Function AnsiStrTrim(const aReceiver: AnsiString): AnsiString;
+  Begin
+    result := AnsiStrTrimChars(aReceiver, [' ']);
+  end;
+
+
 END.
