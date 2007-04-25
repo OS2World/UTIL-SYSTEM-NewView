@@ -49,9 +49,11 @@ Type
 Implementation
 
 uses
-  ACLStringUtility,
   ACLUtility,
-  ACLLanguageUnit;
+  ACLLanguageUnit,
+  CharUtilsUnit,
+  StringUtilsUnit,
+  DebugUnit;
 
 var
   QueryErrorMissingWord1: string;
@@ -71,17 +73,17 @@ var
   TermText: string;
   CombineMethod: TSearchTermCombineMethod;
   Term: TSearchTerm;
-  ParseIndex: longint;
+  tmpTerms : TStringList;
+  i : integer;
 begin
   Terms := TList.Create;
   try
-    ParseIndex := 1;
-    while ParseIndex <= Length( SearchString ) do
+    tmpTerms := TStringList.Create;
+    StrExtractStringsQuoted(tmpTerms, SearchString);
+
+    for i := 0 to tmpTerms.count-1 do
     begin
-      GetNextQuotedValue( SearchString,
-                          ParseIndex,
-                          TermText,
-                          DoubleQuote );
+      TermText := tmpTerms[i];
 
       // Check for modifiers:
       //  + word must be matched
@@ -99,11 +101,14 @@ begin
       begin
         // delete + or -
         if Length( TermText ) = 1 then
-          raise ESearchSyntaxError.Create( QueryErrorMissingWord1
-                                           + StrDoubleQuote( TermText )
-                                           + QueryErrorMissingWord2
-                                           + StrDoubleQuote( StrRightFrom( SearchString,
-                                                                           ParseIndex ) ) );
+          if (i < tmpTerms.count-1) then
+            raise ESearchSyntaxError.Create( QueryErrorMissingWord1
+                                             + StrInDoubleQuotes(TermText)
+                                             + QueryErrorMissingWord2
+                                             + StrInDoubleQuotes(tmpTerms[i+1]) )
+          else
+            raise ESearchSyntaxError.Create( QueryErrorMissingWord1
+                                             + StrInDoubleQuotes(TermText));
         Delete( TermText, 1, 1 );
       end;
 
@@ -111,7 +116,9 @@ begin
                                   CombineMethod );
       Terms.Add( Term );
     end;
+    tmpTerms.Destroy;
   except
+    tmpTerms.Destroy;
     Destroy; // clean up
     raise; // reraise exception
   end;
@@ -160,8 +167,8 @@ begin
     while TermParseIndex <= Length( Text ) do
     begin
       TermChar := Text[ TermParseIndex ];
-      if  (    IsAlpha( TermChar )
-            or IsDigit( TermChar ) ) then
+      if  (    CharIsAlpha( TermChar )
+            or CharIsDigit( TermChar ) ) then
       begin
         // alpha numeric, collect it
         TermPart := TermPart + TermChar;
