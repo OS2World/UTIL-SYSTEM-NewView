@@ -96,7 +96,7 @@ Type
 
     FileDialogSplit: real;
 
-    // COlours
+    // Colours
     Colors: array[ 0..NumColorSettings - 1 ] of TColor;
 
     NormalFont: TFont;
@@ -140,7 +140,7 @@ Uses
   Dos,
   FileUtilsUnit,
   ACLUtility,
-  ACLStringUtility,
+  StringUtilsUnit,
   ControlsUtility;
 
 Const
@@ -266,9 +266,8 @@ Begin
         begin
           MRUItem := TMRUItem.Create;
           MRUItem.Title := MRUFileTitle;
-          StringToList( MRUFilename,
-                        MRUItem.Filenames,
-                        '+' );
+
+          StrExtractStrings(MRUItem.Filenames, MRUFilename, ['+'], #0);
           MRUList.Add( MRUItem );
         end;
       end;
@@ -344,9 +343,9 @@ Begin
 
       // Index style
       SettingString := ReadString( GeneralSection, 'IndexStyle', 'Full' );
-      if StringsSame( SettingString, 'FileOnly' ) then
+      if StrEqualIgnoringCase( SettingString, 'FileOnly' ) then
         IndexStyle := isFileOnly
-      else if StringsSame( SettingString, 'Alphabetical' ) then
+      else if StrEqualIgnoringCase( SettingString, 'Alphabetical' ) then
         IndexStyle := isAlphabetical
       else
         IndexStyle := isFull;
@@ -360,11 +359,11 @@ Begin
       ToolBarBackgroundImageFilename := ReadString( GeneralSection, 'ToolbarBackground', '' );
       SettingString := ReadString( GeneralSection, 'ToolbarStyle', 'ImagesAndText' );
 
-      if StringsSame( SettingString, 'None' ) then
+      if StrEqualIgnoringCase( SettingString, 'None' ) then
         ToolbarStyle := tsNone
-      else if StringsSame( SettingString, 'Images' ) then
+      else if StrEqualIgnoringCase( SettingString, 'Images' ) then
         ToolbarStyle := tsImages
-      else if StringsSame( SettingString, 'Text' ) then
+      else if StrEqualIgnoringCase( SettingString, 'Text' ) then
         ToolbarStyle := tsText
       else
         ToolbarStyle := tsImagesAndText;
@@ -388,11 +387,11 @@ Begin
       SettingString := ReadString( SearchSection,
                                    'Location',
                                    'HelpPaths' );
-      if StringsSame( SettingString, 'HelpPaths' ) then
+      if StrEqualIgnoringCase( SettingString, 'HelpPaths' ) then
         GlobalSearchLocation := gsHelpPaths
-      else if StringsSame( SettingString, 'FixedDrives' ) then
+      else if StrEqualIgnoringCase( SettingString, 'FixedDrives' ) then
         GlobalSearchLocation := gsFixedDrives
-      else if StringsSame( SettingString, 'SelectedHelpPaths' ) then
+      else if StrEqualIgnoringCase( SettingString, 'SelectedHelpPaths' ) then
         GlobalSearchLocation := gsSelectedHelpPaths
       else
         GlobalSearchLocation := gsCustom;
