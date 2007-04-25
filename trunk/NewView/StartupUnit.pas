@@ -62,8 +62,8 @@ begin
   begin
     tmpItem := Items[ i ];
 
-    tmpItem := StrTrimChars(tmpItem, [Quote]); // remove single quotes
-    tmpItem := StrTrimChars(tmpItem, [DoubleQuote]); // remove double quotes
+    tmpItem := StrTrimChars(tmpItem, [StrSingleQuote]); // remove single quotes
+    tmpItem := StrTrimChars(tmpItem, [StrDoubleQuote]); // remove double quotes
 
     LogEvent(LogStartup, '  Checking for environment var: ' + tmpItem );
     tmpEnvironmentVarValue := GetEnv( Uppercase( tmpItem ) );
