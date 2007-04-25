@@ -2,10 +2,6 @@
 
 ApplicationIcon=D:\PROGS\SIBYL\BIN\default.ico
 
-[Breakpoints]
-
-Breakpoint0=..\.\FILEUTILSUNIT.PAS|479
-
 [Browser Files]
 
 File0=SYSTEM
@@ -21,32 +17,28 @@ File9=LANGUAGE
 File10=SYSUTILS
 File11=CLASSES
 File12=TESTASSERT
-File13=DEBUGUNIT
-File14=STRINGUTILSUNIT
-File15=INIFILES
-File16=PMBITMAP
-File17=PMGPI
-File18=PMDEV
-File19=ACLUTILITY
-File20=FILEUTILSUNIT
-File21=CMDLINEPARAMETERUNIT
-File22=CMDLINEPARAMETERUNITTESTS
-File23=STRINGUTILSUNITTESTS
-File24=FILEUTILSUNITTESTS
-File25=PMSTDDLG
-File26=PMHELP
-File27=MESSAGES
-File28=FORMS
-File29=RUNPROGRAMUNIT
-File30=WEBBROWSERUNIT
-File31=HELPTOPICTESTS
+File13=CHARUTILSUNIT
+File14=DEBUGUNIT
+File15=STRINGUTILSUNIT
+File16=INIFILES
+File17=PMBITMAP
+File18=PMGPI
+File19=PMDEV
+File20=ACLUTILITY
+File21=FILEUTILSUNIT
+File22=CMDLINEPARAMETERUNIT
+File23=CMDLINEPARAMETERUNITTESTS
+File24=CHARUTILSUNITTESTS
+File25=STRINGUTILSUNITTESTS
+File26=FILEUTILSUNITTESTS
+File27=HELPTOPICTESTS
 
 [Compiler Options]
 
 CodeGeneration=
 Syntax=
-Optimize=OptimizeCommonSub,OptimizePeephole
-RuntimeCheck=
+Optimize=
+RuntimeCheck=InOut,Stack
 CondDefine=
 
 [Compiler Warnings]
@@ -65,7 +57,7 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\COMPONENTS
+LastDir=P:\NEWVIEW_DEV\NEWVIEW\UNITTESTS
 OutDir=P:\NEWVIEW_DEV\build\unittest
 LibDir=P:\NEWVIEW_DEV\build\library;P:\NEWVIEW_DEV\Components;P:\NEWVIEW_DEV\build\sibyl\lib
 LibSrcDir=P:\NEWVIEW_DEV\NEWVIEW;D:\PROGS\SIBYL\Source\RTL;D:\PROGS\SIBYL\Source\SPCC
@@ -74,22 +66,22 @@ CompInstallDir=D:\PROGS\SIBYL\Compnt
 
 [Find History]
 
-Find0=trow
-Find1=RunProgramUnit
-Find2=ExtractFilePath
-Find3=SearchPath
-Find4=testListFilesInDirectory_ManyFiles
-Find5=testAddDirectorySeparator_ManyChars
-Find6=Listfile
-Find7=list
-Find8=DirectoryExists
-Find9=false
-Find10=RemoveRightDirectorySeparator
-Find11=bbb
-Find12=testRemoveRightDirectorySeparator_Empty
-Find13=DirectoryEx
-Find14=directory
-Find15=result.add(@
+Find0=testParseCmdLine_Language
+Find1=atright
+Find2=result.add(@
+Find3=testCaseInsensitivePos_Empty
+Find4=EndOfA
+Find5=ins
+Find6=xxx
+Find7=trim
+Find8=Trim
+Find9=StrTrim
+Find10=length
+Find11=140
+Find12=isDigit
+Find13=testStrExtractStringsQuoted_QuotedText1PartNoClosingQuotesWhitewspace
+Find14=StrExtractStrings
+Find15=tmpNextChar
 
 [General]
 
@@ -98,91 +90,91 @@ ProjectName=P:\NEWVIEW_DEV\NewView\unittests\newviewtests.spr
 ProjectType=NonVisual
 CompLibName=
 Win32CompLibName=
-RunParameter=215
+RunParameter=196
 InActiveLanguages=
 CurrentLanguage=
 Platform=Standard
 
 [Last Closed Files]
 
-File0=..\..\.\COMPONENTS\DialogIcons.rc
-File1=..\..\.\Components\ACLMessageForm.pas
-File2=..\..\.\Components\ACLDialogs.pas
-File3=..\..\.\Library\ACLFindFunctions.pas
-File4=.\testassert.pas
-File5=..\..\.\Library\ACLFileIOUtility.pas
+File0=.\CharUtilsUnitTests.pas
+File1=.\testassert.pas
+File2=..\..\.\Components\RichTextStyleUnit.pas
+File3=..\..\.\Library\ACLString.pas
+File4=D:\PROGS\SIBYL\SOURCE\SPCC\CLASSES.PAS
+File5=D:\PROGS\SIBYL\SOURCE\SPCC\SYSUTILS.PAS
 
 [Last Open Files]
 
 File0=.\NewViewTests.pas
 File0.Left=-4
 File0.Bottom=-5
-File0.Width=1306
-File0.Height=548
-File0.Column=18
-File0.Line=10
+File0.Width=1399
+File0.Height=629
+File0.Column=1
+File0.Line=39
 File1=..\.\StringUtilsUnit.pas
 File1.Left=-4
 File1.Bottom=-5
-File1.Width=1306
-File1.Height=548
+File1.Width=1399
+File1.Height=629
 File1.Column=1
-File1.Line=233
+File1.Line=129
 File2=.\StringUtilsUnitTests.pas
 File2.Left=-4
 File2.Bottom=-5
-File2.Width=1306
-File2.Height=548
-File2.Column=41
-File2.Line=618
-File3=.\FileUtilsUnitTests.pas
+File2.Width=1399
+File2.Height=629
+File2.Column=42
+File2.Line=1773
+File3=..\.\DebugUnit.pas
 File3.Left=-4
 File3.Bottom=-5
-File3.Width=1306
-File3.Height=548
-File3.Column=35
-File3.Line=641
-File4=..\.\FileUtilsUnit.pas
+File3.Width=1399
+File3.Height=629
+File3.Column=68
+File3.Line=29
+File4=.\CmdLineParameterUnitTests.pas
 File4.Left=-4
 File4.Bottom=-5
-File4.Width=1306
-File4.Height=548
-File4.Column=25
-File4.Line=38
-File5=..\..\.\Library\ACLFileUtility.pas
+File4.Width=1399
+File4.Height=629
+File4.Column=38
+File4.Line=589
+File5=..\.\CmdLineParameterUnit.pas
 File5.Left=-4
 File5.Bottom=-5
-File5.Width=1306
-File5.Height=548
-File5.Column=24
-File5.Line=1005
-File6=..\.\DebugUnit.pas
+File5.Width=1399
+File5.Height=629
+File5.Column=1
+File5.Line=413
+File6=..\..\.\Library\ACLStringUtility.pas
 File6.Left=-4
 File6.Bottom=-5
-File6.Width=1306
-File6.Height=548
-File6.Column=68
-File6.Line=29
-File7=.\CmdLineParameterUnitTests.pas
+File6.Width=1399
+File6.Height=629
+File6.Column=9
+File6.Line=1322
+File7=..\..\.\Components\ACLLanguageUnit.pas
 File7.Left=-4
 File7.Bottom=-5
-File7.Width=1306
-File7.Height=548
-File7.Column=29
-File7.Line=1
-File8=..\.\CmdLineParameterUnit.pas
+File7.Width=1399
+File7.Height=629
+File7.Column=14
+File7.Line=285
+File8=..\.\FileUtilsUnit.pas
 File8.Left=-4
 File8.Bottom=-5
-File8.Width=1306
-File8.Height=548
+File8.Width=1399
+File8.Height=629
 File8.Column=1
 File8.Line=1
-File9=..\.\WebBrowserUnit.pas
+File9=..\.\CharUtilsUnit.pas
 File9.Left=-4
 File9.Bottom=-5
-File9.Width=1306
-File9.Height=548
-File9.Column=13
+File9.Width=1399
+File9.Height=629
+File9.Column=1
 File9.Line=1
 
 [Linker Options]
@@ -204,7 +196,7 @@ Stack=256
 Primary=.\NewViewTests.pas
 MainFile0=.\NewViewTests.pas
 MainFile0.Ext=.EXE
-MainFile0.Checksum=8448
+MainFile0.Checksum=7424
 MainFile0.Expanded=False
 MainFile0.File0=.\StringUtilsUnitTests.pas
 MainFile0.File1=.\TestAssert.pas
@@ -224,23 +216,20 @@ MainFile0.Dependency9=D:\PROGS\SIBYL\Source\SPCC\LANGUAGE.PAS
 MainFile0.Dependency10=D:\PROGS\SIBYL\Source\SPCC\SYSUTILS.PAS
 MainFile0.Dependency11=D:\PROGS\SIBYL\Source\SPCC\CLASSES.PAS
 MainFile0.Dependency12=.\TESTASSERT.PAS
-MainFile0.Dependency13=..\.\DEBUGUNIT.PAS
-MainFile0.Dependency14=..\.\STRINGUTILSUNIT.PAS
-MainFile0.Dependency15=D:\PROGS\SIBYL\Source\SPCC\INIFILES.PAS
-MainFile0.Dependency16=D:\PROGS\SIBYL\Source\RTL\PMBITMAP.PAS
-MainFile0.Dependency17=D:\PROGS\SIBYL\Source\RTL\PMGPI.PAS
-MainFile0.Dependency18=D:\PROGS\SIBYL\Source\RTL\PMDEV.PAS
-MainFile0.Dependency19=..\.\FILEUTILSUNIT.PAS
-MainFile0.Dependency20=..\.\CMDLINEPARAMETERUNIT.PAS
-MainFile0.Dependency21=.\CMDLINEPARAMETERUNITTESTS.PAS
-MainFile0.Dependency22=.\STRINGUTILSUNITTESTS.PAS
-MainFile0.Dependency23=.\FILEUTILSUNITTESTS.PAS
-MainFile0.Dependency24=D:\PROGS\SIBYL\Source\RTL\PMSTDDLG.PAS
-MainFile0.Dependency25=D:\PROGS\SIBYL\Source\RTL\PMHELP.PAS
-MainFile0.Dependency26=D:\PROGS\SIBYL\Source\SPCC\MESSAGES.PAS
-MainFile0.Dependency27=D:\PROGS\SIBYL\Source\SPCC\FORMS.PAS
-MainFile0.Dependency28=..\.\WEBBROWSERUNIT.PAS
-MainFile0.Dependency29=.\HELPTOPICTESTS.PAS
+MainFile0.Dependency13=..\.\CHARUTILSUNIT.PAS
+MainFile0.Dependency14=..\.\DEBUGUNIT.PAS
+MainFile0.Dependency15=..\.\STRINGUTILSUNIT.PAS
+MainFile0.Dependency16=D:\PROGS\SIBYL\Source\SPCC\INIFILES.PAS
+MainFile0.Dependency17=D:\PROGS\SIBYL\Source\RTL\PMBITMAP.PAS
+MainFile0.Dependency18=D:\PROGS\SIBYL\Source\RTL\PMGPI.PAS
+MainFile0.Dependency19=D:\PROGS\SIBYL\Source\RTL\PMDEV.PAS
+MainFile0.Dependency20=..\.\FILEUTILSUNIT.PAS
+MainFile0.Dependency21=..\.\CMDLINEPARAMETERUNIT.PAS
+MainFile0.Dependency22=.\CMDLINEPARAMETERUNITTESTS.PAS
+MainFile0.Dependency23=.\CHARUTILSUNITTESTS.PAS
+MainFile0.Dependency24=.\STRINGUTILSUNITTESTS.PAS
+MainFile0.Dependency25=.\FILEUTILSUNITTESTS.PAS
+MainFile0.Dependency26=.\HELPTOPICTESTS.PAS
 
 [Replace History]
 
