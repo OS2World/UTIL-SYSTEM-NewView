@@ -38,17 +38,17 @@ const
 
   // prefices all occurences of one of the chars in aStringWithChars with anEscape char
   // if the escapeChar itself is found, then it is doubled
-  Function StrEscapeAllCharsBy(Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char): String;
+  Function StrEscapeAllCharsBy(const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char): String;
 
   // Extract all fields in a String given a set of delimiter characters and
   // an optional escape character usable to escape field delimits.
   // Example:
   //     StrExtractStrings('1x2x3\x4', 'x', '\') ->
   //     returns 4 strings: '1', '', '2' and '3x4'
-  Procedure StrExtractStrings(Var aResult : TStrings; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+  Procedure StrExtractStrings(Var aResult : TStrings; const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
 
   // same as StrExtractStrings but ignores empty strings
-  Procedure StrExtractStringsIgnoreEmpty(Var aResult : TStrings; Const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+  Procedure StrExtractStringsIgnoreEmpty(Var aResult : TStrings; const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
 
   // removes all occurences of char from aSetOfChars from the beginning
   // of a String.
@@ -73,6 +73,9 @@ const
 
   // Returns a copy of the string including all characters until one from aSetOfChars found
   Function StrLeftUntil(const aReceiver: String; const aSetOfChars: TSetOfChars) : String;
+
+  // Returns a copy of the string starting at aPos
+  Function StrSubstringFrom(const aReceiver: String; const aPos : Integer) : String;
 
   // returns true if the String starts with the provided one
   // this is case SENSITIVE
@@ -112,6 +115,7 @@ const
   // returns the position of aPart in aString
   // case insensitive
   Function CaseInsensitivePos(const aPart: String; const aString: String ): longint;
+
 
   // --------------------
   // ---- AnsiString ----
@@ -444,6 +448,12 @@ Implementation
         break;
       end;
     end;
+  end;
+
+
+  Function StrSubstringFrom(const aReceiver: String; const aPos : Integer) : String;
+  Begin
+    Result := copy(aReceiver, aPos, length(aReceiver) - aPos + 1);
   end;
 
 
