@@ -57,6 +57,11 @@ const
 
   MAIN_WINDOW_CLASS_NAME = 'NewViewMainForm';
 
+  PARAM_LINK_NOTE = 'note';
+  PARAM_LINK_PROGRAM = 'program';
+  PARAM_LINK_URL = 'url';
+  PARAM_LINK_EXTERNAL = 'external';
+
 Type
 
   TMainForm = Class (TForm)
@@ -825,12 +830,13 @@ uses
   Printers,
 
   // Library
-  ACLStringUtility,
+//  ACLStringUtility,
   ACLFileIOUtility,
   ACLUtility,
   ACLDialogs,
   RunProgramUnit,
   StringUtilsUnit,
+  CharUtilsUnit,
   DebugUnit,
 
   FileUtilsUnit,
@@ -1033,18 +1039,21 @@ Var
   i: longint;
   Topic: TTopic;
 
+  tmpParts : TStringList;
 Begin
   if not DoInputQuery( 'Binary Find',
                        'Enter data to find (decimal, separate with spaces)',
                        DataStr ) then
     exit;
 
-  DataLen := 0;
-  while Length( DataStr ) > 0 do
+  tmpParts := TStringList.Create;
+  StrExtractStringsIgnoreEmpty(tmpParts, DataStr, [' '], #0);
+  for i := 0 to tmpParts.count-1 do
   begin
-    Data[ DataLen ] := StrToInt( ExtractNextValue( DataStr, ' ' ) );
-    inc( DataLen );
+    Data[i] := StrToInt(tmpParts[i]);
   end;
+  DataLen := tmpParts.count;
+  tmpParts.Destroy;
 
   ShowTab( piSearch );
   SearchResultsListBox.Clear;
@@ -1055,7 +1064,7 @@ Begin
     for i := 0 to HelpFile.TopicCount -1 do
     begin
       Topic := HelpFile.Topics[ i ];
-      if Topic.SearchForData( Addr( Data ), DataLen ) then
+      if Topic.SearchForData( Addr(Data), DataLen) then
       begin
         SearchResultsListBox.Items.AddObject( Topic.Title, Topic );
       end;
@@ -1351,7 +1360,7 @@ End;
 Procedure TMainForm.SetMainCaption;
 begin
   if    ( Trim( MainTitle ) = '' )
-     or ( StringsSame( Trim( MainTitle ), HelpProgramTitle ) ) then
+     or ( StrEqualIgnoringCase( Trim( MainTitle ), HelpProgramTitle ) ) then
     // supress "Help - " or "Help - Help"
     Caption := HelpProgramTitle
   else
@@ -1474,7 +1483,7 @@ Begin
 
   Language.LL( Apply, FilesInfoTitle, 'FilesInfoTitle', 'Open Files Information' );
   Language.LL( Apply, FilesInfoOverallTitle, 'FilesInfoOverallTitle', 'Title: ' );
-  Language.LL( Apply, FilesInfoFilename, 'FilesInfoFilename', 'Filename: ' );
+  Language.LL( Apply, FilesInfoFilename, 'FilesInfoFilename', 'File name: ' );
   Language.LL( Apply, FilesInfoFileTitle, 'FilesInfoFileTitle', '  Title: ' );
   Language.LL( Apply, FilesInfoTopicCount, 'FilesInfoTopicCount', '  Topic Count: ' );
   Language.LL( Apply, FilesInfoIndexCount, 'FilesInfoIndexCount', '  Index Count: ' );
@@ -1501,7 +1510,7 @@ Begin
 
   Language.LL( Apply, UsageTitle, 'UsageTitle', 'NewView Command Line' );
   Language.LL( Apply, UsageText1, 'UsageText1', 'Usage: ' );
-  Language.LL( Apply, UsageText2, 'UsageText2', 'NewView <filename> [<topic>]' );
+  Language.LL( Apply, UsageText2, 'UsageText2', 'NewView <file name> [<topic>]' );
   Language.LL( Apply, UsageText3, 'UsageText3', ' /s Do search for <topic>' );
   Language.LL( Apply, UsageText4, 'UsageText4', ' /g Do global search for <topic>' );
   Language.LL( Apply, UsageText5, 'UsageText5', ' /pos:l,b,w,h Set window position' );
@@ -1660,7 +1669,7 @@ var
   Filenames: TStringList;
 begin
   Filenames := TStringList.Create;
-  StringToList( TextList, Filenames, '+' );
+  StrExtractStringsIgnoreEmpty(Filenames, TextList, ['+'], #0);
   if Filenames.Count > 0 then
   begin
     result := OpenFiles( Filenames, '', DisplayFirstTopic );
@@ -2372,7 +2381,7 @@ begin
 
   Filename := THelpFile( CurrentOpenFiles[ 0 ] ).Filename;
   NamePart := ExtractFileName( Filename );
-  Result := StrStarts( 'newview', NamePart );
+  Result := StrStartsWithIgnoringCase('newview', NamePart);
 end;
 
 Procedure TMainForm.HelpMIOnClick (Sender: TObject);
@@ -2685,7 +2694,7 @@ begin
   FilePath := AddDirectorySeparator( ExtractFilePath( g_ExternalLinkSourceFilename ) )
               + g_ExternalLinkFilename;
 
-  if not StringsSame( FilePath, g_ExternalLinkSourceFilename ) then
+  if not StrEqualIgnoringCase( FilePath, g_ExternalLinkSourceFilename ) then
   begin
     // different file - try and open it
     if not FileExists( FilePath ) then
@@ -3726,15 +3735,15 @@ begin
 
   System.Close( F );
 
-  TheText := ApplicationErrorA + EndLine
-             + EndLine
-             + E.Message + EndLine
+  TheText := ApplicationErrorA + StrCRLF
+             + StrCRLF
+             + E.Message + StrCRLF
              + ApplicationErrorB
              + LogFilename
-             + ')' + EndLine
-             + EndLine
+             + ')' + StrCRLF
+             + StrCRLF
              + ApplicationErrorC
-             + EndLine;
+             + StrCRLF;
 
   if DoYesNoDlg( ApplicationErrorTitle,
                  TheText ) then
@@ -3801,7 +3810,7 @@ end;
 
 Procedure TMainForm.MainFormOnCreate (Sender: TObject);
 var
-  tmpCmdLine: String;
+  tmpCmdLine: AnsiString;
 Begin
   LogEvent(LogStartup, 'MainFormOnCreate');
 
@@ -4060,9 +4069,9 @@ Begin
   if CmdLineParameters.getHelpManagerFlag then
   begin
     LogEvent(LogStartup, '  Help Manager Title: '
-                  + StrNPas( pSharedStruct ^. Title,
+                  + StrPasWithLength( pSharedStruct ^. Title,
                              SHARED_STRUCT_TITLE_SIZE ) );
-    HelpManagerVersion := StrNPas( pSharedStruct ^. Version,
+    HelpManagerVersion := StrPasWithLength( pSharedStruct ^. Version,
                                    SHARED_STRUCT_VERSION_SIZE );
     LogEvent(LogStartup, '  Help Manager Version: ' + HelpManagerVersion );
 
@@ -4115,18 +4124,18 @@ begin
     ErrorText := ErrorText
                  + EnvironmentVarUndefined
                  + BookshelfEnvironmentVar
-                 + EndLine;
+                 + StrCRLF;
 
   if not HelpOK then
     ErrorText := ErrorText
                  + EnvironmentVarUndefined
                  + HelpPathEnvironmentVar
-                 + EndLine;
+                 + StrCRLF;
 
   DoWarningDlg( EnvironmentVarErrorTitle,
                 EnvironmentVarError
-                + EndLine
-                + EndLine
+                + StrCRLF
+                + StrCRLF
                 + ErrorText );
 
 end;
@@ -4199,8 +4208,7 @@ begin
     // open specified files
     Filenames := TStringList.Create;
 
-    // TODO use StrExtractStrings
-    StringToList(cmdLineParameters.getFileNames, Filenames, '+' );
+    StrExtractStringsIgnoreEmpty(Filenames, cmdLineParameters.getFileNames, ['+'], #0);
 
     LogEvent(LogStartup, 'Call OpenFiles');
 
@@ -4512,7 +4520,7 @@ Begin
   SearchText:= trim( IndexSearchEdit.Text );
   for IndexIndex:= 0 to DisplayedIndex.Count - 1 do
   begin
-    if StrStarts( SearchText, DisplayedIndex[ IndexIndex ] ) then //IndexEntry ) then
+    if StrStartsWithIgnoringCase( SearchText, DisplayedIndex[ IndexIndex ] ) then //IndexEntry ) then
     begin
       MatchIndex:= IndexIndex;
       break;
@@ -4802,7 +4810,8 @@ begin
   SetStatus( SearchFoundMsgA
              + IntToStr( SearchResultsListBox.Items.Count )
              + SearchFoundMsgB
-             + StrDoubleQuote( SearchText ) );
+             + StrInDoubleQuotes(SearchText)
+             );
 
   ClearWaitCursor;
 
@@ -4896,13 +4905,13 @@ End;
 Procedure TMainForm.ShowUsage;
 begin
   DoMessageDlg( UsageTitle,
-                  UsageText1 + EndLine
-                + UsageText2 + EndLine
-                + UsageText3 + EndLine
-                + UsageText4 + EndLine
-                + UsageText5 + EndLine
-                + UsageText6 + EndLine
-                + UsageText7 + EndLine
+                  UsageText1 + StrCRLF
+                + UsageText2 + StrCRLF
+                + UsageText3 + StrCRLF
+                + UsageText4 + StrCRLF
+                + UsageText5 + StrCRLF
+                + UsageText6 + StrCRLF
+                + UsageText7 + StrCRLF
                 + UsageText8 );
 end;
 
@@ -5160,7 +5169,7 @@ begin
     MenuItem := TMenuItem.Create( self );
     MenuItem.Caption := PageHistory[ i ];
     MenuItem.Hint := GoBackHint
-                     + StrDoubleQuote( PageHistory[ i ] );
+                     + StrInDoubleQuotes( PageHistory[ i ] );
     MenuItem.OnClick := OnNavigateToMenuItemClick;
     MenuItem.Tag := i;
 
@@ -5258,7 +5267,7 @@ begin
         Element := ExtractNextTextElement( p, NextP );
         if Element.ElementType = teTextEnd then
           break;
-        TextIndex := PCharDiff( p, Text );
+        TextIndex := PCharPointerDiff( p, Text );
         if TextIndex >= Note.InsertPoint then
         begin
           // found a safe point to insert
@@ -5386,43 +5395,50 @@ var
   LinkedTopic: TTopic;
   Filename: string;
   SourceFile: THelpFile;
-  LinkedProgram: string;
   URL: string;
   LinkDetails: string;
+  tmpLinkDetails : TStringList;
   ProgramInfo : TSerializableStringList;
   ProgramPath, ProgramLink : string;
 Begin
-  if StrLeft( LinkString, 4 ) = 'note' then
+  LogEvent(LogDebug, 'OnOverLink: "' + LinkString + '"');
+
+  if StrStartsWith(LinkString, PARAM_LINK_NOTE) then
   begin
     SetStatus( EditNoteMsg )
   end
-  else if StrLeft( LinkString, 7 ) = 'program' then
+  else if StrStartsWith(LinkString, PARAM_LINK_PROGRAM) then
   begin
     ProgramInfo := TSerializableStringList.create;
-    ProgramInfo.readValuesFromSerializedString(StrRightFrom( LinkString, 9 ));
+// TODO check param here
+
+    ProgramInfo.readValuesFromSerializedString(StrSubstringFrom(LinkString, Length(PARAM_LINK_PROGRAM) + 1));
     ProgramPath := ProgramInfo.get(0);
     ProgramLink := ProgramInfo.get(1);
     TSerializableStringList.destroy;
-    // call LaunchProgram here to inherit the environment
 
-    LinkedProgram := StrRightFrom( LinkString, 9 );
+    // call LaunchProgram here to inherit the environment
     SetStatus( LinkMsg + ' ' + ProgramPath + ' ' + ProgramLink);
   end
-  else if StrLeft( LinkString, 3 ) = 'url' then
+  else if StrStartsWith(LinkString, PARAM_LINK_URL) then
   begin
-    URL := StrRightFrom( LinkString, 5 );
-    SetStatus( LinkMsg
-               + URL );
+    URL := StrSubstringFrom( LinkString, 5 );
+    SetStatus( LinkMsg + URL );
   end
-  else if StrLeft( LinkString, 8 ) = 'external' then
+  else if StrStartsWith(LinkString, PARAM_LINK_EXTERNAL) then
   begin
-    LinkDetails := StrRightFrom( LinkString, 10 );
-    LinkIndex := StrToInt( ExtractNextValue( LinkDetails, ' ' ) );
+    LinkDetails := StrSubstringFrom(LinkString, 10);
+
+    tmpLinkDetails := TStringList.Create;
+    StrExtractStrings(tmpLinkDetails, LinkDetails, [' '], #0);
+    LinkIndex := StrToInt(tmpLinkDetails[0]);
+    tmpLinkDetails.Destroy;
+
     Window := FindWindowFromView( Sender, Windows );
     SourceFile := Window.Topic.HelpFile as THelpFile;
     Filename := SourceFile.ReferencedFiles[ LinkIndex ];
     SetStatus( LinkMsg
-               + StrDoubleQuote( Filename ) );
+               + StrInDoubleQuotes( Filename ) );
   end
   else
   begin
@@ -5441,7 +5457,7 @@ Begin
       if LinkedTopic <> nil then
       begin
         SetStatus( LinkMsg
-                   + StrDoubleQuote( Trim( LinkedTopic.Title ) ) );
+                   + StrInDoubleQuotes( Trim( LinkedTopic.Title ) ) );
       end
       else
       begin
@@ -5468,29 +5484,34 @@ var
   ProgramPath: string;
   URL: string;
   LinkDetails: string;
+  tmpLinkDetails : TStringList;
   ProgramInfo : TSerializableStringList;
 Begin
-  if StrLeft( LinkString, 4 ) = 'note' then
+  LogEvent(LogDebug, 'OnClickLink: "' + LinkString + '"');
+
+  if StrStartsWith(LinkString, PARAM_LINK_NOTE) then
   begin
-    NoteIndex := StrToInt( StrRightFrom( LinkString, 5 ) );
+    NoteIndex := StrToInt(StrSubstringFrom(LinkString, Length(PARAM_LINK_NOTE) + 1) );
     NotesListBox.ItemIndex := NoteIndex;
     EditNote( NoteIndex );
   end
-  else if StrLeft( LinkString, 7 ) = 'program' then
+  else if StrStartsWith(LinkString, PARAM_LINK_PROGRAM) then
   begin
     ProgramInfo := TSerializableStringList.create;
-    ProgramInfo.readValuesFromSerializedString(StrRightFrom( LinkString, 9 ));
+    ProgramInfo.readValuesFromSerializedString(StrSubstringFrom(LinkString, 9));
     ProgramPath := ProgramInfo.get(0);
     ProgramLink := ProgramInfo.get(1);
     TSerializableStringList.destroy;
+
     // call LaunchProgram here to inherit the environment
     LogEvent(LogDisplay, 'LaunchProgram: "' + ProgramPath + '" "' + ProgramLink + '"');
     LaunchProgram(ProgramPath, ProgramLink, '');
+    // TODO i18n
     SetStatus( 'Launched ' + ProgramPath );
   end
-  else if StrLeft( LinkString, 3 ) = 'url' then
+  else if StrLeft( LinkString, 3 ) = PARAM_LINK_URL then
   begin
-    URL := StrRightFrom(LinkString, 5);
+    URL := StrSubstringFrom(LinkString, 5);
 
     try
       LaunchURL(URL);
@@ -5502,12 +5523,18 @@ Begin
       else raise;
     end;
 
+    // TODO i18n
     SetStatus('Opened ' + URL );
   end
-  else if StrLeft( LinkString, 8 ) = 'external' then
+  else if StrLeft( LinkString, 8 ) = PARAM_LINK_EXTERNAL then
   begin
-    LinkDetails := StrRightFrom( LinkString, 10 );
-    LinkIndex := StrToInt( ExtractNextValue( LinkDetails, ' ' ) );
+    LinkDetails := StrSubstringFrom( LinkString, 10 );
+
+    tmpLinkDetails := TStringList.Create;
+    StrExtractStrings(tmpLinkDetails, LinkDetails, [' '], #0);
+    LinkIndex := StrToInt(tmpLinkDetails[0]);
+    tmpLinkDetails.Destroy;
+
     Window := FindWindowFromView( Sender, Windows );
     SourceFile := Window.Topic.HelpFile as THelpFile;
 
@@ -5633,9 +5660,12 @@ begin
         FileName := MRUItem.Filenames[ FileNameIndex ];
         FileName := ExtractFileName( FileName );
         FileName := ChangeFileExt( FileName, '' );// remove extension
-        AddToListString( MRUText,
-                         FileName,
-                         '+' );
+
+        if FileNameIndex > 0 then
+        begin
+          MRUText := MRUText + '+';
+        end;
+        MRUText := MRUText + FileName;
 
         // stop after 50 chars
         if Length( MRUText ) > 50 then
@@ -5869,9 +5899,9 @@ begin
   begin
     DoErrorDlg( SaveNotesTitle,
                 SaveNotesError
-                + EndLine
+                + StrCRLF
                 + NotesFileName
-                + EndLine
+                + StrCRLF
                 + SysErrorMessage( rc ) );
     exit;
   end;
@@ -5946,9 +5976,9 @@ begin
   begin
     DoErrorDlg( LoadNotesTitle,
                 LoadNotesError
-                + EndLine
+                + StrCRLF
                 + NotesFileName
-                + EndLine
+                + StrCRLF
                 + SysErrorMessage( rc ) );
     exit;
   end;
@@ -6164,7 +6194,7 @@ begin
   for FileIndex:= 0 to CurrentOpenFiles.Count - 1 do
   begin
     Result:= CurrentOpenFiles[ FileIndex ];
-    if StringsSame( Result.Filename, FileName ) then
+    if StrEqualIgnoringCase( Result.Filename, FileName ) then
       // found
       exit;
   end;
@@ -6451,7 +6481,7 @@ begin
   if Settings.ConfirmWinHelp then
     result := DoYesNoDlg( WindowsHelpTitle,
                           WindowsHelpPrompt
-                          + EndLine
+                          + StrCRLF
                           + FileName );
   if not result then
     exit;
