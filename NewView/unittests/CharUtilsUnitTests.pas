@@ -4,6 +4,7 @@ Interface
 
 uses
   Classes,
+  SysUtils,
   TestAssert,
   CharUtilsUnit;
 
@@ -135,6 +136,127 @@ Implementation
   END;
 
 
+  // ---------------
+  // ---- PChar ----
+  // ---------------
+
+
+  PROCEDURE testStrPasWithLength_Empty;
+  VAR
+    tmpPChar : PChar;
+    tmpResult : String;
+  BEGIN
+    tmpPChar := '';
+    tmpResult := StrPasWithLength(tmpPChar, 0);
+
+    assertEqualsAnsiString('testStrPasWithLength_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrPasWithLength_EmptyLengt11;
+  VAR
+    tmpPChar : PChar;
+    tmpResult : String;
+  BEGIN
+    tmpPChar := '';
+    tmpResult := StrPasWithLength(tmpPChar, 11);
+
+    assertEqualsAnsiString('testStrPasWithLength_EmptyLengt11', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrPasWithLength_Lengt0;
+  VAR
+    tmpPChar : PChar;
+    tmpResult : String;
+  BEGIN
+    tmpPChar := 'abc';
+    tmpResult := StrPasWithLength(tmpPChar, 0);
+
+    assertEqualsAnsiString('testStrPasWithLength_Lengt0', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrPasWithLength_FirstChar;
+  VAR
+    tmpPChar : PChar;
+    tmpResult : String;
+  BEGIN
+    tmpPChar := 'abc';
+    tmpResult := StrPasWithLength(tmpPChar, 1);
+
+    assertEqualsAnsiString('testStrPasWithLength_FirstChar', 'a', tmpResult);
+  END;
+
+
+  PROCEDURE testStrPasWithLength_ExactLength;
+  VAR
+    tmpPChar : PChar;
+    tmpResult : String;
+  BEGIN
+    tmpPChar := 'abc';
+    tmpResult := StrPasWithLength(tmpPChar, 3);
+
+    assertEqualsAnsiString('testStrPasWithLength_ExactLength', 'abc', tmpResult);
+  END;
+
+
+  PROCEDURE testStrPasWithLength_LengthOneToBig;
+  VAR
+    tmpPChar : PChar;
+    tmpResult : String;
+  BEGIN
+    tmpPChar := 'abc';
+    tmpResult := StrPasWithLength(tmpPChar, 4);
+
+    assertEqualsAnsiString('testStrPasWithLength_LengthOneToBig', 'abc', tmpResult);
+  END;
+
+
+  PROCEDURE testStrPasWithLength_LengthNegative;
+  VAR
+    tmpPChar : PChar;
+    tmpResult : String;
+  BEGIN
+    tmpPChar := 'abc';
+    tmpResult := StrPasWithLength(tmpPChar, -4);
+
+    assertEqualsAnsiString('testStrPasWithLength_LengthNegative', '', tmpResult);
+  END;
+
+
+  // ----------------------------------------------------------
+
+  PROCEDURE testPCharPointerDiff_Same;
+  VAR
+    tmpMinuend : PChar;
+    tmpSubtrahend : PChar;
+    tmpResult : Longword;
+  BEGIN
+    tmpMinuend := 'abc';
+    tmpSubtrahend := tmpMinuend;
+    tmpResult := PCharPointerDiff(tmpMinuend, tmpSubtrahend);
+
+    assertEqualsLongWord('testPCharPointerDiff_Same', 0, tmpResult);
+  END;
+
+
+  PROCEDURE testPCharPointerDiff;
+  VAR
+    tmpMinuend : PChar;
+    tmpSubtrahend : PChar;
+    tmpResult : Longword;
+  BEGIN
+    tmpSubtrahend := 'abcdef';
+    tmpMinuend := tmpSubtrahend + 2;
+    assertEqualsString('testPCharPointerDiff', 'cdef', StrPas(tmpMinuend));
+
+    tmpResult := PCharPointerDiff(tmpMinuend, tmpSubtrahend);
+
+    assertEqualsLongWord('testPCharPointerDiff_Same', 2, tmpResult);
+  END;
+
+
   // ----------------------------------------------------------
 
 
@@ -147,6 +269,18 @@ Implementation
 
     result.add(@testCharIsAlpha_True);
     result.add(@testCharIsAlpha_False);
+
+
+    result.add(@testStrPasWithLength_Empty);
+    result.add(@testStrPasWithLength_EmptyLengt11);
+    result.add(@testStrPasWithLength_Lengt0);
+    result.add(@testStrPasWithLength_FirstChar);
+    result.add(@testStrPasWithLength_ExactLength);
+    result.add(@testStrPasWithLength_LengthOneToBig);
+    result.add(@testStrPasWithLength_LengthNegative);
+
+    result.add(@testPCharPointerDiff_Same);
+    result.add(@testPCharPointerDiff);
 
   END;
 
