@@ -37,7 +37,7 @@ const
   Function StrPasWithLength(const aPChar: PChar; const aLength: integer) : String;
 
   // Returns the difference of the pointers
-  Function PCharPointerDiff(const aMinuend: PChar; const aSubtrahend : PChar ) : Longword;
+  Function PCharPointerDiff(const aMinuend: PChar; const aSubtrahend : PChar)  : Longword;
 
 Implementation
 
@@ -76,7 +76,7 @@ Implementation
   end;
 
 
-  Function PCharPointerDiff(const aMinuend: PChar; const aSubtrahend : PChar ) : Longword;
+  Function PCharPointerDiff(const aMinuend: PChar; const aSubtrahend : PChar) : Longword;
   begin
     Result := Longword(aMinuend) - Longword(aSubtrahend);
   end;
