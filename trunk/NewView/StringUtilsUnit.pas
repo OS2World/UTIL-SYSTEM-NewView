@@ -45,10 +45,10 @@ const
   // Example:
   //     StrExtractStrings('1x2x3\x4', 'x', '\') ->
   //     returns 4 strings: '1', '', '2' and '3x4'
-  Procedure StrExtractStrings(Var aResult : TStrings; const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+  Procedure StrExtractStrings(var aResult : TStrings; const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
 
   // same as StrExtractStrings but ignores empty strings
-  Procedure StrExtractStringsIgnoreEmpty(Var aResult : TStrings; const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
+  Procedure StrExtractStringsIgnoreEmpty(var aResult : TStrings; const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char);
 
   // removes all occurences of char from aSetOfChars from the beginning
   // of a String.
