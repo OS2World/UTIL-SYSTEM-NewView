@@ -65,7 +65,7 @@ CONST
        PROPERTY getGlobalSearchFlag : boolean read globalSearchFlag;
        PROPERTY getLanguage : string read language;
        PROPERTY getHelpManagerFlag : boolean read helpManagerFlag;
-       FUNCTION setHelpManagerFlag(aNewValue : boolean) : boolean;
+       FUNCTION setHelpManagerFlag(const aNewValue : boolean) : boolean;
        PROPERTY getHelpManagerWindow : HWND read helpManagerWindow;
        PROPERTY getWindowPositionFlag : boolean read windowPositionFlag;
        PROPERTY getWindowPosition : TWindowPosition read windowPosition;
@@ -76,7 +76,7 @@ CONST
 
        PROCEDURE writeDetailsTo(aStrings : TStrings);
        PROCEDURE logDetails;
-       PROCEDURE parseCmdLine(aCmdLineString : AnsiString);
+       PROCEDURE parseCmdLine(const aCmdLineString : AnsiString);
        FUNCTION getOwnHelpFileName: String;
   end;
 
@@ -154,14 +154,14 @@ uses
   end;
 
 
-  Function TCmdLineParameters.setHelpManagerFlag(aNewValue : boolean) : boolean;
+  Function TCmdLineParameters.setHelpManagerFlag(const aNewValue : boolean) : boolean;
   begin
        helpManagerFlag := aNewValue;
        result := helpManagerFlag;
   end;
 
 
-  Procedure TCmdLineParameters.parseCmdLine(aCmdLineString : AnsiString);
+  Procedure TCmdLineParameters.parseCmdLine(const aCmdLineString : AnsiString);
   var
     tmpState : (WHITESPACE, QUOTE, SWITCH, FILENAME, TEXT);
     tmpCurrentParsePosition : integer;
