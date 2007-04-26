@@ -54,7 +54,7 @@ CONST
        debugEnabled : boolean;
 
        FUNCTION handleSwitchWithValue(const aSwitchString : String; const aSwitch : String; var aValue : String) : Boolean;
-       PROCEDURE parseSwitch(aSwitchString : String);
+       PROCEDURE parseSwitch(const aSwitchString : String);
        PROPERTY getParsedFileNames : AnsiString read parsedFileNames;
        PROPERTY getParsedSearchText : AnsiString read parsedSearchText;
 
@@ -82,9 +82,7 @@ CONST
 
   // returns a string containing the whole
   // command line parametes
-  // this as function has a problem with returning an AnsiString
-  // ! you have to provide an AnsiString (normaly an empty one)
-  PROCEDURE nativeOS2GetCmdLineParameter(aResult : AnsiString);
+  FUNCTION nativeOS2GetCmdLineParameter : AnsiString;
 
 
 Implementation
@@ -522,7 +520,7 @@ uses
   end;
 
 
-  Procedure TCmdLineParameters.parseSwitch(aSwitchString : String);
+  Procedure TCmdLineParameters.parseSwitch(const aSwitchString : String);
   var
     tmpCurrentChar : char;
     tmpValue : String;
@@ -619,7 +617,7 @@ uses
   end;
 
 
-  PROCEDURE nativeOS2GetCmdLineParameter(aResult : AnsiString);
+  FUNCTION nativeOS2GetCmdLineParameter : AnsiString;
   VAR
     tmpPtib : PTIB;       // thread information block
     tmpPpib : PPIB;       // process information block
@@ -637,6 +635,7 @@ uses
     // these are the parameters
     tmpParams := tmpCmd + StrLen(tmpCmd) + 1;
 
-    AnsiSetString(aResult, tmpParams, StrLen(tmpParams));
+    result := '';
+    AnsiSetString(result, tmpParams, StrLen(tmpParams));
   END;
 END.
