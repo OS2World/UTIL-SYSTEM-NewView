@@ -955,6 +955,89 @@ Implementation
   // -------------------------------------------------------------------
 
 
+  PROCEDURE testStrSubstringFrom_Empty;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrSubstringFrom('', 1);
+
+    assertEqualsString('testStrSubstringFrom_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrSubstringFrom_EmptyZeroPos;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrSubstringFrom('', 0);
+
+    assertEqualsString('testStrSubstringFrom_EmptyZeroPos', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrSubstringFrom_EmptyNegativePos;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrSubstringFrom('', -4);
+
+    assertEqualsString('testStrSubstringFrom_EmptyNegativePos', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrSubstringFrom_FullCopy;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrSubstringFrom('abcd', 1);
+
+    assertEqualsString('testStrSubstringFrom_FullCopy', 'abcd', tmpResult);
+  END;
+
+
+  PROCEDURE testStrSubstringFrom_ZeroPos;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrSubstringFrom('abcd', 0);
+
+    assertEqualsString('testStrSubstringFrom_ZeroPos', 'abcd', tmpResult);
+  END;
+
+
+  PROCEDURE testStrSubstringFrom_NegativePos;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrSubstringFrom('abcd', -4);
+
+    assertEqualsString('testStrSubstringFrom_NegativePos', 'abcd', tmpResult);
+  END;
+
+
+  PROCEDURE testStrSubstringFrom_ToBigPos;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrSubstringFrom('abcd', 11);
+
+    assertEqualsString('testStrSubstringFrom_ToBigPos', '', tmpResult);
+  END;
+
+
+  PROCEDURE testStrSubstringFrom;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrSubstringFrom('abcd', 2);
+
+    assertEqualsString('testStrSubstringFrom', 'bcd', tmpResult);
+  END;
+
+
+  // -------------------------------------------------------------------
+
+
   PROCEDURE testStrStartsWith_BothEmpty;
   VAR
     tmpResult : Boolean;
@@ -2209,6 +2292,15 @@ END;
     result.add(@testStrLeftUntil_LastIsDelimiter);
     result.add(@testStrLeftUntil_UnusedDelimiter);
     result.add(@testStrLeftUntil);
+
+    result.add(@testStrSubstringFrom_Empty);
+    result.add(@testStrSubstringFrom_EmptyZeroPos);
+    result.add(@testStrSubstringFrom_EmptyNegativePos);
+    result.add(@testStrSubstringFrom_FullCopy);
+    result.add(@testStrSubstringFrom_ZeroPos);
+    result.add(@testStrSubstringFrom_NegativePos);
+    result.add(@testStrSubstringFrom_ToBigPos);
+    result.add(@testStrSubstringFrom);
 
     result.add(@testStrStartsWith_BothEmpty);
     result.add(@testStrStartsWith_StringEmpty);
