@@ -49,8 +49,8 @@ type
 implementation
 
 uses
+  StringUtilsUnit,
   DebugUnit,
-  ACLStringUtility,
   SysUtils;
 
 constructor TGlobalFilelist.Create;
@@ -123,7 +123,7 @@ begin
   Result := GetHead;
   while ( Result <> nil ) do
   begin
-    if ( StringsSame( StrPas( Result ^. FilePath ), FilePath ) ) then
+    if ( StrEqualIgnoringCase( StrPas( Result ^. FilePath ), FilePath ) ) then
     begin
       // found
       exit;
@@ -163,7 +163,7 @@ begin
   begin
     if ( pEntry ^. Window = Window ) then
     begin
-      if ( StringsSame( StrPas( pEntry ^. FilePath ), FilePath ) ) then
+      if ( StrEqualIgnoringCase( StrPas( pEntry ^. FilePath ), FilePath ) ) then
       begin
         // found
         // remove node from list

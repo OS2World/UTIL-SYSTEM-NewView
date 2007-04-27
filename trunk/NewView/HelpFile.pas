@@ -155,6 +155,7 @@ Implementation
 
 uses
   BseErr,
+  StringUtilsUnit,
   DebugUnit,
   ACLStringUtility,
   ACLFileIOUtility,
@@ -670,7 +671,7 @@ begin
   GetIndex; // make sure it's read
   for i := 0 to _Index.Count - 1 do
   begin
-    if StrStarts( SearchText, _Index.ValuePtrs[ i ] ^ ) then
+    if StrStartsWithIgnoringCase( SearchText, _Index.ValuePtrs[ i ] ^ ) then
     begin
       // found
       result := TTopic( Index.Objects[ i ] );
@@ -714,7 +715,7 @@ begin
       tmpTopic := _Topics[i];
       if tmpLevel = tmpTopic.ContentsLevel then
       begin
-        if StrStarts( SearchText, tmpTopic.TitlePtr ^ ) then
+        if StrStartsWithIgnoringCase( SearchText, tmpTopic.TitlePtr ^ ) then
         begin
           result := tmpTopic;
           exit;
