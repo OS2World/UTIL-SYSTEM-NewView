@@ -57,11 +57,6 @@ const
 
   MAIN_WINDOW_CLASS_NAME = 'NewViewMainForm';
 
-  PARAM_LINK_NOTE = 'note';
-  PARAM_LINK_PROGRAM = 'program';
-  PARAM_LINK_URL = 'url';
-  PARAM_LINK_EXTERNAL = 'external';
-
 Type
 
   TMainForm = Class (TForm)
@@ -830,7 +825,6 @@ uses
   Printers,
 
   // Library
-//  ACLStringUtility,
   ACLFileIOUtility,
   ACLUtility,
   ACLDialogs,
@@ -858,6 +852,7 @@ uses
   PrintDialogUnit,
 
   // local: others
+  NewViewConstantsUnit,
   SettingsUnit,
   VersionUnit,
   SearchUnit,
@@ -871,14 +866,15 @@ uses
 const
   // Coolbar button indexes
   ciOpen = 0;
-  ciBack = 1;
-  ciForward = 2;
-  ciPrint = 3;
-  ciAddNote = 4;
-  ciAddBookmark = 5;
-  ciPrevious = 6;
-  ciNext = 7;
-  ciGlobalSearch = 8;
+  ciPrint = 1;
+  ciNavigator = 2;
+  ciBack = 3;
+  ciForward = 4;
+  ciAddNote = 5;
+  ciAddBookmark = 6;
+  ciPrevious = 7;
+  ciNext = 8;
+  ciGlobalSearch = 9;
 
   // Page indexes.
   piContents = 0;
@@ -1380,9 +1376,10 @@ Begin
   begin
     // copy menu hints to toolbar hints
     Coolbar.Sections[ ciOpen ].Hint := OpenMI.Hint;
+    Coolbar.Sections[ ciPrint ].Hint := PrintMI.Hint;
+    Coolbar.Sections[ ciNavigator ].Hint := ShowLeftPanelMI.Hint;
     Coolbar.Sections[ ciBack ].Hint := NavigateBackMI.Hint;
     Coolbar.Sections[ ciForward ].Hint := NavigateForwardMI.Hint;
-    Coolbar.Sections[ ciPrint ].Hint := PrintMI.Hint;
     Coolbar.Sections[ ciAddNote ].Hint := AddNoteMI.Hint;
     Coolbar.Sections[ ciAddBookmark ].Hint := AddBookmarkMI.Hint;
     Coolbar.Sections[ ciPrevious ].Hint := NavigatePreviousMI.Hint;
@@ -1525,7 +1522,7 @@ Begin
 
   Language.LL( Apply, EditNoteMsg, 'EditNoteMsg', 'Click to edit note' );
   Language.LL( Apply, ExternalLinkMsg, 'ExternalLinkMsg', 'Link to another file' );
-  Language.LL( Apply, LinkMsg, 'LinkMsg', 'Link to ' );
+  Language.LL( Apply, LinkMsg, 'LinkMsg', 'Link to' );
   Language.LL( Apply, UnknownLinkMsg, 'UnknownLinkMsg', 'Unknown link' );
   Language.LL( Apply, FootnoteMsg, 'FootnoteMsg', 'Footnote' );
 
@@ -3178,12 +3175,14 @@ Begin
   case Section.Index of
     ciOpen:
       FileOpen;
+    ciPrint:
+      PrintTopics;
+    ciNavigator:
+      ShowLeftPanel := not ShowLeftPanel;
     ciBack:
       NavigateBack;
     ciForward:
       NavigateForward;
-    ciPrint:
-      PrintTopics;
     ciAddNote:
       AddNote;
     ciAddBookmark:
@@ -5412,7 +5411,7 @@ Begin
     ProgramInfo := TSerializableStringList.create;
 // TODO check param here
 
-    ProgramInfo.readValuesFromSerializedString(StrSubstringFrom(LinkString, Length(PARAM_LINK_PROGRAM) + 1));
+    ProgramInfo.readValuesFromSerializedString(StrSubstringFrom(LinkString, Length(PARAM_LINK_PROGRAM) + 2));
     ProgramPath := ProgramInfo.get(0);
     ProgramLink := ProgramInfo.get(1);
     TSerializableStringList.destroy;
@@ -5422,12 +5421,13 @@ Begin
   end
   else if StrStartsWith(LinkString, PARAM_LINK_URL) then
   begin
-    URL := StrSubstringFrom( LinkString, 5 );
+    URL := StrSubstringFrom(LinkString, Length(PARAM_LINK_URL) + 2); //
+
     SetStatus( LinkMsg + URL );
   end
   else if StrStartsWith(LinkString, PARAM_LINK_EXTERNAL) then
   begin
-    LinkDetails := StrSubstringFrom(LinkString, 10);
+    LinkDetails := StrSubstringFrom(LinkString, Length(PARAM_LINK_EXTERNAL) + 2);
 
     tmpLinkDetails := TStringList.Create;
     StrExtractStrings(tmpLinkDetails, LinkDetails, [' '], #0);
@@ -5491,7 +5491,7 @@ Begin
 
   if StrStartsWith(LinkString, PARAM_LINK_NOTE) then
   begin
-    NoteIndex := StrToInt(StrSubstringFrom(LinkString, Length(PARAM_LINK_NOTE) + 1) );
+    NoteIndex := StrToInt(StrSubstringFrom(LinkString, Length(PARAM_LINK_NOTE) + 2) );
     NotesListBox.ItemIndex := NoteIndex;
     EditNote( NoteIndex );
   end
@@ -5511,7 +5511,7 @@ Begin
   end
   else if StrLeft( LinkString, 3 ) = PARAM_LINK_URL then
   begin
-    URL := StrSubstringFrom(LinkString, 5);
+    URL := StrSubstringFrom(LinkString, Length(PARAM_LINK_URL) + 2);
 
     try
       LaunchURL(URL);
@@ -5528,7 +5528,7 @@ Begin
   end
   else if StrLeft( LinkString, 8 ) = PARAM_LINK_EXTERNAL then
   begin
-    LinkDetails := StrSubstringFrom( LinkString, 10 );
+    LinkDetails := StrSubstringFrom(LinkString, Length(PARAM_LINK_EXTERNAL) + 2);
 
     tmpLinkDetails := TStringList.Create;
     StrExtractStrings(tmpLinkDetails, LinkDetails, [' '], #0);
