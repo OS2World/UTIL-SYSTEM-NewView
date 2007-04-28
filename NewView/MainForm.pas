@@ -4202,12 +4202,12 @@ begin
 
   HelpManagerWindows.Add( pointer( CmdLineParameters.getHelpManagerWindow ) );
 
-  if CmdLineParameters.getFileNames <> '' then
+  if CmdLineParameters.getFileNames(Settings.StartupHelp) <> '' then
   begin
     // open specified files
     Filenames := TStringList.Create;
 
-    StrExtractStringsIgnoreEmpty(Filenames, cmdLineParameters.getFileNames, ['+'], #0);
+    StrExtractStringsIgnoreEmpty(Filenames, cmdLineParameters.getFileNames(Settings.StartupHelp), ['+'], #0);
 
     LogEvent(LogStartup, 'Call OpenFiles');
 
