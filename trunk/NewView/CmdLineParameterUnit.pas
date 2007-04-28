@@ -1,7 +1,7 @@
 Unit CmdLineParameterUnit;
 
 // NewView - a new OS/2 Help Viewer
-// Copyright 2006 Ronald Brill (rbri at rbri dot de)
+// Copyright 2006, 2007 Ronald Brill (rbri at rbri dot de)
 // This software is released under the GNU Public License - see readme.txt
 
 // Helper functions to address the command line parameters newview
@@ -71,8 +71,9 @@ CONST
        PROPERTY getWindowPosition : TWindowPosition read windowPosition;
        PROPERTY getOwnerWindow : integer read ownerWindow;
        PROPERTY getWindowTitle : AnsiString read windowTitle;
-       PROPERTY getFileNames : AnsiString read fileNames;
        PROPERTY getSearchText : AnsiString read searchText;
+
+       FUNCTION getFileNames(const aShowNewViewHelpIfNoFileSpecifiedFlag : Boolean) : AnsiString;
 
        PROCEDURE writeDetailsTo(aStrings : TStrings);
        PROCEDURE logDetails;
@@ -96,11 +97,12 @@ uses
   begin
     aStrings.Add('''' + commandLine + '''');
     aStrings.Add('isDebugEnabled: ' + boolToStr(isDebugEnabled));
-    aStrings.Add('parsed infos:');
 
+    aStrings.Add('parsed infos:');
     aStrings.Add('  showUsageFlag: ' + boolToStr(getShowUsageFlag));
     aStrings.Add('  searchFlag: ' + boolToStr(getSearchFlag));
-    aStrings.Add('  fileNames: ' + getFileNames);
+    aStrings.Add('  fileNames(true): ' + getFileNames(true));
+    aStrings.Add('  fileNames(false): ' + getFileNames(false));
     aStrings.Add('  parsedFileNames: ' + getParsedFileNames);
     aStrings.Add('  searchText: ' + getSearchText);
     aStrings.Add('  parsedSearchText: ' + getParsedSearchText);
@@ -132,7 +134,8 @@ uses
 
     LogEvent(LogStartup, '  showUsageFlag: ' + boolToStr(getShowUsageFlag));
     LogEvent(LogStartup, '  searchFlag: ' + boolToStr(getSearchFlag));
-    LogEvent(LogStartup, '  fileNames: ' + getFileNames);
+    LogEvent(LogStartup, '  fileNames(true): ' + getFileNames(true));
+    LogEvent(LogStartup, '  fileNames(false): ' + getFileNames(false));
     LogEvent(LogStartup, '  parsedFileNames: ' + getParsedFileNames);
     LogEvent(LogStartup, '  searchText: ' + getSearchText);
     LogEvent(LogStartup, '  parsedSearchText: ' + getParsedSearchText);
@@ -170,7 +173,6 @@ uses
     tmpWhitespace : AnsiString;
     tmpQuote : AnsiString;
     tmpSwitch : AnsiString;
-    tmpOwnHelpFileName : AnsiString;
     tmpEnvDebug : String;
   begin
     // first adjust logging
@@ -419,16 +421,6 @@ uses
     begin
       fileNames := '';
       searchText := parsedRawFileNames;
-    end
-    else
-    begin
-      if fileNames = '' then
-      begin
-        tmpOwnHelpFileName := getOwnHelpFileName;
-        if FileExists(tmpOwnHelpFileName)
-        then
-          fileNames := tmpOwnHelpFileName;
-      end;
     end;
 
     // to be compatible with the old one we have to ignore
@@ -600,6 +592,30 @@ uses
           raise EParsingFailed.Create('Unsupported switch');
         end;
       end;
+  end;
+
+
+  FUNCTION TCmdLineParameters.getFileNames(const aShowNewViewHelpIfNoFileSpecifiedFlag : Boolean) : AnsiString;
+  var
+    tmpOwnHelpFileName : String;
+  begin
+    // user hasn't requested any particular file
+    // at startup, so if the option is set,
+    // load the NewView help file
+    if aShowNewViewHelpIfNoFileSpecifiedFlag
+       AND (fileNames = '')
+       AND not getGlobalSearchFlag then
+    begin
+      tmpOwnHelpFileName := getOwnHelpFileName;
+      if FileExists(tmpOwnHelpFileName) then
+      begin
+        result := tmpOwnHelpFileName;
+      end;
+    end
+    else
+    begin
+      result := fileNames;
+    end;
   end;
 
 
