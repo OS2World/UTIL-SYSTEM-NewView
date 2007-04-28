@@ -250,6 +250,7 @@ Implementation
 
 uses
   SysUtils,
+  NewViewConstantsUnit,
   ACLUtility,
   ACLStringUtility,
   ACLFileIOUtility,
@@ -855,7 +856,7 @@ begin
   // It's a URL. Insert link at start of URL
 
   T := TAstring.Create;
-  T.AddString( '<blue><link url "' );
+  T.AddString( '<blue><link ' + PARAM_LINK_URL + ' "' );
   T.Add( State.TextBlock );
   T.AddString( '">' );
 
@@ -1030,7 +1031,7 @@ begin
       // :link reftype=hd refid=... database=<filename>
       ExternalLinkFileIndex := ( pData + 2 )^;
       ExternalLinkTopicID := StrNPas( pchar( pData + 4 ), ( pData + 3 )^ );
-      OutputString := '<blue><link external '
+      OutputString := '<blue><link ' + PARAM_LINK_EXTERNAL + ' '
                       + IntToStr( ExternalLinkFileIndex )
                       + ' '
                       + ExternalLinkTopicID
@@ -1049,7 +1050,7 @@ begin
          or StrStarts( 'mozilla', ProgramFilename )
          then
       begin
-        OutputString := '<blue><link url '
+        OutputString := '<blue><link ' + PARAM_LINK_URL + ' '
                         + FullDoubleQuote( ProgramLink )
                         + '>';
       end
@@ -1058,7 +1059,7 @@ begin
         ProgramInfo := TSerializableStringList.create;
         ProgramInfo.add(ProgramPath);
         ProgramInfo.add(ProgramLink);
-        OutputString := '<blue><link program '
+        OutputString := '<blue><link ' + PARAM_LINK_PROGRAM + ' '
                         + ProgramInfo.getSerializedString
                         + '>';
         ProgramInfo.destroy;
