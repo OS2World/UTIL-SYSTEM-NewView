@@ -4169,6 +4169,7 @@ begin
 
   LogEvent(LogStartup, 'WMOpened: SetLayout');
 
+  // direct access the field to suppress updates done by the setter
   if CmdLineParameters.getHelpManagerFlag then
     FShowLeftPanel := Settings.ShowLeftPanel_Help
   else
@@ -6931,7 +6932,8 @@ Procedure TMainForm.NHMTopicByResourceID( Var Msg: TMessage );
 begin
   LogEvent(LogNHM, 'NHMTopicByResourceID');
   RestoreWindow;
-  DisplayContents;
+  if ShowLeftPanel then
+    DisplayContents;
   DisplayTopicByResourceID( Msg.Param1 );
 end;
 
@@ -6943,7 +6945,8 @@ var
 begin
   LogEvent(LogNHM, 'NHMTopicByPanelName');
   RestoreWindow;
-  DisplayContents;
+  if ShowLeftPanel then
+    DisplayContents;
 
   pMessageMem := pchar( Msg.Param1 );
   PanelName := StrPas( pMessageMem );
