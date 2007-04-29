@@ -258,7 +258,7 @@ Note
 :p.NewView permette di aggiungere note &lpar.annotazioni&rpar. ai file di aiuto&per.
 :p.Per aggiungere una nota&comma. basta fare click nel punto da annotare e premere il bottone
 "Note"
-:artwork runin name='images\notegreen.bmp'.
+:artwork runin name='images\note.bmp'.
 &comma. quindi inserire il testo voluto e premere Invio&per. Il testo verr… inserito nella voce di
 aiuto con un colore diverso &lpar.verde Š il colore predefinito&semi. Š possibile cambiare il
 colore in Strumenti &endash. Opzioni &endash. Colori&rpar.&per.
@@ -276,7 +276,7 @@ programma&rpar. le note non appariranno pi— nella posizione corretta&semi.
 :h1 res=18 id='GlobalSearch'.
 Ricerca globale
 :p.:hp2.Ricerca globale:ehp2.
-:p.Usando il bottone "Cerca tutto" :artwork runin name='images\globalsearch2.bmp'.
+:p.Usando il bottone "Cerca tutto" :artwork runin name='images\search.bmp'.
 &comma. Š possibile effettuare una ricerca in tutti i file di
 aiuto nel sistema&semi..
 si pu• usare anche il menu Strumenti &endash. Cerca in tutti i file di aiuto&comma. oppure
@@ -298,7 +298,7 @@ Segnalibri
 :p.
 :p.NewView permette di marcare voci particolari nel file di aiuto&per. Basta premere
 il bottone "Segnalibri"
-:artwork runin name='images\bookmark2.bmp'.
+:artwork runin name='images\bookmark.bmp'.
  per aggiungere la voce corrente come segnalibro&per.
 :p.Per saltare a un segnalibro&comma. basta andare al menu "Segnalibri"&comma. e fare click
 sul segnalibro desiderato&per.

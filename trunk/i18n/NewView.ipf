@@ -13,12 +13,10 @@
 .* ************************************************************
 .* Introduction
 .* ************************************************************
-:h1 res=30000 id='Introduction'.
-Introduction
+:h1 res=30000 id='Introduction'.Introduction
 :i1 id=30001.support
-:p.
-:artwork runin name='images\NewView.bmp'.
- :hp2.Welcome to NewView&xclm.:ehp2.
+:p.:artwork runin name='images\NewView.bmp'.
+:hp2.Welcome to NewView&xclm.:ehp2.
 :p.
 :p.NewView is a program for reading OS&slash.2 &lpar.or eComStation&rpar. Help
 Files&per.
@@ -303,6 +301,9 @@ better the match is the higher the rank will be&per.
 :p.&endash. number of matching words in a topic
 :p.&endash. matches within the title
 :p.&endash. matches within an index entry
+.* ************************************************************
+.* Notes
+.* ************************************************************
 :h2 res=7 id='notes'.
 Notes
 :p.:hp2.Adding and Using Notes:ehp2.
@@ -311,7 +312,7 @@ Notes
 files&per.
 :p.To add a note&comma. simply click where you want to make a note and click the
 "Note" button
-:artwork runin name='images\notegreen.bmp'.
+:artwork runin name='images\note.bmp'.
 &comma. then type your text and click OK&per. The text will be inserted into the
 help topic with a different color &lpar.default is green&semi. you can change
 this in Tools &endash. Options &endash. Colors&rpar.&per.
@@ -336,7 +337,7 @@ Global Search
 :p.:hp2.Global search:ehp2.
 :p.You can search all help files on your system&comma. by clicking the Search
 All button
-:artwork runin name='images\globalsearch2.bmp'.
+:artwork runin name='images\search.bmp'.
 &comma. using Tools &endash. Search all Help Files in the menu&comma. or
 pressing Ctrl&plus.S&per.
 :p.This search works similarly to :link reftype=hd refid='search'.searching
@@ -401,7 +402,7 @@ Bookmarks
 :p.
 :p.NewView allows you to bookmark particular topics within the current help
 file&per. Simply click the bookmark button
-:artwork runin name='images\bookmark2.bmp'.
+:artwork runin name='images\bookmark.bmp'.
  to add the current topic as a bookmark&per.
 :p.To jump to a bookmark&comma. go to the "Bookmarks" menu&comma. and click on
 the bookmark you want to open&per.
@@ -805,6 +806,9 @@ all opened files&per.
 :p.:hp2.Displaying Resource IDs:ehp2.
 :p.Use topic properties &lpar.right mouse click &endash. Properties&rpar. to see
 which resource IDs are associated with a topic&per.
+.* ************************************************************
+.* TopicNames
+.* ************************************************************
 :h2 res=19 id='TopicNames'.
 Topic Names
 :p.:hp2.Topic Names:ehp2.
