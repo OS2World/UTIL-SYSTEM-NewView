@@ -304,7 +304,7 @@ i Verktyg &endash. Genoms”k alla hj„lpfiler&per.
 :p.F”r att l„gga till en notering&comma. markera helt enkelt d„r du vill l„gga till en notering och klicka p† knappen "Notering"
 .*BR
 
-:artwork runin name='images\notegreen.bmp'.
+:artwork runin name='images\note.bmp'.
 &comma. skriv sedan din text och klicka p† OK&per. Texten kommer att infogas i hj„lp„mnet med en annan f„rg &lpar.standard „r gr”nt&semi.
 .*BR
 du kan „ndra detta i Verktyg &endash. Alternativ &endash. F„rger&rpar.&per.
@@ -326,7 +326,7 @@ du kan dock fortfarande l„sa dom fr†n fliken Noteringar&per.
 .*:EditTime=1115565872
 .*:EditUser=0
 :p.:hp2.Global s”kning:ehp2.
-:p.Du kan s”ka i alla dina hj„lpfiler p† ditt system&comma. genom att klicka p† knappen Global s”kning :artwork runin name='images\GlobalSearch2.bmp'.
+:p.Du kan s”ka i alla dina hj„lpfiler p† ditt system&comma. genom att klicka p† knappen Global s”kning :artwork runin name='images\search.bmp'.
 &comma. anv„ndande menyn Verktyg &endash. Genoms”k alla hj„lpfiler&comma. eller trycka Ctrl&plus.S&per.
 :p.Den h„r s”kningen fungerar liknande :link reftype=hd refid='search'.s”kning inom en fil:elink.&comma. men den talar ocks† om
 .*BR
@@ -381,7 +381,7 @@ du „ven vill s”ka i underkataloger&per.
 .*:EditUser=0
 :p.:hp2.Bokm„rken:ehp2.
 :p.
-:p.NewView till†ter dig att bokm„rka vissa „mnen inom den aktuella hj„lpfilen&per. Klicka helt enkelt p† bokm„rkesknappen :artwork runin name='images\bookmark2.bmp'.
+:p.NewView till†ter dig att bokm„rka vissa „mnen inom den aktuella hj„lpfilen&per. Klicka helt enkelt p† bokm„rkesknappen :artwork runin name='images\bookmark.bmp'.
 .*BR
 f”r att l„gga till det aktuella „mnet som ett bokm„rke&per.
 :p.F”r att hoppa till ett bokm„rke&comma. g† till menyn "Bokm„rken"&comma. och klicka p† det bokm„rke som du vill ”ppna&per.

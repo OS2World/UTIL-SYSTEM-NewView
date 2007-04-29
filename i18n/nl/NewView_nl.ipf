@@ -282,7 +282,7 @@ Notities
 bestanden&per.
 :p.Om een notitie toe te voegen&comma. klik eenvoudig daar waar u een notitie wilt plaatsen en klik op de
 "Notities" knop
-:artwork runin name='images\notegreen.bmp'.
+:artwork runin name='images\note.bmp'.
 &comma. dan typt u uw tekst en drukt op enter&per. De tekst wordt&comma. met een andere kleur&comma.
 toegevoegd aan het help onderwerp &lpar.de standaard is groen&semi. u kunt
 dit in in Hulpmiddelen &endash. Opties &endash. Kleuren&rpar. wijzigen&per.
@@ -302,7 +302,7 @@ Globaal Zoeken
 :p.:hp2.Globaal zoeken:ehp2.
 :p.U kunt in alle help bestanden op uw systeem zoeken door op de Overal
 zoeken knop te drukken
-:artwork runin name='images\globalsearch2.bmp'.
+:artwork runin name='images\search.bmp'.
 &comma. door het Hulpmiddelen &endash. Zoeken in alle helpbestanden... menu&comma. of
 door op Ctrl&plus.S te drukken&per.
 :p.Dit zoeken werkt hetzelfde als :link reftype=hd refid='search'.zoeken
@@ -325,7 +325,7 @@ Bladwijzers
 :p.
 :p.NewView staat u toe om bladwijzers aan te brengen op bepaalde onderwerpen in het huidige help
 bestand&per. Klik eenvoudig op de bladwijzer knop
-:artwork runin name='images\bookmark2.bmp'.
+:artwork runin name='images\bookmark.bmp'.
  om het huidige onderwerp als een bladwijzer toe te voegen&per.
 :p.Om naar een bladwijzer te springen&comma. ga naar het "Bladwijzers" menu&comma. en klik op
 de bladwijzer die u wilt openen&per.
