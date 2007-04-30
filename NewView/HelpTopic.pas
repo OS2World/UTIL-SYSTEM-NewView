@@ -252,11 +252,11 @@ uses
   SysUtils,
   NewViewConstantsUnit,
   ACLUtility,
-  ACLStringUtility,
   ACLFileIOUtility,
   AStringUtilityUnit,
   ACLLanguageUnit,
   StringUtilsUnit,
+  CharUtilsUnit,
   SettingsUnit;
 
 const
@@ -564,7 +564,7 @@ begin
     ImageIndex := ImageOffsets.Add( pointer( BitmapOffset ) );
 
   Write( F, ':artwork name=' );
-  Write( F, StrQuote( 'img' + IntToStr( ImageIndex ) + '.bmp' ) );
+  Write( F, StrInSingleQuotes('img' + IntToStr(ImageIndex) + '.bmp') );
 
   case BitmapFlags and 7 of
     2: // right
@@ -825,12 +825,12 @@ begin
   MarginString := MarginString + '>';
 end;
 
+// TODO
 function FullDoubleQuote( const s: string ): string;
 begin
-  Result := DoubleQuote
-            + InsertDuplicateChars( s,
-                                    DoubleQuote )
-            + DoubleQuote;
+  Result := StrDoubleQuote
+            + StrEscapeAllCharsBy(s, [], CharDoubleQuote)
+            + StrDoubleQuote;
 end;
 
 // End URL, if it has been started. Go back and insert the start tag,
@@ -905,6 +905,7 @@ var
   ProgramPath: string;
   ProgramFilename: string;
   ProgramInfo : TSerializableStringList;
+  tmpProgramLinkParts : TStringList;
 
   OutputString: string;
 begin
@@ -1030,7 +1031,7 @@ begin
       CheckForAutoURL( Text, State );
       // :link reftype=hd refid=... database=<filename>
       ExternalLinkFileIndex := ( pData + 2 )^;
-      ExternalLinkTopicID := StrNPas( pchar( pData + 4 ), ( pData + 3 )^ );
+      ExternalLinkTopicID := StrPasWithLength( pchar( pData + 4 ), ( pData + 3 )^ );
       OutputString := '<blue><link ' + PARAM_LINK_EXTERNAL + ' '
                       + IntToStr( ExternalLinkFileIndex )
                       + ' '
@@ -1042,12 +1043,19 @@ begin
     ecProgramLink:
     begin
       CheckForAutoURL( Text, State );
-      ProgramLink := StrNPas( pchar( pData + 3 ), EscapeLen - 3 );
-      ProgramPath := ExtractNextValue( ProgramLink, ' ' );
+      ProgramLink := StrPasWithLength( pchar( pData + 3 ), EscapeLen - 3 );
+
+      tmpProgramLinkParts := TStringList.Create;
+      StrExtractStrings(tmpProgramLinkParts, ProgramLink, [' '], #0);
+      ProgramPath := tmpProgramLinkParts[0];
+      tmpProgramLinkParts.Destroy;
+
       ProgramFilename := ExtractFilename( ProgramPath );
-      if    StrStarts( 'netscape', ProgramFilename )
-         or StrStarts( 'explore', ProgramFilename ) // web explorer?
-         or StrStarts( 'mozilla', ProgramFilename )
+
+      if    StrStartsWithIgnoringCase(PRGM_EXPLORER, ProgramFilename ) // web explorer?
+         or StrStartsWithIgnoringCase(PRGM_NETSCAPE, ProgramFilename )
+         or StrStartsWithIgnoringCase(PRGM_MOZILLA, ProgramFilename )
+         or StrStartsWithIgnoringCase(PRGM_FIREFOX, ProgramFilename )
          then
       begin
         OutputString := '<blue><link ' + PARAM_LINK_URL + ' '
@@ -1200,7 +1208,7 @@ begin
         else
         begin
           pFontSpec := _FontTable[ FontIndex ];
-          FaceName := StrNPas( pFontSpec ^. FaceName,
+          FaceName := StrPasWithLength( pFontSpec ^. FaceName,
                                sizeof( pFontSpec ^. FaceName ) );
           // arbitrarily and capriciously use specified height * 2/3
           // as the point size - seems to correspond to what original
@@ -1510,7 +1518,7 @@ begin
         end;
 
         // s := pstring( _GlobalDictionary[ DictIndex ] )^; // for debug only
-        if not IsSpaces( pstring( _GlobalDictionary[ DictIndex ] )^ ) then
+        if not StrIsEmptyOrSpaces( pstring( _GlobalDictionary[ DictIndex ] )^ ) then
         begin
           if pSequenceStepWords^[ DictIndex ] = 0 then
           begin
@@ -1637,7 +1645,7 @@ begin
         else
           StringToAdd := '';
 
-        if IsSpaces( StringToAdd ) then
+        if StrIsEmptyOrSpaces( StringToAdd ) then
         begin
           // spaces only...
           CheckForAutoURL( Text, State );
@@ -2021,7 +2029,7 @@ begin
       WordRelevance := 0;
 
       if GlobalDictIndex < _GlobalDictionary.Count then
-        if not IsSpaces( pstring( _GlobalDictionary[ GlobalDictIndex ] )^ ) then;
+        if not StrIsEmptyOrSpaces( pstring( _GlobalDictionary[ GlobalDictIndex ] )^ ) then;
           WordRelevance := pStepWordRelevances[ GlobalDictIndex ];
 
       if WordRelevance > 0 then
@@ -2264,6 +2272,7 @@ var
 
   ProgramLink: string;
   ProgramPath: string;
+  tmpProgramLinkParts : TStringList;
 
   OutputString: string;
 begin
@@ -2371,21 +2380,26 @@ begin
     ecExternalLink:
     begin
       ExternalLinkFileIndex := ( pData + 2 )^;
-      ExternalLinkTopicID := StrNPas( pchar( pData + 4 ), ( pData + 3 )^ );
+      ExternalLinkTopicID := StrPasWithLength( pchar( pData + 4 ), ( pData + 3 )^ );
       Write( F, ':link reftype=hd '
-             + ' refid=' + StrQuote( ExternalLinkTopicID )
-             + ' database=' + StrQuote( _ReferencedFiles[ ExternalLinkFileIndex ] )
+             + ' refid=' + StrInSingleQuotes( ExternalLinkTopicID )
+             + ' database=' + StrInSingleQuotes( _ReferencedFiles[ ExternalLinkFileIndex ] )
              + '.' );
 
     end;
 
     ecProgramLink:
     begin
-      ProgramLink := StrNPas( pchar( pData + 3 ), EscapeLen - 3 );
-      ProgramPath := ExtractNextValue( ProgramLink, ' ' );
+      ProgramLink := StrPasWithLength( pchar( pData + 3 ), EscapeLen - 3 );
+
+      tmpProgramLinkParts := TStringList.Create;
+      StrExtractStrings(tmpProgramLinkParts, ProgramLink, [' '], #0);
+      ProgramPath := tmpProgramLinkParts[0];
+      tmpProgramLinkParts.Destroy;
+
       Write( F, ':link reftype=launch'
-             + ' object=' + StrQuote( ProgramPath )
-             + ' data=' + StrQuote( ProgramLink )
+             + ' object=' + StrInSingleQuotes( ProgramPath )
+             + ' data=' + StrInSingleQuotes( ProgramLink )
              + '.' );
     end;
 
@@ -2505,10 +2519,10 @@ begin
         else
         begin
           pFontSpec := _FontTable[ FontIndex ];
-          FaceName := StrNPas( pFontSpec ^. FaceName,
+          FaceName := StrPasWithLength( pFontSpec ^. FaceName,
                                sizeof( pFontSpec ^. FaceName ) );
           Write( F,
-                 ':font facename=' + StrQuote( FaceName )
+                 ':font facename=' + StrInSingleQuotes( FaceName )
                  + ' size=' + IntToStr( pFontSpec ^. Height )
                    + 'x' + IntToStr( pFontSpec ^. Width )
                  + '.' );
