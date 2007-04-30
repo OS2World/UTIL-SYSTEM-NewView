@@ -67,14 +67,14 @@ var
   begin
     result := NULLHANDLE;
 
-    if aCmdLineParameters.getFileNames = '' then
+    if aCmdLineParameters.getFileNames(false) = '' then
       // not loading files; nothing to check
       exit;
 
     tmpFileItems := TStringList.Create;
     tmpFilenames := TStringList.Create;
 
-    StrExtractStrings(tmpFileItems, aCmdLineParameters.getFileNames, ['+'], #0);
+    StrExtractStrings(tmpFileItems, aCmdLineParameters.getFileNames(false), ['+'], #0);
     TranslateIPFEnvironmentVars(tmpFileItems, tmpFileNames );
 
     for i := 0 to tmpFileNames.Count - 1 do

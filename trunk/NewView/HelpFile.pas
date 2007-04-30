@@ -156,8 +156,8 @@ Implementation
 uses
   BseErr,
   StringUtilsUnit,
+  CharUtilsUnit,
   DebugUnit,
-  ACLStringUtility,
   ACLFileIOUtility,
   ACLLanguageUnit;
 
@@ -963,34 +963,43 @@ var
   H: longint;
   i: longint;
   pFontSpec: pTHelpFontSpec;
+  tmpSubstitutionItems : TStringList;
+  tmpCounter : integer;
+  tmpDimensionParts : TStringList;
 begin
   ParseFontTable; // (re)load table from raw data
 
-  while Substitutions <> '' do
+  tmpSubstitutionItems := TStringList.Create;
+  StrExtractStrings(tmpSubstitutionItems, Substitutions, [';'], #0);
+
+  for tmpCounter := 0 to tmpSubstitutionItems.Count - 1 do
   begin
-    Item := ExtractNextValue( Substitutions, ';' );
+    Item := tmpSubstitutionItems[tmpCounter];
     try
       if Item <> '' then
       begin
         // Look for space in xxxx WxH
 
-        SpacePos := FindCharFromEnd( Item, ' ' );
+        SpacePos := LastPosOfChar(' ', Item);
         if SpacePos > 0 then
         begin
           // fontname comes before
           FontName := StrLeft( Item, SpacePos - 1 );
           Delete( Item, 1, SpacePos );
+
           // width and height after, with an X between
-          W := StrToInt( ExtractNextValue( Item, 'x' ) );
-          H := StrToInt( Item );
+          tmpDimensionParts := TStringList.Create;
+          StrExtractStrings(tmpDimensionParts, Item, ['x'], #0);
+          W := StrToInt(tmpDimensionParts[0]);
+          H := StrToInt(tmpDimensionParts[1]);
+          tmpDimensionParts.Destroy;
           if ( W > 0 ) and ( H > 0 ) then
           begin
             // Now look through the font table for matches
             for i := 0 to _FontTable.Count - 1 do
             begin
               pFontSpec := _FontTable[ i ];
-              if StrNPas( pFontSpec ^. FaceName,
-                          sizeof( pFontSpec ^. FaceName ) ) = FontName then
+              if StrPasWithLength( pFontSpec^.FaceName, sizeof( pFontSpec^.FaceName ) ) = FontName then
               begin
                 // same face name...
                 if ( W = pFontSpec ^. Height ) and ( H = pFontSpec ^. Width ) then
@@ -1006,6 +1015,8 @@ begin
     except
     end;
   end;
+
+  tmpSubstitutionItems.Destroy;
 end;
 
 
@@ -1025,8 +1036,8 @@ begin
   Ext := ExtractFileExt( Filename );
   Result := '';
 
-  if    StringsSame( Ext, '.inf' )
-     or StringsSame( Ext, '.hlp' ) then
+  if    StrEqualIgnoringCase( Ext, '.inf' )
+     or StrEqualIgnoringCase( Ext, '.hlp' ) then
   begin
     szName := Filename;
     rc := DosOpen( szName,
