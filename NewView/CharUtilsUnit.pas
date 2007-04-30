@@ -15,6 +15,8 @@ const
   CharTAB = chr(9);
   CharCR = chr(13);
   CharLF = chr(10);
+  CharSingleQuote = '''';
+  CharDoubleQuote = '"';
 
 
   TYPE
