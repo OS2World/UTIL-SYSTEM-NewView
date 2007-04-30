@@ -17,8 +17,8 @@ const
   StrCR = CharCR;
   StrLF = CharLF;
   StrCRLF = StrCR + StrLF;
-  StrSingleQuote = '''';
-  StrDoubleQuote = '"';
+  StrSingleQuote = CharSingleQuote;
+  StrDoubleQuote = CharDoubleQuote;
 
 
   TYPE
@@ -36,7 +36,7 @@ const
        PROCEDURE readValuesFromSerializedString(const aSerializedString : String);
   end;
 
-  // prefices all occurences of one of the chars in aStringWithChars with anEscape char
+  // prefixes all occurences of one of the chars in aStringWithChars with anEscape char
   // if the escapeChar itself is found, then it is doubled
   Function StrEscapeAllCharsBy(const aReceiver: String; const aSetOfChars: TSetOfChars; const anEscapeChar: char): String;
 
@@ -93,6 +93,9 @@ const
   // this is case INsensitive
   Function StrEndsWithIgnoringCase(const aReceiver: String; const anEndString: String): Boolean;
 
+  // Returns true if aReceiver is only spaces (or empty)
+  Function StrIsEmptyOrSpaces(const aReceiver: String) : Boolean;
+
   // returns true if the Strings are the same
   // this is case INsensitive
   Function StrEqualIgnoringCase(const aReceiver: String; const aSecondString: String): Boolean;
@@ -103,6 +106,9 @@ const
   Function LongWordToStr(const aLongWord: LongWord) : String;
 
   Function BoolToStr(const aBoolean : boolean ): string;
+
+  // Returns aString enclosed in single quotes
+  Function StrInSingleQuotes(const aString : String) : String;
 
   // Returns aString enclosed in double quotes
   Function StrInDoubleQuotes(const aString : String) : String;
@@ -116,12 +122,15 @@ const
   // case insensitive
   Function CaseInsensitivePos(const aPart: String; const aString: String ): longint;
 
+  // Finds the last position of aChar within aString. Returns zero if no match
+  Function LastPosOfChar(const aChar: char; const aString: String): longint;
+
 
   // --------------------
   // ---- AnsiString ----
   // --------------------
 
-  
+
   // removes all occurences of char from aSetOfChars from the beginning
   // of a String.
   Function AnsiStrTrimLeftChars(const aReceiver: AnsiString; const aSetOfChars: TSetOfChars): AnsiString;
@@ -138,13 +147,23 @@ const
   Function AnsiStrTrim(const aReceiver: AnsiString): AnsiString;
 
 
+  // --------------------
+  // ---- Misc TODO  ----
+  // --------------------
+
+  Procedure GetMemString(const aPointer : pointer; var aString: string; const aSize: byte);
+
+  Procedure FreePString(var aPString: PString );
+
+  Function NewPString(const aString : String) : PString;
 
 
 Implementation
 
   uses
     SysUtils,
-    DebugUnit;
+    DebugUnit,
+    ACLUtility;  // TODO
 
   constructor TSerializableStringList.Create;
   begin
@@ -567,6 +586,37 @@ Implementation
   end;
 
 
+  Function StrIsEmptyOrSpaces(const aReceiver: String) : Boolean;
+  Begin
+    Asm
+      MOV ESI, aReceiver   // get address of aReceiver into ESI
+      MOV CL,[ESI]     // get length of s
+      MOVZX ECX, CL      // widen CL
+      INC ECX
+
+    !IsSpacesLoop:
+      INC ESI   // move to next char
+      DEC ECX
+      JE !IsSpacesTrue
+
+      MOV AL,[ESI] // load character
+      CMP AL,32  // is it a space?
+      JE !IsSpacesLoop // yes, go to next
+
+      // no, return false
+      MOV EAX, 0
+      JMP !IsSpacesDone
+
+    !IsSpacesTrue:
+      MOV EAX, 1
+
+    !IsSpacesDone:
+      LEAVE
+      RETN32 4
+    End;
+  End;
+
+
   Function StrEqualIgnoringCase(const aReceiver: String; const aSecondString: String): Boolean;
   begin
     Result := CompareText(aReceiver, aSecondString) = 0;
@@ -614,6 +664,12 @@ Implementation
       Result := 'True'
     else
       Result := 'False';
+  end;
+
+
+  Function StrInSingleQuotes(const aString : String) : String;
+  begin
+    Result := StrSingleQuote + aString + StrSingleQuote;
   end;
 
 
@@ -865,6 +921,23 @@ Implementation
   end;
 
 
+  Function LastPosOfChar(const aChar: char; const aString: String): longint;
+  Var
+    tmpPos : longint;
+  begin
+    tmpPos := Length(aString);
+    while tmpPos > 0 do
+    begin
+      if aString[tmpPos] = aChar then
+      begin
+        Result := tmpPos;
+        exit;
+      end;
+      dec(tmpPos);
+    end;
+    Result := 0;
+  end;
+
   // --------------------
   // ---- AnsiString ----
   // --------------------
@@ -992,5 +1065,34 @@ Implementation
     result := AnsiStrTrimChars(aReceiver, [' ']);
   end;
 
+
+  // --------------------
+  // ---- Misc TODO  ----
+  // --------------------
+
+  Procedure GetMemString(const aPointer : pointer; var aString: string; const aSize: byte);
+  begin
+    aString[0] := char(aSize);
+    MemCopy(aPointer, Addr(aString[1]), aSize);
+  end;
+
+
+  Procedure FreePString(var aPString : PString );
+  begin
+    if aPString = nil then
+    begin
+      exit;
+    end;
+
+    FreeMem(aPString, Length(aPString^) + 1);
+    aPString := nil;
+  end;
+
+
+  Function NewPString(const aString : String) : PString;
+  begin
+    GetMem(Result, Length(aString) + 1);
+    Result^ := aString;
+  end;
 
 END.

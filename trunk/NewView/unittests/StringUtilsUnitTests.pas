@@ -279,6 +279,26 @@ Implementation
   END;
 
 
+  PROCEDURE testEscapeAllCharsBy_NoCharactersToEscape;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrEscapeAllCharsBy('a\bc\\de', [], '\');
+
+    assertEqualsString('testEscapeAllCharsBy_NoCharactersToEscape', 'a\\bc\\\\de', tmpResult);
+  END;
+
+
+  PROCEDURE testEscapeAllCharsBy_DoubleDoubleQuotes;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrEscapeAllCharsBy('"ab cd"e', [], '"');
+
+    assertEqualsString('testEscapeAllCharsBy_DoubleDoubleQuotes', '""ab cd""e', tmpResult);
+  END;
+
+
   // ------------------------------------------------------
 
 
@@ -1367,6 +1387,79 @@ Implementation
   // ----------------------------------------------------------
 
 
+  PROCEDURE testStrIsEmptyOrSpaces_Empty;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrIsEmptyOrSpaces('');
+
+    assertTrue('testStrIsEmptyOrSpaces_Empty', tmpResult);
+  END;
+
+
+  PROCEDURE testStrIsEmptyOrSpaces_OneSpace;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrIsEmptyOrSpaces(' ');
+
+    assertTrue('testStrIsEmptyOrSpaces_OneSpace', tmpResult);
+  END;
+
+
+  PROCEDURE testStrIsEmptyOrSpaces_ManySpaces;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrIsEmptyOrSpaces('        ');
+
+    assertTrue('testStrIsEmptyOrSpaces_ManySpaces', tmpResult);
+  END;
+
+
+  PROCEDURE testStrIsEmptyOrSpaces_OneChar;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrIsEmptyOrSpaces('a');
+
+    assertFalse('testStrIsEmptyOrSpaces_OneChar', tmpResult);
+  END;
+
+
+  PROCEDURE testStrIsEmptyOrSpaces_ManyChars;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrIsEmptyOrSpaces('abcde');
+
+    assertFalse('testStrIsEmptyOrSpaces_ManyChars', tmpResult);
+  END;
+
+
+  PROCEDURE testStrIsEmptyOrSpaces_SpacesWithOneChar;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrIsEmptyOrSpaces('       z     ');
+
+    assertFalse('testStrIsEmptyOrSpaces_SpacesWithOneChar', tmpResult);
+  END;
+
+
+  PROCEDURE testStrIsEmptyOrSpaces_CharZero;
+  VAR
+    tmpResult : Boolean;
+  BEGIN
+    tmpResult := StrIsEmptyOrSpaces(#0);
+
+    assertFalse('testStrIsEmptyOrSpaces_CharZero', tmpResult);
+  END;
+
+
+  // ----------------------------------------------------------
+
+
   PROCEDURE testStrEqualIgnoringCase_BothEmpty;
   VAR
     tmpResult : Boolean;
@@ -1474,6 +1567,29 @@ Implementation
     tmpResult := BoolToStr(false);
 
     assertEqualsString('testBoolToStr_false', 'False', tmpResult);
+  END;
+
+
+  // ----------------------------------------------------------
+
+
+  PROCEDURE testStrInSingleQuotes_Empty;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrInSingleQuotes('');
+
+    assertEqualsString('testStrInSingleQuotes_Empty', '''''', tmpResult);
+  END;
+
+
+  PROCEDURE testStrInSingleQuotes;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := StrInSingleQuotes('abc');
+
+    assertEqualsString('testStrInSingleQuotes', '''abc''', tmpResult);
   END;
 
 
@@ -1855,7 +1971,101 @@ Implementation
 
     tmpResult := CaseInsensitivePos(LowerCase(tmpPart), tmpString);
     assertEqualsInt('testCaseInsensitivePos', 1, tmpResult);
-END;
+  END;
+
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testLastPosOfChar_Empty;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := LastPosOfChar('x', '');
+
+    assertEqualsInt('testLastPosOfChar_Empty', 0, tmpResult);
+  END;
+
+
+  PROCEDURE testLastPosOfChar_NotFound;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := LastPosOfChar('x', 'abcd');
+
+    assertEqualsInt('testLastPosOfChar_NotFound', 0, tmpResult);
+  END;
+
+
+  PROCEDURE testLastPosOfChar_OneCharNotFound;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := LastPosOfChar('x', 'a');
+
+    assertEqualsInt('testLastPosOfChar_OneCharNotFound', 0, tmpResult);
+  END;
+
+
+  PROCEDURE testLastPosOfChar_OneCharFound;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := LastPosOfChar('x', 'x');
+
+    assertEqualsInt('testLastPosOfChar_OneCharFound', 1, tmpResult);
+  END;
+
+
+  PROCEDURE testLastPosOfChar_OneCharWrongCase;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := LastPosOfChar('x', 'X');
+
+    assertEqualsInt('testLastPosOfChar_OneCharWrongCase', 0, tmpResult);
+  END;
+
+
+  PROCEDURE testLastPosOfChar_FirstChar;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := LastPosOfChar('x', 'xabcd');
+
+    assertEqualsInt('testLastPosOfChar_FirstChar', 1, tmpResult);
+  END;
+
+
+  PROCEDURE testLastPosOfChar_LastChar;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := LastPosOfChar('x', 'abcdx');
+
+    assertEqualsInt('testLastPosOfChar_LastChar', 5, tmpResult);
+  END;
+
+
+  PROCEDURE testLastPosOfChar_MiddleChar;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := LastPosOfChar('x', 'abcdxwertzu');
+
+    assertEqualsInt('testLastPosOfChar_MiddleChar', 5, tmpResult);
+  END;
+
+
+  PROCEDURE testLastPosOfChar_ManyHits;
+  VAR
+    tmpResult : longint;
+  BEGIN
+    tmpResult := LastPosOfChar('x', 'axbcxdxu');
+
+    assertEqualsInt('testLastPosOfChar_ManyHits', 7, tmpResult);
+  END;
 
 
   // --------------------
@@ -2226,6 +2436,8 @@ END;
     result.add(@testEscapeAllCharsBy_Empty);
     result.add(@testEscapeAllCharsBy_EmptyChars);
     result.add(@testEscapeAllCharsBy_EscapeEscape);
+    result.add(@testEscapeAllCharsBy_NoCharactersToEscape);
+    result.add(@testEscapeAllCharsBy_DoubleDoubleQuotes);
 
     result.add(@testStrExtractStrings_EmptyReceiver);
     result.add(@testStrExtractStrings_OnlyOnePart);
@@ -2338,6 +2550,14 @@ END;
     result.add(@testStrEndsWithIgnoringCase_StringMatch);
     result.add(@testStrEndsWithIgnoringCase_StringMatchCaseInSensitive);
 
+    result.add(@testStrIsEmptyOrSpaces_Empty);
+    result.add(@testStrIsEmptyOrSpaces_OneSpace);
+    result.add(@testStrIsEmptyOrSpaces_ManySpaces);
+    result.add(@testStrIsEmptyOrSpaces_OneChar);
+    result.add(@testStrIsEmptyOrSpaces_ManyChars);
+    result.add(@testStrIsEmptyOrSpaces_SpacesWithOneChar);
+    result.add(@testStrIsEmptyOrSpaces_CharZero);
+
     result.add(@testStrEqualIgnoringCase_BothEmpty);
     result.add(@testStrEqualIgnoringCase_FirstEmpty);
     result.add(@testStrEqualIgnoringCase_SecondEmpty);
@@ -2351,6 +2571,9 @@ END;
 
     result.add(@testBoolToStr_true);
     result.add(@testBoolToStr_false);
+
+    result.add(@testStrInSingleQuotes_Empty);
+    result.add(@testStrInSingleQuotes);
 
     result.add(@testStrInDoubleQuotes_Empty);
     result.add(@testStrInDoubleQuotes);
@@ -2379,6 +2602,17 @@ END;
     result.add(@testCaseInsensitivePos_Middle);
     result.add(@testCaseInsensitivePos_AtRight);
     result.add(@testCaseInsensitivePos);
+
+    result.add(@testLastPosOfChar_Empty);
+    result.add(@testLastPosOfChar_NotFound);
+    result.add(@testLastPosOfChar_OneCharNotFound);
+    result.add(@testLastPosOfChar_OneCharFound);
+    result.add(@testLastPosOfChar_OneCharWrongCase);
+    result.add(@testLastPosOfChar_FirstChar);
+    result.add(@testLastPosOfChar_LastChar);
+    result.add(@testLastPosOfChar_MiddleChar);
+    result.add(@testLastPosOfChar_ManyHits);
+
 
   // --------------------
   // ---- AnsiString ----
