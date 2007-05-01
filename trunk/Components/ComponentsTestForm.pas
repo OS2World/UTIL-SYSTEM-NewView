@@ -20,7 +20,13 @@ Uses
   CustomFileControls,
   CustomFontDialog,
   MultiColumnListBox,
-  SystemIconUnit;
+  SystemIconUnit,
+ 
+  // custom components not directly used but there to
+  // compile
+  SplitBar,
+  Tabset2Unit,
+  GenericThread;
 
 type
   TScanParameters = class
