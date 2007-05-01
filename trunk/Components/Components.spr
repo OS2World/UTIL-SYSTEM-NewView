@@ -146,7 +146,7 @@ Find15=.GetOffsetFromX
 [General]
 
 Version=Sibyl Project Ver2.02
-ProjectName=P:\NEWVIEW_DEV\COMPONENTS\Components.spr
+ProjectName=P:\NEWVIEW_DEV\Components\Components.spr
 ProjectType=Visual
 CompLibName=D:\Development\Sibyl\bin\CompLib.dll
 Win32CompLibName=D:\Development\Sibyl\bin\CompLib.dll
