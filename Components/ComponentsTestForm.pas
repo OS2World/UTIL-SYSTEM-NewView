@@ -8,14 +8,18 @@ Uses
   FileCtrl, StdCtrls, BmpList,
   ControlsUtility,
   Outline2, ACLDialogs, ColorWheel,
-  CustomCheckListBox, CustomDirOutline,
+//  CustomCheckListBox,
+//  CustomDirOutline,
   CustomListBox, CustomMemo,
-  CustomOutline,
+//  CustomOutline,
   Coolbar2, SplitBar,
   CustomFileControls, CustomFontDialog,
-  MultiColumnListBox, CoolBar, Test, HT,
+  MultiColumnListBox, CoolBar, Test,
+//  HT,
   GenericThread, Tabset2Unit,
-  CustomBitmapButton, IconImageUnit, SystemIconUnit,
+//  CustomBitmapButton,
+  IconImageUnit,
+  SystemIconUnit,
   OutLine;
 
 type

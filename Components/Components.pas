@@ -1,7 +1,10 @@
 Program Components;
 
 Uses
-  Forms, Graphics, ComponentsTestForm, NonSizableDialogUnit;
+  Forms,
+  Graphics,
+  ComponentsTestForm;
+//  NonSizableDialogUnit;
 
 {$r Components.scu}
 
