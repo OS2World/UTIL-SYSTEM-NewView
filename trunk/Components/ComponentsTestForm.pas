@@ -3,24 +3,24 @@ Unit ComponentsTestForm;
 Interface
 
 Uses
-  Classes, Forms, Graphics, RichTextView, Buttons, TabCtrls, ComCtrls,
+  Classes,
+  Forms,
+  Graphics,
+  RichTextView,
+  Buttons,
+  TabCtrls,
+  ComCtrls,
   ExtCtrls,
-  FileCtrl, StdCtrls, BmpList,
-  ControlsUtility,
-  Outline2, ACLDialogs, ColorWheel,
-//  CustomCheckListBox,
-//  CustomDirOutline,
-  CustomListBox, CustomMemo,
-//  CustomOutline,
-  Coolbar2, SplitBar,
-  CustomFileControls, CustomFontDialog,
-  MultiColumnListBox, CoolBar, Test,
-//  HT,
-  GenericThread, Tabset2Unit,
-//  CustomBitmapButton,
-  IconImageUnit,
-  SystemIconUnit,
-  OutLine;
+  StdCtrls,
+  Outline2,
+  ACLDialogs,
+  ColorWheel,
+  CustomListBox,
+  Coolbar2,
+  CustomFileControls,
+  CustomFontDialog,
+  MultiColumnListBox,
+  SystemIconUnit;
 
 type
   TScanParameters = class
@@ -102,10 +102,17 @@ Var
 Implementation
 
 uses
-  PMWin, Os2Def,
-  Dialogs, SysUtils, Printers,
-  ControlScrolling, ACLResourceUtility, ACLStringUtility,
-  RichTextPrintUnit, RichTextStyleUnit, ACLLanguageUnit;
+  PMWin,
+  Os2Def,
+  Dialogs,
+  SysUtils,
+  Printers,
+  ControlScrolling,
+  ACLResourceUtility,
+  ACLStringUtility,
+  RichTextPrintUnit,
+  RichTextStyleUnit,
+  ACLLanguageUnit;
 
 {$R DialogIcons}
 
