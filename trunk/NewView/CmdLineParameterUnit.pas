@@ -52,6 +52,7 @@ CONST
        parsedSearchText : AnsiString;
        searchText : AnsiString;
        debugEnabled : boolean;
+       nhmDebugMessages : TStringList;  // for better debugging strange situations
 
        FUNCTION handleSwitchWithValue(const aSwitchString : String; const aSwitch : String; var aValue : String) : Boolean;
        PROCEDURE parseSwitch(const aSwitchString : String);
@@ -79,6 +80,7 @@ CONST
        PROCEDURE logDetails;
        PROCEDURE parseCmdLine(const aCmdLineString : AnsiString);
        FUNCTION getOwnHelpFileName: String;
+       PROCEDURE addNhmDebugMessage(const aString : String);
   end;
 
   // returns a string containing the whole
@@ -89,12 +91,19 @@ CONST
 Implementation
 uses
   DOS,
-  FileUtilsUnit;
+  FileUtilsUnit,
+  VersionUnit;
 
   PROCEDURE TCmdLineParameters.writeDetailsTo(aStrings : TStrings);
   var
     tmpWindowPosition : TWindowPosition;
+    i : integer;
   begin
+    aStrings.Add('---- Version ----');
+    aStrings.Add('  ' + GetAppVersion);
+    aStrings.Add('');
+
+    aStrings.Add('---- Command Line ----');
     aStrings.Add('''' + commandLine + '''');
     aStrings.Add('isDebugEnabled: ' + boolToStr(isDebugEnabled));
 
@@ -121,6 +130,17 @@ uses
                 );
     aStrings.Add('  ownerWindow: ' + intToStr(getOwnerWindow));
     aStrings.Add('  windowTitle: ' + getWindowTitle);
+
+    if nil <> nhmDebugMessages then
+    begin
+      aStrings.Add('');
+      aStrings.Add('---- NHM DebugMessages ----');
+      for i := 0 to nhmDebugMessages.count-1 do
+      begin
+        aStrings.Add('  ' + nhmDebugMessages[i]);
+      end;
+    end;
+
   end;
 
 
@@ -493,18 +513,23 @@ uses
   Function ParseWindowPosition(const aParamValue: String): TWindowPosition;
   Var
     tmpParts : TStringList;
+    tmpScreenWidth : longint;
+    tmpScreenHeight : longint;
   Begin
     tmpParts := TStringList.Create;
     StrExtractStrings(tmpParts, aParamValue, [','], '\');
 
-    result.Left := ParseWindowPositionPart(tmpParts[0], WinQuerySysValue(HWND_DESKTOP, SV_CXSCREEN));
-    result.Bottom := ParseWindowPositionPart(tmpParts[1], WinQuerySysValue(HWND_DESKTOP, SV_CYSCREEN));
+    tmpScreenWidth := WinQuerySysValue(HWND_DESKTOP, SV_CXSCREEN);
+    tmpScreenHeight := WinQuerySysValue(HWND_DESKTOP, SV_CYSCREEN);
 
-    result.Width := ParseWindowPositionPart(tmpParts[2], WinQuerySysValue(HWND_DESKTOP, SV_CXSCREEN));
+    result.Left := ParseWindowPositionPart(tmpParts[0], tmpScreenWidth);
+    result.Bottom := ParseWindowPositionPart(tmpParts[1], tmpScreenHeight);
+
+    result.Width := ParseWindowPositionPart(tmpParts[2], tmpScreenWidth);
     if result.Width < 50 then
       result.Width := 50;
 
-    result.Height := ParseWindowPositionPart(tmpParts[3], WinQuerySysValue(HWND_DESKTOP, SV_CYSCREEN));
+    result.Height := ParseWindowPositionPart(tmpParts[3], tmpScreenHeight);
     if result.Height < 50 then
       result.Height := 50;
 
@@ -633,6 +658,19 @@ uses
   end;
 
 
+  PROCEDURE TCmdLineParameters.addNhmDebugMessage(const aString : String);
+  var
+    tmpLanguage : String;
+  begin
+    if nil = nhmDebugMessages then
+    begin
+      nhmDebugMessages := TStringList.Create;
+    end;
+
+    nhmDebugMessages.add(aString);
+  end;
+
+
   FUNCTION nativeOS2GetCmdLineParameter : AnsiString;
   VAR
     tmpPtib : PTIB;       // thread information block
@@ -654,4 +692,6 @@ uses
     result := '';
     AnsiSetString(result, tmpParams, StrLen(tmpParams));
   END;
+
+
 END.
