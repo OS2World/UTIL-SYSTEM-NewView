@@ -2277,6 +2277,7 @@ Begin
     Lines.Add('');
 
     CmdLineParameters.writeDetailsTo(Lines);
+    writeSettingsDetailsTo(Lines);
   end;
 
   InformationForm.ShowModal;
@@ -6905,9 +6906,11 @@ Begin
     WindowState := wsNormal;
 end;
 
+
 Procedure TMainForm.NHMDisplayIndex( Var Msg: TMessage );
 begin
   LogEvent(LogNHM, 'NHMDisplayIndex');
+  CmdLineParameters.addNhmDebugMessage('NHMDisplayIndex');
   RestoreWindow;
   DisplayIndex;
   // if nothing is being display already...
@@ -6919,6 +6922,7 @@ end;
 Procedure TMainForm.NHMDisplayContents( Var Msg: TMessage );
 begin
   LogEvent(LogNHM, 'NHMDisplayContents');
+  CmdLineParameters.addNhmDebugMessage('NHMDisplayContents');
   RestoreWindow;
   DisplayContents;
   // if nothing is being display already...
@@ -6934,7 +6938,10 @@ begin
   LogEvent(LogNHM, 'NHMTopicByResourceID');
   RestoreWindow;
   if ShowLeftPanel then
+  begin
     DisplayContents;
+  end;
+  CmdLineParameters.addNhmDebugMessage('NHMTopicByResourceID ' + IntToStr(Msg.Param1));
   DisplayTopicByResourceID( Msg.Param1 );
 end;
 
@@ -6954,6 +6961,7 @@ begin
   SharedMemory.Free( pMessageMem );
 
   LogEvent(LogNHM, '....NHMTopicByPanelName panel:' + PanelName);
+  CmdLineParameters.addNhmDebugMessage('NHMTopicByPanelName ' + PanelName);
   Topic := FindTopicByName( PanelName );
   if Topic = nil then
     Topic := FindTopicByGlobalName( PanelName );
@@ -6969,30 +6977,37 @@ end;
 Procedure TMainForm.NHMSearch( Var Msg: TMessage );
 var
   pSearchText: pchar;
+  tmpSearchText : String;
 begin
   LogEvent(LogNHM, 'NHMSearch');
   RestoreWindow;
 
   pSearchText := pstring( Msg.Param1 );
-  SearchFor( StrPas( pSearchText ) );
+  tmpSearchText := StrPas(pSearchText);
+  CmdLineParameters.addNhmDebugMessage('NHMSearch ' + tmpSearchText);
+  SearchFor(tmpSearchText);
   SharedMemory.Free( pSearchText );
 end;
 
 Procedure TMainForm.NHMGlobalSearch( Var Msg: TMessage );
 var
   pSearchText: pchar;
+  tmpSearchText : String;
 begin
   LogEvent(LogNHM, 'NHMGlobalSearch');
   RestoreWindow;
 
   pSearchText := pstring( Msg.Param1 );
-  DoGlobalSearch( StrPas( pSearchText ) );
+  tmpSearchText := StrPas(pSearchText);
+  CmdLineParameters.addNhmDebugMessage('NHMGlobalSearch ' + tmpSearchText);
+  DoGlobalSearch(tmpSearchText);
   SharedMemory.Free( pSearchText );
 end;
 
 Procedure TMainForm.NHMShowUsage( Var Msg: TMessage );
 begin
   LogEvent(LogNHM, 'NHMShowUsage');
+  CmdLineParameters.addNhmDebugMessage('NHMShowUsage');
   RestoreWindow;
   ShowUsage;
 end;
@@ -7000,11 +7015,15 @@ end;
 Procedure TMainForm.NHMSetFiles( Var Msg: TMessage );
 var
   pFileNames: pchar;
+  tmpFileNames : String;
 begin
   LogEvent(LogNHM, 'NHMSetFiles');
+
   // NOT restoring window here because this is not something the user should see...
   pFileNames := pstring( Msg.Param1 );
-  OpenFilesFromTextList( StrPas( pFileNames ), false );
+  tmpFileNames := StrPas(pFileNames);
+  CmdLineParameters.addNhmDebugMessage('NHMSetFiles ' + tmpFileNames);
+  OpenFilesFromTextList(tmpFileNames, false);
   SharedMemory.Free( pFileNames );
 end;
 
@@ -7013,10 +7032,11 @@ var
   pTitle: pchar;
 begin
   LogEvent(LogNHM, 'NHMSetTitle');
+
   pTitle := pstring( Msg.Param1 );
   MainTitle := StrPas( pTitle );
   SharedMemory.Free( pTitle );
-
+  CmdLineParameters.addNhmDebugMessage('NHMSetTitle ' + MainTitle);
   SetMainCaption;
 end;
 
