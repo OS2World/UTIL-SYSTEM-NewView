@@ -126,6 +126,9 @@ Type
   Procedure LoadSettings;
   Procedure SaveSettings;
 
+  PROCEDURE writeSettingsDetailsTo(aStrings : TStrings);
+
+
 Procedure AddToMRUList( const Title: string;
                         Filenames: TStrings );
 
@@ -136,6 +139,8 @@ Implementation
 
 Uses
   SysUtils,
+  PMWin,
+  OS2Def,
   DebugUnit,
   Dos,
   FileUtilsUnit,
@@ -232,7 +237,7 @@ Begin
       LeftPanelWidth := ReadInteger( GeneralSection, 'LeftPanelWidth', 225 );
       FileDialogSplit := ReadInteger( GeneralSection, 'FileDialogSplit', 500 ) / 1000;
 
-      ShowLeftPanel_Help := ReadBool( GeneralSection, 'ShowLeftPanel_Help', false );
+      ShowLeftPanel_Help := ReadBool( GeneralSection, 'ShowLeftPanel_Help', true );
       ShowLeftPanel_Standalone := ReadBool( GeneralSection, 'ShowLeftPanel_Standalone', true );
 
       // Colours
@@ -627,6 +632,52 @@ Begin
   LoadFormSizePosition( Form, IniFile );
   CloseIniFile( IniFile );
 End;
+
+  PROCEDURE writeSettingsDetailsTo(aStrings : TStrings);
+  Var
+      tmpRect : RECTL;
+      // DesktopHWND : HWND=0;
+  Begin
+    aStrings.Add('');
+    aStrings.Add('---- Settings ----');
+    aStrings.Add('info: ' + IntToStr(WinQuerySysValue(HWND_DESKTOP, SV_CXSCREEN)));
+    aStrings.Add('info: ' + IntToStr(Screen.Width));
+
+    // some tests
+    {
+    WinQueryWindowRect(HWND_DESKTOP, tmpRect);
+    aStrings.Add('info: WinQueryWindowRect(HWND_DESKTOP, tmpRect)');
+    aStrings.Add('info: ' + IntToStr(tmpRect.xLeft) + ', ' + IntToStr(tmpRect.yBottom) + ', ' + IntToStr(tmpRect.xRight) + ', ' + IntToStr(tmpRect.yTop));
+    If DesktopHWND = 0 Then DesktopHWND := WinQueryDesktopWindow(AppHandle, 0);
+    WinQueryWindowRect(DesktopHWND, tmpRect);
+    aStrings.Add('info: WinQueryWindowRect(DesktopHWND, tmpRect)');
+    aStrings.Add('info: ' + IntToStr(tmpRect.xLeft) + ', ' + IntToStr(tmpRect.yBottom) + ', ' + IntToStr(tmpRect.xRight) + ', ' + IntToStr(tmpRect.yTop));
+    }
+
+    aStrings.Add('LastOpenDirectory: ' + Settings.LastOpenDirectory);
+    aStrings.Add('LastSaveDirectory: ' + Settings.LastSaveDirectory);
+    aStrings.Add('StartupHelp:       ' + boolToStr(Settings.StartupHelp));
+    // LeftPanelWidth: longint;
+    aStrings.Add('ShowLeftPanel_Help: ' + boolToStr(Settings.ShowLeftPanel_Help));
+    aStrings.Add('ShowLeftPanel_Standalone: ' + boolToStr(Settings.ShowLeftPanel_Standalone));
+    // FileDialogSplit: real;
+    // Colors: array[ 0..NumColorSettings - 1 ] of TColor;
+    // NormalFont: TFont;
+    // FixedFont: TFont;
+    // Fonts: array[ 0..NumFontSettings - 1 ] of TFont;
+    aStrings.Add('FixedFontSubstitution: ' + boolToStr(Settings.FixedFontSubstitution));
+    aStrings.Add('FixedFontSubstitutes: ' + Settings.FixedFontSubstitutes);
+    // IndexStyle: TIndexStyle;
+    aStrings.Add('SmoothScrolling: ' + boolToStr(Settings.SmoothScrolling));
+    aStrings.Add('UseOriginalDialogs: ' + boolToStr(Settings.UseOriginalDialogs));
+    aStrings.Add('OpenWithExpandedContents: ' + boolToStr(Settings.OpenWithExpandedContents));
+    aStrings.Add('ToolbarBackgroundImageFilename: ' + Settings.ToolbarBackgroundImageFilename);
+    // ToolbarStyle: TToolbarStyle;
+    aStrings.Add('ConfirmWinHelp: ' + boolToStr(Settings.ConfirmWinHelp));
+    // GlobalSearchLocation: TGlobalSearchLocation;
+    // SearchDirectories: TStringList;
+  end;
+
 
 Initialization
   Settings.NormalFont := Screen.GetFontFromPointSize( 'Helv',
