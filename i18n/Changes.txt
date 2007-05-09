@@ -1,9 +1,13 @@
 NewView release changes
 
-V2.19 rc1
+V2.19 RC4
   TODO translation
    - UsageText
 
+- new toolbar icon added for toggling the left panel
+- all toolbar icons replaced by now ones (copied form lucide)
+  the order of the icons is changed
+- RC had some problems with various options; fixed
 - global search in selected help path directories searches in all; fixed
 - starting 'newview -lang:en' produces some problems with translations
   e.g. in the global search dialog; fixed (#16)
