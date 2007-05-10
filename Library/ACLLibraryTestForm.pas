@@ -44,7 +44,7 @@ Implementation
 uses
   SysUtils,
   ACLString, AStringUtilityUnit,
-  Execute, RunProgramUnit;
+  RunProgramUnit;
 
 Procedure TACLLibraryTestForm.FindButtonOnClick (Sender: TObject);
 var
