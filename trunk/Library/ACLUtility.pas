@@ -20,7 +20,7 @@ Type
                                  Message: string ) of object;
 
 const
-   _MAX_PATH = 260;    // max. pength of full pathname
+   _MAX_PATH = 260;    // max. length of full pathname
    _MAX_DRIVE = 3;     // max. length of drive component
    _MAX_DIR = 256;     // max. length of path component
    _MAX_FNAME = 256;   // max. length of file name component
