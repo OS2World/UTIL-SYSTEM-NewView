@@ -205,13 +205,11 @@ Var
   psd: STARTDATA;
   SessID: LONGWORD;
   apid: LONGWORD;
-  PgmTitle: CSTRING;
   PgmName: CSTRING;
   ObjBuf: CSTRING;
   rc: Integer;
 
   Args: CSTRING;
-  ReportTypeStr: CSTRING;
 
   TerminationQueue:HQueue;
   QueueName: CSTRING;
@@ -223,7 +221,6 @@ Var
   ElemPriority: BYTE;
   SemName: CString;
   SemHandle: HEV;
-  OwningPID: PID;
 
   SemPostCount: ULONG;
 Begin
@@ -349,15 +346,12 @@ Function LaunchProgram( ProgramName: string;
                         WorkingDir: string ): APIRET;
 Var
   psd: STARTDATA;
-  SessID: LONGWORD;
   apid: LONGWORD;
-  PgmTitle: CSTRING;
   PgmName: CSTRING;
   ObjBuf: CSTRING;
   rc: Integer;
 
   Args: CSTRING;
-  ReportTypeStr: CSTRING;
   ProgramHandle: TProgramHandle;
 Begin
   psd.Length := SizeOf( psd );
