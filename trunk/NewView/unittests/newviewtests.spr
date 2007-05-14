@@ -26,12 +26,13 @@ File18=PMDEV
 File19=ACLUTILITY
 File20=STRINGUTILSUNIT
 File21=FILEUTILSUNIT
-File22=CMDLINEPARAMETERUNIT
-File23=CMDLINEPARAMETERUNITTESTS
-File24=CHARUTILSUNITTESTS
-File25=STRINGUTILSUNITTESTS
-File26=FILEUTILSUNITTESTS
-File27=HELPTOPICTESTS
+File22=VERSIONUNIT
+File23=CMDLINEPARAMETERUNIT
+File24=CMDLINEPARAMETERUNITTESTS
+File25=CHARUTILSUNITTESTS
+File26=STRINGUTILSUNITTESTS
+File27=FILEUTILSUNITTESTS
+File28=HELPTOPICTESTS
 
 [Compiler Options]
 
@@ -146,8 +147,8 @@ File5.Left=-4
 File5.Bottom=-5
 File5.Width=1399
 File5.Height=629
-File5.Column=24
-File5.Line=64
+File5.Column=3
+File5.Line=95
 File6=..\..\.\Library\ACLStringUtility.pas
 File6.Left=-4
 File6.Bottom=-5
@@ -169,6 +170,13 @@ File8.Width=1399
 File8.Height=629
 File8.Column=1
 File8.Line=25
+File9=..\.\VersionUnit.pas
+File9.Left=-4
+File9.Bottom=-5
+File9.Width=1399
+File9.Height=629
+File9.Column=1
+File9.Line=1
 
 [Linker Options]
 
@@ -189,7 +197,7 @@ Stack=256
 Primary=.\NewViewTests.pas
 MainFile0=.\NewViewTests.pas
 MainFile0.Ext=.EXE
-MainFile0.Checksum=7424
+MainFile0.Checksum=7680
 MainFile0.Expanded=False
 MainFile0.File0=.\StringUtilsUnitTests.pas
 MainFile0.File1=.\TestAssert.pas
@@ -217,12 +225,13 @@ MainFile0.Dependency17=D:\PROGS\SIBYL\Source\RTL\PMGPI.PAS
 MainFile0.Dependency18=D:\PROGS\SIBYL\Source\RTL\PMDEV.PAS
 MainFile0.Dependency19=..\.\STRINGUTILSUNIT.PAS
 MainFile0.Dependency20=..\.\FILEUTILSUNIT.PAS
-MainFile0.Dependency21=..\.\CMDLINEPARAMETERUNIT.PAS
-MainFile0.Dependency22=.\CMDLINEPARAMETERUNITTESTS.PAS
-MainFile0.Dependency23=.\CHARUTILSUNITTESTS.PAS
-MainFile0.Dependency24=.\STRINGUTILSUNITTESTS.PAS
-MainFile0.Dependency25=.\FILEUTILSUNITTESTS.PAS
-MainFile0.Dependency26=.\HELPTOPICTESTS.PAS
+MainFile0.Dependency21=..\.\VERSIONUNIT.PAS
+MainFile0.Dependency22=..\.\CMDLINEPARAMETERUNIT.PAS
+MainFile0.Dependency23=.\CMDLINEPARAMETERUNITTESTS.PAS
+MainFile0.Dependency24=.\CHARUTILSUNITTESTS.PAS
+MainFile0.Dependency25=.\STRINGUTILSUNITTESTS.PAS
+MainFile0.Dependency26=.\FILEUTILSUNITTESTS.PAS
+MainFile0.Dependency27=.\HELPTOPICTESTS.PAS
 
 [Replace History]
 
