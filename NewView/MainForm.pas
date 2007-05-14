@@ -1416,7 +1416,7 @@ Begin
   Language.LL( Apply, ResourceIDNotFoundError, 'ResourceIDNotFoundError', 'Resource ID not found' );
 
   Language.LL( Apply, OpenSpecialTitle, 'OpenSpecialTitle', 'Open Special' );
-  Language.LL( Apply, OpenSpecialPrompt, 'OpenSpecialPrompt', 'Enter help file name/environment variable name' );
+  Language.LL( Apply, OpenSpecialPrompt, 'OpenSpecialPrompt', 'Enter help filename/environment variable name' );
 
   Language.LL( Apply, PrintTopicTitle, 'PrintTopicTitle', 'Print Topic' );
   Language.LL( Apply, NoPrinterError, 'NoPrinterError', 'You don''t have a printer configured.' );
@@ -1481,7 +1481,7 @@ Begin
 
   Language.LL( Apply, FilesInfoTitle, 'FilesInfoTitle', 'Open Files Information' );
   Language.LL( Apply, FilesInfoOverallTitle, 'FilesInfoOverallTitle', 'Title: ' );
-  Language.LL( Apply, FilesInfoFilename, 'FilesInfoFilename', 'File name: ' );
+  Language.LL( Apply, FilesInfoFilename, 'FilesInfoFilename', 'Filename: ' );
   Language.LL( Apply, FilesInfoFileTitle, 'FilesInfoFileTitle', '  Title: ' );
   Language.LL( Apply, FilesInfoTopicCount, 'FilesInfoTopicCount', '  Topic Count: ' );
   Language.LL( Apply, FilesInfoIndexCount, 'FilesInfoIndexCount', '  Index Count: ' );
@@ -1508,7 +1508,7 @@ Begin
 
   Language.LL( Apply, UsageTitle, 'UsageTitle', 'NewView Command Line' );
   Language.LL( Apply, UsageText1, 'UsageText1', 'Usage: ' );
-  Language.LL( Apply, UsageText2, 'UsageText2', 'NewView <file name> [<topic>]' );
+  Language.LL( Apply, UsageText2, 'UsageText2', 'NewView <filename> [<topic>]' );
   Language.LL( Apply, UsageText3, 'UsageText3', ' /s Do search for <topic>' );
   Language.LL( Apply, UsageText4, 'UsageText4', ' /g Do global search for <topic>' );
   Language.LL( Apply, UsageText5, 'UsageText5', ' /pos:l,b,w,h Set window position' );
