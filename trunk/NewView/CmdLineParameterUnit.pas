@@ -659,8 +659,6 @@ uses
 
 
   PROCEDURE TCmdLineParameters.addNhmDebugMessage(const aString : String);
-  var
-    tmpLanguage : String;
   begin
     if nil = nhmDebugMessages then
     begin
@@ -677,7 +675,6 @@ uses
     tmpPpib : PPIB;       // process information block
     tmpCmd  : PCHAR;
     tmpParams : PCHAR;
-    tmpResult : AnsiString;
 
   BEGIN
     // ask the system
