@@ -101,14 +101,14 @@ file:elink.&comma. you can read it in various ways&per.
 :p.You can read the :link reftype=hd refid='contents'.table of
 contents:elink.&comma. use the :link reftype=hd refid='Index'.alphabetical
 index:elink.&comma. or :link reftype=hd refid='search'.search:elink.&per.
-:p.To simply read the help file like a paper book&comma. use the "Previous"
+:p.To simply read the help file like a paper book&comma. use the &odq.Previous&cdq.
 :artwork runin name='images\previous.bmp'.
- and "Next"
+ and &odq.Next&Cdq.
 :artwork runin name='images\next.bmp'.
  buttons to work your way through all the topics&per.
-:p.You can also use the help file like web pages&comma. using "Back"
+:p.You can also use the help file like web pages&comma. using &odq.Back&cdq.
 :artwork runin name='images\back.bmp'.
- and "Forward"
+ and &odq.Forward&cdq.
 :artwork runin name='images\forward.bmp'.
  buttons to go back to wherever you were before&comma. or to retread your
 steps&per.
@@ -129,16 +129,16 @@ Opening Files
 :p.To open a help file&comma. you can use any of the following&colon.
 :p.&endash. Double&endash.click a :link reftype=hd refid='HelpIcons'.help
 icon:elink. that is already set up
-:p.&endash. Type "view :hp1.filename:ehp1." from the :link reftype=hd
+:p.&endash. Type &odq.view :hp1.filename:ehp1.&cdq. from the :link reftype=hd
 refid='CommandLine'.command line:elink.
 :p.&endash. Click the Open button
 :artwork runin name='images\open.bmp'.
  from within NewView
-:p.&endash. Reload a recently viewed file from the "File" menu
+:p.&endash. Reload a recently viewed file from the &odq.File&cdq. menu
 :p.&endash. Drag and drop a Help file from the desktop
 :p.Once the file is loaded&comma. you should see the :link reftype=hd
 refid='contents'.table of contents:elink. and the first topic&per.
-:p.:hp5.Note&colon.:ehp5. This assumes you installed NewView as a replacement
+:note text='Note:'.This assumes you installed NewView as a replacement
 for original View&per. If you didn&apos.t then existing help icons and the
 command line may behave differently&per.
 :p.:hp2.Loading Multiple Files Together:ehp2.
@@ -149,8 +149,8 @@ documentation&colon.
 .br
   NewView cpref
 .br
-loads the "Control Program Guide and Reference"&per. CPREF is an environment
-variable set in config&per.sys&comma. consisting of "CP1&plus.CP2&plus.CP3"
+loads the &odq.Control Program Guide and Reference&cdq.&per. CPREF is an environment
+variable set in config&per.sys&comma. consisting of &odq.CP1&plus.CP2&plus.CP3&cdq.
 which tells NewView &lpar.or View&rpar. to load the help files CP1&comma. CP2
 and CP3&per. The files are searched for in the path specified by two :link
 reftype=hd refid='L_EnvironmentVariables'.environment
@@ -167,7 +167,7 @@ file without closing your current files&per.
 :p.At any time&comma. you can find out what files are open by using File
 &endash. Information&per.
 :p.:hp2.Loading Additional Files:ehp2.
-:p.You can tick the "Keep current files open" checkbox in the Open File
+:p.You can tick the &odq.Keep current files open&cdq. checkbox in the Open File
 dialog&comma. and NewView will open the files you have selected without closing
 the currently opened files&per.
 :p.:hp2.Drag and Drop:ehp2.
@@ -176,8 +176,7 @@ be opened&per. If you hold down the Shift key&comma. they will be opened without
 closing the current files&per.
 :p.You can drop files onto any of the main content areas&comma. such as the
 Contents or Index windows&comma. or an existing topic window&per.
-:p.:hp5.Note:ehp5.
-:p.Some links that go across files&comma. will only work if the correct set of
+:note text='Note:'.Some links that go across files&comma. will only work if the correct set of
 files is loaded&per.
 .* ************************************************************
 .* Help Icons
@@ -185,8 +184,8 @@ files is loaded&per.
 :h2 res=17 id='HelpIcons'.
 Help Icons
 :p.:hp2.Help Icons:ehp2.
-:p.Help Icons on the desktop are usually "program objects" with the program name
-set to "view&per.exe" and the parameters set to the name of the help files&per.
+:p.Help Icons on the desktop are usually &odq.program objects&cdq. with the program name
+set to &odq.view&per.exe&cdq. and the parameters set to the name of the help files&per.
 :p.Some programs create these icons automatically at install time&per.
 :p.You can create these icons yourself by using the desktop program
 template&per. See desktop help for more information&per.
@@ -209,12 +208,13 @@ file in different ways&per.
 :p.:link reftype=hd refid='Index'.Index:elink.
 :p.:link reftype=hd refid='search'.Search:elink.
 :p.:link reftype=hd refid='notes'.Notes:elink.
-:p.You can turn this panel off to get more space&comma. by selecting View
+:p.You can turn this panel off to get more space&comma. with the button
+:artwork runin name='images\navigator.bmp'. or by selecting View
 &endash. Show Left Panel from the menu&comma. or pressing Alt&plus.P&per. Do the
 same to turn it on again&per.
 :p.You can stop the navigation panel from appearing when a help file is opened
 in Tools &endash. Options &endash. General tab&per.
-:p.:hp2.Note&colon. :ehp2. Many programs choose to show the table of contents
+:note text='Note:'.Many programs choose to show the table of contents
 when they open their help file&semi. in this case&comma. the panel is
 automatically shown&comma. overriding your setting&per.
 .* ************************************************************
@@ -226,22 +226,22 @@ Contents View
 :p.:hp2.Table of Contents:ehp2.
 :p.
 :p.Most help files have a table of contents that shows you the topics in the
-file&comma. in a hierarchy or "tree"&per. This is usually the first view you see
+file&comma. in a hierarchy or &odq.tree&cdq.&per. This is usually the first view you see
 when you open a file&per.
 :p.You can expand or collapse branches on the tree by clicking the &plus. or
 &endash. buttons&comma. or using the space bar&per.
 :p.To view a topic from the contents&comma. just click on it&per. You can also
 move through the contents by using the arrow keys&per.
-:p.To move through &asterisk.all&asterisk. topics in the contents tree&comma. in
+:p.To move through :hp2.all:ehp2. topics in the contents tree&comma. in
 order&comma. you can use Ctrl &plus. Up and Ctrl &plus. Down&comma. or the
-"Previous"
+&odq.Previous&cdq.
 :artwork runin name='images\previous.bmp'.
- and "Next"
+ and &odq.Next&cdq.
 :artwork runin name='images\next.bmp'.
  buttons&per. This is one way to treat the file as a normal book&comma. reading
 through each page&per.
-:p.You can also review the whole table of contents by using "Expand All" in the
-"View" menu&per. This expands all the branches of the contents table so you can
+:p.You can also review the whole table of contents by using &odq.Expand All&cdq. in the
+&odq.View&cdq. menu&per. This expands all the branches of the contents table so you can
 quickly look through it&per. However&comma. it&apos.s usually easier to use
 :link reftype=hd refid='search'.Search:elink. or :link reftype=hd
 refid='Index'.Index:elink. for this purpose&per.
@@ -257,8 +257,8 @@ help file&per. You can quickly search through it just by typing the first few
 characters of the word you want to look up&per. NewView jumps to the first match
 in the index automatically&per. To view the highlighted topic&comma. press
 enter&per.
-:p.:hp5.Notes:ehp5.
-:p.Help files may or may not include an "official" index&per. The index is
+:note text='Note:'.
+:p.Help files may or may not include an &odq.official&cdq. index&per. The index is
 manually created by the author&comma. so &lpar.for original View&rpar. it&apos.s
 usefulness is strictly dependent on how much work the author put into it&per.
 There may not even be one&per.
@@ -277,7 +277,7 @@ Search
 :p.Searching is a quick way to find information&comma. when you don&apos.t know
 where to start&per. Simply go to the Search tab&comma. type some related words
 and click the Search button&per.
-:p.You&apos.ll see a listing of all topics containing that word&comma. or words
+You&apos.ll see a listing of all topics containing that word&comma. or words
 like it&comma. with the best matches at the top&per. The best match will be
 displayed automatically&per.
 :p.Words that matches your search are highlighted in the topic&per.
@@ -287,13 +287,13 @@ refid='GlobalSearch'.global search:elink. in Tools &endash. Search all Help
 Files&per.
 :p.:hp2.Phrase search:ehp2.
 :p.If you want to search for a phrase made up of more than one word&comma. put
-double quotes around it&comma. for example "os&slash.2 warp"&per.
+double quotes around it&comma. for example &odq.os&slash.2 warp&cdq.&per.
 :p.:hp2.Matching features:ehp2.
 :p.NewView allows you finer control of searching&per.
 :p.&plus. indicates a word that :hp2.must:ehp2. be matched
 :p.&endash. indicates a word that must :hp2.not:ehp2. be matched
 :p.NewView always does partial word matches&per. That is&comma. if you search
-for "win" NewView will also find "window" and "showing"&per. However&comma. the
+for &odq.win&cdq. NewView will also find &odq.window&cdq. and &odq.showing&cdq.&per. However&comma. the
 better the match is the higher the rank will be&per.
 :p.:hp2.How NewView ranks results:ehp2.
 :p.NewView ranks matching topics by various means&colon.
@@ -311,7 +311,7 @@ Notes
 :p.NewView allows you to add notes &lpar.annotations&rpar. to your help
 files&per.
 :p.To add a note&comma. simply click where you want to make a note and click the
-"Note" button
+&odq.Note&cdq. button
 :artwork runin name='images\note.bmp'.
 &comma. then type your text and click OK&per. The text will be inserted into the
 help topic with a different color &lpar.default is green&semi. you can change
@@ -324,7 +324,7 @@ edit and delete&comma. and also jump to the topics containing your notes&per.
 :p.
 :p.Notes are saved in a file with the extension &per.nte&comma. in the same
 directory as the help file they are for&per.
-:p.Note &endash. if a help file is changed &lpar.for example a program is
+:note text='Note:'.If a help file is changed &lpar.for example a program is
 upgraded&rpar. then notes will no longer appear in the correct place&semi.
 however&comma. you can still read them from the Notes tab&per.
 .*
@@ -357,34 +357,34 @@ above&per.
 :p.Clicking the select button will allow you to choose which of the directories
 in the help paths will be used&per. Click each item in the list to select or
 de&endash.select it&per. After you choose this&comma. the location will show as
-"Selected Help Paths"
+&odq.Selected Help Paths&cdq.
 :p.:hp2.Search in&colon. All Hard Drives:ehp2.
 :p.This option will search all hard &lpar.non&endash.removable&rpar. drives on
-your system&per. You can click "Select&per.&per.&per." to customise the
+your system&per. You can click &odq.Select&per.&per.&per.&cdq. to customise the
 location&per.
 :p.Searching drives can find more help files&comma. but might be much slower
 than just the help paths&per.
 :p.:hp2.Search in&colon. Selected Help Paths:ehp2.
-:p.If you have already selected particular help paths to search&per. You can
-click "Select&per.&per.&per." to customise again&per.
+:p.If you have already selected particular help paths to search&per.&comma. you can
+click &odq.Select&per.&per.&per.&cdq. to customise again&per.
 :p.:hp2.Search in&colon. Directory List:ehp2.
-:p.In the "Select Directories" dialog&comma. clicking the "Add&per.&per.&per."
+:p.In the &odq.Select Directories&cdq. dialog&comma. clicking the &odq.Add&per.&per.&per.&cdq.
 button will allow you to add one or more directories to the search list&per.
 :p.Select the drive and directory using the controls that appear&comma. then
-click "&lt. Add Directory" to add the chosen directory&per. You can do this as
-many times as you like&per. Choose "With sub&endash.directories" if you want
+click &odq.&lt. Add Directory&cdq. to add the chosen directory&per. You can do this as
+many times as you like&per. Choose &odq.With sub&endash.directories&cdq. if you want
 sub&endash.directories of the selected directory to be searched as well&per. In
 this case&comma. &per.&per.&per. will show on the end of the directory&per.
 :p.After you add a custom directory like this&comma. the location for searching
-will show as "Directory List"&per.
-:p.Note&colon. if you add a custom directory to standard or selected help
+will show as &odq.Directory List&cdq.&per.
+:note text='Note:'.If you add a custom directory to standard or selected help
 paths&comma. then the list will become a custom list&comma. and you can no
 longer re&endash.select help paths&per. To get back to the original help
-paths&comma. choose "Standard Help Paths" then click "Select&per.&per.&per."
+paths&comma. choose &odq.Standard Help Paths&cdq. then click &odq.Select&per.&per.&per.&cdq.
 again&per.
 :p.:hp2.Search in&colon. Typing a location:ehp2.
-:p.You can type a drive or directory into the "Search in&colon." entry
-field&per. Add "&per.&per.&per." on the end of the directory if you want to
+:p.You can type a drive or directory into the &odq.Search in&colon.&cdq. entry
+field&per. Add &odq.&per.&per.&per.&cdq. on the end of the directory if you want to
 search subdirectories as well&per.
 :p.Example&colon.
 :p. Search in&colon. &lbracket. E&colon.&bsl.mydocs&bsl.&per.&per.&per.
@@ -404,13 +404,13 @@ Bookmarks
 file&per. Simply click the bookmark button
 :artwork runin name='images\bookmark.bmp'.
  to add the current topic as a bookmark&per.
-:p.To jump to a bookmark&comma. go to the "Bookmarks" menu&comma. and click on
+:p.To jump to a bookmark&comma. go to the &odq.Bookmarks&cdq. menu&comma. and click on
 the bookmark you want to open&per.
-:p.You can view or delete all your bookmarks by clicking on "Edit&per.&per." in
-the "Bookmarks" menu&per. This window can remain open while you read&comma. so
+:p.You can view or delete all your bookmarks by clicking on &odq.Edit&per.&per.&cdq. in
+the &odq.Bookmarks&cdq. menu&per. This window can remain open while you read&comma. so
 that you can quickly look through your bookmarks&per.
 :p.
-:p.:hp5.Notes:ehp5.
+:note text='Note:'.
 :p.NewView bookmarks remember all the topic windows that are open&comma. if
 there is more than one&per.
 :p.Bookmarks are saved in a file with the extension &per.bmk&comma. in the same
@@ -442,8 +442,8 @@ these links&per.
 :p.:hp2.Note to help file authors:ehp2.
 :p.The original View had no understanding of URL or email links&comma. so the
 only way to implement them was a link to&comma. for example&comma.
-"netscape&per.exe" with the correct parameters&per.
-:p.NewView translates program links to "netscape"&comma. "explore" or "mozilla"
+&odq.netscape&per.exe&cdq. with the correct parameters&per.
+:p.NewView translates program links to &odq.netscape&cdq.&comma. &odq.explore&cdq. or &odq.mozilla&cdq.
 into links to the default browser&per.
 :p.It also auto&endash.detects URLs in the forms&colon.
 :p. http&colon.&slash.&slash.x  https&colon.&slash.&slash.x
@@ -505,7 +505,7 @@ To search for copy in the whole cmdref document you can call
   newview &slash.s cmdref copy
 :exmp.
 NewView is clever enought to handle multiple words (like the :link reftype=hd
-refid='search'.serach navigation panel:elink. this is a OR search&per.
+refid='search'.serach navigation panel:elink.)&per. This is a OR search&per.
 :xmp.
   newview &slash.s cmdref net access
 :exmp.
@@ -581,14 +581,14 @@ percentage&per. For example&colon.
 :p.makes the window centered and 80&percent. of the screen size&per.
 :p.:hp2.&slash.title&colon.&lt.window title&gt.:ehp2.
 :p.Sets the title of the NewView window to the specified text&comma. overriding
-whatever appears in the help file&per. The text "Help &endash.  " will always be
+whatever appears in the help file&per. The text &odq.Help &endash.  &cdq. will always be
 inserted in front of the specified text&comma. unless the specified text is
-"help"&comma. in which case the title will simply become "Help"&per. This is to
+&odq.help&cdq.&comma. in which case the title will simply become &odq.Help&cdq.&per. This is to
 make sure that help windows are always obvious as such in the window list&per.
 :p.If you need to specify multiple words&comma. surround the entire option with
 quotes&comma. for example&colon.
 :xmp.
-  newview cmdref "&slash.title&colon.Command Line Help"
+  newview cmdref &odq.&slash.title&colon.Command Line Help&cdq.
 :exmp.
 .* ************************************************************
 .* Command Line Examples
@@ -627,19 +627,19 @@ from cmdref&per.inf&per. The indexes are combined alphabetically&per.
 :p.:hp2.view cmdref dir:ehp2.
 :lm margin=4.
 :p.Open the file cmdref &lpar.OS&slash.2 command reference&rpar. and look in
-titles and index for the word "dir"&per. Will show the help page for the DIR
+titles and index for the word &odq.dir&cdq.&per. Will show the help page for the DIR
 command&per.
 :lm margin=1.
 .*
 :p.:hp2.view &slash.s os2ug desktop:ehp2.
 :lm margin=4.
-:p.Open the file os2ug&per.inf and search for the word "desktop"&per. The best
+:p.Open the file os2ug&per.inf and search for the word &odq.desktop&cdq.&per. The best
 match is shown&per.
 :lm margin=1.
 .*
 :p.:hp2.view &slash.g permissions:ehp2.
 :lm margin=4.
-:p.Performs a search of all help files for the word "permissions"&per.
+:p.Performs a search of all help files for the word &odq.permissions&cdq.&per.
 :lm margin=1.
 .*
 :p.:hp2.set myhelp&eq.cmdref&plus.os2ug&plus.rexx:ehp2.
@@ -729,7 +729,7 @@ parameter:elink.&per.&rpar. See the newview readme&per.txt for more information
 about languages&per.
 :p.The directory defined in :hp2.LOGFILES:ehp2. is used for logging crashes or
 other information&per.
-:p.The subdirectory "lang" under the directory defined by :hp2.OSDIR:ehp2. is
+:p.The subdirectory &odq.lang&cdq. under the directory defined by :hp2.OSDIR:ehp2. is
 searched for language files at startup&per.
 :p.The path :hp2.ULSPATH:ehp2. is also searched for language files&per.
 .*
