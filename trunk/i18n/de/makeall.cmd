@@ -20,13 +20,12 @@ nv_i18n_dir = directory()
 nv_build_dir = value('NV_BUILD', , 'OS2ENVIRONMENT')
 nv_rc = SysMkDir(nv_build_dir)
 
-/* copy changes.txt */
-/* TODO copy Changes.txt nv_build_dir */
-
-
 /* compile the ipf file */
-ipfc NewView_de.ipf nv_build_dir||'\NewView_de.hlp'
+ipfc NewView_de.ipf nv_build_dir||'\NewView_de.hlp -D:049 -C:850 -L:DEU'
 
 /* copy the lang file */
 copy 'newview_de.lng' nv_build_dir
+
+/* copy the readme.txt file */
+/* TODO copy 'lisezmoi.txt' nv_build_dir */
 

@@ -20,24 +20,12 @@ nv_i18n_dir = directory()
 nv_build_dir = value('NV_BUILD', , 'OS2ENVIRONMENT')
 nv_rc = SysMkDir(nv_build_dir)
 
-/* copy changes.txt */
-copy Changes.txt nv_build_dir
-
-
 /* compile the ipf file */
-ipfc NewView_de.ipf nv_build_dir||'\NewView_de.hlp -D:001 -C:850 -L:ENU'
+ipfc NewView_fr.ipf nv_build_dir||'\NewView_fr.hlp -D:033 -C:850 -L:FRA'
 
-call SysFileTree nv_i18n_dir||'\', subdirs, 'DO'
-do i=1 to subdirs.0
-    if  0 = lastpos('images', subdirs.i) then
-    do
-        if  0 = lastpos('.svn', subdirs.i) then
-        do
-            cd subdirs.i
-            /* call makeall for every dir */
-            makeall
-            cd ..
-        end
-    end
-end
+/* copy the lang file */
+copy 'newview_fr.lng' nv_build_dir
+
+/* copy the readme.txt file */
+copy 'lisezmoi.txt' nv_build_dir
 
