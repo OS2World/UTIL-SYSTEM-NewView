@@ -1,18 +1,16 @@
 NewView release changes
 
-V2.19 RC4
-  TODO translation
-   - UsageText
-
+V2.19
+- the display of a bubble help at some places of the left panel is removed
+- the default of the option 'Show left panel for - Online help for applications' is changed to true.
 - new toolbar icon added for toggling the left panel
 - all toolbar icons replaced by now ones (copied form lucide)
   the order of the icons is changed
-- RC had some problems with various options; fixed
+- some problems with various cml line options fixed
 - global search in selected help path directories searches in all; fixed
 - starting 'newview -lang:en' produces some problems with translations
   e.g. in the global search dialog; fixed (#16)
-- some layout problems with the gloabal search dialog are
-  fixed (includes the fix for #15)
+- some layout problems with the gloabal search dialog fixed (includes the fix for #15)
 - New command line parser
   The command line syntax is changed.
   Samples:
@@ -34,7 +32,7 @@ V2.19 RC4
 
 - many refactoring changes to remove unused source and add
   as many unit tests as possible
-  yes we have (229) unit tests! (at the moment manly for the command line)
+  yes we have (356) unit tests! (at the moment manly for the command line)
 - some backup files removed
 - ACLCtl10.DLL, ACLCtl10.h, ACLCtl10.pas, ACLCtl10.zip removed form my
   local build \components directory
