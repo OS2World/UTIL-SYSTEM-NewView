@@ -4,7 +4,7 @@
 /* NewView - a new OS/2 Help Viewer                                          */
 /*                                                                           */
 /* Copyright 2003-2006 Aaron Lawrence (aaronl at consultant dot com)         */
-/* Copyright 2006 Ronald Brill (rbri at rbri.org)                             */
+/* Copyright 2006/2007 Ronald Brill (rbri at rbri.org)                       */
 /*                                                                           */
 /* This software is released under the Gnu Public License                    */
 /*                                                                           */
@@ -20,12 +20,15 @@ nv_i18n_dir = directory()
 nv_build_dir = value('NV_BUILD', , 'OS2ENVIRONMENT')
 nv_rc = SysMkDir(nv_build_dir)
 
-/* compile the ipf file */
-ipfc NewView_fr.ipf nv_build_dir||'\NewView_fr.hlp -D:033 -C:850 -L:FRA'
+/* copy changes.txt */
+/* copy Changes.txt nv_build_dir */
+
+/* copy the readme.txt file */
+copy 'lisezmoi.txt' nv_build_dir
 
 /* copy the lang file */
 copy 'newview_fr.lng' nv_build_dir
 
-/* copy the readme.txt file */
-copy 'lisezmoi.txt' nv_build_dir
+/* compile the ipf file */
+ipfc NewView_fr.ipf nv_build_dir||'\NewView_fr.hlp -D:033 -C:850 -L:FRA'
 
