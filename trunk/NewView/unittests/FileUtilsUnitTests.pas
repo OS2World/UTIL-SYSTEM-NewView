@@ -7,6 +7,9 @@ uses
   TestAssert,
   FileUtilsUnit;
 
+const
+  // TODO read environment var
+  TEST_PATH = 'P:\newview_dev';
 
   FUNCTION getFileUtilsUnitTests : TList;
 
@@ -455,7 +458,7 @@ Implementation
     tmpResult := SearchHelpPaths('NewViewTests.EXE', tmpResultFilename, True);
 
     assertTrue('testSearchHelpPaths_FoundInAppDir', tmpResult);
-    assertEqualsString('testSearchHelpPaths_FoundInAppDir', 'P:\newview_dev\build\unittest\NewViewTests.EXE', tmpResultFilename);
+    assertEqualsString('testSearchHelpPaths_FoundInAppDir', TEST_PATH + '\build\unittest\NewViewTests.EXE', tmpResultFilename);
   end;
 
 
@@ -542,7 +545,7 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.jonas', false, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '*.jonas', false, tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_NoFiles', 0, tmpResult.count);
   end;
@@ -554,7 +557,7 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '', false, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '', false, tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_EmptyFilter', 0, tmpResult.count);
 
@@ -568,10 +571,10 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.txt', false, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '*.txt', false, tmpResult);
 
     assertEqualsInt('testListFilesInDirectory_OneFile', 1, tmpResult.count);
-    assertEqualsString('testListFilesInDirectory_OneFile', '__readme.txt', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectory_OneFile', 'readme.txt', tmpResult[0]);
 
     tmpResult.Destroy;
   end;
@@ -583,12 +586,14 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.*', false, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '*.*', false, tmpResult);
 
-    assertEqualsInt('testListFilesInDirectory_ManyFiles', 3, tmpResult.count);
-    assertEqualsString('testListFilesInDirectory_ManyFiles', 'env.cmd', tmpResult[0]);
-    assertEqualsString('testListFilesInDirectory_ManyFiles', 'med.cmd', tmpResult[1]);
-    assertEqualsString('testListFilesInDirectory_ManyFiles', '__readme.txt', tmpResult[2]);
+    assertEqualsInt('testListFilesInDirectory_ManyFiles', 6, tmpResult.count);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', 'file0', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', 'file1.ex1', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', 'file2.ex1', tmpResult[2]);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', 'file3.ex3', tmpResult[3]);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', 'file4.ext4', tmpResult[4]);
 
     tmpResult.Destroy;
   end;
@@ -600,11 +605,12 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.txt;*v.cmd', false, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '*.txt;f*.ex1', false, tmpResult);
 
-    assertEqualsInt('testListFilesInDirectory_ManyFilter', 2, tmpResult.count);
-    assertEqualsString('testListFilesInDirectory_ManyFilter', '__readme.txt', tmpResult[0]);
-    assertEqualsString('testListFilesInDirectory_ManyFilter', 'env.cmd', tmpResult[1]);
+    assertEqualsInt('testListFilesInDirectory_ManyFilter', 3, tmpResult.count);
+    assertEqualsString('testListFilesInDirectory_ManyFilter', 'readme.txt', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', 'file1.ex1', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectory_ManyFiles', 'file2.ex1', tmpResult[2]);
 
     tmpResult.Destroy;
   end;
@@ -619,7 +625,7 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.jonas', true, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '*.jonas', true, tmpResult);
 
     assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_NoFiles', 0, tmpResult.count);
   end;
@@ -631,7 +637,7 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '', true, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '', true, tmpResult);
 
     assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_EmptyFilter', 0, tmpResult.count);
 
@@ -645,10 +651,10 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.txt', true, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '*.txt', true, tmpResult);
 
     assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_OneFile', 1, tmpResult.count);
-    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_OneFile', 'P:\newview_dev\__readme.txt', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_OneFile', TEST_PATH + '\unittests\testdir' + '\readme.txt', tmpResult[0]);
 
     tmpResult.Destroy;
   end;
@@ -660,12 +666,15 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.*', true, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '*.*', true, tmpResult);
 
-    assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', 3, tmpResult.count);
-    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', 'P:\newview_dev\env.cmd', tmpResult[0]);
-    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', 'P:\newview_dev\med.cmd', tmpResult[1]);
-    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', 'P:\newview_dev\__readme.txt', tmpResult[2]);
+    assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', 6, tmpResult.count);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', TEST_PATH + '\unittests\testdir' + '\file0', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', TEST_PATH + '\unittests\testdir' + '\file1.ex1', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', TEST_PATH + '\unittests\testdir' + '\file2.ex1', tmpResult[2]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', TEST_PATH + '\unittests\testdir' + '\file3.ex3', tmpResult[3]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', TEST_PATH + '\unittests\testdir' + '\file4.ext4', tmpResult[4]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFiles', TEST_PATH + '\unittests\testdir' + '\readme.txt', tmpResult[5]);
 
     tmpResult.Destroy;
   end;
@@ -677,11 +686,12 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectory('P:\newview_dev', '*.txt;*v.cmd', true, tmpResult);
+    ListFilesInDirectory(TEST_PATH + '\unittests\testdir', '*.txt;f*.ex1', true, tmpResult);
 
-    assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', 2, tmpResult.count);
-    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', 'P:\newview_dev\__readme.txt', tmpResult[0]);
-    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', 'P:\newview_dev\env.cmd', tmpResult[1]);
+    assertEqualsInt('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', 3, tmpResult.count);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', TEST_PATH + '\unittests\testdir' + '\readme.txt', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', TEST_PATH + '\unittests\testdir' + '\file1.ex1', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectoryWithDirectoryInResult_ManyFilter', TEST_PATH + '\unittests\testdir' + '\file2.ex1', tmpResult[2]);
 
     tmpResult.Destroy;
   end;
@@ -694,7 +704,7 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListSubDirectories('P:\newview_dev\dll', tmpResult);
+    ListSubDirectories(TEST_PATH + '\unittests\testdir\subdir1', tmpResult);
 
     assertEqualsInt('testListSubDirectories_None', 0, tmpResult.count);
 
@@ -708,13 +718,10 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListSubDirectories('P:\newview_dev\i18n', tmpResult);
+    ListSubDirectories(TEST_PATH + '\unittests\testdir', tmpResult);
 
-    assertEqualsInt('testListSubDirectories_Many', 14, tmpResult.count);
-    assertEqualsString('testListSubDirectories_Many', 'P:\newview_dev\i18n\.svn', tmpResult[0]);
-    assertEqualsString('testListSubDirectories_Many', 'P:\newview_dev\i18n\cz', tmpResult[1]);
-    assertEqualsString('testListSubDirectories_Many', 'P:\newview_dev\i18n\de', tmpResult[2]);
-    assertEqualsString('testListSubDirectories_Many', 'P:\newview_dev\i18n\eo', tmpResult[3]);
+    assertEqualsInt('testListSubDirectories_Many', 1, tmpResult.count);
+    assertEqualsString('testListSubDirectories_Many', TEST_PATH + '\unittests\testdir\subdir1', tmpResult[0]);
 
     tmpResult.Destroy;
   end;
@@ -729,11 +736,12 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectoryRecursiveWithTermination('P:\newview_dev\i18n', '*.ipf;*.lng', true, tmpResult, nil, false);
+    ListFilesInDirectoryRecursiveWithTermination(TEST_PATH + '\unittests\testdir', '*.ex1;ex2', true, tmpResult, nil, false);
 
-    assertEqualsInt('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', 16, tmpResult.count);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', 'P:\newview_dev\i18n\NewView.ipf', tmpResult[0]);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', 'P:\newview_dev\i18n\sv\newview_sv.lng', tmpResult[15]);
+    assertEqualsInt('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', 3, tmpResult.count);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', TEST_PATH + '\unittests\testdir' + '\file1.ex1', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', TEST_PATH + '\unittests\testdir' + '\file2.ex1', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTerminationWithDirectoryInResult', TEST_PATH + '\unittests\testdir' + '\subdir1\file1.ex1', tmpResult[2]);
 
     tmpResult.Destroy;
   end;
@@ -748,11 +756,12 @@ Implementation
   begin
     tmpResult := TStringList.Create;
 
-    ListFilesInDirectoryRecursiveWithTermination('P:\newview_dev\i18n', '*.ipf;*.lng', false, tmpResult, nil, false);
+    ListFilesInDirectoryRecursiveWithTermination(TEST_PATH + '\unittests\testdir', '*.ex1;ex2', false, tmpResult, nil, false);
 
-    assertEqualsInt('testListFilesInDirectoryRecursiveWithTermination', 16, tmpResult.count);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'NewView.ipf', tmpResult[0]);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'newview_sv.lng', tmpResult[15]);
+    assertEqualsInt('testListFilesInDirectoryRecursiveWithTermination', 3, tmpResult.count);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'file1.ex1', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'file2.ex1', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination', 'file1.ex1', tmpResult[2]);
 
     tmpResult.Destroy;
   end;
@@ -944,6 +953,84 @@ Implementation
   end;
 
 
+  // ----------------------------------------------------------
+
+
+  Procedure testDriveLetterToDriveNumber;
+  var
+    tmpResult : longint;
+  begin
+    tmpResult := DriveLetterToDriveNumber('A');
+
+    assertEqualsInt('testDriveLetterToDriveNumber', 1, tmpResult);
+  end;
+
+
+  Procedure testDriveLetterToDriveNumber_LowerCase;
+  var
+    tmpResult : longint;
+  begin
+    tmpResult := DriveLetterToDriveNumber('a');
+
+    assertEqualsInt('testDriveLetterToDriveNumber_LowerCase', 1, tmpResult);
+  end;
+
+
+  Procedure testDriveLetterToDriveNumber_Unknown;
+  var
+    tmpResult : longint;
+  begin
+    tmpResult := DriveLetterToDriveNumber('Ž');
+
+    assertEqualsInt('testDriveLetterToDriveNumber_Unknown', 0, tmpResult);
+  end;
+
+
+  // ----------------------------------------------------------
+
+
+  Procedure testDriveNumberToDriveLetter;
+  begin
+    assertEqualsString('testDriveNumberToDriveLetter 1', 'A', DriveNumberToDriveLetter(1));
+    assertEqualsString('testDriveNumberToDriveLetter 2', 'B', DriveNumberToDriveLetter(2));
+  end;
+
+
+  // ----------------------------------------------------------
+
+
+  Procedure testGetBootDriveLetter;
+  var
+    tmpResult : char;
+  begin
+    tmpResult := GetBootDriveLetter;
+
+    assertEqualsString('testGetBootDriveLetter', 'C', tmpResult);
+  end;
+
+
+  // ----------------------------------------------------------
+
+
+  Procedure testFileIsReadOnly_False;
+  var
+    tmpResult : boolean;
+  begin
+    tmpResult := FileIsReadOnly(GetBootDriveLetter + ':\config.sys');
+
+    assertFalse('testFileIsReadOnly_False', tmpResult);
+  end;
+
+
+  Procedure testFileIsReadOnly_True;
+  var
+    tmpResult : boolean;
+  begin
+    tmpResult := FileIsReadOnly(GetBootDriveLetter + ':\os2ldr');
+
+    assertTrue('testFileIsReadOnly_True', tmpResult);
+  end;
+
 
   // ----------------------------------------------------------
 
@@ -1045,6 +1132,17 @@ Implementation
     result.add(@testDirectoryExists_InvalidDrive);
     result.add(@testDirectoryExists_InvalidDriveAndPath);
     result.add(@testDirectoryExists_NotExistent);
+
+    result.add(@testDriveLetterToDriveNumber);
+    result.add(@testDriveLetterToDriveNumber_LowerCase);
+    result.add(@testDriveLetterToDriveNumber_Unknown);
+
+    result.add(@testDriveNumberToDriveLetter);
+
+    result.add(@testGetBootDriveLetter);
+
+    result.add(@testFileIsReadOnly_False);
+    result.add(@testFileIsReadOnly_True);
   end;
 
 End.
