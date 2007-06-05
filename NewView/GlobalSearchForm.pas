@@ -143,7 +143,6 @@ uses
   DebugUnit,
   ACLDialogs,
   ControlsUtility,
-  DriveInfoUnit,
   IPFFileFormatUnit,
   HelpTopic,
   SearchUnit,
