@@ -863,6 +863,61 @@ Implementation
   // ----------------------------------------------------------
 
 
+  Procedure testMakeDirs_Empty;
+  var
+    tmpResult : String;
+  begin
+    tmpResult := MakeDirs('');
+
+    assertEqualsString('testMakeDirs_Empty', '', tmpResult);
+  end;
+
+
+  Procedure testMakeDirs_Slash;
+  var
+    tmpResult : String;
+  begin
+    tmpResult := MakeDirs('\');
+
+    assertEqualsString('testMakeDirs_Slash', '', tmpResult);
+  end;
+
+
+  Procedure testMakeDirs_Simple;
+  var
+    tmpResult : String;
+  begin
+    RmDir(TEST_PATH + '\unittests\testdir\makedirs');
+
+    tmpResult := MakeDirs(TEST_PATH + '\unittests\testdir' + '\makedirs');
+
+    RmDir(TEST_PATH + '\unittests\testdir\makedirs');
+
+    assertEqualsString('testMakeDirs_Simple', TEST_PATH + '\unittests\testdir\makedirs', tmpResult);
+  end;
+
+
+  Procedure testMakeDirs_Complex;
+  var
+    tmpResult : String;
+  begin
+    RmDir(TEST_PATH + '\unittests\testdir\makedirs\subdir\test');
+    RmDir(TEST_PATH + '\unittests\testdir\makedirs\subdir');
+    RmDir(TEST_PATH + '\unittests\testdir\makedirs');
+
+    tmpResult := MakeDirs(TEST_PATH + '\unittests\testdir' + '\makedirs\subdir\test');
+
+    RmDir(TEST_PATH + '\unittests\testdir\makedirs\subdir\test');
+    RmDir(TEST_PATH + '\unittests\testdir\makedirs\subdir');
+    RmDir(TEST_PATH + '\unittests\testdir\makedirs');
+
+    assertEqualsString('testMakeDirs_Simple', TEST_PATH + '\unittests\testdir\makedirs\subdir\test', tmpResult);
+  end;
+
+
+  // ----------------------------------------------------------
+
+
   Procedure testDirectoryExists_Empty;
   var
     tmpResult : Boolean;
@@ -1123,6 +1178,11 @@ Implementation
     result.add(@testParentDir_NoSlash);
     result.add(@testParentDir_GoToRootDrive);
 
+    result.add(@testMakeDirs_Empty);
+    result.add(@testMakeDirs_Slash);
+    result.add(@testMakeDirs_Simple);
+    result.add(@testMakeDirs_Complex);
+
     result.add(@testDirectoryExists_Empty);
     result.add(@testDirectoryExists_DriveOnlyLowercase);
     result.add(@testDirectoryExists_DriveOnlyUppercase);
@@ -1143,6 +1203,7 @@ Implementation
 
     result.add(@testFileIsReadOnly_False);
     result.add(@testFileIsReadOnly_True);
+
   end;
 
 End.
