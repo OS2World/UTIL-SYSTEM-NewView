@@ -8,7 +8,8 @@ uses
   CharUtilsUnitTests,
   StringUtilsUnitTests,
   FileUtilsUnitTests,
-  HelpTopicTests;
+  HelpTopicTests,
+  VersionUnit;
 
 IMPORTS
   FUNCTION PmPrintfString(aString:PChar):BYTE; APIENTRY; 'PMPRINTF' NAME 'PmPrintfString';
@@ -29,6 +30,8 @@ BEGIN
   tmpAllTests := TList.Create;
   tmpSuites := TList.Create;
   tmpAllExceptions := TStringList.Create;
+
+  write('UnitTest for NewView version ' + GetAppVersion);
 
   tmpTestNoParam := ParamStr(1);
   writeln(tmpTestNoParam);
