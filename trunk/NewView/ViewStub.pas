@@ -19,8 +19,6 @@ Uses
   StringUtilsUnit,
   StartupUnit;
 
-{$R ViewStub}
-
 var
   Details: PROGDETAILS;
   Parameters: pchar;
