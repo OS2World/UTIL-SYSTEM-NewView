@@ -1,6 +1,6 @@
 [Application Options]
 
-ApplicationIcon=D:\Development\Sibyl\BIN\SIBYL.ICO
+ApplicationIcon=D:\progs\Sibyl\BIN\SIBYL.ICO
 
 [Breakpoints]
 
@@ -38,56 +38,45 @@ File26=CLIPBRD
 File27=PMSPL
 File28=PRINTERS
 File29=ACLFILEIOUTILITY
-File30=ACLSTRING
-File31=CONTROLSCROLLING
-File32=RICHTEXTLAYOUTUNIT
-File33=BUTTONS
-File34=STDCTRLS
-File35=EXTCTRLS
-File36=TABCTRLS
-File37=COMCTRLS
-File38=FILECTRL
-File39=DIALOGS
-File40=CUSTOMHEADERCONTROL
-File41=MULTICOLUMNLISTBOX
-File42=CONTROLSUTILITY
-File43=RICHTEXTDISPLAYUNIT
-File44=RICHTEXTVIEW
-File45=BMPLIST
+File30=CHARUTILSUNIT
+File31=ACLSTRING
+File32=CONTROLSCROLLING
+File33=RICHTEXTLAYOUTUNIT
+File34=BUTTONS
+File35=STDCTRLS
+File36=EXTCTRLS
+File37=TABCTRLS
+File38=COMCTRLS
+File39=FILECTRL
+File40=DIALOGS
+File41=CUSTOMHEADERCONTROL
+File42=MULTICOLUMNLISTBOX
+File43=CONTROLSUTILITY
+File44=RICHTEXTDISPLAYUNIT
+File45=RICHTEXTVIEW
 File46=OUTLINE2
 File47=CUSTOMMEMO
 File48=SYSTEMICONUNIT
 File49=COOLBAR2
-File50=ACLFINDFUNCTIONS
-File51=ACLFILEUTILITY
-File52=ACLLANGUAGEUNIT
-File53=ACLMESSAGEFORM
-File54=ACLDIALOGS
-File55=COLORMAPPING
-File56=COLORWHEEL
-File57=CUSTOMCHECKLISTBOX
-File58=OUTLINE
-File59=CUSTOMOUTLINE
-File60=CUSTOMDIROUTLINE
-File61=CUSTOMLISTBOX
-File62=SPLITBAR
-File63=BSEDEV
-File64=DRIVEINFOUNIT
-File65=BITMAPUTILITY
-File66=CUSTOMFILECONTROLS
-File67=CUSTOMFONTDIALOG
-File68=COOLBAR
-File69=TEST
-File70=SYNCOBJECTS
-File71=HT
-File72=GENERICTHREAD
-File73=TABSET2UNIT
-File74=CUSTOMBITMAPBUTTON
-File75=ICONIMAGEUNIT
-File76=ACLRESOURCEUTILITY
-File77=RICHTEXTPRINTUNIT
-File78=COMPONENTSTESTFORM
-File79=NONSIZABLEDIALOGUNIT
+File50=BSEDEV
+File51=DEBUGUNIT
+File52=STRINGUTILSUNIT
+File53=FILEUTILSUNIT
+File54=ACLLANGUAGEUNIT
+File55=ACLMESSAGEFORM
+File56=ACLDIALOGS
+File57=COLORMAPPING
+File58=COLORWHEEL
+File59=CUSTOMLISTBOX
+File60=BITMAPUTILITY
+File61=CUSTOMFILECONTROLS
+File62=CUSTOMFONTDIALOG
+File63=SPLITBAR
+File64=TABSET2UNIT
+File65=GENERICTHREAD
+File66=ACLRESOURCEUTILITY
+File67=RICHTEXTPRINTUNIT
+File68=COMPONENTSTESTFORM
 
 [Compiler Options]
 
@@ -103,10 +92,6 @@ Warnings=W2,W3,W4,W5,W6,W7
 MaxWarnings=200
 MaxErrors=10
 
-[Component Library OS/2]
-
-CompLibName=D:\Development\Sibyl\bin\CompLib.dll
-
 [Debugger Options]
 
 DebugInfo=LineNumbers,LocalSymbols
@@ -117,38 +102,38 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\COMPONENTS
+LastDir=P:\NEWVIEW_DEV\LIBRARY
 OutDir=P:\newview_dev\build\components
-LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\library;
-LibSrcDir=P:\newview_dev\Sibyl\RTL;P:\newview_dev\Sibyl\SPCC;P:\newview_dev\library
+LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\components;P:\newview_dev\build\library
+LibSrcDir=P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl;P:\newview_dev\library;P:\newview_dev\components
 IncSrcDir=
-CompInstallDir=P:\newview_dev\build\sibyl
+CompInstallDir=P:\NEWVIEW_DEV\build\components
 
 [Find History]
 
-Find0=Br
-Find1=.exec
-Find2=OnThreadTerminate
-Find3=onterminate
-Find4=jobproc
-Find5=onterm
-Find6=doterminate
-Find7=ontermin
-Find8=onjob
-Find9=.upda
-Find10=.synch
-Find11=syncho
-Find12=execute
-Find13=tthread.exe
-Find14=tthread
-Find15=.GetOffsetFromX
+Find0=DriveNumberTo
+Find1=GetBootDrive
+Find2=exit;
+Find3=DriveNumberToLetter
+Find4=IsFloppyDrive
+Find5=TDriveType
+Find6=AddSlash
+Find7=Br
+Find8=.exec
+Find9=OnThreadTerminate
+Find10=onterminate
+Find11=jobproc
+Find12=onterm
+Find13=doterminate
+Find14=ontermin
+Find15=onjob
 
 [General]
 
 Version=Sibyl Project Ver2.02
-ProjectName=P:\NEWVIEW_DEV\Components\Components.spr
+ProjectName=P:\NEWVIEW_DEV\COMPONENTS\Components.spr
 ProjectType=Visual
-CompLibName=D:\Development\Sibyl\bin\CompLib.dll
+CompLibName=D:\progs\Sibyl\bin\CompLib.dll
 Win32CompLibName=D:\Development\Sibyl\bin\CompLib.dll
 RunParameter=
 InActiveLanguages=
@@ -162,31 +147,93 @@ File1=.\RichTextView.PAS
 File2=.\RichTextDocumentUnit.pas
 File3=.\ControlsUtility.pas
 File4=.\RichTextLayoutUnit.pas
-File5=..\.\SIBYL\SPCC\FORMS.PAS
 
 [Last Open Files]
 
 File0=.\Components.pas
 File0.Left=-4
 File0.Bottom=-5
-File0.Width=1306
-File0.Height=548
+File0.Width=1399
+File0.Height=629
 File0.Column=1
-File0.Line=8
+File0.Line=1
 File1=.\ComponentsTestForm.pas
 File1.Left=-4
 File1.Bottom=-5
-File1.Width=1306
-File1.Height=548
-File1.Column=56
-File1.Line=104
+File1.Width=1399
+File1.Height=629
+File1.Column=3
+File1.Line=20
 File2=.\GenericThread.pas
 File2.Left=-4
 File2.Bottom=-5
-File2.Width=1306
-File2.Height=548
+File2.Width=1399
+File2.Height=629
 File2.Column=21
 File2.Line=216
+File3=.\CanvasFontManager.pas
+File3.Left=-4
+File3.Bottom=-5
+File3.Width=1399
+File3.Height=629
+File3.Column=1
+File3.Line=1
+File4=..\.\library\ACLStringUtility.pas
+File4.Left=-4
+File4.Bottom=-5
+File4.Width=1399
+File4.Height=629
+File4.Column=1
+File4.Line=1
+File5=..\.\library\ACLUtility.pas
+File5.Left=-4
+File5.Bottom=-5
+File5.Width=1399
+File5.Height=629
+File5.Column=1
+File5.Line=1
+File6=..\.\Library\ACLString.pas
+File6.Left=-4
+File6.Bottom=-5
+File6.Width=1399
+File6.Height=629
+File6.Column=62
+File6.Line=27
+File7=.\ACLLanguageUnit.pas
+File7.Left=-4
+File7.Bottom=-5
+File7.Width=1399
+File7.Height=629
+File7.Column=1
+File7.Line=144
+File8=..\.\Library\FileUtilsUnit.pas
+File8.Left=-4
+File8.Bottom=-5
+File8.Width=1399
+File8.Height=629
+File8.Column=30
+File8.Line=648
+File9=.\DriveInfoUnit.PAS
+File9.Left=-4
+File9.Bottom=-5
+File9.Width=1399
+File9.Height=629
+File9.Column=30
+File9.Line=33
+File10=.\CustomFileControls.pas
+File10.Left=-4
+File10.Bottom=-5
+File10.Width=1399
+File10.Height=629
+File10.Column=1
+File10.Line=354
+File11=..\.\LIBRARY\CharUtilsUnit.pas
+File11.Left=-4
+File11.Bottom=-5
+File11.Width=1399
+File11.Height=629
+File11.Column=1
+File11.Line=1
 
 [Linker Options]
 
@@ -207,7 +254,7 @@ Stack=256
 Primary=.\Components.pas
 MainFile0=.\Components.pas
 MainFile0.Ext=.EXE
-MainFile0.Checksum=20992
+MainFile0.Checksum=18176
 MainFile0.Expanded=False
 MainFile0.File0=.\ACLDialogs.pas
 MainFile0.File1=.\ACLMessageForm.pas
@@ -254,85 +301,76 @@ MainFile0.File41=.\Test.pas
 MainFile0.File42=.\ACLLanguageUnit.pas
 MainFile0.File43=.\WebBrowserUnit.pas
 MainFile0.File44=[Dependencies]
-MainFile0.Dependency0=..\.\Sibyl\RTL\SYSTEM.PAS
-MainFile0.Dependency1=..\.\Sibyl\RTL\OS2DEF.PAS
-MainFile0.Dependency2=..\.\Sibyl\RTL\BSETIB.PAS
-MainFile0.Dependency3=..\.\Sibyl\RTL\BSEEXCPT.PAS
-MainFile0.Dependency4=..\.\Sibyl\RTL\BSEDOS.PAS
-MainFile0.Dependency5=..\.\Sibyl\RTL\PMWIN.PAS
-MainFile0.Dependency6=..\.\Sibyl\RTL\PMBITMAP.PAS
-MainFile0.Dependency7=..\.\Sibyl\RTL\PMGPI.PAS
-MainFile0.Dependency8=..\.\Sibyl\RTL\PMDEV.PAS
-MainFile0.Dependency9=..\.\Sibyl\RTL\PMSTDDLG.PAS
-MainFile0.Dependency10=..\.\Sibyl\RTL\PMHELP.PAS
-MainFile0.Dependency11=..\.\Sibyl\SPCC\MESSAGES.PAS
-MainFile0.Dependency12=..\.\Sibyl\RTL\DOS.PAS
-MainFile0.Dependency13=..\.\Sibyl\RTL\BSEERR.PAS
-MainFile0.Dependency14=..\.\Sibyl\RTL\PMSHL.PAS
-MainFile0.Dependency15=..\.\Sibyl\SPCC\LANGUAGE.PAS
-MainFile0.Dependency16=..\.\Sibyl\SPCC\SYSUTILS.PAS
-MainFile0.Dependency17=..\.\Sibyl\SPCC\CLASSES.PAS
-MainFile0.Dependency18=..\.\Sibyl\SPCC\FORMS.PAS
-MainFile0.Dependency19=..\.\Sibyl\SPCC\GRAPHICS.PAS
-MainFile0.Dependency20=..\.\Sibyl\SPCC\INIFILES.PAS
+MainFile0.Dependency0=..\.\sibyl\rtl\SYSTEM.PAS
+MainFile0.Dependency1=..\.\sibyl\rtl\OS2DEF.PAS
+MainFile0.Dependency2=..\.\sibyl\rtl\BSETIB.PAS
+MainFile0.Dependency3=..\.\sibyl\rtl\BSEEXCPT.PAS
+MainFile0.Dependency4=..\.\sibyl\rtl\BSEDOS.PAS
+MainFile0.Dependency5=..\.\sibyl\rtl\PMWIN.PAS
+MainFile0.Dependency6=..\.\sibyl\rtl\PMBITMAP.PAS
+MainFile0.Dependency7=..\.\sibyl\rtl\PMGPI.PAS
+MainFile0.Dependency8=..\.\sibyl\rtl\PMDEV.PAS
+MainFile0.Dependency9=..\.\sibyl\rtl\PMSTDDLG.PAS
+MainFile0.Dependency10=..\.\sibyl\rtl\PMHELP.PAS
+MainFile0.Dependency11=..\.\sibyl\spcc\MESSAGES.PAS
+MainFile0.Dependency12=..\.\sibyl\rtl\DOS.PAS
+MainFile0.Dependency13=..\.\sibyl\rtl\BSEERR.PAS
+MainFile0.Dependency14=..\.\sibyl\rtl\PMSHL.PAS
+MainFile0.Dependency15=..\.\sibyl\spcc\LANGUAGE.PAS
+MainFile0.Dependency16=..\.\sibyl\spcc\SYSUTILS.PAS
+MainFile0.Dependency17=..\.\sibyl\spcc\CLASSES.PAS
+MainFile0.Dependency18=..\.\sibyl\spcc\FORMS.PAS
+MainFile0.Dependency19=..\.\sibyl\spcc\GRAPHICS.PAS
+MainFile0.Dependency20=..\.\sibyl\spcc\INIFILES.PAS
 MainFile0.Dependency21=..\.\library\ACLUTILITY.PAS
 MainFile0.Dependency22=..\.\library\ACLSTRINGUTILITY.PAS
 MainFile0.Dependency23=.\CANVASFONTMANAGER.PAS
 MainFile0.Dependency24=.\RICHTEXTDOCUMENTUNIT.PAS
 MainFile0.Dependency25=.\RICHTEXTSTYLEUNIT.PAS
-MainFile0.Dependency26=..\.\Sibyl\SPCC\CLIPBRD.PAS
-MainFile0.Dependency27=..\.\Sibyl\RTL\PMSPL.PAS
-MainFile0.Dependency28=..\.\Sibyl\SPCC\PRINTERS.PAS
+MainFile0.Dependency26=..\.\sibyl\spcc\CLIPBRD.PAS
+MainFile0.Dependency27=..\.\sibyl\rtl\PMSPL.PAS
+MainFile0.Dependency28=..\.\sibyl\spcc\PRINTERS.PAS
 MainFile0.Dependency29=..\.\library\ACLFILEIOUTILITY.PAS
-MainFile0.Dependency30=..\.\library\ACLSTRING.PAS
-MainFile0.Dependency31=.\CONTROLSCROLLING.PAS
-MainFile0.Dependency32=.\RICHTEXTLAYOUTUNIT.PAS
-MainFile0.Dependency33=..\.\Sibyl\SPCC\BUTTONS.PAS
-MainFile0.Dependency34=..\.\Sibyl\SPCC\STDCTRLS.PAS
-MainFile0.Dependency35=..\.\Sibyl\SPCC\EXTCTRLS.PAS
-MainFile0.Dependency36=..\.\Sibyl\SPCC\TABCTRLS.PAS
-MainFile0.Dependency37=..\.\Sibyl\SPCC\COMCTRLS.PAS
-MainFile0.Dependency38=..\.\Sibyl\SPCC\FILECTRL.PAS
-MainFile0.Dependency39=..\.\Sibyl\SPCC\DIALOGS.PAS
-MainFile0.Dependency40=.\CUSTOMHEADERCONTROL.PAS
-MainFile0.Dependency41=.\MULTICOLUMNLISTBOX.PAS
-MainFile0.Dependency42=.\CONTROLSUTILITY.PAS
-MainFile0.Dependency43=.\RICHTEXTDISPLAYUNIT.PAS
-MainFile0.Dependency44=.\RICHTEXTVIEW.PAS
-MainFile0.Dependency45=.\OUTLINE2.PAS
-MainFile0.Dependency46=.\CUSTOMMEMO.PAS
-MainFile0.Dependency47=.\SYSTEMICONUNIT.PAS
-MainFile0.Dependency48=.\COOLBAR2.PAS
-MainFile0.Dependency49=..\.\library\ACLFINDFUNCTIONS.PAS
-MainFile0.Dependency50=..\.\library\ACLFILEUTILITY.PAS
-MainFile0.Dependency51=.\ACLLANGUAGEUNIT.PAS
-MainFile0.Dependency52=.\ACLMESSAGEFORM.PAS
-MainFile0.Dependency53=.\ACLDIALOGS.PAS
-MainFile0.Dependency54=.\COLORMAPPING.PAS
-MainFile0.Dependency55=.\COLORWHEEL.PAS
-MainFile0.Dependency56=.\CUSTOMCHECKLISTBOX.PAS
-MainFile0.Dependency57=..\.\Sibyl\SPCC\OUTLINE.PAS
-MainFile0.Dependency58=.\CUSTOMOUTLINE.PAS
-MainFile0.Dependency59=.\CUSTOMDIROUTLINE.PAS
-MainFile0.Dependency60=.\CUSTOMLISTBOX.PAS
-MainFile0.Dependency61=.\SPLITBAR.PAS
-MainFile0.Dependency62=..\.\Sibyl\RTL\BSEDEV.PAS
-MainFile0.Dependency63=.\DRIVEINFOUNIT.PAS
-MainFile0.Dependency64=.\BITMAPUTILITY.PAS
-MainFile0.Dependency65=.\CUSTOMFILECONTROLS.PAS
-MainFile0.Dependency66=.\CUSTOMFONTDIALOG.PAS
-MainFile0.Dependency67=.\TEST.PAS
-MainFile0.Dependency68=.\SYNCOBJECTS.PAS
-MainFile0.Dependency69=.\HT.PAS
-MainFile0.Dependency70=.\GENERICTHREAD.PAS
-MainFile0.Dependency71=.\TABSET2UNIT.PAS
-MainFile0.Dependency72=.\CUSTOMBITMAPBUTTON.PAS
-MainFile0.Dependency73=.\ICONIMAGEUNIT.PAS
-MainFile0.Dependency74=..\.\library\ACLRESOURCEUTILITY.PAS
-MainFile0.Dependency75=.\RICHTEXTPRINTUNIT.PAS
-MainFile0.Dependency76=.\COMPONENTSTESTFORM.PAS
-MainFile0.Dependency77=.\NONSIZABLEDIALOGUNIT.PAS
-MainFile0.Dependency78=.\Components.scu
+MainFile0.Dependency30=..\.\library\CHARUTILSUNIT.PAS
+MainFile0.Dependency31=..\.\library\ACLSTRING.PAS
+MainFile0.Dependency32=.\CONTROLSCROLLING.PAS
+MainFile0.Dependency33=.\RICHTEXTLAYOUTUNIT.PAS
+MainFile0.Dependency34=..\.\sibyl\spcc\BUTTONS.PAS
+MainFile0.Dependency35=..\.\sibyl\spcc\STDCTRLS.PAS
+MainFile0.Dependency36=..\.\sibyl\spcc\EXTCTRLS.PAS
+MainFile0.Dependency37=..\.\sibyl\spcc\TABCTRLS.PAS
+MainFile0.Dependency38=..\.\sibyl\spcc\COMCTRLS.PAS
+MainFile0.Dependency39=..\.\sibyl\spcc\FILECTRL.PAS
+MainFile0.Dependency40=..\.\sibyl\spcc\DIALOGS.PAS
+MainFile0.Dependency41=.\CUSTOMHEADERCONTROL.PAS
+MainFile0.Dependency42=.\MULTICOLUMNLISTBOX.PAS
+MainFile0.Dependency43=.\CONTROLSUTILITY.PAS
+MainFile0.Dependency44=.\RICHTEXTDISPLAYUNIT.PAS
+MainFile0.Dependency45=.\RICHTEXTVIEW.PAS
+MainFile0.Dependency46=.\OUTLINE2.PAS
+MainFile0.Dependency47=.\CUSTOMMEMO.PAS
+MainFile0.Dependency48=.\SYSTEMICONUNIT.PAS
+MainFile0.Dependency49=.\COOLBAR2.PAS
+MainFile0.Dependency50=..\.\sibyl\rtl\BSEDEV.PAS
+MainFile0.Dependency51=..\.\library\DEBUGUNIT.PAS
+MainFile0.Dependency52=..\.\library\STRINGUTILSUNIT.PAS
+MainFile0.Dependency53=..\.\library\FILEUTILSUNIT.PAS
+MainFile0.Dependency54=.\ACLLANGUAGEUNIT.PAS
+MainFile0.Dependency55=.\ACLMESSAGEFORM.PAS
+MainFile0.Dependency56=.\ACLDIALOGS.PAS
+MainFile0.Dependency57=.\COLORMAPPING.PAS
+MainFile0.Dependency58=.\COLORWHEEL.PAS
+MainFile0.Dependency59=.\CUSTOMLISTBOX.PAS
+MainFile0.Dependency60=.\BITMAPUTILITY.PAS
+MainFile0.Dependency61=.\CUSTOMFILECONTROLS.PAS
+MainFile0.Dependency62=.\CUSTOMFONTDIALOG.PAS
+MainFile0.Dependency63=.\SPLITBAR.PAS
+MainFile0.Dependency64=.\TABSET2UNIT.PAS
+MainFile0.Dependency65=.\GENERICTHREAD.PAS
+MainFile0.Dependency66=..\.\library\ACLRESOURCEUTILITY.PAS
+MainFile0.Dependency67=.\RICHTEXTPRINTUNIT.PAS
+MainFile0.Dependency68=.\COMPONENTSTESTFORM.PAS
+MainFile0.Dependency69=.\Components.scu
 
 [Replace History]
 
@@ -355,44 +393,17 @@ Replace15=MarginTop
 
 [Repository]
 
-Page0=Projects
+Page0=[Object Repository]
 Page0.Installed=True
-Page0.Object0=SpeedSoft.AppExpert
-Page0.Object0.NewProject=False
-Page0.Object0.NewForm=False
-Page0.Object0.MainForm=False
-Page0.Object0.InPage=True
-Page0.Object0.Title=AppExpert
-Page0.Object0.Description=(C) 1997 SpeedSoft.
-Page0.Object0.Author=SpeedSoft
-Page1=[Object Repository]
-Page1.Installed=True
-Page1.Object0=SpeedSoft.AppExpert
-Page1.Object0.NewProject=False
-Page1.Object0.NewForm=False
-Page1.Object0.MainForm=False
-Page1.Object0.InPage=True
-Page1.Object0.Title=AppExpert
-Page1.Object0.Description=(C) 1997 SpeedSoft.
-Page1.Object0.Author=SpeedSoft
 
 [SCU]
 
 SCUName=.\Components.scu
 MainForm=ComponentsTestForm
 
-[Watch]
-
-Watch0=+font.pfacename^
-Watch1=+font.fonttype
-Watch2=+achild.fname^
-Watch3=+afont.ffontinfo.fsselection
-Watch4=+afont.ffontinfo.usweightclass
-Watch5=+afont.ffontinfo
-
 [Win32 Application Options]
 
-ApplicationIcon=D:\Development\Sibyl\BIN\SIBYL.ICO
+ApplicationIcon=D:\progs\Sibyl\BIN\SIBYL.ICO
 
 [Win32 Compiler Options]
 
@@ -418,12 +429,12 @@ SPCC_Exceptions=4194303
 
 [Win32 Directories]
 
-LastDir=W:\COMPONENTS
+LastDir=P:\NEWVIEW_DEV\COMPONENTS
 OutDir=P:\newview_dev\build\components
-LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\library;
-LibSrcDir=P:\newview_dev\Sibyl\RTL;P:\newview_dev\Sibyl\SPCC;P:\newview_dev\library
+LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\components;P:\newview_dev\build\library
+LibSrcDir=P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl;P:\newview_dev\library;P:\newview_dev\components
 IncSrcDir=
-CompInstallDir=P:\newview_dev\build\sibyl
+CompInstallDir=P:\NEWVIEW_DEV\build\components
 
 [Win32 Linker Options]
 
