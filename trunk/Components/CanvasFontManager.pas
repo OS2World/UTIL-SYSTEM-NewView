@@ -131,7 +131,10 @@ procedure SibylFontToFontSpec( Font: TFont; Var FontSpec: TFontSpec );
 Implementation
 
 uses
-  PMWin, PMGpi, OS2Def, PmDev,
+  PMWin,
+  PMGpi,
+  OS2Def,
+  PmDev,
   SysUtils,
   ACLStringUtility;
 

@@ -6,7 +6,13 @@ Unit CustomFileControls;
 Interface
 
 Uses
-  Dos, SysUtils, Classes, Forms, StdCtrls, CustomListBox, Graphics;
+  Dos,
+  SysUtils,
+  Classes,
+  Forms,
+  StdCtrls,
+  CustomListBox,
+  Graphics;
 
 
 Type
@@ -336,16 +342,16 @@ Exports
 Implementation
 
 Uses
-{$IFDEF OS2}
-  BseDos, OS2Def, DriveInfoUnit,
-  BseDev, BseErr,
-{$ENDIF}
+  BseDos,
+  OS2Def,
+  BseDev,
+  BseErr,
 
-{$IFDEF Win95}
-  WinBase,
-{$ENDIF}
   Dialogs,
-  ACLStringUtility, ACLUtility, ACLFileUtility, BitmapUtility;
+  FileUtilsUnit,
+  ACLStringUtility,
+  ACLUtility,
+  BitmapUtility;
 
 var
   DriveTypeBitmaps: array[ Low( TDriveType ).. High( TDriveType ) ] of TBitmap;
@@ -863,7 +869,7 @@ Begin
     S := Items[ Index ];
     Data:= longint( Items.Objects[ Index ] );
     if ( Data and dfSubDir ) = 0 then
-      FullPath:= AddSlash( S ) + FullPath;
+      FullPath:= AddDirectorySeparator( S ) + FullPath;
     dec( Index );
   end;
 
@@ -917,7 +923,7 @@ Begin
 
   SubDirs:= TStringList.Create;
 
-  Status := SysUtils.FindFirst( AddSlash( Directory ) + '*.*', faDirectory, Search);
+  Status := SysUtils.FindFirst( AddDirectorySeparator( Directory ) + '*.*', faDirectory, Search);
   While Status = 0 Do
   Begin
     S := Search.Name;
@@ -966,12 +972,12 @@ Begin
     // Get current directory on specified drive
     GetDir(Ord(UpCase(Drive))-Ord('A')+1,s);
     {$I+}
-    S:= RemoveSlash( S );
-    S:= AddSlash( S );
+    S:= RemoveRightDirectorySeparator( S );
+    S:= AddDirectorySeparator( S );
     NewDir:=s+NewDir;
   End;
 
-  NewDir:= RemoveSlash( NewDir );
+  NewDir:= RemoveRightDirectorySeparator( NewDir );
 
   FDirectory := NewDir;
   if Handle <> 0 then
@@ -1115,7 +1121,7 @@ Begin
       if DriveType = dtHard then
       begin
         try
-          DriveLabel := GetVolumeLabel( DriveNumberToLetter( DriveNumber ) );
+          DriveLabel := GetVolumeLabel( DriveNumberToDriveLetter( DriveNumber ) );
           DriveString := DriveString + DriveLabel;
         except
         end;
@@ -1141,7 +1147,7 @@ Begin
   except
     on EInOutError do
       // Current drive inaccessible
-      Drive := GetBootDrive;
+      Drive := GetBootDriveLetter;
   end;
 End;
 
@@ -1260,7 +1266,7 @@ Begin
                                 // current drive, and it failed,
                                 // and the user doesn't want to retry,
                                 // so go back to boot drive.
-                                SetDrive( GetBootDrive );
+                                SetDrive(GetBootDriveLetter);
                                 Screen.Cursor := crDefault;
                                 Exit;
                               end;

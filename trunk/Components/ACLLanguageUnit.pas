@@ -4,7 +4,8 @@ Interface
 
 uses
   OS2Def,
-  Classes, Forms;
+  Classes,
+  Forms;
 
 type
   TLanguageItem = record
@@ -129,11 +130,16 @@ Implementation
 
 uses
   Dos, SysUtils, // system
-  StdCtrls, Buttons, ExtCtrls, TabCtrls, Dialogs,
-  Coolbar2, Multicolumnlistbox,
-  ACLUtility, ACLStringUtility,
-//  ACLProfile,
-  ACLFileUtility;
+  StdCtrls,
+  Buttons,
+  ExtCtrls,
+  TabCtrls,
+  Dialogs,
+  Coolbar2,
+  Multicolumnlistbox,
+  ACLUtility,
+  ACLStringUtility,
+  FileUtilsUnit;
 
 var
   g_LanguageCallbacks: TList;
@@ -698,7 +704,7 @@ begin
   OSDir := GetEnv( 'OSDIR' );
   if OSDir <> '' then
   begin
-    FilePath := AddSlash( OSDir )
+    FilePath := AddDirectorySeparator( OSDir )
                 + 'lang\'
                 + Filename;
     if FileExists( FilePath ) then
