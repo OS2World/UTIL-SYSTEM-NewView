@@ -207,8 +207,8 @@ File0.Left=-4
 File0.Bottom=-5
 File0.Width=1399
 File0.Height=629
-File0.Column=3
-File0.Line=832
+File0.Column=29
+File0.Line=5524
 File1=.\VersionUnit.pas
 File1.Left=-4
 File1.Bottom=-5
@@ -321,6 +321,13 @@ File16.Width=1399
 File16.Height=629
 File16.Column=1
 File16.Line=1
+File17=.\SearchDirectoriesFormUnit.pas
+File17.Left=-4
+File17.Bottom=-5
+File17.Width=1399
+File17.Height=629
+File17.Column=1
+File17.Line=63
 
 [Linker Options]
 
