@@ -33,13 +33,22 @@ const
   // ---- PChar ----
   // ---------------
 
-  
+
+  // Allocates enough memory for a copy of aString as a PChar
+  // and copies aString to it.
+  Function NewPCharAsCopyOfStr(const aString: String) : PChar;
+
   // Converts a PChar into a String like StrPas
   // but conversts at least the first aLength chars
   Function StrPasWithLength(const aPChar: PChar; const aLength: integer) : String;
 
   // Returns the difference of the pointers
   Function PCharPointerDiff(const aMinuend: PChar; const aSubtrahend : PChar)  : Longword;
+
+  // Concatentate AddText to Text. Reallocate and expand
+  // Text if necessary. This is a size-safe StrCat
+  Procedure AddAndResize(var aText: PChar; const aTextToAdd: PChar);
+
 
 Implementation
 
@@ -62,8 +71,6 @@ Implementation
   // ---------------
 
 
-  // Converts a PChar into a String like StrPas
-  // but conversts at least the first aLength chars
   Function StrPasWithLength(const aPChar: PChar; const aLength: integer) : String;
   var
     i: integer;
@@ -83,5 +90,44 @@ Implementation
     Result := Longword(aMinuend) - Longword(aSubtrahend);
   end;
 
+
+  Procedure CheckPCharSize(Var aText: PChar; const aNeededSize: longword);
+  var
+    tmpPChar: PChar;
+    tmpNewBufferSize: longword;
+  begin
+    if (aNeededSize + 1) // + 1 to allow for null terminator
+       > StrBufSize(aText) then
+    begin
+      // allocate new buffer, double the size...
+      tmpNewBufferSize := StrBufSize(aText) * 2;
+      // or if that's not enough...
+      if tmpNewBufferSize < (aNeededSize + 1) then
+      begin
+        // double what we are going to need
+        tmpNewBufferSize:= aNeededSize * 2;
+      end;
+
+      tmpPChar := StrAlloc(tmpNewBufferSize);
+
+      // copy string to new buffer
+      StrCopy(tmpPChar, aText);
+      StrDispose(aText);
+      aText:= tmpPChar;
+    end;
+  end;
+
+
+  Procedure AddAndResize(var aText: PChar; const aTextToAdd: PChar);
+  begin
+    CheckPCharSize(aText, strlen(aText) + strlen(aTextToAdd));
+    StrCat(aText, aTextToAdd);
+  end;
+
+  Function NewPCharAsCopyOfStr(const aString: String) : PChar;
+  begin
+    Result := StrAlloc(length(aString) + 1);
+    StrPCopy(Result, aString);
+  end;
 
 END.
