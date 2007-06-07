@@ -59,7 +59,7 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\NewView
+LastDir=P:\NEWVIEW_DEV\NewView\unittests
 OutDir=P:\NEWVIEW_DEV\build\unittest
 LibDir=P:\NEWVIEW_DEV\build\newview;P:\NEWVIEW_DEV\build\library;P:\NEWVIEW_DEV\build\components;P:\NEWVIEW_DEV\build\sibyl\lib
 LibSrcDir=P:\NEWVIEW_DEV\NEWVIEW;P:\NEWVIEW_DEV\Library;D:\PROGS\SIBYL\Source\RTL;D:\PROGS\SIBYL\Source\SPCC
@@ -68,22 +68,22 @@ CompInstallDir=D:\PROGS\SIBYL\Compnt
 
 [Find History]
 
-Find0=path_
-Find1=MakeDir
-Find2=StrExtractStrings
-Find3=exxws
-Find4=Rmdir
-Find5=parentdir
-Find6=ParentDir
-Find7=MakeDirs
-Find8=GetFilesForPath
-Find9=assertEqualsInt
-Find10=ex3
-Find11=p:\
-Find12=var
-Find13=FileIsReadOnly
-Find14=24
-Find15=StrEndsw
+Find0=hex
+Find1=1
+Find2=try
+Find3=Hex
+Find4=testStrInSingleQuotes_Empty
+Find5=StringInSingleQ
+Find6=abc
+Find7=repl
+Find8=path_
+Find9=MakeDir
+Find10=StrExtractStrings
+Find11=exxws
+Find12=Rmdir
+Find13=parentdir
+Find14=ParentDir
+Find15=MakeDirs
 
 [General]
 
@@ -99,12 +99,11 @@ Platform=Standard
 
 [Last Closed Files]
 
-File0=..\..\.\Library\ACLStringUtility.pas
-File1=..\..\.\Library\FileUtilsUnit.pas
-File2=.\FileUtilsUnitTests.pas
-File3=..\..\.\Library\ACLFileUtility._pas
-File4=..\..\.\LIBRARY\StringUtilsUnit.pas
-File5=..\.\CmdLineParameterUnit.pas
+File0=.\StringUtilsUnitTests.pas
+File1=..\.\SearchUnit.pas
+File2=..\..\.\Library\FileUtilsUnit.pas
+File3=.\FileUtilsUnitTests.pas
+File4=..\..\.\Library\ACLFileUtility._pas
 
 [Last Open Files]
 
@@ -114,14 +113,49 @@ File0.Bottom=-5
 File0.Width=1399
 File0.Height=629
 File0.Column=3
-File0.Line=7
-File1=.\CmdLineParameterUnitTests.pas
+File0.Line=76
+File1=..\..\.\Library\StringUtilsUnit.pas
 File1.Left=-4
 File1.Bottom=-5
 File1.Width=1399
 File1.Height=629
-File1.Column=3
-File1.Line=8
+File1.Column=36
+File1.Line=732
+File2=..\..\.\Library\ACLStringUtility.pas
+File2.Left=-4
+File2.Bottom=-5
+File2.Width=1399
+File2.Height=629
+File2.Column=1
+File2.Line=441
+File3=.\CmdLineParameterUnitTests.pas
+File3.Left=-4
+File3.Bottom=-5
+File3.Width=1399
+File3.Height=629
+File3.Column=3
+File3.Line=8
+File4=..\.\CmdLineParameterUnit.pas
+File4.Left=-4
+File4.Bottom=-5
+File4.Width=1399
+File4.Height=629
+File4.Column=1
+File4.Line=1
+File5=..\..\.\Library\DebugUnit.pas
+File5.Left=-4
+File5.Bottom=-5
+File5.Width=1399
+File5.Height=629
+File5.Column=76
+File5.Line=25
+File6=.\testassert.pas
+File6.Left=-4
+File6.Bottom=-5
+File6.Width=1399
+File6.Height=629
+File6.Column=28
+File6.Line=13
 
 [Linker Options]
 
