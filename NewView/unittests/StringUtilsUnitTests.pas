@@ -1573,6 +1573,96 @@ Implementation
   // ----------------------------------------------------------
 
 
+  PROCEDURE testHexStrToLongInt_Empty;
+  VAR
+    tmpResult : LongInt;
+  BEGIN
+    tmpResult := -1;
+    try
+      tmpResult := HexStrToLongInt('');
+    except
+      on e:EConvertError do
+      begin
+        assertEqualsString('testHexStrToLongInt_Empty', 'No chars in hex string', e.message);
+      end;
+    end;
+
+
+    assertEqualsInt('testHexStrToLongInt_Empty', -1, tmpResult);
+  END;
+
+
+  PROCEDURE testHexStrToLongInt_IllegalChar;
+  VAR
+    tmpResult : LongInt;
+  BEGIN
+    tmpResult := -1;
+    try
+      tmpResult := HexStrToLongInt('abG');
+    except
+      on e:EConvertError do
+      begin
+        assertEqualsString('testHexStrToLongInt_IllegalChar', 'Invalid hex char: ''G'' in hex string ''abG''.', e.message);
+      end;
+    end;
+
+
+    assertEqualsInt('testHexStrToLongInt_IllegalChar', -1, tmpResult);
+  END;
+
+
+  PROCEDURE testHexStrToLongInt_IllegalCharMinus;
+  VAR
+    tmpResult : LongInt;
+  BEGIN
+    tmpResult := -1;
+    try
+      tmpResult := HexStrToLongInt('-F3');
+    except
+      on e:EConvertError do
+      begin
+        assertEqualsString('testHexStrToLongInt_IllegalCharMinus', 'Invalid hex char: ''-'' in hex string ''-F3''.', e.message);
+      end;
+    end;
+
+
+    assertEqualsInt('testHexStrToLongInt_IllegalCharMinus', -1, tmpResult);
+  END;
+
+
+  PROCEDURE testHexStrToLongInt_Zero;
+  VAR
+    tmpResult : LongInt;
+  BEGIN
+    tmpResult := HexStrToLongInt('000');
+
+    assertEqualsInt('testHexStrToLongInt_Zero', 0, tmpResult);
+  END;
+
+
+  PROCEDURE testHexStrToLongInt_Ten;
+  VAR
+    tmpResult : LongInt;
+  BEGIN
+    tmpResult := HexStrToLongInt('A');
+
+    assertEqualsInt('testHexStrToLongInt_Ten', 10, tmpResult);
+  END;
+
+
+  PROCEDURE testHexStrToLongInt_Big;
+  VAR
+    tmpResult : LongInt;
+  BEGIN
+    tmpResult := HexStrToLongInt('7fffFFFF');
+
+    assertEqualsLongWord('testHexStrToLongInt_Big', 2147483647, tmpResult);
+  END;
+
+
+  // ----------------------------------------------------------
+
+
   PROCEDURE testStrInSingleQuotes_Empty;
   VAR
     tmpResult : String;
@@ -1974,7 +2064,6 @@ Implementation
   END;
 
 
-
   // -------------------------------------------------------------------
 
 
@@ -2065,6 +2154,64 @@ Implementation
     tmpResult := LastPosOfChar('x', 'axbcxdxu');
 
     assertEqualsInt('testLastPosOfChar_ManyHits', 7, tmpResult);
+  END;
+
+
+  // -------------------------------------------------------------------
+
+
+  PROCEDURE testSubstituteAllOccurencesOfChar_Empty;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := '';
+    SubstituteAllOccurencesOfChar(tmpResult, 'x', 'y');
+
+    assertEqualsString('testSubstituteAllOccurencesOfChar_Empty', '', tmpResult);
+  END;
+
+
+  PROCEDURE testSubstituteAllOccurencesOfChar_NotFound;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := 'abc';
+    SubstituteAllOccurencesOfChar(tmpResult, 'x', 'y');
+
+    assertEqualsString('testSubstituteAllOccurencesOfChar_NotFound', 'abc', tmpResult);
+  END;
+
+
+  PROCEDURE testSubstituteAllOccurencesOfChar_OneCharReplace;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := 'x';
+    SubstituteAllOccurencesOfChar(tmpResult, 'x', 'y');
+
+    assertEqualsString('testSubstituteAllOccurencesOfChar_OneCharReplace', 'y', tmpResult);
+  END;
+
+
+  PROCEDURE testSubstituteAllOccurencesOfChar_ReplaceAll;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := 'xxxx';
+    SubstituteAllOccurencesOfChar(tmpResult, 'x', 'y');
+
+    assertEqualsString('testSubstituteAllOccurencesOfChar_ReplaceAll', 'yyyy', tmpResult);
+  END;
+
+
+  PROCEDURE testSubstituteAllOccurencesOfChar_Some;
+  VAR
+    tmpResult : String;
+  BEGIN
+    tmpResult := 'xabxcxddx';
+    SubstituteAllOccurencesOfChar(tmpResult, 'x', 'y');
+
+    assertEqualsString('testSubstituteAllOccurencesOfChar_Some', 'yabycyddy', tmpResult);
   END;
 
 
@@ -2575,6 +2722,13 @@ Implementation
     result.add(@testStrInSingleQuotes_Empty);
     result.add(@testStrInSingleQuotes);
 
+    result.add(@testHexStrToLongInt_Empty);
+    result.add(@testHexStrToLongInt_IllegalChar);
+    result.add(@testHexStrToLongInt_IllegalCharMinus);
+    result.add(@testHexStrToLongInt_Zero);
+    result.add(@testHexStrToLongInt_Ten);
+    result.add(@testHexStrToLongInt_Big);
+
     result.add(@testStrInDoubleQuotes_Empty);
     result.add(@testStrInDoubleQuotes);
 
@@ -2613,6 +2767,11 @@ Implementation
     result.add(@testLastPosOfChar_MiddleChar);
     result.add(@testLastPosOfChar_ManyHits);
 
+    result.add(@testSubstituteAllOccurencesOfChar_Empty);
+    result.add(@testSubstituteAllOccurencesOfChar_NotFound);
+    result.add(@testSubstituteAllOccurencesOfChar_OneCharReplace);
+    result.add(@testSubstituteAllOccurencesOfChar_ReplaceAll);
+    result.add(@testSubstituteAllOccurencesOfChar_Some);
 
   // --------------------
   // ---- AnsiString ----
