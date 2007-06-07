@@ -3,7 +3,8 @@ Unit SharedMemoryUnit;
 Interface
 
 uses
-  BseDos, Semaphores;
+  BseDos,
+  Semaphores;
 
 type
   // Encapsulates a basic shared memory block. After creating,
