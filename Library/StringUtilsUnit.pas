@@ -105,7 +105,14 @@ const
   // and somtimes completly wrong values
   Function LongWordToStr(const aLongWord: LongWord) : String;
 
-  Function BoolToStr(const aBoolean : boolean ): string;
+  Function BoolToStr(const aBoolean : Boolean ): String;
+
+  // Converts a hex string to a longint
+  // May be upper or lower case
+  // Does not allow a sign
+  // Is not forgiving as StrToInt: all characters
+  // must be valid hex chars.
+  Function HexStrToLongInt(const aString : String ): longint;
 
   // Returns aString enclosed in single quotes
   Function StrInSingleQuotes(const aString : String) : String;
@@ -117,13 +124,16 @@ const
   // use double quotes if you need blanks in the strings
   Procedure StrExtractStringsQuoted(Var aResult: TStrings; const aReceiver: String );
 
-
   // returns the position of aPart in aString
   // case insensitive
   Function CaseInsensitivePos(const aPart: String; const aString: String ): longint;
 
   // Finds the last position of aChar within aString. Returns zero if no match
   Function LastPosOfChar(const aChar: char; const aString: String): longint;
+
+
+  // Substitutes all occurences of given character with the replace char
+  Procedure SubstituteAllOccurencesOfChar(var aReceiver: String; const aSearchChar: Char; const aReplaceChar: Char );
 
 
   // --------------------
@@ -667,6 +677,62 @@ Implementation
   end;
 
 
+// Hex conversion: sheer extravagance. Conversion from
+// a hex digit char to int is done by creating a lookup table
+// in advance.
+var
+  MapHexDigitToInt: array[Chr(0) .. Chr(255)] of longint;
+
+  procedure InitHexDigitMap;
+  var
+    tmpChar : char;
+    tmpIntValue : longint;
+  begin
+    for tmpChar := Chr(0) to Chr(255) do
+    begin
+      tmpIntValue := -1;
+      if ( tmpChar >= '0') and (tmpChar <= '9') then
+      begin
+        tmpIntValue := Ord(tmpChar) - Ord('0');
+      end;
+
+      if ( Upcase(tmpChar) >= 'A') and (Upcase(tmpChar) <= 'F') then
+      begin
+        tmpIntValue := 10 + Ord(Upcase(tmpChar)) - Ord('A');
+      end;
+
+      MapHexDigitToInt[tmpChar] := tmpIntValue;
+    end;
+  end;
+
+
+  Function HexDigitToInt(const aString : String; const aPosition : integer) : longint;
+  begin
+    Result := MapHexDigitToInt[aString[aPosition]];
+    if Result = -1 then
+    begin
+      raise EConvertError.Create('Invalid hex char: ''' + aString[aPosition] + ''' in hex string ''' + aString +'''.' );
+    end
+  end;
+
+
+  Function HexStrToLongInt(const aString : String) : longint;
+  var
+    i: integer;
+  begin
+    if Length(aString) = 0 then
+    begin
+      raise EConvertError.Create('No chars in hex string');
+    end;
+
+    Result := 0;
+    for i:= 1 to Length(aString) do
+    begin
+      Result := Result shl 4;
+      inc(Result, HexDigitToInt(aString, i));
+    end;
+  end;
+
   Function StrInSingleQuotes(const aString : String) : String;
   begin
     Result := StrSingleQuote + aString + StrSingleQuote;
@@ -938,6 +1004,21 @@ Implementation
     Result := 0;
   end;
 
+
+  Procedure SubstituteAllOccurencesOfChar(var aReceiver: String; const aSearchChar: Char; const aReplaceChar: Char );
+  var
+    i : longint;
+  begin
+    for i :=1 to length(aReceiver) do
+    begin
+      if aReceiver[i] = aSearchChar then
+      begin
+        aReceiver[i] := aReplaceChar;
+      end
+    end
+  end;
+
+
   // --------------------
   // ---- AnsiString ----
   // --------------------
@@ -1095,4 +1176,7 @@ Implementation
     Result^ := aString;
   end;
 
-END.
+
+Initialization
+  InitHexDigitMap;
+End.
