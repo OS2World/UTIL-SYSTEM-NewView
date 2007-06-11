@@ -287,7 +287,8 @@ Function BoolToStr( const b: boolean ): string;
 Implementation
 
 Uses
-  SysUtils, ACLUtility;
+  SysUtils,
+  ACLUtility;
 
 // ---------------------- Pascal String Utilities ---------------------------------------
 
