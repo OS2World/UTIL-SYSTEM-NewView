@@ -1,7 +1,9 @@
 Program NewViewInstall;
 
 Uses
-  Forms, MainFormUnit, ChooseFolderFormUnit;
+  Forms,
+  MainFormUnit,
+  ChooseFolderFormUnit;
 
 {$r NewViewInstall.scu}
 

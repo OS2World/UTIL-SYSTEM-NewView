@@ -7,7 +7,12 @@ Unit ChooseFolderFormUnit;
 Interface
 
 Uses
-  Classes, Forms, Graphics, Buttons, CustomFileControls, StdCtrls;
+  Classes,
+  Forms,
+  Graphics,
+  Buttons,
+  CustomFileControls,
+  StdCtrls;
 
 Type
   TChooseFolderForm = Class (TForm)

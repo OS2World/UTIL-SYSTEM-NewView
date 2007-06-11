@@ -7,8 +7,16 @@ Unit MainFormUnit;
 Interface
 
 Uses
-  OS2Def, PmWin,
-  Classes, Forms, Graphics, ExtCtrls, Buttons, StdCtrls, TabCtrls, ComCtrls;
+  OS2Def,
+  PmWin,
+  Classes,
+  Forms,
+  Graphics,
+  ExtCtrls,
+  Buttons,
+  StdCtrls,
+  TabCtrls,
+  ComCtrls;
 
 Const
   Vendor = 'Aaron Lawrence';
@@ -158,11 +166,21 @@ end;
 Implementation
 
 uses
-  BseDos, BseErr, PmWp, PmShl, PmErr,
-  SysUtils, Dos, Dialogs,
-  ACLUtility, ACLFileUtility, ACLStringUtility, ACLDialogs,
+  BseDos,
+  BseErr,
+  PmWp,
+  PmShl,
+  PmErr,
+  SysUtils,
+  Dos,
+  Dialogs,
+  ACLUtility,
+  ACLDialogs,
   ControlsUtility,
-  ChooseFolderFormUnit;
+  ChooseFolderFormUnit,
+  FileUtilsUnit,
+  CharUtilsUnit,
+  StringUtilsUnit;
 
 {$R NewViewInstall}
 
@@ -385,17 +403,15 @@ begin
 
   // make sure it ends in a backslash
   if Result <> '' then
-    Result := AddSlash( Result );
+    Result := AddDirectorySeparator( Result );
 end;
 
 Procedure TMainForm.CheckEnvironment;
 begin
   FSourceDir := GetApplicationDir;
 
-  FSystemDir := GetBootDrive
-                + ':\os2\';
-  FSystemDLLDir := FSystemDir
-                   + 'dll\';
+  FSystemDir := GetBootDriveLetter + ':\os2\';
+  FSystemDLLDir := FSystemDir + 'dll\';
 
   // ecs things
   FEnv_OSDir := GetEnvironmentFolder( 'OSDIR' );
@@ -410,10 +426,9 @@ Begin
   // default standalone dir
 
   if FEnv_Programs <> '' then
-    InstallFolderEdit.Text := AddSlash( FEnv_Programs )
-                               + 'NewView'
+    InstallFolderEdit.Text := AddDirectorySeparator(FEnv_Programs) + 'NewView'
   else
-    InstallFolderEdit.Text := GetBootDrive + ':\NewView';
+    InstallFolderEdit.Text := GetBootDriveLetter + ':\NewView';
 
   CreateIconCheckBox.Checked := true;
 
@@ -498,8 +513,8 @@ begin
     if FileIsReadOnly( DestinationPath ) then
     begin
       DoErrorDlg( 'Installation Error',
-                  'The file ' + EndLine
-                  + ' ' + DestinationPath + EndLine
+                  'The file ' + StrCRLF
+                  + ' ' + DestinationPath + StrCRLF
                   + 'is read-only and cannot be replaced.' );
       exit;
     end;
@@ -529,8 +544,8 @@ begin
         // locked file device driver IBMLANLK.SYS
         // But that's overkill for NewView
         DoErrorDlg( 'Installation Error',
-                    'This file is in use: ' + EndLine
-                    + ' ' + DestinationPath + EndLine
+                    'This file is in use: ' + StrCRLF
+                    + ' ' + DestinationPath + StrCRLF
                     + 'and cannot be replaced.' );
         exit;
       end;
@@ -544,8 +559,8 @@ begin
       begin
         // error
         DoErrorDlg( 'Install Error',
-                    'Could not unlock ' + EndLine
-                    + ' ' + DestinationPath + EndLine
+                    'Could not unlock ' + StrCRLF
+                    + ' ' + DestinationPath + StrCRLF
                     + SysErrorMessage( rc ) );
 
         exit;
@@ -554,8 +569,8 @@ begin
     else if rc <> 0 then
     begin
       DoErrorDlg( 'Install Error',
-                  'Unable to acces ' + Endline
-                  + ' ' + DestinationPath + EndLine
+                  'Unable to acces ' + StrCRLF
+                  + ' ' + DestinationPath + StrCRLF
                   + SysErrorMessage( rc ) );
       exit;
     end;
@@ -574,11 +589,11 @@ begin
         begin
           // error
           DoErrorDlg( 'Install Error',
-                      'Could not backup ' + EndLine
-                      + ' ' + DestinationPath + EndLine
-                      + ' to' + EndLine
-                      + ' ' + Backup + EndLine
-                      + EndLine
+                      'Could not backup ' + StrCRLF
+                      + ' ' + DestinationPath + StrCRLF
+                      + ' to' + StrCRLF
+                      + ' ' + Backup + StrCRLF
+                      + StrCRLF
                       + SysErrorMessage( rc ) );
           exit;
         end;
@@ -594,11 +609,11 @@ begin
   begin
     // error
     DoErrorDlg( 'Install Error',
-                'Could not copy new file ' + EndLine
-                + ' ' + SourcePath + EndLine
-                + ' to' + EndLine
-                + ' ' + DestinationPath + EndLine
-                + EndLine
+                'Could not copy new file ' + StrCRLF
+                + ' ' + SourcePath + StrCRLF
+                + ' to' + StrCRLF
+                + ' ' + DestinationPath + StrCRLF
+                + StrCRLF
                 + SysErrorMessage( rc ) );
     exit;
   end;
@@ -617,10 +632,10 @@ begin
   Result := false;
 
   Files := TStringList.Create;
-  ListDirectory( FSourceDir,
+  ListFilesInDirectory( FSourceDir,
                  Filter,
-                 Files,
-                 nil ); // don't need subdirs
+                 false, // don't need subdirs
+                 Files); // don't need subdirs
 
   for i := 0 to Files.Count - 1 do
   begin
@@ -677,9 +692,9 @@ begin
     begin
       // work out remaining length of buffer
       // so we don't overrun it if the data is invalid, ie. non terminated
-      RemainingLength := PCharDiff( pHandleListData + HandleListSize,
+      RemainingLength := PCharPointerDiff( pHandleListData + HandleListSize,
                                     pHandleString );
-      HandleString := StrNPas( pHandleString, RemainingLength );
+      HandleString := StrPasWithLength( pHandleString, RemainingLength );
 
       // convert to integer object handle
       Handle := StrToInt( HandleString );
@@ -739,7 +754,7 @@ begin
   pHandleString^ := #0;
   inc( pHandleString );
 
-  ActualLength := PCharDiff( pHandleString, pHandleListData );
+  ActualLength := PCharPointerDiff( pHandleString, pHandleListData );
   result := PrfWriteProfileData( HINI_USER,
                                  FilterAssociationsKey,
                                  Filter,
@@ -785,20 +800,30 @@ end;
 
 // association one of more file filters,
 // separated by commas, with the given object
-function MakeDefaultAssociations( const Mask: string;
+function MakeDefaultAssociations( const aMask: string;
                                   hDesktopObject: HOBJECT ): boolean;
 var
-  Filter: string;
-  RemainingMask: string;
+  tmpMask : String;
+  tmpMasks : TStringList;
+  i : longint;
 begin
   Result := false;
-  RemainingMask := Mask;
-  while RemainingMask <> '' do
+
+  tmpMasks := TStringList.Create;
+  StrExtractStrings(tmpMasks, aMask, [','], #0);
+
+  for i := 0 to tmpMasks.Count - 1 do
   begin
-    Filter := ExtractNextValue( RemainingMask, ',' );
-    if not MakeDefaultAssociation( Filter, hDesktopObject ) then
+    tmpMask := tmpMasks[i];
+    if not makeDefaultAssociation(tmpMask, hDesktopObject ) then
+    begin
+      tmpMasks.Destroy;
       exit;
+    end;
   end;
+
+  tmpMasks.Destroy;
+
   Result := true;
 end;
 
@@ -837,20 +862,20 @@ begin
   case ( PMError and $ffff ) of
     WPERR_INVALID_FOLDER:
       DoErrorDlg( 'Warning',
-                  'Unable to create desktop icon:' + EndLine
+                  'Unable to create desktop icon:' + StrCRLF
                   + IntToHex( PMError, 8 )
                   + ': The desktop is not correctly installed '
                   + '(<WP_DESKTOP> missing). ' );
 
     WPERR_NOT_WORKPLACE_CLASS:
       DoErrorDlg( 'Warning',
-                  'Unable to create desktop icon:' + EndLine
+                  'Unable to create desktop icon:' + StrCRLF
                   + IntToHex( PMError, 8 )
                   + ': WPProgram class is missing.' );
 
     else
       DoErrorDlg( 'Installation Error',
-                  'Unable to create desktop icon' + EndLine
+                  'Unable to create desktop icon' + StrCRLF
                   + IntToHex( PMError, 8 )
                   + ': There may be some problem with the desktop.' );
   end;
@@ -869,9 +894,8 @@ function CheckConflicts( const VarNames: string;
 var
   Files: TStringList;
   i: longint;
-  RemainingNames: string;
   FileName: string;
-  VarName: string;
+  tmpVarNames : TStringList;
   FileDir: string;
   CorrectDir: string;
 begin
@@ -881,14 +905,14 @@ begin
   Files.Duplicates := dupIgnore;
 
   FileName := ExtractFileName( CorrectPath );
-  RemainingNames := VarNames;
-  while RemainingNames <> '' do
+
+  tmpVarNames := TStringList.Create;
+  StrExtractStrings(tmpVarNames, VarNames, [';'], #0);
+  for i := 0 to tmpVarNames.Count - 1 do
   begin
-    VarName := ExtractNextValue( RemainingNames, ';' );
-    GetFilesForPath( VarName,
-                     FileName,
-                     Files );
+    GetFilesInPath( tmpVarNames[i], FileName, Files );
   end;
+  tmpVarNames.Destroy;
 
   CorrectDir := ExtractFilePath( CorrectPath );
 
@@ -902,8 +926,8 @@ begin
     FileDir := ExtractFilePath( Files[ i ] );
 
     // if it's where we're aiming for then that's fine
-    if    StringsSame( FileDir, CorrectDir )
-       or StringsSame( FileDir, GetApplicationDir )
+    if    StrEqualIgnoringCase( FileDir, CorrectDir )
+       or StrEqualIgnoringCase( FileDir, GetApplicationDir )
       then
       Files.Delete( i )
     else
@@ -914,13 +938,13 @@ begin
     Result :=
       DoConfirmListDlg( 'Duplicates Warning',
                         'The file'
-                        + EndLine
+                        + StrCRLF
                         + '  ' + FileName
-                        + EndLine
+                        + StrCRLF
                         + 'will be installed to '
-                        + EndLine
+                        + StrCRLF
                         + '  ' + ExtractFilePath( CorrectPath )
-                        + EndLine
+                        + StrCRLF
                         + 'but there are other copies on your computer. '
                         + 'The wrong file might be used. '
                         + 'Continue?',
@@ -1038,7 +1062,7 @@ begin
       begin
         DoErrorDlg( 'Folder Error',
                     'Could not create the NewView doc folder '
-                    + DocDir+ EndLine
+                    + DocDir+ StrCRLF
                     + SysErrorMessage( E.ErrorCode ) );
         exit;
       end;
@@ -1289,7 +1313,7 @@ begin
   Application.ProcessMessages;
 
   // validate/create install dir
-  InstallDir := AddSlash( InstallFolderEdit.Text );
+  InstallDir := AddDirectorySeparator(InstallFolderEdit.Text);
   if InstallToSourceCheckbox.Checked then
   begin
     InstallDir := FSourceDir;
@@ -1303,7 +1327,7 @@ begin
       begin
         DoErrorDlg( 'Folder Error',
                     'Could not create the installation folder '
-                    + InstallDir + EndLine
+                    + InstallDir + StrCRLF
                     + SysErrorMessage( E.ErrorCode ) );
         exit;
       end;
