@@ -3,7 +3,11 @@ Unit RichTextStyleUnit;
 Interface
 
 uses
-  Forms, Classes, Graphics, CanvasFontManager, RichTextDocumentUnit;
+  Forms,
+  Classes,
+  Graphics,
+  CanvasFontManager,
+  RichTextDocumentUnit;
 
 type
   TTextDrawStyle = record
@@ -143,8 +147,7 @@ Implementation
 
 uses
   SysUtils,
-  ACLStringUtility;
-//  ACLProfile;
+  StringUtilsUnit;
 
 Procedure ApplyStyle( const Style: TTextDrawStyle;
                       FontManager: TCanvasFontManager );
@@ -168,6 +171,7 @@ var
   ParseIndex: longint;
   XSizeStr: string;
   YSizeStr: string;
+  tmpFontParts : TStringList;
 
   MarginSize: longint;
   ParsePoint: longint;
@@ -202,17 +206,24 @@ begin
 
     ttFont:
     begin
-      ParseIndex := 1;
-      GetNextQuotedValue( Tag.Arguments, ParseIndex, FontFaceName, DoubleQuote );
-      GetNextQuotedValue( Tag.Arguments, ParseIndex, FontSizeString, DoubleQuote );
+      tmpFontParts := TStringList.Create;
+      StrExtractStringsQuoted(tmpFontParts, Tag.Arguments);
+      FontFaceName := tmpFontParts[0];
+      FontSizeString := tmpFontParts[1];
+      tmpFontParts.Destroy;
+
       NewStyle := Style;
       try
         NewStyle.Font.FaceName := FontFaceName;
 
         if Pos( 'x', FontSizeString ) > 0 then
         begin
-          XSizeStr := ExtractNextValue( FontSizeString, 'x' );
-          YSizeStr := FontSizeString;
+          tmpFontParts := TStringList.Create;
+          StrExtractStrings(tmpFontParts, FontSizeString, ['x'], #0);
+          XSizeStr := tmpFontParts[0];
+          YSizeStr := tmpFontParts[1];
+          tmpFontParts.Destroy;
+
           NewStyle.Font.XSize := StrToInt( XSizeStr );
           NewStyle.Font.YSize := StrToInt( YSizeStr );
           NewStyle.Font.PointSize := 0;
@@ -264,8 +275,12 @@ begin
     ttSetLeftMargin,
     ttSetRightMargin:
     begin
+      tmpFontParts := TStringList.Create;
+      StrExtractStrings(tmpFontParts, Tag.Arguments, [' '], #0);
+      MarginParam1 := tmpFontParts[0];
+      tmpFontParts.Destroy;
+
       ParsePoint := 1;
-      GetNextValue( Tag.Arguments, ParsePoint, MarginParam1, ' ' );
       if     ( Tag.TagType = ttSetLeftMargin )
          and ( MarginParam1 = 'here' ) then
       begin
@@ -275,7 +290,7 @@ begin
       begin
         try
           MarginSize := StrToInt( MarginParam1 );
-          GetNextValue( Tag.Arguments, ParsePoint, MarginParam2, ' ' );
+          MarginParam2 := tmpFontParts[1];
           if MarginParam2 = 'pixels' then
             NewMargin := MarginSize
 

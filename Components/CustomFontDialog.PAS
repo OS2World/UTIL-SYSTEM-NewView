@@ -3,7 +3,12 @@ Unit CustomFontDialog;
 Interface
 
 Uses
-  Classes, Forms, Dialogs, StdCtrls, Buttons, Graphics;
+  Classes,
+  Forms,
+  Dialogs,
+  StdCtrls,
+  Buttons,
+  Graphics;
 
 Type
 
@@ -81,8 +86,9 @@ Exports
 Implementation
 
 uses
-  SysUtils, PmWin,
-  ACLStringUtility;
+  SysUtils,
+  PmWin,
+  StringUtilsUnit;
 
 // Returns true if s ends with endstr (case insensitive)
 Function StringAtEnd( const endStr: string; const s: string ): boolean;
@@ -127,16 +133,16 @@ end;
 Function GetFontFamilyName( Font: TFont ): string;
 begin
   Result := Font.Family;
-  Result := SubstituteChar( Result, '-', ' ' );
-  Result := SubstituteChar( Result, '_', ' ' );
+  SubstituteAllOccurencesOfChar( Result, '-', ' ' );
+  SubstituteAllOccurencesOfChar( Result, '_', ' ' );
 
   if Result = 'Roman' then
-    if StrStarts( 'Tms Rmn', Font.FaceName ) then
+    if StrStartsWithIgnoringCase( 'Tms Rmn', Font.FaceName ) then
       // one particularly stupid example
       Result := 'Tms Rmn';
 
   if Result = 'Swiss' then
-    if StrStarts( 'Helv', Font.FaceName ) then
+    if StrStartsWithIgnoringCase( 'Helv', Font.FaceName ) then
       // one particularly stupid example
       Result := 'Helv';
 
@@ -150,14 +156,14 @@ var
   FamilyName: string;
 begin
   Result := Font.FaceName;
-  Result := SubstituteChar( Result, '-', ' ' );
-  Result := SubstituteChar( Result, '_', ' ' );
+  SubstituteAllOccurencesOfChar( Result, '-', ' ' );
+  SubstituteAllOccurencesOfChar( Result, '_', ' ' );
 
   FamilyName := GetFontFamilyName( Font );
-  if StrStarts( FamilyName, Result ) then
+  if StrStartsWithIgnoringCase( FamilyName, Result ) then
   begin
-    Result := StrRightFrom( Result, length( FamilyName ) + 1 );
-    Result := TrimChars( Result, [ ' ', '-', '_' ] );
+    Result := StrSubstringFrom( Result, length( FamilyName ) + 1 );
+    Result := StrTrimChars( Result, [ ' ', '-', '_' ] );
 
     if Result = '' then
       Result := 'Normal';

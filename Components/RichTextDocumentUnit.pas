@@ -117,7 +117,9 @@ Implementation
 
 uses
   BseDOS, // for NLS/case mapping
-  SysUtils, ACLStringUtility;
+  SysUtils,
+  CharUtilsUnit,
+  StringUtilsUnit;
 
 const
   TagStr: array[ ttInvalid .. ttEnd ] of string =
@@ -237,7 +239,7 @@ begin
       exit;
     end;
 
-    if CurrentChar = DoubleQuote then
+    if CurrentChar = CharDoubleQuote then
     begin
       if not InQuote then
       begin
@@ -246,7 +248,7 @@ begin
       else
       begin
         // Could be escaped quote ""
-        if ( TextPointer + 1 ) ^ = DoubleQuote then
+        if ( TextPointer + 1 ) ^ = CharDoubleQuote then
         begin
           // yes it is
           inc( TextPointer ); // skip second one
@@ -305,7 +307,7 @@ begin
       exit;
     end;
 
-    if CurrentChar = DoubleQuote then
+    if CurrentChar = CharDoubleQuote then
     begin
       if not InQuote then
       begin
@@ -319,7 +321,7 @@ begin
           // start of text... somethin weird
           InQuote := false;
         end
-        else if ( TextPointer - 1 ) ^ = DoubleQuote then
+        else if ( TextPointer - 1 ) ^ = CharDoubleQuote then
         begin
           // yes it is
           dec( TextPointer ); // skip second one
@@ -501,7 +503,7 @@ begin
     if ColorParam[ 1 ] = '#' then
     begin
       try
-        Color := HexToInt( StrRightFrom( ColorParam, 2 ) );
+        Color := HexStrToLongInt( StrSubstringFrom( ColorParam, 2 ) );
         Result := true;
       except
       end;
@@ -510,7 +512,7 @@ begin
     begin
       for ColorIndex := 0 to High( StandardColors ) do
       begin
-        if StringsSame( ColorParam, StandardColors[ ColorIndex ].Name ) then
+        if StrEqualIgnoringCase( ColorParam, StandardColors[ ColorIndex ].Name ) then
         begin
           Color := StandardColors[ ColorIndex ].Color;
           Result := true;
@@ -524,11 +526,11 @@ end;
 function GetTagTextAlignment( const AlignParam: string;
                               const Default: TTextAlignment ): TTextAlignment;
 begin
-  if StringsSame( AlignParam, 'left' ) then
+  if StrEqualIgnoringCase( AlignParam, 'left' ) then
     Result := taLeft
-  else if StringsSame( AlignParam, 'center' ) then
+  else if StrEqualIgnoringCase( AlignParam, 'center' ) then
     Result := taCenter
-  else if StringsSame( AlignParam, 'right' ) then
+  else if StrEqualIgnoringCase( AlignParam, 'right' ) then
     Result := taRight
   else
     Result := Default;
@@ -536,7 +538,7 @@ end;
 
 function GetTagTextWrap( const WrapParam: string ): boolean;
 begin
-  Result := StringsSame( WrapParam, 'yes' );
+  Result := StrEqualIgnoringCase( WrapParam, 'yes' );
 end;
 
 function RichTextFindString( pRichText: PChar;
@@ -618,7 +620,7 @@ begin
             // found a complete match
             Result := true;
             pMatch := pMatchStart;
-            MatchLength := PCharDiff( P, pMatchStart )
+            MatchLength := PCharPointerDiff( P, pMatchStart )
                            + 1; // include this char
             exit;
           end;
@@ -745,7 +747,7 @@ begin
     Element := ExtractPreviousTextElement( pRichText, P, NextP );
   end;
   pWordStart := P;
-  WordLength := PCharDiff( pWordEnd, pWordStart );
+  WordLength := PCharPointerDiff( pWordEnd, pWordStart );
   Result := true;
 end;
 
@@ -797,7 +799,7 @@ begin
 
     P := NextP;
   end;
-  result := PCharDiff( Q, Buffer );
+  result := PCharPointerDiff( Q, Buffer );
 end;
 
 Initialization
