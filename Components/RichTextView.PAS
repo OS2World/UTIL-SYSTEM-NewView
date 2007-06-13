@@ -427,10 +427,19 @@ Exports
 Implementation
 
 Uses
-  SysUtils, PMWin, BseDos, Dos, ClipBrd, Printers,
-  ACLStringUtility, ACLString,
-  ControlScrolling, ControlsUtility,
-  RichTextDocumentUnit, RichTextDisplayUnit;
+  SysUtils,
+  PMWin,
+  BseDos,
+  Dos,
+  ClipBrd,
+  Printers,
+  ACLString,
+  ControlScrolling,
+  ControlsUtility,
+  RichTextDocumentUnit,
+  RichTextDisplayUnit,
+
+  CharUtilsUnit;
 
 Procedure TRichTextView.SetSelectionStart( SelectionStart: longint );
 begin
@@ -2049,7 +2058,7 @@ begin
 
 //  SetCursorIndex( GetCharIndex( P ), PreserveSelection );
   Line := FLayout.FLines[ CursorRow ];
-  NewOffset := PCharDiff( P, Line.Text );
+  NewOffset := PCharPointerDiff( P, Line.Text );
   if NewOffset < Line.Length then
   begin
     SetCursorPosition( NewOffset, FCursorRow, PreserveSelection )
@@ -2089,7 +2098,7 @@ begin
 //  if Element.ElementType = teTextEnd then
 //    exit;
   Line := FLayout.FLines[ CursorRow ];
-  NewOffset := PCharDiff( P, Line.Text );
+  NewOffset := PCharPointerDiff( P, Line.Text );
   if NewOffset >= 0 then
   begin
     SetCursorPosition( NewOffset, FCursorRow, PreserveSelection )
@@ -2254,7 +2263,7 @@ begin
   Length := CopySelectionToBuffer( Addr( Buffer ),
                                    255 );
 
-  Result := StrNPas( Buffer, Length );
+  Result := StrPasWithLength( Buffer, Length );
 end;
 
 Procedure TRichTextView.CopySelectionToClipboard;

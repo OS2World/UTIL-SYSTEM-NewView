@@ -3,7 +3,10 @@ Unit Outline2;
 Interface
 
 Uses
-  Classes, Forms, SysUtils, BseDos;
+  Classes,
+  Forms,
+  SysUtils,
+  BseDos;
 
 {
 History
@@ -454,8 +457,8 @@ Implementation
 
 uses
   Messages,
-  ACLStringUtility,
-  ControlScrolling;
+  ControlScrolling,
+  StringUtilsUnit;
 
 // ============================================================================
 // Node implementation
@@ -2213,7 +2216,7 @@ begin
       // searched all nodes, done.
       exit;
 
-    if StrStarts( S, Node.Text ) then
+    if StrStartsWithIgnoringCase( S, Node.Text ) then
     begin
       // found
       Result := Node;
