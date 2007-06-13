@@ -115,10 +115,10 @@ uses
   Printers,
   ControlScrolling,
   ACLResourceUtility,
-  ACLStringUtility,
   RichTextPrintUnit,
   RichTextStyleUnit,
-  ACLLanguageUnit;
+  ACLLanguageUnit,
+  CharUtilsUnit;
 
 {$R DialogIcons}
 
@@ -144,7 +144,7 @@ Begin
            ULONG( p ),
            4 );
 
-  Memo1.Lines.Add( StrNPas( p, l ) );
+  Memo1.Lines.Add( StrPasWithLength( p, l ) );
 
   StrDispose( p );
 End;

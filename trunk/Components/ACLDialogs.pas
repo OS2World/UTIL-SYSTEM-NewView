@@ -77,12 +77,14 @@ Implementation
 
 uses
   SysUtils,
-  Forms, Dialogs, StdCtrls, Buttons,
-  ACLStringUtility
+  Forms,
+  Dialogs,
+  StdCtrls,
+  Buttons,
 {$ifdef os2}
-  , ACLLanguageUnit, ControlsUtility
+  ACLLanguageUnit, ControlsUtility,
 {$endif}
-  ;
+  CharUtilsUnit;
 
 // -------------------------------------------------
 
@@ -100,7 +102,7 @@ var
 Begin
   TheDialog := TMessageForm.Create( nil );
   TheDialog.Caption := Caption;
-  PMessage := StrDupPas( Message );
+  PMessage := NewPCharAsCopyOfStr(Message);
   TheDialog.TheText := PMessage;
 
   TheDialog.ShowCancel := ShowCancel;
