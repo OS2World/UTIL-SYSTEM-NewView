@@ -174,7 +174,7 @@ exports
 implementation
 
 uses
-  ACLStringUtility;
+  StringUtilsUnit;
   
 { TMultiColumnListBox }
 
@@ -291,6 +291,8 @@ var
   ItemRect: TRect;
   Dest: TRect;
   LineClipRect: TRect;
+  tmpColumns : TStringList;
+  i : longint;
 begin
   LineClipRect := FListBox.Canvas.ClipRect;
 
@@ -316,10 +318,12 @@ begin
     FillRect( Dest, Brush.Color );
   end;
 
-  while Line <> '' do
+  tmpColumns := TStringList.Create;
+  StrExtractStrings(tmpColumns, Line, [#9], #0);
+
+  for i := 0 to tmpColumns.Count - 1 do
   begin
-    ItemToDraw := ExtractNextValue( Line,
-                                   #9 );
+    ItemToDraw := tmpColumns[i];
     if ColumnIndex < FHeader.Sections.Count then
       ColumnWidth := FHeader.Sections[ ColumnIndex ].Width
     else
@@ -348,10 +352,15 @@ begin
                            BitmapIndex );
         end
         else
+        begin
+          tmpColumns.Destroy;
           raise Exception.Create( 'Bitmap index out of range in MultiColumnListBox' )
+        end
       else
+      begin
+        tmpColumns.Destroy;
         raise Exception.Create( 'No imagelist assigned in MultiColumnListBox' );
-
+      end
     end
     else
     begin
@@ -361,6 +370,7 @@ begin
     inc( X, ColumnWidth );
     inc( ColumnIndex );
   end;
+  tmpColumns.Destroy;
 end;
 
 procedure TMultiColumnListBox.SetItems( Items: TStrings );

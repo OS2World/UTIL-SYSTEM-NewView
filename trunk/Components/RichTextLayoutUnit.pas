@@ -144,9 +144,16 @@ Type
 Implementation
 
 Uses
-  SysUtils, PMWin, BseDos, Dos, ClipBrd, Printers,
-  ACLUtility, ACLStringUtility, ACLString,
-  ControlScrolling;
+  SysUtils,
+  PMWin,
+  BseDos,
+  Dos,
+  ClipBrd,
+  Printers,
+  ACLUtility,
+  ACLString,
+  ControlScrolling,
+  CharUtilsUnit;
 
 Function TRichTextLayout.GetTextEnd: longint;
 begin
@@ -312,7 +319,7 @@ Var
 
     inc( FHeight, CurrentLine.Height );
 
-    CurrentLine.Length := PCharDiff( EndPoint, CurrentLine.Text );
+    CurrentLine.Length := PCharPointerDiff( EndPoint, CurrentLine.Text );
 
     CurrentLine.Width := EndX;
 
@@ -770,7 +777,7 @@ begin
            > XToFind then
         begin
           // found
-          Offset := PCharDiff( P, Line.Text );
+          Offset := PCharPointerDiff( P, Line.Text );
           Link := CurrentLink;
           exit;
         end;
@@ -1026,7 +1033,7 @@ end;
 
 Function TRichTextLayout.GetCharIndex( P: PChar ): longint;
 begin
-  Result := PCharDiff( P, FText );
+  Result := PCharPointerDiff( P, FText );
 end;
 
 function TRichTextLayout.GetLinePosition( Line: longint ): longint;
