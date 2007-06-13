@@ -349,9 +349,9 @@ Uses
 
   Dialogs,
   FileUtilsUnit,
-  ACLStringUtility,
   ACLUtility,
-  BitmapUtility;
+  BitmapUtility,
+  StringUtilsUnit;
 
 var
   DriveTypeBitmaps: array[ Low( TDriveType ).. High( TDriveType ) ] of TBitmap;
@@ -464,7 +464,7 @@ Begin
      S:=fExcludeMask;
      While S<>'' Do
      Begin
-          NextFilter:=Pos(';',S);
+          NextFilter:=Pos(PATH_SEPARATOR,S);
           If NextFilter<>0 Then
           Begin
             ThisFilter:=Copy( S, 1, NextFilter-1 );
@@ -476,7 +476,7 @@ Begin
             S:='';
           End;
 
-          Status := SysUtils.FindFirst(FDirectory + '\' + ThisFilter, Attr,Search);
+          Status := SysUtils.FindFirst(FDirectory + DIRECTORY_SEPARATOR + ThisFilter, Attr,Search);
           While Status = 0 Do
           Begin
                ExcludeList.Add( Search.Name );
@@ -489,15 +489,15 @@ Begin
      S:=fMask;
      While S<>'' Do
      Begin
-          If Pos(';',S)<>0 Then
+          If Pos(PATH_SEPARATOR,S)<>0 Then
           Begin
                s1:=S;
-               Delete(s1,1,Pos(';',S));
-               SetLength(S,Pos(';',S)-1);
+               Delete(s1,1,Pos(PATH_SEPARATOR,S));
+               SetLength(S,Pos(PATH_SEPARATOR,S)-1);
           End
           Else s1:='';
 
-          Status := SysUtils.FindFirst(FDirectory + '\' + S, Attr,Search);
+          Status := SysUtils.FindFirst(FDirectory + DIRECTORY_SEPARATOR + S, Attr,Search);
           While Status = 0 Do
           Begin
                if not ExcludeList.Find( Search.Name,
@@ -559,12 +559,12 @@ Begin
           {$I-}
           GetDir(Ord(UpCase(Drive))-Ord('A')+1,s);
           {$I+}
-          If (s[length(s)])='\' Then dec(s[0]);
-          If not (NewDir[1] In ['/','\']) Then s:=s+'\';
+          If (s[length(s)])=DIRECTORY_SEPARATOR Then dec(s[0]);
+          If not (NewDir[1] In ['/',DIRECTORY_SEPARATOR]) Then s:=s+DIRECTORY_SEPARATOR;
           NewDir:=s+NewDir;
      End;
 
-     If NewDir[Length(NewDir)] = '\' Then SetLength(NewDir,Length(NewDir)-1);
+     If NewDir[Length(NewDir)] = DIRECTORY_SEPARATOR Then SetLength(NewDir,Length(NewDir)-1);
      If FDirectory=NewDir Then exit;
      FDirectory := NewDir;
 
@@ -607,8 +607,8 @@ Begin
      If (idx < 0) Or (idx >= Items.Count) Then Result := ''
      Else Result := Items[ idx ];
      s:=Directory;
-     If s[Length(s)] In ['\','/'] Then dec(s[0]);
-     If s<>'' Then If Result<>'' Then Result:=s+'\'+Result;
+     If s[Length(s)] In [DIRECTORY_SEPARATOR,'/'] Then dec(s[0]);
+     If s<>'' Then If Result<>'' Then Result:=s+DIRECTORY_SEPARATOR+Result;
 End;
 
 
@@ -887,6 +887,8 @@ Var
   SubDirs: TStringList;
   IndentLevel: longint;
   PathSoFar: string;
+  tmpPathElements : TStringList;
+  i : integer;
 Begin
   Screen.Cursor := crHourGlass;
   BeginUpdate;
@@ -902,10 +904,14 @@ Begin
   // Add all subdirs
   Path := Copy( Directory, 4, 255 );
   PathSoFar := Copy( Directory, 1, 3 );
-  While Path <> '' Do
-  Begin
+
+  tmpPathElements := TStringList.Create;
+  StrExtractStrings(tmpPathElements, Path, [DIRECTORY_SEPARATOR], #0);
+
+  for i := 0 to tmpPathElements.Count - 1 do
+  begin
     inc( IndentLevel );
-    S:= ExtractNextValue( Path, '\' );
+    S := tmpPathElements[i];
 
     if not DirectoryExists( PathSoFar + S ) then
     begin
@@ -914,9 +920,10 @@ Begin
       break;
     end;
     Items.AddObject( S, pointer( IndentLevel ) );
-    PathSoFar := PathSoFar + S + '\';
+    PathSoFar := PathSoFar + S + DIRECTORY_SEPARATOR;
   End;
 
+  tmpPathElements.Destroy;
   ItemIndex:= Items.Count - 1;
 
   inc( IndentLevel );
