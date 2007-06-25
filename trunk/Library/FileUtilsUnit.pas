@@ -1,7 +1,8 @@
 Unit FileUtilsUnit;
 
 // NewView - a new OS/2 Help Viewer
-// Copyright 2006/2007 Ronald Brill (rbri at rbri dot de)
+// Copyright 2003-2006 Aaron Lawrence
+// Copyright 2006-2007 Ronald Brill (rbri at rbri dot de)
 // This software is released under the GNU Public License - see readme.txt
 
 // Helper functions for file handling

@@ -1,6 +1,7 @@
 Unit StringUtilsUnit;
 
 // NewView - a new OS/2 Help Viewer
+// Copyright 2003-2006 Aaron Lawrence
 // Copyright 2006-2007 Ronald Brill (rbri at rbri dot de)
 // This software is released under the GNU Public License - see readme.txt
 
@@ -122,18 +123,18 @@ const
 
   // Extract all fields in a String delimited by whitespace (blank or tab).
   // use double quotes if you need blanks in the strings
-  Procedure StrExtractStringsQuoted(Var aResult: TStrings; const aReceiver: String );
+  Procedure StrExtractStringsQuoted(Var aResult: TStrings; const aReceiver: String);
 
   // returns the position of aPart in aString
   // case insensitive
-  Function CaseInsensitivePos(const aPart: String; const aString: String ): longint;
+  Function CaseInsensitivePos(const aPart: String; const aString: String) : longint;
 
   // Finds the last position of aChar within aString. Returns zero if no match
-  Function LastPosOfChar(const aChar: char; const aString: String): longint;
+  Function LastPosOfChar(const aChar: char; const aString: String) : longint;
 
 
   // Substitutes all occurences of given character with the replace char
-  Procedure SubstituteAllOccurencesOfChar(var aReceiver: String; const aSearchChar: Char; const aReplaceChar: Char );
+  Procedure SubstituteAllOccurencesOfChar(var aReceiver: String; const aSearchChar: Char; const aReplaceChar: Char);
 
 
   // --------------------
@@ -745,7 +746,7 @@ var
   end;
 
 
-  Procedure StrExtractStringsQuoted(Var aResult: TStrings; const aReceiver: String );
+  Procedure StrExtractStringsQuoted(Var aResult: TStrings; const aReceiver: String);
   Var
     tmpState : (WHITESPACE, INSIDE, START_QUOTE, INSIDE_QUOTED, INSIDE_QUOTED_START_QUOTE);
     tmpCurrentParsePosition : Integer;
