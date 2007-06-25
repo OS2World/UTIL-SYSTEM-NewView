@@ -1,5 +1,11 @@
 Unit CharUtilsUnitTests;
 
+// NewView - a new OS/2 Help Viewer
+// Copyright 2006-2007 Ronald Brill (rbri at rbri dot de)
+// This software is released under the GNU Public License - see readme.txt
+
+// UnitTests for CharUtilsUnit
+
 Interface
 
 uses
