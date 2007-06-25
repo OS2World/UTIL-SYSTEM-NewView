@@ -138,8 +138,9 @@ uses
   Coolbar2,
   Multicolumnlistbox,
   ACLUtility,
-  ACLStringUtility,
-  FileUtilsUnit;
+  FileUtilsUnit,
+  StringUtilsUnit,
+  DebugUnit;
 
 var
   g_LanguageCallbacks: TList;
@@ -259,11 +260,11 @@ end;
 constructor TLanguageFile.Create( const Filename: string );
 var
   F: TextFile;
-  S: string;
+  tmpLine: string;
   Name: string;
   Value: string;
-  p: longint;
   pItem: TPLanguageItem;
+  tmpLineParts : TStringList;
 begin
   FSaving := false;
 
@@ -283,19 +284,27 @@ begin
   AssignFile( F, Filename );
   Reset( F );
 
+  tmpLineParts := TStringList.Create;
+
   while not Eof( F ) do
   begin
-    ReadLn( F, S );
+    ReadLn( F, tmpLine);
 
-    p := 1;
-    GetNextQuotedValue( S, p, Name, DoubleQuote );
+    tmpLineParts.clear;
+    StrExtractStringsQuoted(tmpLineParts, tmpLine);
 
-    if Name <> '' then
+    if tmpLineParts.count > 0 then
     begin
+      Name := tmpLineParts[0];
+
       if Name[ 1 ] <> '#' then
       begin
         // Got a name, read the value and store.
-        GetNextQuotedValue( S, p, Value, DoubleQuote );
+        value := '';
+        if tmpLineParts.count > 0 then
+        begin
+          value := tmpLineParts[1];
+        end;
 
         New( pItem );
         pItem ^. pValue := NewStr( Value );
@@ -306,6 +315,7 @@ begin
     end;
   end;
 
+  tmpLineParts.Destroy;
   CloseFile( F );
 end;
 
@@ -417,13 +427,11 @@ procedure TLanguageFile.SaveItem( const Name: string;
                                   const Marker: string );
 
 var
-  QuotedValue: string;
+  tmpQuotedValue : string;
 begin
-  QuotedValue :=
-    StrDoubleQuote(
-      InsertDuplicateChars( Value, DoubleQuote ) );
-  WriteLn( FOutputFile,
-           Name + ' ' + QuotedValue + ' ' + Marker );
+  tmpQuotedValue := StrEscapeAllCharsBy(Value, [], '"');
+  tmpQuotedValue := StrInDoubleQuotes(tmpQuotedValue);
+  WriteLn( FOutputFile, Name + ' ' + tmpQuotedValue + ' ' + Marker );
 end;
 
 procedure TLanguageFile.LoadComponentLanguageInternal( Component: TComponent;
@@ -744,53 +752,58 @@ var
   LanguageVar: string;
   MajorLanguage: string;
   MinorLanguage: string;
+  tmpParts : TStringList;
+
 begin
-//  ProfileEvent( 'LoadDefaultLanguage' );
-
   LanguageVar := GetEnv( 'LANG' );
+  LogEvent(LogI18n, 'LANG=' + LanguageVar);
 
-//  ProfileEvent( '  LANG=' + LanguageVar );
   if LanguageVar = '' then
+  begin
     LanguageVar := 'EN_US';
+  end;
 
-  MajorLanguage := ExtractNextValue( LanguageVar, '_' );
-  MinorLanguage := ExtractNextValue( LanguageVar, '_' );
+  tmpParts := TStringList.Create;
+  StrExtractStrings(tmpParts, LanguageVar, ['_'], #0);
 
-//  ProfileEvent( '  MajorLanguage=' + MajorLanguage );
-//  ProfileEvent( '  MinorLanguage=' + MinorLanguage );
+  MajorLanguage := '';
+  if tmpParts.count > 0 then
+  begin
+    MajorLanguage := tmpParts[0];
+  end;
 
   // note there might be some other stuff on the end of LANG
   // such as ES_ES_EURO...
 
-  if MinorLanguage <> '' then
+  if tmpParts.count > 1 then
   begin
-//    ProfileEvent( '  Trying Major_Minor' );
-    if LoadAutoLanguage( AppName,
-                         MajorLanguage
-                         + '_'
-                         + MinorLanguage ) then
+    MinorLanguage := tmpParts[1];
+
+    LogEvent(LogI18n, 'try loading ' + MajorLanguage + '_' + MinorLanguage);
+    if LoadAutoLanguage(AppName, MajorLanguage + '_' + MinorLanguage) then
     begin
       // found a specifc language
-//      ProfileEvent( '    Found' );
+      LogEvent(LogI18n, ' translation for ' + MajorLanguage + '_' + MinorLanguage + ' sucessfully loaded');
+      tmpParts.Destroy;
       exit;
     end;
   end;
 
-//  ProfileEvent( '  Trying Major only' );
   // try generic language?
+  LogEvent(LogI18n, 'try loading (major only) ' + MajorLanguage);
   if LoadAutoLanguage( AppName, MajorLanguage ) then
   begin
-//    ProfileEvent( '    Found' );
-  end
-  else
-  begin
-//    ProfileEvent( '    No language found, using default' );
-
-    // load defaults
-    LoadLanguage( '' );
+      LogEvent(LogI18n, 'translation for ' + MajorLanguage + 'sucessfully loaded');
+      tmpParts.Destroy;
+      exit;
   end;
 
+  LogEvent(LogI18n, 'No language found, using default ' + MajorLanguage);
+  LoadLanguage( '' );
+
+  tmpParts.Destroy;
 end;
+
 
 Initialization
   g_LanguageCallbacks := nil;
