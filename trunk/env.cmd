@@ -3,7 +3,7 @@ REM --------------------------------------------------------------------------
 REM NewView - a new OS/2 Help Viewer
 REM
 REM Copyright 2003-2006 Aaron Lawrence (aaronl at consultant dot com)
-REM Copyright 2006 RonaldBrill (rbri at rbri.org)
+REM Copyright 2006-2007 RonaldBrill (rbri at rbri.org)
 REM
 REM This software is released under the Gnu Public License
 REM
@@ -29,8 +29,23 @@ SET NV_DEV=P:\newview_dev
 REM --------------------------------------------------------------------------
 
 REM --------------------------------------------------------------------------
+SET NEWVIEW_DEBUG=
+REM
 REM Enable debuging menus.
 SET NEWVIEW_DEBUG=TRUE
+REM
+REM SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogStartup
+REM SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogShutdown
+REM SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogSettings
+SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogI18n
+REM SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogParse
+REM SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogDisplay
+REM SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogSearch
+REM SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogNHM
+REM SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogViewStub
+REM SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogObjConstDest
+SET NEWVIEW_DEBUG=%NEWVIEW_DEBUG%,LogDebug
+REM
 REM --------------------------------------------------------------------------
 
 
