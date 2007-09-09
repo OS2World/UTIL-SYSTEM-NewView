@@ -58,25 +58,24 @@ File46=RICHTEXTVIEW
 File47=OUTLINE2
 File48=CUSTOMMEMO
 File49=SYSTEMICONUNIT
-File50=COOLBAR2
-File51=ACLSTRINGUTILITY
-File52=BSEDEV
-File53=FILEUTILSUNIT
-File54=ACLLANGUAGEUNIT
-File55=ACLMESSAGEFORM
-File56=ACLDIALOGS
-File57=COLORMAPPING
-File58=COLORWHEEL
-File59=CUSTOMLISTBOX
-File60=BITMAPUTILITY
-File61=CUSTOMFILECONTROLS
-File62=CUSTOMFONTDIALOG
-File63=SPLITBAR
-File64=TABSET2UNIT
-File65=GENERICTHREAD
-File66=ACLRESOURCEUTILITY
-File67=RICHTEXTPRINTUNIT
-File68=COMPONENTSTESTFORM
+File50=BSEDEV
+File51=FILEUTILSUNIT
+File52=COOLBAR2
+File53=ACLLANGUAGEUNIT
+File54=ACLMESSAGEFORM
+File55=ACLDIALOGS
+File56=COLORMAPPING
+File57=COLORWHEEL
+File58=CUSTOMLISTBOX
+File59=BITMAPUTILITY
+File60=CUSTOMFILECONTROLS
+File61=CUSTOMFONTDIALOG
+File62=SPLITBAR
+File63=TABSET2UNIT
+File64=GENERICTHREAD
+File65=ACLRESOURCEUTILITY
+File66=RICHTEXTPRINTUNIT
+File67=COMPONENTSTESTFORM
 
 [Compiler Options]
 
@@ -102,7 +101,7 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\COMPONENTS
+LastDir=P:\NEWVIEW_DEV\NEWVIEW
 OutDir=P:\newview_dev\build\components
 LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\library
 LibSrcDir=P:\newview_dev\library;P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl
@@ -111,27 +110,27 @@ CompInstallDir=P:\NEWVIEW_DEV\build\components
 
 [Find History]
 
-Find0=Style
-Find1=Include
-Find2=GetNextQuotedValue
-Find3=//
-Find4=extract
-Find5=for
-Find6=TCustomFileListBox
-Find7=ACLString
-Find8=StrExtractStrings
-Find9=';'
-Find10='\
-Find11=for
-Find12=for I0
-Find13=for i:=
-Find14=ExtractNextValue
-Find15=HexStrToLongInt
+Find0=write
+Find1=LogEvent
+Find2=g_LanguageCallbacks
+Find3=DestroyListAndObjects
+Find4=LoadString
+Find5=OnLanguageEvent
+Find6=LL
+Find7=updatel
+Find8=ApplyLanguage
+Find9=Apply
+Find10=register
+Find11=update
+Find12=UpdateLanguage
+Find13=Unit
+Find14=apply
+Find15=prefix
 
 [General]
 
 Version=Sibyl Project Ver2.02
-ProjectName=P:\NEWVIEW_DEV\COMPONENTS\Components.spr
+ProjectName=P:\newview_dev\Components\Components.spr
 ProjectType=Visual
 CompLibName=D:\progs\Sibyl\bin\CompLib.dll
 Win32CompLibName=D:\Development\Sibyl\bin\CompLib.dll
@@ -142,78 +141,48 @@ Platform=OS/2
 
 [Last Closed Files]
 
-File0=.\MultiColumnListBox.pas
-File1=.\CustomFileControls.pas
-File2=..\.\library\FileUtilsUnit.pas
-File3=.\ACLDialogs.pas
-File4=.\RichTextView.PAS
-File5=.\RichTextLayoutUnit.pas
+File0=..\.\NewView\GlobalSearchForm.pas
+File1=.\ACLLanguageUnit.pas.v2
+File2=..\.\NewView\MainForm.pas
+File3=..\.\unittests\ACLLanguageUnitTests.pas
 
 [Last Open Files]
 
-File0=.\Components.pas
+File0=.\ACLLanguageUnit.pas.v1
 File0.Left=-4
-File0.Bottom=-5
+File0.Bottom=-4
 File0.Width=1296
 File0.Height=629
-File0.Column=3
-File0.Line=6
-File1=.\ComponentsTestForm.pas
+File0.Column=22
+File0.Line=185
+File1=.\Components.pas
 File1.Left=-4
-File1.Bottom=-5
+File1.Bottom=-4
 File1.Width=1296
 File1.Height=629
 File1.Column=1
-File1.Line=97
-File2=..\.\library\ACLStringUtility.pas
+File1.Line=3
+File2=.\ACLLanguageUnit.pas
 File2.Left=-4
-File2.Bottom=-5
+File2.Bottom=-4
 File2.Width=1296
 File2.Height=629
-File2.Column=29
-File2.Line=326
-File3=..\.\LIBRARY\CharUtilsUnit.pas
+File2.Column=91
+File2.Line=293
+File3=.\ACLMessageForm.pas
 File3.Left=-4
-File3.Bottom=-5
+File3.Bottom=-4
 File3.Width=1296
 File3.Height=629
-File3.Column=22
-File3.Line=46
-File4=..\.\Library\StringUtilsUnit.pas
+File3.Column=1
+File3.Line=86
+File4=.\ACLDialogs.pas
 File4.Left=-4
-File4.Bottom=-5
+File4.Bottom=-4
 File4.Width=1296
 File4.Height=629
-File4.Column=53
-File4.Line=62
-File5=.\RichTextStyleUnit.pas
-File5.Left=-4
-File5.Bottom=-5
-File5.Width=1296
-File5.Height=629
-File5.Column=1
-File5.Line=150
-File6=..\.\installer\MainFormUnit.pas
-File6.Left=-4
-File6.Bottom=-5
-File6.Width=1296
-File6.Height=629
-File6.Column=39
-File6.Line=823
-File7=.\CanvasFontManager.pas
-File7.Left=-4
-File7.Bottom=-5
-File7.Width=1296
-File7.Height=629
-File7.Column=58
-File7.Line=131
-File8=.\RichTextDocumentUnit.pas
-File8.Left=-4
-File8.Bottom=-5
-File8.Width=1296
-File8.Height=629
-File8.Column=43
-File8.Line=624
+File4.Column=1
+File4.Line=1
 
 [Linker Options]
 
@@ -234,7 +203,7 @@ Stack=256
 Primary=.\Components.pas
 MainFile0=.\Components.pas
 MainFile0.Ext=.EXE
-MainFile0.Checksum=18176
+MainFile0.Checksum=17920
 MainFile0.Expanded=False
 MainFile0.File0=[Dependencies]
 MainFile0.Dependency0=..\.\sibyl\rtl\SYSTEM.PAS
@@ -287,26 +256,25 @@ MainFile0.Dependency46=.\RICHTEXTVIEW.PAS
 MainFile0.Dependency47=.\OUTLINE2.PAS
 MainFile0.Dependency48=.\CUSTOMMEMO.PAS
 MainFile0.Dependency49=.\SYSTEMICONUNIT.PAS
-MainFile0.Dependency50=.\COOLBAR2.PAS
-MainFile0.Dependency51=..\.\Library\ACLSTRINGUTILITY.PAS
-MainFile0.Dependency52=..\.\sibyl\rtl\BSEDEV.PAS
-MainFile0.Dependency53=..\.\Library\FILEUTILSUNIT.PAS
-MainFile0.Dependency54=.\ACLLANGUAGEUNIT.PAS
-MainFile0.Dependency55=.\ACLMESSAGEFORM.PAS
-MainFile0.Dependency56=.\ACLDIALOGS.PAS
-MainFile0.Dependency57=.\COLORMAPPING.PAS
-MainFile0.Dependency58=.\COLORWHEEL.PAS
-MainFile0.Dependency59=.\CUSTOMLISTBOX.PAS
-MainFile0.Dependency60=.\BITMAPUTILITY.PAS
-MainFile0.Dependency61=.\CUSTOMFILECONTROLS.PAS
-MainFile0.Dependency62=.\CUSTOMFONTDIALOG.PAS
-MainFile0.Dependency63=.\SPLITBAR.PAS
-MainFile0.Dependency64=.\TABSET2UNIT.PAS
-MainFile0.Dependency65=.\GENERICTHREAD.PAS
-MainFile0.Dependency66=..\.\Library\ACLRESOURCEUTILITY.PAS
-MainFile0.Dependency67=.\RICHTEXTPRINTUNIT.PAS
-MainFile0.Dependency68=.\COMPONENTSTESTFORM.PAS
-MainFile0.Dependency69=.\Components.scu
+MainFile0.Dependency50=..\.\sibyl\rtl\BSEDEV.PAS
+MainFile0.Dependency51=..\.\Library\FILEUTILSUNIT.PAS
+MainFile0.Dependency52=.\COOLBAR2.PAS
+MainFile0.Dependency53=.\ACLLANGUAGEUNIT.PAS
+MainFile0.Dependency54=.\ACLMESSAGEFORM.PAS
+MainFile0.Dependency55=.\ACLDIALOGS.PAS
+MainFile0.Dependency56=.\COLORMAPPING.PAS
+MainFile0.Dependency57=.\COLORWHEEL.PAS
+MainFile0.Dependency58=.\CUSTOMLISTBOX.PAS
+MainFile0.Dependency59=.\BITMAPUTILITY.PAS
+MainFile0.Dependency60=.\CUSTOMFILECONTROLS.PAS
+MainFile0.Dependency61=.\CUSTOMFONTDIALOG.PAS
+MainFile0.Dependency62=.\SPLITBAR.PAS
+MainFile0.Dependency63=.\TABSET2UNIT.PAS
+MainFile0.Dependency64=.\GENERICTHREAD.PAS
+MainFile0.Dependency65=..\.\Library\ACLRESOURCEUTILITY.PAS
+MainFile0.Dependency66=.\RICHTEXTPRINTUNIT.PAS
+MainFile0.Dependency67=.\COMPONENTSTESTFORM.PAS
+MainFile0.Dependency68=.\Components.scu
 
 [Replace History]
 
