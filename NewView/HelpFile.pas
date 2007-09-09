@@ -172,19 +172,21 @@ var
 
 Procedure OnLanguageEvent( Language: TLanguageFile;
                            const Apply: boolean );
+var
+  tmpPrefix : String;
 begin
+  tmpPrefix := 'HelpFile' + LANGUAGE_LABEL_DELIMITER;
 
-  Language.Prefix := 'HelpFile.';
-  Language.LL( Apply, FileErrorNotFound, 'FileErrorNotFound', 'File not found' );
-  Language.LL( Apply, FileErrorAccessDenied, 'FileErrorAccessDenied', 'Access denied' );
-  Language.LL( Apply, FileErrorInUse, 'FileErrorInUse', 'File in use by another program' );
+  Language.LL( Apply, FileErrorNotFound, tmpPrefix + 'FileErrorNotFound', 'File not found' );
+  Language.LL( Apply, FileErrorAccessDenied, tmpPrefix + 'FileErrorAccessDenied', 'Access denied' );
+  Language.LL( Apply, FileErrorInUse, tmpPrefix + 'FileErrorInUse', 'File in use by another program' );
   Language.LL( Apply,
                FileErrorInvalidHeader,
-               'FileErrorInvalidHeader',
+               tmpPrefix + 'FileErrorInvalidHeader',
                'File doesn''t appear to be an OS/2 Help document (header ID not correct)' );
   Language.LL( Apply,
                ErrorCorruptHelpFile,
-               'ErrorCorruptHelpFile',
+               tmpPrefix + 'ErrorCorruptHelpFile',
                'File is corrupt' );
 end;
 

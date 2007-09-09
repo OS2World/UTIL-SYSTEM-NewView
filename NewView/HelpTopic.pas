@@ -310,8 +310,7 @@ var
 Procedure OnLanguageEvent( Language: TLanguageFile;
                            const Apply: boolean );
 begin
-  Language.Prefix := 'HelpTopic.';
-  Language.LL( Apply, DefaultTitle, 'DefaultTitle', '(No title)' );
+  Language.LL( Apply, DefaultTitle, 'HelpTopic' + LANGUAGE_LABEL_DELIMITER + 'DefaultTitle', '(No title)' );
 end;
 
 

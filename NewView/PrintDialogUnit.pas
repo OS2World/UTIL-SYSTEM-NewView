@@ -69,17 +69,21 @@ End;
 
 Procedure TNewViewPrintDialog.NewViewPrintDialogOnCreate (Sender: TObject);
 Begin
-  RegisterForLanguages( OnLanguageEvent );
+  RegisterEventForLanguages( OnLanguageEvent );
 End;
 
 Procedure TNewViewPrintDialog.OnLanguageEvent( Language: TLanguageFile;
                                                const Apply: boolean );
+var
+  tmpPrefix : String;
 begin
-  LogEvent(LogI18n, 'TNewViewPrintDialog.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  // LogEvent(LogI18n, 'TNewViewPrintDialog.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
-  Language.LL( Apply, SetupPrinterErrorTitle, 'SetupPrinterErrorTitle', 'Setup Printer' );
-  Language.LL( Apply, SetupPrinterError, 'SetupPrinterError', 'Error displaying printer options: ' );
+  tmpPrefix := 'NewViewPrintDialog' + LANGUAGE_LABEL_DELIMITER;
+
+  Language.LL( Apply, SetupPrinterErrorTitle, tmpPrefix + 'SetupPrinterErrorTitle', 'Setup Printer' );
+  Language.LL( Apply, SetupPrinterError, tmpPrefix + 'SetupPrinterError', 'Error displaying printer options: ' );
 end;
 
 Procedure TNewViewPrintDialog.PrinterComboBoxOnItemSelect (Sender: TObject;
