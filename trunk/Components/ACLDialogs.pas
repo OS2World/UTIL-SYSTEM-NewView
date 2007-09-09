@@ -302,14 +302,22 @@ var
   OKButtonCaption: string;
   CancelButtonCaption: string;
 
-Procedure OnLanguageEvent( Language: TLanguageFile;
-                           const Apply: boolean );
+Procedure OnLanguageEvent(Language: TLanguageFile; const Apply: boolean);
+var
+  tmpPrefix : String;
 begin
-  if Language <> nil then
-    Language.Prefix := 'TextInputForm.';
-
-  LoadString( Language, Apply, OKButtonCaption, 'OKButtonCaption', '~OK' );
-  LoadString( Language, Apply, CancelButtonCaption, 'CancelButtonCaption', '~Cancel' );
+  tmpPrefix := '';
+  if Language = nil then
+  begin
+    OKButtonCaption := '~OK';
+    CancelButtonCaption :='~Cancel';
+  end
+  else
+  begin
+    tmpPrefix := 'TextInputForm' + LANGUAGE_LABEL_DELIMITER; // use messageform captions
+    Language.LL(Apply, OKButtonCaption, tmpPrefix + 'OKButtonCaption', '~OK');
+    Language.LL(Apply, CancelButtonCaption, tmpPrefix + 'CancelButtonCaption', '~Cancel');
+  end;
 end;
 
 type
