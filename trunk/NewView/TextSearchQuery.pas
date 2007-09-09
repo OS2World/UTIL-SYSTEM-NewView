@@ -61,11 +61,12 @@ var
 
 Procedure OnLanguageEvent( Language: TLanguageFile;
                            const Apply: boolean );
+var
+  tmpPrefix : String;
 begin
-
-  Language.Prefix := 'SearchQuery.';
-  Language.LL( Apply, QueryErrorMissingWord1, 'QueryErrorMissingWord1', 'No search word given after ' );
-  Language.LL( Apply, QueryErrorMissingWord2, 'QueryErrorMissingWord2', ' before ' );
+  tmpPrefix := 'SearchQuery' + LANGUAGE_LABEL_DELIMITER;
+  Language.LL( Apply, QueryErrorMissingWord1, tmpPrefix + 'QueryErrorMissingWord1', 'No search word given after ' );
+  Language.LL( Apply, QueryErrorMissingWord2, tmpPrefix + 'QueryErrorMissingWord2', ' before ' );
 end;
 
 constructor TTextSearchQuery.Create( const SearchString: string );

@@ -461,8 +461,7 @@ Type
 
     // language stuff
     // called by callback
-    Procedure OnLanguageEvent( Language: TLanguageFile;
-                               const Apply: boolean );
+    Procedure OnLanguageEvent(Language: TLanguageFile; const Apply: boolean );
 
     function ShowCodes: boolean;
     function ShowWordIndices: boolean;
@@ -1364,8 +1363,9 @@ begin
     Caption := HelpProgramTitle + ' - ' + MainTitle
 end;
 
-Procedure TMainForm.OnLanguageEvent( Language: TLanguageFile;
-                                     const Apply: boolean );
+Procedure TMainForm.OnLanguageEvent(Language: TLanguageFile; const Apply: boolean);
+var
+  tmpPrefix : String;
 Begin
   // get rid of mru menu items
   DestroyListObjects( MRUMenuItems );
@@ -1390,163 +1390,165 @@ Begin
 
   // Load strings referred to by code...
   // ----------------------------------------------------------
+  tmpPrefix := 'MainForm' + LANGUAGE_LABEL_DELIMITER;
 
-  Language.LL( Apply, FileOpenTitle, 'FileOpenTitle', 'Open Help Files' );
-  Language.LL( Apply, LoadingFileMsg, 'LoadingFileMsg', 'Loading file ' );
-  Language.LL( Apply, HelpFileError, 'HelpFileError', 'Could not open ' );
-  Language.LL( Apply, LoadingStatusDisplaying, 'LoadingStatusDisplaying', 'Displaying...' );
-  Language.LL( Apply, LoadingStatusNotesAndBookmarks, 'LoadingStatusNotesAndBookmarks', 'Loading notes/bookmarks...' );
-  Language.LL( Apply, LoadingStatusContents, 'LoadingStatusContents', 'Display contents... ' );
-  Language.LL( Apply, LoadingStatusIndex, 'LoadingStatusIndex', 'Display index... ' );
-  Language.LL( Apply, LoadingStatusDone, 'LoadingStatusDone', 'Done' );
+  Language.LL( Apply, FileOpenTitle, tmpPrefix + 'FileOpenTitle', 'Open Help Files' );
+  Language.LL( Apply, LoadingFileMsg, tmpPrefix + 'LoadingFileMsg', 'Loading file ' );
+  Language.LL( Apply, HelpFileError, tmpPrefix + 'HelpFileError', 'Could not open ' );
+  Language.LL( Apply, LoadingStatusDisplaying, tmpPrefix + 'LoadingStatusDisplaying', 'Displaying...' );
+  Language.LL( Apply, LoadingStatusNotesAndBookmarks, tmpPrefix + 'LoadingStatusNotesAndBookmarks', 'Loading notes/bookmarks...' );
+  Language.LL( Apply, LoadingStatusContents, tmpPrefix + 'LoadingStatusContents', 'Display contents... ' );
+  Language.LL( Apply, LoadingStatusIndex, tmpPrefix + 'LoadingStatusIndex', 'Display index... ' );
+  Language.LL( Apply, LoadingStatusDone, tmpPrefix + 'LoadingStatusDone', 'Done' );
 
-  Language.LL( Apply, HelpFilesDesc, 'HelpFilesDesc', 'Help Files (*.inf,*.hlp)' );
-  Language.LL( Apply, AllFilesDesc, 'AllFilesDesc', 'All Files (*)' );
-  Language.LL( Apply, LanguageFilesDesc, 'LanguageFilesDesc', 'NewView Language Files (*.lng)' );
+  Language.LL( Apply, HelpFilesDesc, tmpPrefix + 'HelpFilesDesc', 'Help Files (*.inf,*.hlp)' );
+  Language.LL( Apply, AllFilesDesc, tmpPrefix + 'AllFilesDesc', 'All Files (*)' );
+  Language.LL( Apply, LanguageFilesDesc, tmpPrefix + 'LanguageFilesDesc', 'NewView Language Files (*.lng)' );
 
-  Language.LL( Apply, SaveLanguageTitle, 'SaveLanguageTitle', 'Save/Update Language File' );
-  Language.LL( Apply, OpenLanguageTitle, 'OpenLanguageTitle', 'Open Language File' );
-  Language.LL( Apply, SaveLanguageError, 'SaveLanguageError', 'Error saving language file: ' );
+  Language.LL( Apply, SaveLanguageTitle, tmpPrefix + 'SaveLanguageTitle', 'Save/Update Language File' );
+  Language.LL( Apply, OpenLanguageTitle, tmpPrefix + 'OpenLanguageTitle', 'Open Language File' );
+  Language.LL( Apply, SaveLanguageError, tmpPrefix + 'SaveLanguageError', 'Error saving language file: ' );
 
-  Language.LL( Apply, HelpManagerVersionTitle, 'HelpManagerVersionTitle', 'Help Manager Version' );
+  Language.LL( Apply, HelpManagerVersionTitle, tmpPrefix + 'HelpManagerVersionTitle', 'Help Manager Version' );
 
-  Language.LL( Apply, FindResourceIDTitle, 'FindResourceIDTitle', 'Find Resource ID' );
-  Language.LL( Apply, FindResourceIDPrompt, 'FindResourceIDPrompt', 'Enter the resource ID to find' );
-  Language.LL( Apply, InvalidResourceIDError, 'InvalidResourceIDError', 'Invalid resource ID entered' );
-  Language.LL( Apply, ResourceIDNotFoundError, 'ResourceIDNotFoundError', 'Resource ID not found' );
+  Language.LL( Apply, FindResourceIDTitle, tmpPrefix + 'FindResourceIDTitle', 'Find Resource ID' );
+  Language.LL( Apply, FindResourceIDPrompt, tmpPrefix + 'FindResourceIDPrompt', 'Enter the resource ID to find' );
+  Language.LL( Apply, InvalidResourceIDError, tmpPrefix + 'InvalidResourceIDError', 'Invalid resource ID entered' );
+  Language.LL( Apply, ResourceIDNotFoundError, tmpPrefix + 'ResourceIDNotFoundError', 'Resource ID not found' );
 
-  Language.LL( Apply, OpenSpecialTitle, 'OpenSpecialTitle', 'Open Special' );
-  Language.LL( Apply, OpenSpecialPrompt, 'OpenSpecialPrompt', 'Enter help filename/environment variable name' );
+  Language.LL( Apply, OpenSpecialTitle, tmpPrefix + 'OpenSpecialTitle', 'Open Special' );
+  Language.LL( Apply, OpenSpecialPrompt, tmpPrefix + 'OpenSpecialPrompt', 'Enter help filename/environment variable name' );
 
-  Language.LL( Apply, PrintTopicTitle, 'PrintTopicTitle', 'Print Topic' );
-  Language.LL( Apply, NoPrinterError, 'NoPrinterError', 'You don''t have a printer configured.' );
-  Language.LL( Apply, SelectWindowToPrintError, 'SelectWindowToPrintError', 'You must select the window you want to print.' );
-  Language.LL( Apply, PrintingError, 'PrintingError', 'Error while printing: ' );
-  Language.LL( Apply, StoppingPrintMsg, 'StoppingPrintMsg', 'Stopping print...' );
-  Language.LL( Apply, PrintStoppedMsg, 'PrintStoppedMsg', 'Printing stopped' );
-  Language.LL( Apply, CheckStopPrintTitle, 'CheckStopPrintTitle', 'Stop Print?' );
-  Language.LL( Apply, CheckStopPrintMsg, 'CheckStopPrintMsg', 'Printing is still in progress. It will be stopped if you close.' );
+  Language.LL( Apply, PrintTopicTitle, tmpPrefix + 'PrintTopicTitle', 'Print Topic' );
+  Language.LL( Apply, NoPrinterError, tmpPrefix + 'NoPrinterError', 'You don''t have a printer configured.' );
+  Language.LL( Apply, SelectWindowToPrintError, tmpPrefix + 'SelectWindowToPrintError', 'You must select the window you want to print.' );
+  Language.LL( Apply, PrintingError, tmpPrefix + 'PrintingError', 'Error while printing: ' );
+  Language.LL( Apply, StoppingPrintMsg, tmpPrefix + 'StoppingPrintMsg', 'Stopping print...' );
+  Language.LL( Apply, PrintStoppedMsg, tmpPrefix + 'PrintStoppedMsg', 'Printing stopped' );
+  Language.LL( Apply, CheckStopPrintTitle, tmpPrefix + 'CheckStopPrintTitle', 'Stop Print?' );
+  Language.LL( Apply, CheckStopPrintMsg, tmpPrefix + 'CheckStopPrintMsg', 'Printing is still in progress. It will be stopped if you close.' );
 
-  Language.LL( Apply, TopicInfoTitle, 'TopicInfo.Title', 'Topic Information' );
-  Language.LL( Apply, TopicInfoTopicTitle, 'TopicInfo.TopicTitle',   'Title: ' );
-  Language.LL( Apply, TopicInfoIndex, 'TopicInfo.Index',             'Index: ' );
-  Language.LL( Apply, TopicInfoFile, 'TopicInfo.File',               'File:  ' );
-  Language.LL( Apply, TopicInfoResourceIDs, 'TopicInfo.ResourceIDs', 'Resource IDs:' );
-  Language.LL( Apply, TopicInfoNoResourceIDs, 'TopicInfo.NoResourceIDs', '  (None)' );
+  Language.LL( Apply, TopicInfoTitle, tmpPrefix + 'TopicInfo.Title', 'Topic Information' );
+  Language.LL( Apply, TopicInfoTopicTitle, tmpPrefix + 'TopicInfo.TopicTitle',   'Title: ' );
+  Language.LL( Apply, TopicInfoIndex, tmpPrefix + 'TopicInfo.Index',             'Index: ' );
+  Language.LL( Apply, TopicInfoFile, tmpPrefix + 'TopicInfo.File',               'File:  ' );
+  Language.LL( Apply, TopicInfoResourceIDs, tmpPrefix + 'TopicInfo.ResourceIDs', 'Resource IDs:' );
+  Language.LL( Apply, TopicInfoNoResourceIDs, tmpPrefix + 'TopicInfo.NoResourceIDs', '  (None)' );
 
-  Language.LL( Apply, ParameterCountLabel, 'ParameterCountLabel', 'Parameter Count: ' );
+  Language.LL( Apply, ParameterCountLabel, tmpPrefix + 'ParameterCountLabel', 'Parameter Count: ' );
 
-  Language.LL( Apply, NewViewHelpTitle, 'NewViewHelpTitle', 'NewView Help' );
-  Language.LL( Apply, AlreadyNewviewHelp, 'AlreadyNewviewHelp', 'You are already viewing the NewView help file' );
-  Language.LL( Apply, NewViewHelpNotFound, 'NewViewHelpNotFound', 'Couldn''t find the NewView helpfile: ' );
+  Language.LL( Apply, NewViewHelpTitle, tmpPrefix + 'NewViewHelpTitle', 'NewView Help' );
+  Language.LL( Apply, AlreadyNewviewHelp, tmpPrefix + 'AlreadyNewviewHelp', 'You are already viewing the NewView help file' );
+  Language.LL( Apply, NewViewHelpNotFound, tmpPrefix + 'NewViewHelpNotFound', 'Couldn''t find the NewView helpfile: ' );
 
-  Language.LL( Apply, InvalidLinkErrorTitle, 'InvalidLinkErrorTitle', 'Invalid Link' );
-  Language.LL( Apply, InvalidLinkError, 'InvalidLinkError', 'Cannot follow link to nonexistent topic' );
-  Language.LL( Apply, InvalidResourceIDLinkErrorA, 'InvalidResourceIDLinkErrorA', 'Could not find linked topic (Resource #' );
-  Language.LL( Apply, InvalidResourceIDLinkErrorB, 'InvalidResourceIDLinkErrorB', '). This may be from another file.' );
+  Language.LL( Apply, InvalidLinkErrorTitle, tmpPrefix + 'InvalidLinkErrorTitle', 'Invalid Link' );
+  Language.LL( Apply, InvalidLinkError, tmpPrefix + 'InvalidLinkError', 'Cannot follow link to nonexistent topic' );
+  Language.LL( Apply, InvalidResourceIDLinkErrorA, tmpPrefix + 'InvalidResourceIDLinkErrorA', 'Could not find linked topic (Resource #' );
+  Language.LL( Apply, InvalidResourceIDLinkErrorB, tmpPrefix + 'InvalidResourceIDLinkErrorB', '). This may be from another file.' );
 
-  Language.LL( Apply, OpenedTopicMsg, 'OpenedTopicMsg', 'Opened topic #' );
+  Language.LL( Apply, OpenedTopicMsg, tmpPrefix + 'OpenedTopicMsg', 'Opened topic #' );
 
-  Language.LL( Apply, AddNoteTitle, 'AddNoteTitle', 'Add Note' );
-  Language.LL( Apply, AddNoteCursorError, 'AddNoteCursorError', 'Before adding a note, position the cursor where you want the note to be placed.' );
-  Language.LL( Apply, NoteWithinNoteError, 'NoteWithinNoteError', 'You can''t add a note within a link or another note' );
-  Language.LL( Apply, LoadNotesTitle, 'LoadNotesTitle', 'Load Notes' );
-  Language.LL( Apply, LoadNotesError, 'LoadNotesError', 'Error loading notes from ' );
-  Language.LL( Apply, SaveNotesTitle, 'SaveNotesTitle', 'Save Notes' );
-  Language.LL( Apply, SaveNotesError, 'SaveNotesError', 'Error saving notes to ' );
+  Language.LL( Apply, AddNoteTitle, tmpPrefix + 'AddNoteTitle', 'Add Note' );
+  Language.LL( Apply, AddNoteCursorError, tmpPrefix + 'AddNoteCursorError', 'Before adding a note, position the cursor where you want the note to be placed.' );
+  Language.LL( Apply, NoteWithinNoteError, tmpPrefix + 'NoteWithinNoteError', 'You can''t add a note within a link or another note' );
+  Language.LL( Apply, LoadNotesTitle, tmpPrefix + 'LoadNotesTitle', 'Load Notes' );
+  Language.LL( Apply, LoadNotesError, tmpPrefix + 'LoadNotesError', 'Error loading notes from ' );
+  Language.LL( Apply, SaveNotesTitle, tmpPrefix + 'SaveNotesTitle', 'Save Notes' );
+  Language.LL( Apply, SaveNotesError, tmpPrefix + 'SaveNotesError', 'Error saving notes to ' );
 
-  Language.LL( Apply, UntitledBookmarkName, 'UntitledBookmarkName', '(Untitled)' );
-  Language.LL( Apply, LoadBookmarksTitle, 'LoadBookmarksTitle', 'Load Bookmarks' );
-  Language.LL( Apply, LoadBookmarksError, 'LoadBookmarksError', 'Could not load bookmarks: ' );
-  Language.LL( Apply, SaveBookmarksTitle, 'SaveBookmarksTitle', 'Save Bookmarks' );
-  Language.LL( Apply, SaveBookmarksError, 'SaveBookmarksError', 'Could not save bookmarks: ' );
+  Language.LL( Apply, UntitledBookmarkName, tmpPrefix + 'UntitledBookmarkName', '(Untitled)' );
+  Language.LL( Apply, LoadBookmarksTitle, tmpPrefix + 'LoadBookmarksTitle', 'Load Bookmarks' );
+  Language.LL( Apply, LoadBookmarksError, tmpPrefix + 'LoadBookmarksError', 'Could not load bookmarks: ' );
+  Language.LL( Apply, SaveBookmarksTitle, tmpPrefix + 'SaveBookmarksTitle', 'Save Bookmarks' );
+  Language.LL( Apply, SaveBookmarksError, tmpPrefix + 'SaveBookmarksError', 'Could not save bookmarks: ' );
 
-  Language.LL( Apply, ApplicationErrorTitle, 'ApplicationErrorTitle', 'Application Error - Close?' );
-  Language.LL( Apply, ApplicationErrorA, 'ApplicationErrorA', 'This application has crashed. ' );
-  Language.LL( Apply, ApplicationErrorB, 'ApplicationErrorB', '(Details logged to ' );
-  Language.LL( Apply, ApplicationErrorC, 'ApplicationErrorC', 'Close application? ' );
+  Language.LL( Apply, ApplicationErrorTitle, tmpPrefix + 'ApplicationErrorTitle', 'Application Error - Close?' );
+  Language.LL( Apply, ApplicationErrorA, tmpPrefix + 'ApplicationErrorA', 'This application has crashed. ' );
+  Language.LL( Apply, ApplicationErrorB, tmpPrefix + 'ApplicationErrorB', '(Details logged to ' );
+  Language.LL( Apply, ApplicationErrorC, tmpPrefix + 'ApplicationErrorC', 'Close application? ' );
 
-  Language.LL( Apply, EnvironmentVarErrorTitle, 'EnvironmentVarErrorTitle', 'Environment Variable Warning' );
+  Language.LL( Apply, EnvironmentVarErrorTitle, tmpPrefix + 'EnvironmentVarErrorTitle', 'Environment Variable Warning' );
   Language.LL( Apply, EnvironmentVarError,
-      'EnvironmentVarError',
+      tmpPrefix + 'EnvironmentVarError',
       'NewView found a problem with environment variables. '
       + 'These are used when finding help files. '
       + 'You may have problems launching help.' );
-  Language.LL( Apply, EnvironmentVarUndefined, 'EnvironmentVarUndefined', 'Undefined: ' );
+  Language.LL( Apply, EnvironmentVarUndefined, tmpPrefix + 'EnvironmentVarUndefined', 'Undefined: ' );
 
-  Language.LL( Apply, FindTitle, 'FindTitle', 'Find' );
-  Language.LL( Apply, FindSelectWindowError, 'FindSelectWindowError', 'Click in a window first' );
-  Language.LL( Apply, FindPrompt, 'FindPrompt', 'Enter the text to find' );
-  Language.LL( Apply, TextNotFoundMsg, 'TextNotFoundMsg', 'Text not found' );
+  Language.LL( Apply, FindTitle, tmpPrefix + 'FindTitle', 'Find' );
+  Language.LL( Apply, FindSelectWindowError, tmpPrefix + 'FindSelectWindowError', 'Click in a window first' );
+  Language.LL( Apply, FindPrompt, tmpPrefix + 'FindPrompt', 'Enter the text to find' );
+  Language.LL( Apply, TextNotFoundMsg, tmpPrefix + 'TextNotFoundMsg', 'Text not found' );
 
-  Language.LL( Apply, FilesInfoTitle, 'FilesInfoTitle', 'Open Files Information' );
-  Language.LL( Apply, FilesInfoOverallTitle, 'FilesInfoOverallTitle', 'Title: ' );
-  Language.LL( Apply, FilesInfoFilename, 'FilesInfoFilename', 'Filename: ' );
-  Language.LL( Apply, FilesInfoFileTitle, 'FilesInfoFileTitle', '  Title: ' );
-  Language.LL( Apply, FilesInfoTopicCount, 'FilesInfoTopicCount', '  Topic Count: ' );
-  Language.LL( Apply, FilesInfoIndexCount, 'FilesInfoIndexCount', '  Index Count: ' );
-  Language.LL( Apply, FilesInfoDictionaryCount, 'FilesInfoDictionaryCount', '  Dictionary Count: ' );
-  Language.LL( Apply, FilesInfoFileSize, 'FilesInfoFileSize', '  Size: ' );
-  Language.LL( Apply, FilesInfoTotalTopicCount, 'FilesInfoTotalTopicCount', 'Total Topic Count: ' );
-  Language.LL( Apply, FilesInfoTotalIndexCount, 'FilesInfoTotalIndexCount', 'Total Index Count: ' );
-  Language.LL( Apply, FilesInfoTotalFileSize, 'FilesInfoTotalFileSize', 'Total File Size: ' );
+  Language.LL( Apply, FilesInfoTitle, tmpPrefix + 'FilesInfoTitle', 'Open Files Information' );
+  Language.LL( Apply, FilesInfoOverallTitle, tmpPrefix + 'FilesInfoOverallTitle', 'Title: ' );
+  Language.LL( Apply, FilesInfoFilename, tmpPrefix + 'FilesInfoFilename', 'Filename: ' );
+  Language.LL( Apply, FilesInfoFileTitle, tmpPrefix + 'FilesInfoFileTitle', '  Title: ' );
+  Language.LL( Apply, FilesInfoTopicCount, tmpPrefix + 'FilesInfoTopicCount', '  Topic Count: ' );
+  Language.LL( Apply, FilesInfoIndexCount, tmpPrefix + 'FilesInfoIndexCount', '  Index Count: ' );
+  Language.LL( Apply, FilesInfoDictionaryCount, tmpPrefix + 'FilesInfoDictionaryCount', '  Dictionary Count: ' );
+  Language.LL( Apply, FilesInfoFileSize, tmpPrefix + 'FilesInfoFileSize', '  Size: ' );
+  Language.LL( Apply, FilesInfoTotalTopicCount, tmpPrefix + 'FilesInfoTotalTopicCount', 'Total Topic Count: ' );
+  Language.LL( Apply, FilesInfoTotalIndexCount, tmpPrefix + 'FilesInfoTotalIndexCount', 'Total Index Count: ' );
+  Language.LL( Apply, FilesInfoTotalFileSize, tmpPrefix + 'FilesInfoTotalFileSize', 'Total File Size: ' );
 
-  Language.LL( Apply, SearchTitle, 'SearchTitle', 'Search' );
-  Language.LL( Apply, SearchSyntaxError, 'SearchSyntaxError', 'Error in search syntax: ' );
-  Language.LL( Apply, SearchingMsg, 'SearchingMsg', 'Searching...' );
-  Language.LL( Apply, NoSearchMatchesMsg, 'NoSearchMatchesMsg', 'No matches found for ' );
-  Language.LL( Apply, SearchFoundMsgA, 'SearchFoundMsgA', 'Found ' );
-  Language.LL( Apply, SearchFoundMsgB, 'SearchFoundMsgB', ' matches for ' );
+  Language.LL( Apply, SearchTitle, tmpPrefix + 'SearchTitle', 'Search' );
+  Language.LL( Apply, SearchSyntaxError, tmpPrefix + 'SearchSyntaxError', 'Error in search syntax: ' );
+  Language.LL( Apply, SearchingMsg, tmpPrefix + 'SearchingMsg', 'Searching...' );
+  Language.LL( Apply, NoSearchMatchesMsg, tmpPrefix + 'NoSearchMatchesMsg', 'No matches found for ' );
+  Language.LL( Apply, SearchFoundMsgA, tmpPrefix + 'SearchFoundMsgA', 'Found ' );
+  Language.LL( Apply, SearchFoundMsgB, tmpPrefix + 'SearchFoundMsgB', ' matches for ' );
 
-  Language.LL( Apply, FileSaveTitle, 'FileSaveTitle', 'Save Topic' );
-  Language.LL( Apply, FileSaveSelectWindowError, 'FileSaveSelectWindowError', 'Before saving, click in the window you want to save.' );
-  Language.LL( Apply, DefaultSaveTopicFilename, 'DefaultSaveTopicFilename', 'topic.txt' );
+  Language.LL( Apply, FileSaveTitle, tmpPrefix + 'FileSaveTitle', 'Save Topic' );
+  Language.LL( Apply, FileSaveSelectWindowError, tmpPrefix + 'FileSaveSelectWindowError', 'Before saving, click in the window you want to save.' );
+  Language.LL( Apply, DefaultSaveTopicFilename, tmpPrefix + 'DefaultSaveTopicFilename', 'topic.txt' );
 
-  Language.LL( Apply, ReplaceFilePromptA, 'ReplaceFilePromptA', 'Replace existing file ' );
-  Language.LL( Apply, ReplaceFilePromptB, 'ReplaceFilePromptB', '?' );
-  Language.LL( Apply, UnableToSaveError, 'UnableToSaveError', 'Unable to save file: ' );
+  Language.LL( Apply, ReplaceFilePromptA, tmpPrefix + 'ReplaceFilePromptA', 'Replace existing file ' );
+  Language.LL( Apply, ReplaceFilePromptB, tmpPrefix + 'ReplaceFilePromptB', '?' );
+  Language.LL( Apply, UnableToSaveError, tmpPrefix + 'UnableToSaveError', 'Unable to save file: ' );
 
-  Language.LL( Apply, UsageTitle, 'UsageTitle', 'NewView Command Line' );
-  Language.LL( Apply, UsageText1, 'UsageText1', 'Usage: ' );
-  Language.LL( Apply, UsageText2, 'UsageText2', 'NewView <filename> [<topic>]' );
-  Language.LL( Apply, UsageText3, 'UsageText3', ' /s Do search for <topic>' );
-  Language.LL( Apply, UsageText4, 'UsageText4', ' /g Do global search for <topic>' );
-  Language.LL( Apply, UsageText5, 'UsageText5', ' /pos:l,b,w,h Set window position' );
-  Language.LL( Apply, UsageText6, 'UsageText6', ' /lang:<lang> Load UI language' );
-  Language.LL( Apply, UsageText7, 'UsageText7', ' /title:<title> Set window title' );
-  Language.LL( Apply, UsageText8, 'UsageText8', 'See help for details' );
+  Language.LL( Apply, UsageTitle, tmpPrefix + 'UsageTitle', 'NewView Command Line' );
+  Language.LL( Apply, UsageText1, tmpPrefix + 'UsageText1', 'Usage: ' );
+  Language.LL( Apply, UsageText2, tmpPrefix + 'UsageText2', 'NewView <filename> [<topic>]' );
+  Language.LL( Apply, UsageText3, tmpPrefix + 'UsageText3', ' /s Do search for <topic>' );
+  Language.LL( Apply, UsageText4, tmpPrefix + 'UsageText4', ' /g Do global search for <topic>' );
+  Language.LL( Apply, UsageText5, tmpPrefix + 'UsageText5', ' /pos:l,b,w,h Set window position' );
+  Language.LL( Apply, UsageText6, tmpPrefix + 'UsageText6', ' /lang:<lang> Load UI language' );
+  Language.LL( Apply, UsageText7, tmpPrefix + 'UsageText7', ' /title:<title> Set window title' );
+  Language.LL( Apply, UsageText8, tmpPrefix + 'UsageText8', 'See help for details' );
 
-  Language.LL( Apply, GoBackHint, 'GoBackHint', 'Go back to ' );
+  Language.LL( Apply, GoBackHint, tmpPrefix + 'GoBackHint', 'Go back to ' );
 
-  Language.LL( Apply, SelectAllTitle, 'SelectAllTitle', 'Select All' );
-  Language.LL( Apply, SelectAllWindowError, 'SelectAllWindowError', 'Click in a text window first' );
+  Language.LL( Apply, SelectAllTitle, tmpPrefix + 'SelectAllTitle', 'Select All' );
+  Language.LL( Apply, SelectAllWindowError, tmpPrefix + 'SelectAllWindowError', 'Click in a text window first' );
 
-  Language.LL( Apply, EditNoteMsg, 'EditNoteMsg', 'Click to edit note' );
-  Language.LL( Apply, ExternalLinkMsg, 'ExternalLinkMsg', 'Link to another file' );
-  Language.LL( Apply, LinkMsg, 'LinkMsg', 'Link to' );
-  Language.LL( Apply, UnknownLinkMsg, 'UnknownLinkMsg', 'Unknown link' );
-  Language.LL( Apply, FootnoteMsg, 'FootnoteMsg', 'Footnote' );
+  Language.LL( Apply, EditNoteMsg, tmpPrefix + 'EditNoteMsg', 'Click to edit note' );
+  Language.LL( Apply, ExternalLinkMsg, tmpPrefix + 'ExternalLinkMsg', 'Link to another file' );
+  Language.LL( Apply, LinkMsg, tmpPrefix + 'LinkMsg', 'Link to' );
+  Language.LL( Apply, UnknownLinkMsg, tmpPrefix + 'UnknownLinkMsg', 'Unknown link' );
+  Language.LL( Apply, FootnoteMsg, tmpPrefix + 'FootnoteMsg', 'Footnote' );
 
-  Language.LL( Apply, ExternalLinkTitle, 'ExternalLinkTitle', 'File Link' );
-  Language.LL( Apply, ExternalLinkError, 'ExternalLinkError', 'Sorry, this is a link to another file, which is not currently implemented in NewView' );
+  Language.LL( Apply, ExternalLinkTitle, tmpPrefix + 'ExternalLinkTitle', 'File Link' );
+  Language.LL( Apply, ExternalLinkError, tmpPrefix + 'ExternalLinkError', 'Sorry, this is a link to another file, which is not currently implemented in NewView' );
 
-  Language.LL( Apply, MRUMultipleFilesHint, 'MRUMultipleFilesHint', 'files' );
-  Language.LL( Apply, HelpProgramTitle, 'HelpProgramTitle', 'Help' );
+  Language.LL( Apply, MRUMultipleFilesHint, tmpPrefix + 'MRUMultipleFilesHint', 'files' );
+  Language.LL( Apply, HelpProgramTitle, tmpPrefix + 'HelpProgramTitle', 'Help' );
 
-  Language.LL( Apply, WindowsHelpTitle, 'WindowsHelpTitle', 'Windows Help' );
+  Language.LL( Apply, WindowsHelpTitle, tmpPrefix + 'WindowsHelpTitle', 'Windows Help' );
+// TODO
   Language.LL( Apply,
                WindowsHelpPrompt,
-               'WindowsHelpPrompt',
+               tmpPrefix + 'WindowsHelpPrompt',
                'This file is a Windows help file. '
                + 'Would you like to start Windows Help viewer?' );
 
-  Language.LL( Apply, ErrorTitle, 'ErrorTitle', 'Error' );
+  Language.LL( Apply, ErrorTitle, tmpPrefix + 'ErrorTitle', 'Error' );
 
-  Language.LL( Apply, FindTopicNameTitle, 'FindTopicNameTitle', 'Find Topic By Name' );
-  Language.LL( Apply, FindTopicNamePrompt, 'FindTopicNamePrompt', 'Enter the topic name to search for' );
-  Language.LL( Apply, TopicNameNotFoundError, 'TopicNameNotFoundError', 'Topic name not found' );
-  Language.LL( Apply, SplitBarDblClickToShow, 'SplitBarDblClickToShow', 'Double-click to show left panel' );
-  Language.LL( Apply, SplitBarDblClickToHide, 'SplitBarDblClickToHide', 'Double-click to hide left panel' );
+  Language.LL( Apply, FindTopicNameTitle, tmpPrefix + 'FindTopicNameTitle', 'Find Topic By Name' );
+  Language.LL( Apply, FindTopicNamePrompt, tmpPrefix + 'FindTopicNamePrompt', 'Enter the topic name to search for' );
+  Language.LL( Apply, TopicNameNotFoundError, tmpPrefix + 'TopicNameNotFoundError', 'Topic name not found' );
+  Language.LL( Apply, SplitBarDblClickToShow, tmpPrefix + 'SplitBarDblClickToShow', 'Double-click to show left panel' );
+  Language.LL( Apply, SplitBarDblClickToHide, tmpPrefix + 'SplitBarDblClickToHide', 'Double-click to hide left panel' );
 
   SetMainCaption;
   CreateMRUMenuItems;
@@ -1575,7 +1577,7 @@ End;
 
 Procedure TMainForm.DebugSaveLanguageFileMIOnClick (Sender: TObject);
 Var
-  LanguageFile: TLanguageFile;
+  // LanguageFile: TLanguageFile;
   Dir: string;
   Filename: string;
 Begin
@@ -1595,9 +1597,10 @@ Begin
   MRUMenuItems.Clear;
 
   try
-    LanguageFile := TLanguageFile.Create( Filename );
-
-    UpdateLanguage( LanguageFile );
+    // first touch all
+    UpdateLanguage(g_CurrentLanguageFile);
+    // then save
+    g_CurrentLanguageFile.writeToFile(Filename);
   except
     on E: Exception do
     begin
@@ -1606,9 +1609,7 @@ Begin
       exit;
     end;
   end;
-
-  LanguageFile.Destroy;
-
+ 
   CreateMRUMenuItems;
 End;
 
@@ -3828,7 +3829,7 @@ Begin
   Application.HelpFile := CmdLineParameters.GetOwnHelpFilename; // OWN_HELP_MARKER;
   Application.OnHelp := OnHelp;
 
-  RegisterForLanguages( OnLanguageEvent );
+  RegisterEventForLanguages( OnLanguageEvent );
 
   // if debug is not enabled, get rid of the debug menu and separator.
   if not CmdLineParameters.isDebugEnabled then
@@ -3913,7 +3914,7 @@ Begin
   begin
     if CmdLineParameters.getLanguage <> '' then
     begin
-      if not LoadAutoLanguage('newview', CmdLineParameters.getLanguage) then
+      if not LoadLanguageForSpec('newview', CmdLineParameters.getLanguage) then
       begin
         LoadDefaultLanguage('newview');
       end

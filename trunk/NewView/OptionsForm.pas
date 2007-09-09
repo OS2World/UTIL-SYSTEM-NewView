@@ -197,8 +197,9 @@ Procedure TOptionsForm.OnLanguageEvent( Language: TLanguageFile;
 var
   i: longint;
   ColorItemName: string;
+  tmpPrefix : String;
 begin
-  LogEvent(LogI18n, 'TOptionsForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  // LogEvent(LogI18n, 'TOptionsForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
   if Apply then
@@ -207,11 +208,13 @@ begin
     ColorItemsListBox.Items.Clear;
   end;
 
+  tmpPrefix := 'OptionsForm' + LANGUAGE_LABEL_DELIMITER;
+
   for i := 0 to NumColorSettings - 1 do
   begin
     Language.LL( Apply,
                  ColorItemName,
-                 'ColorItemName' + IntToStr( i ),
+                 tmpPrefix + 'ColorItemName' + IntToStr( i ),
                  DefaultColorItemNames[ i ] );
     if Apply then
       ColorItemsListBox.Items.Add( ColorItemName );
@@ -220,10 +223,10 @@ begin
   if Apply then
     ColorItemsListBox.EndUpdate;
 
-  Language.LL( Apply, SelectBitmapTitle, 'SelectBitmapTitle', 'Select Bitmap File' );
-  Language.LL( Apply, BitmapFilesDesc, 'BitmapFilesDesc', 'Bitmaps (*.bmp)' );
-  Language.LL( Apply, BoldFontSuffix, 'BoldFontSuffix', ' Bold' );
-  Language.LL( Apply, ItalicFontSuffix, 'ItalicFontSuffix', ' Italic' );
+  Language.LL( Apply, SelectBitmapTitle, tmpPrefix + 'SelectBitmapTitle', 'Select Bitmap File' );
+  Language.LL( Apply, BitmapFilesDesc, tmpPrefix + 'BitmapFilesDesc', 'Bitmaps (*.bmp)' );
+  Language.LL( Apply, BoldFontSuffix, tmpPrefix + 'BoldFontSuffix', ' Bold' );
+  Language.LL( Apply, ItalicFontSuffix, tmpPrefix + 'ItalicFontSuffix', ' Italic' );
 end;
 
 Procedure TOptionsForm.DefaultFontsButtonOnClick (Sender: TObject);
@@ -357,7 +360,7 @@ End;
 
 Procedure TOptionsForm.OptionsFormOnCreate (Sender: TObject);
 Begin
-  RegisterForLanguages( OnLanguageEvent );
+  RegisterEventForLanguages( OnLanguageEvent );
 
   TabbedNoteBook.ShowPageHint := false;
   TabbedNoteBook.NotebookMargin := 2;
