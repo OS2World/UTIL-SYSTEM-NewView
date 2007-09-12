@@ -30,6 +30,7 @@ const
 
 type
   TLanguageItem = record
+    pLabel: pString;
     pValue: pString;
     wasUsed: boolean;
     isDefault: boolean;
@@ -180,6 +181,7 @@ var
       tmpPLanguageItem := TPLanguageItem(translationsList.Objects[i]);
 
       // free the parts of the item
+      DisposeStr(tmpPLanguageItem^.pLabel);
       DisposeStr(tmpPLanguageItem^.pValue);
       Dispose(tmpPLanguageItem);
     end;
@@ -236,6 +238,7 @@ var
     // LogEvent(LogI18n, 'TLanguageItemList.setValueWithFlags(' + aLabel + ')->' + aValue + '[' + BoolToStr(aDefaultFlag) + ']');
 
     New(tmpPLanguageItem);
+    tmpPLanguageItem^.pLabel := NewStr(aLabel);
     tmpPLanguageItem^.pValue := NewStr(aValue);
     tmpPLanguageItem^.wasUsed := false;
     tmpPLanguageItem^.isDefault := aDefaultFlag;
@@ -258,7 +261,7 @@ var
       tmpPLanguageItem := TPLanguageItem(translationsList.Objects[i]);
       if tmpPLanguageItem^.wasUsed then
       begin
-        tmpLabel := translationsList.Names[i];
+        tmpLabel := tmpPLanguageItem^.pLabel^;
 
         tmpQuotedValue := tmpPLanguageItem^.pValue^;
         tmpQuotedValue := StrEscapeAllCharsBy(tmpQuotedValue, [], '"');
@@ -293,7 +296,7 @@ var
           Writeln(aTextFile, '# **********************************************************');
         end;
 
-        tmpLabel := translationsList.Names[i];
+        tmpLabel := tmpPLanguageItem^.pLabel^;
 
         tmpQuotedValue := tmpPLanguageItem^.pValue^;
         tmpQuotedValue := StrEscapeAllCharsBy(tmpQuotedValue, [], '"');
@@ -497,7 +500,7 @@ Type
             tmpValue := tmpLineParts[1];
           end;
 
-          languageItems.setValue(UpperCase(tmpLabel), tmpValue);
+          languageItems.setValue(tmpLabel, tmpValue);
         end;
       end;
     end;
@@ -522,11 +525,11 @@ Type
 
     if anApplyFlag then
     begin
-      aValue := languageItems.getValue(UpperCase(aLabel), aDefaultValue)
+      aValue := languageItems.getValue(aLabel, aDefaultValue)
     end
     else
     begin
-      languageItems.getValue(UpperCase(aLabel), aDefaultValue)
+      languageItems.getValue(aLabel, aDefaultValue)
     end
   end;
 
@@ -598,10 +601,10 @@ Type
       // skip separators
       if tmpMenuItem.Caption <> '-' then
       begin
-        tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Caption'), tmpMenuItem.Caption);
+        tmpValue := languageItems.getValue(tmpComponentPath + 'Caption', tmpMenuItem.Caption);
         if '' <> tmpValue then tmpMenuItem.Caption := tmpValue;
 
-        tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Hint'), tmpMenuItem.Hint);
+        tmpValue := languageItems.getValue(tmpComponentPath + 'Hint', tmpMenuItem.Hint);
         if '' <> tmpValue then tmpMenuItem.Hint := tmpValue;
       end;
     end
@@ -610,10 +613,10 @@ Type
     begin
       tmpButton := TButton(aComponent);
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Caption'), tmpButton.Caption);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Caption', tmpButton.Caption);
       if '' <> tmpValue then tmpButton.Caption := tmpValue;
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Hint'), tmpButton.Hint);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Hint', tmpButton.Hint);
       if '' <> tmpValue then tmpButton.Hint := tmpValue;
     end
 
@@ -621,10 +624,10 @@ Type
     begin
       tmpLabel := TLabel(aComponent);
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Caption'), tmpLabel.Caption);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Caption', tmpLabel.Caption);
       if '' <> tmpValue then tmpLabel.Caption := tmpValue;
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Hint'), tmpLabel.Hint);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Hint', tmpLabel.Hint);
       if '' <> tmpValue then tmpLabel.Hint := tmpValue;
     end
 
@@ -632,12 +635,12 @@ Type
     begin
       tmpRadioGroup := TRadioGroup(aComponent);
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Caption'), tmpRadioGroup.Caption);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Caption', tmpRadioGroup.Caption);
       if '' <> tmpValue then tmpRadioGroup.Caption := tmpValue;
 
       for i := 0 to tmpRadioGroup.Items.Count - 1 do
       begin
-        tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Item' + IntToStr(i)), tmpRadioGroup.Items[i]);
+        tmpValue := languageItems.getValue(tmpComponentPath + 'Item' + IntToStr(i), tmpRadioGroup.Items[i]);
         if '' <> tmpValue then tmpRadioGroup.Items[i] := tmpValue;
       end;
     end
@@ -648,7 +651,7 @@ Type
 
       for i := 0 to tmpTabSet.Tabs.Count - 1 do
       begin
-        tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Tab' + IntToStr(i)), tmpTabSet.Tabs[i]);
+        tmpValue := languageItems.getValue(tmpComponentPath + 'Tab' + IntToStr(i), tmpTabSet.Tabs[i]);
         if '' <> tmpValue then tmpTabSet.Tabs[i] := tmpValue;
       end;
     end
@@ -658,10 +661,10 @@ Type
       tmpTabbedNotebook := TTabbedNotebook(aComponent);
       for i := 0 to tmpTabbedNotebook.Pages.Count - 1 do
       begin
-        tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Tab' + IntToStr(i) + '.Caption'), tmpTabbedNotebook.Pages[i]);
+        tmpValue := languageItems.getValue(tmpComponentPath + 'Tab' + IntToStr(i) + '.Caption', tmpTabbedNotebook.Pages[i]);
         if '' <> tmpValue then tmpTabbedNotebook.Pages[i] := tmpValue;
 
-        tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Tab' + IntToStr(i) + '.Hint'), tmpTabbedNotebook.Pages.Pages[i].Hint);
+        tmpValue := languageItems.getValue(tmpComponentPath + 'Tab' + IntToStr(i) + '.Hint', tmpTabbedNotebook.Pages.Pages[i].Hint);
         if '' <> tmpValue then tmpTabbedNotebook.Pages.Pages[i].Hint := tmpValue;
       end;
     end
@@ -670,7 +673,7 @@ Type
     begin
       tmpForm := TForm(aComponent);
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Caption'), tmpForm.Caption);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Caption', tmpForm.Caption);
       if '' <> tmpValue then tmpForm.Caption := tmpValue;
 
       // load owned controls
@@ -684,10 +687,10 @@ Type
     begin
       tmpRadioButton := TRadioButton(aComponent);
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Caption'), tmpRadioButton.Caption);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Caption', tmpRadioButton.Caption);
       if '' <> tmpValue then tmpRadioButton.Caption := tmpValue;
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Hint'), tmpRadioButton.Hint);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Hint', tmpRadioButton.Hint);
       if '' <> tmpValue then tmpRadioButton.Hint := tmpValue;
     end
 
@@ -695,10 +698,10 @@ Type
     begin
       tmpCheckBox := TCheckBox(aComponent);
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Caption'), tmpCheckBox.Caption);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Caption', tmpCheckBox.Caption);
       if '' <> tmpValue then tmpCheckBox.Caption := tmpValue;
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Hint'), tmpCheckBox.Hint);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Hint', tmpCheckBox.Hint);
       if '' <> tmpValue then tmpCheckBox.Hint := tmpValue;
     end
 
@@ -707,7 +710,7 @@ Type
       tmpCoolBar2 := TCoolBar2(aComponent);
       for i := 0 to tmpCoolBar2.Sections.Count - 1 do
       begin
-        tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Item' + IntToStr(i)), tmpCoolBar2.Sections[i].Text);
+        tmpValue := languageItems.getValue(tmpComponentPath + 'Item' + IntToStr(i), tmpCoolBar2.Sections[i].Text);
         if '' <> tmpValue then tmpCoolBar2.Sections[i].Text := tmpValue;
       end;
     end
@@ -716,10 +719,10 @@ Type
     begin
       tmpGroupBox := TGroupBox(aComponent);
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Caption'), tmpGroupBox.Caption);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Caption', tmpGroupBox.Caption);
       if '' <> tmpValue then tmpGroupBox.Caption := tmpValue;
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Hint'), tmpGroupBox.Hint);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Hint', tmpGroupBox.Hint);
       if '' <> tmpValue then tmpGroupBox.Hint := tmpValue;
     end
 
@@ -729,7 +732,7 @@ Type
 
       for i := 0 to tmpMultiColumnListBox.HeaderColumns.Count - 1 do
       begin
-        tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Column' + IntToStr(i)), tmpMultiColumnListBox.HeaderColumns[i].Text);
+        tmpValue := languageItems.getValue(tmpComponentPath + 'Column' + IntToStr(i), tmpMultiColumnListBox.HeaderColumns[i].Text);
         if '' <> tmpValue then tmpMultiColumnListBox.HeaderColumns[i].Text := tmpValue;
       end;
     end
@@ -738,10 +741,10 @@ Type
     begin
       tmpSystemOpenDialog := TSystemOpenDialog(aComponent);
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'OKName'), tmpSystemOpenDialog.OKName);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'OKName', tmpSystemOpenDialog.OKName);
       if '' <> tmpValue then tmpSystemOpenDialog.OKName := tmpValue;
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Title'), tmpSystemOpenDialog.Title);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Title', tmpSystemOpenDialog.Title);
       if '' <> tmpValue then tmpSystemOpenDialog.Title := tmpValue;
     end
 
@@ -749,10 +752,10 @@ Type
     begin
       tmpSystemSaveDialog := TSystemSaveDialog(aComponent);
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'OKName'), tmpSystemSaveDialog.OKName);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'OKName', tmpSystemSaveDialog.OKName);
       if '' <> tmpValue then tmpSystemSaveDialog.OKName := tmpValue;
 
-      tmpValue := languageItems.getValue(UpperCase(tmpComponentPath + 'Title'), tmpSystemSaveDialog.Title);
+      tmpValue := languageItems.getValue(tmpComponentPath + 'Title', tmpSystemSaveDialog.Title);
       if '' <> tmpValue then tmpSystemSaveDialog.Title := tmpValue;
     end;
   end;
