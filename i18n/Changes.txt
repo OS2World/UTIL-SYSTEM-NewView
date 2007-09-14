@@ -3,6 +3,9 @@ NewView release changes
 V2.20
 - big parts of the translation engine are refactored. The files are now sorted by label
   if you export them.
+- More german translations added
+- There was a print message that was not 'translatable'; fixed
+
 
 V2.19
 - the display of a bubble help at some places of the left panel is removed
