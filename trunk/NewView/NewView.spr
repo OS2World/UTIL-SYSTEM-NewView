@@ -163,22 +163,22 @@ CompInstallDir=
 
 [Find History]
 
-Find0=OpenWindowsHelp
-Find1=WINDOWSHELPPROMPT
-Find2=TLanguageItemList.get
-Find3=TlanguageItemList
-Find4=LoadLanguage
-Find5=DebugLoadLanguageMIOnClick
-Find6=loadlang
-Find7=ApplyLanguage
-Find8=updatelang
-Find9=updatel
-Find10=open
-Find11=RegisterUpdateProcForLanguages
-Find12=g_LanguageUpdateCallbacks
-Find13=writeToFile
-Find14=saveTo
-Find15=debugfind
+Find0=PrintingError
+Find1=Printing
+Find2=PrintingComplete
+Find3=Printing comple
+Find4=print
+Find5=printing com
+Find6=OpenWindowsHelp
+Find7=WINDOWSHELPPROMPT
+Find8=TLanguageItemList.get
+Find9=TlanguageItemList
+Find10=LoadLanguage
+Find11=DebugLoadLanguageMIOnClick
+Find12=loadlang
+Find13=ApplyLanguage
+Find14=updatelang
+Find15=updatel
 
 [General]
 
@@ -198,8 +198,7 @@ File0=.\FileDialogForm.pas
 File1=.\GlobalSearchForm.pas
 File2=.\InformationFormUnit.pas
 File3=.\NoteForm.pas
-File4=.\PrintDialogUnit.pas
-File5=.\ProductInformationFormUnit.pas
+File4=.\ProductInformationFormUnit.pas
 
 [Last Open Files]
 
@@ -215,8 +214,8 @@ File1.Left=-4
 File1.Bottom=-4
 File1.Width=1296
 File1.Height=629
-File1.Column=31
-File1.Line=24
+File1.Column=4
+File1.Line=34
 File2=..\.\Components\ACLLanguageUnit.pas
 File2.Left=-4
 File2.Bottom=-4
@@ -229,8 +228,8 @@ File3.Left=-4
 File3.Bottom=-4
 File3.Width=1296
 File3.Height=629
-File3.Column=35
-File3.Line=6483
+File3.Column=13
+File3.Line=2055
 File4=.\HelpTopic.pas
 File4.Left=-4
 File4.Bottom=-4
@@ -245,6 +244,13 @@ File5.Width=1296
 File5.Height=629
 File5.Column=37
 File5.Line=1063
+File6=.\PrintDialogUnit.pas
+File6.Left=-4
+File6.Bottom=-4
+File6.Width=1296
+File6.Height=629
+File6.Column=31
+File6.Line=56
 
 [Linker Options]
 

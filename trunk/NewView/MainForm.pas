@@ -689,6 +689,7 @@ Type
     PrintTopicTitle: string;
     NoPrinterError: string;
     SelectWindowToPrintError: string;
+    PrintingComplete : string;
     PrintingError: string;
     StoppingPrintMsg: string;
     PrintStoppedMsg: string;
@@ -1422,6 +1423,7 @@ Begin
   Language.LL( Apply, PrintTopicTitle, tmpPrefix + 'PrintTopicTitle', 'Print Topic' );
   Language.LL( Apply, NoPrinterError, tmpPrefix + 'NoPrinterError', 'You don''t have a printer configured.' );
   Language.LL( Apply, SelectWindowToPrintError, tmpPrefix + 'SelectWindowToPrintError', 'You must select the window you want to print.' );
+  Language.LL( Apply, PrintingComplete, tmpPrefix + 'PrintingComplete', 'Printing complete' );
   Language.LL( Apply, PrintingError, tmpPrefix + 'PrintingError', 'Error while printing: ' );
   Language.LL( Apply, StoppingPrintMsg, tmpPrefix + 'StoppingPrintMsg', 'Stopping print...' );
   Language.LL( Apply, PrintStoppedMsg, tmpPrefix + 'PrintStoppedMsg', 'Printing stopped' );
@@ -2050,7 +2052,7 @@ end;
 
 procedure TMainForm.OnPrintComplete( Dummy: TObject );
 begin
-  SetStatus( 'Printing complete' );
+  SetStatus(PrintingComplete);
   ResetProgress;
 end;
 
