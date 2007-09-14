@@ -17,6 +17,9 @@ uses
 const
   DIRECTORY_SEPARATOR = '\';
   PATH_SEPARATOR = ';';
+  CURRENT_DIRECTORY = '.';
+  PARENT_DIRECTORY = '..';
+  FILE_EXTENSION_DELIMITER = '.';
 
   // Drive numbers are one based
   MinDriveNumber = 1;
@@ -28,7 +31,7 @@ const
   BookshelfEnvironmentVar = 'BOOKSHELF';
   LanguageEnvironmentVar = 'LANG';
   DEFAULT_LANGUAGE = 'EN_US';
-  HELP_FILE_EXTENSION = '.hlp';
+  HELP_FILE_EXTENSION = FILE_EXTENSION_DELIMITER + 'hlp';
 
 
 type
@@ -254,14 +257,14 @@ type
     for i := 0 to tmpDirectories.count-1 do
     begin
       tmpDirectory := tmpDirectories[i];
-      if tmpDirectory = '..' then
+      if tmpDirectory = PARENT_DIREcTORY then
       begin
         if NOT ((Length(Result) = 2) AND (Result[2] = ':')) then
         begin
           Result := ParentDir(Result);
         end;
       end
-      else if tmpDirectory = '.' then
+      else if tmpDirectory = CURRENT_DIRECTORY then
       begin
         ; // nothing to do
       end
@@ -514,7 +517,7 @@ type
     while tmpRC = 0 do
     begin
       tmpName := tmpSearchResults.Name;
-      if (tmpName <> '.') AND (tmpName <> '..') then
+      if (tmpName <> CURRENT_DIRECTORY) AND (tmpName <> PARENT_DIRECTORY) then
       begin
         aList.Add(AddDirectorySeparatorIfNotEmpty(aDirectory) + tmpSearchResults.Name );
       end;
