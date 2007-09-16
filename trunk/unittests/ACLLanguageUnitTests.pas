@@ -8,6 +8,11 @@ Unit ACLLanguageUnitTests;
 
 Interface
 
+const
+  // TODO read environment var
+  TEST_PATH = 'P:\newview_dev';
+
+
 uses
   Classes,
   TestAssert,
@@ -126,6 +131,32 @@ Implementation
   // ----------------------------------------------------------
 
 
+  PROCEDURE testTLanguageItemList_ReadFromEmpty;
+  var
+    tmpItems : TLanguageItemList;
+    tmpTextFile : TextFile;
+    tmpFound : String;
+  begin
+    tmpItems := TLanguageItemList.Create;
+
+    FileMode := fmInput;
+    AssignFile(tmpTextFile, TEST_PATH + '\unittests\languageUnit\empty.lng');
+    Reset(tmpTextFile);
+
+    tmpItems.readFrom(tmpTextFile);
+
+    CloseFile(tmpTextFile);
+
+    tmpFound := tmpItems.getValue('unknown', 'default');
+    assertEqualsString('testTLanguageItemList_ReadFromEmpty unknown', '', tmpFound);
+
+    tmpItems.Destroy;
+  END;
+
+
+  // ----------------------------------------------------------
+
+
   FUNCTION getACLLanguageUnitTests : TList;
   BEGIN
     result := TList.Create;
@@ -135,6 +166,8 @@ Implementation
     result.add(@testTLanguageItemList_OneValue_NotFound);
     result.add(@testTLanguageItemList_OneValue);
     result.add(@testTLanguageItemList_ManyValues);
+
+    result.add(@testTLanguageItemList_ReadFromEmpty);
   END;
 
 END.
