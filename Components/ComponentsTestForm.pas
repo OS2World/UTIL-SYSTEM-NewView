@@ -48,6 +48,7 @@ type
     Memo1: TMemo;
     Button16: TButton;
     Image1: TImage;
+    DirectoryListBox1: TCustomDirectoryListBox;
     Button15: TButton;
     Panel1: TPanel;
     Button12: TButton;
@@ -118,7 +119,8 @@ uses
   RichTextPrintUnit,
   RichTextStyleUnit,
   ACLLanguageUnit,
-  CharUtilsUnit;
+  CharUtilsUnit,
+  DebugUnit;
 
 {$R DialogIcons}
 
@@ -515,4 +517,6 @@ Initialization
     TCustomDriveComboBox,
     TCustomDirectoryListBox, TCustomFilelistBox, TListBox, TRadioGroup
    , TEdit, TSpeedButton, TPanel, THeaderControl, TMemo, TImage]);
+
+   SetLogAspects('LogDebug');
 End.
