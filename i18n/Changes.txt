@@ -5,6 +5,7 @@ V2.20
   if you export them.
 - More german translations added
 - There was a print message that was not 'translatable'; fixed
+- The File Open dialog had problems with archived directories; fixed (see bug #31)
 
 
 V2.19
