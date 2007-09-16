@@ -93,11 +93,12 @@ type
                                         var aList : TStrings);
 
   // searches for all directories in aDirectory and add them to aList
-  Procedure ListSubDirectories(const aDirectory: String; var aList: TStrings);
+  Procedure ListSubDirectories(const aDirectory: String; const anIncludeSystemAndHiddenFlag: boolean; var aList: TStrings);
 
   Procedure ListFilesInDirectoryRecursiveWithTermination(const aDirectory : String;
                                                          const aFilter : String;
                                                          const aWithDirectoryFlag : boolean;
+                                                         const anIncludeSystemAndHiddenFlag: boolean;
                                                          var aList : TStrings;
                                                          const aTerminateCheck : TTerminateCheck;
                                                          const aUseTerminateCheck : boolean);
@@ -111,7 +112,7 @@ type
   Function MakeDirs(const aFullDirectoryPath: String) : String;
 
 
-
+  // Checks if a directory exists
   Function DirectoryExists(const aDirectory : String) : boolean;
 
   Function DriveLetterToDriveNumber(const aDriveLetter : char) : longint;
@@ -501,14 +502,24 @@ type
   end;
 
 
-  Procedure ListSubDirectories(const aDirectory: String; var aList: TStrings);
+  Procedure ListSubDirectories(const aDirectory: String; const anIncludeSystemAndHiddenFlag: boolean; var aList: TStrings);
   var
     tmpRC : APIRET;
     tmpSearchResults: TSearchRec;
     tmpName : String;
+    tmpFileAttributes : ULONG;
   begin
 
-    tmpRC := FindFirst(AddDirectorySeparator(aDirectory) + '*', faDirectory or faMustDirectory, tmpSearchResults);
+    if anIncludeSystemAndHiddenFlag then
+    begin
+      tmpFileAttributes := faArchive or faReadonly or faHidden or faSysFile or faDirectory or faMustDirectory;
+    end
+    else
+    begin
+      tmpFileAttributes := faArchive or faReadonly or faDirectory or faMustDirectory;
+    end;
+
+    tmpRC := FindFirst(AddDirectorySeparator(aDirectory) + '*', tmpFileAttributes, tmpSearchResults);
     if (tmpRC <> 0) then
     begin
       exit;
@@ -530,6 +541,7 @@ type
   Procedure ListFilesInDirectoryRecursiveWithTermination(const aDirectory : String;
                                                          const aFilter : String;
                                                          const aWithDirectoryFlag : boolean;
+                                                         const anIncludeSystemAndHiddenFlag: boolean;
                                                          var aList : TStrings;
                                                          const aTerminateCheck : TTerminateCheck;
                                                          const aUseTerminateCheck : boolean);
@@ -543,7 +555,7 @@ type
 
     // now determine all subdirectories
     tmpSubDirectories := TStringList.Create;
-    ListSubDirectories(aDirectory, tmpSubDirectories);
+    ListSubDirectories(aDirectory, anIncludeSystemAndHiddenFlag, tmpSubDirectories);
 
     for i := 0 to tmpSubDirectories.Count - 1 do
     begin
@@ -554,7 +566,13 @@ type
 
       tmpSubDirectory := tmpSubDirectories[i];
 
-      ListFilesInDirectoryRecursiveWithTermination(tmpSubDirectory, aFilter, aWithDirectoryFlag, aList, aTerminateCheck, aUseTerminateCheck);
+      ListFilesInDirectoryRecursiveWithTermination(     tmpSubDirectory,
+                                                        aFilter,
+                                                        aWithDirectoryFlag,
+                                                        anIncludeSystemAndHiddenFlag,
+                                                        aList,
+                                                        aTerminateCheck,
+                                                        aUseTerminateCheck);
     end;
     tmpSubDirectories.Destroy;
   end;
@@ -652,7 +670,9 @@ type
       end;
     end;
 
-    tmpRC := FindFirst(tmpDirectory, faDirectory or faMustDirectory, tmpSearchResults);
+    tmpRC := FindFirst( tmpDirectory,
+                        faArchive or faReadonly or faHidden or faSysFile or faDirectory or faMustDirectory,
+                        tmpSearchResults);
     if tmpRC = 0 then
     begin
       Result:= true;
