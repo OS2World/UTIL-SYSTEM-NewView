@@ -77,7 +77,8 @@ var
 Implementation
 
 uses
-  ACLFileIOUtility, ACLUtility,
+  ACLFileIOUtility,
+  ACLUtility,
   ACLDialogs;
 
 const
