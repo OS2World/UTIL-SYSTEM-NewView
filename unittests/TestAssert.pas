@@ -26,12 +26,16 @@ Implementation
   PROCEDURE assertEqualsString(aTestDescription : String; anExpectedValue : String; aRealValue : String);
   VAR
     tmpMessage : AnsiString;
+    tmpLineBreak : String;
   BEGIN
     if (aRealValue <> anExpectedValue) then
     begin
-      tmpMessage := 'Failed: ' + aTestDescription + ' Expected: ''';
+      tmpLineBreak := '';
+      if Length(anExpectedValue) > 13 then tmpLineBreak := chr(13) + chr(10) + '  ';
+
+      tmpMessage := 'Failed: ' + aTestDescription + ' Expected: ''' + tmpLineBreak;
       tmpMessage := tmpMessage + anExpectedValue;
-      tmpMessage := tmpMessage + ''' but it was: ''';
+      tmpMessage := tmpMessage + '''  but it was: ''' + tmpLineBreak;
       tmpMessage := tmpMessage + aRealValue;
       tmpMessage := tmpMessage + '''';
       raise EAssertFailed.Create(tmpMessage);
