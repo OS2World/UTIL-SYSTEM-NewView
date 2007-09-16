@@ -800,14 +800,51 @@ Implementation
 
     ListFilesInDirectoryRecursiveWithTermination(TEST_PATH + '\unittests\testdir', '*.ex1;ex2;file_in_*', false, true, tmpResult, nil, false);
 
-    assertEqualsInt('testListFilesInDirectoryRecursiveWithTermination_WithHidden', 7, tmpResult.count);
+    assertEqualsInt('testListFilesInDirectoryRecursiveWithTermination_WithHidden', 15, tmpResult.count);
     assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 0', 'file1.ex1', tmpResult[0]);
     assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 1', 'file2.ex1', tmpResult[1]);
     assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 2', 'file_in_archived', tmpResult[2]);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 3', 'file_in_hidden', tmpResult[3]);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 4', 'file_in_readonly', tmpResult[4]);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 5', 'file_in_system', tmpResult[5]);
-    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 6', 'file1.ex1', tmpResult[6]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 3', 'file_in_archived.svn-base', tmpResult[3]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 4', 'file_in_archived.svn-base', tmpResult[4]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 5', 'file_in_hidden', tmpResult[5]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 6', 'file_in_hidden.svn-base', tmpResult[6]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 7', 'file_in_hidden.svn-base', tmpResult[7]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 8', 'file_in_readonly', tmpResult[8]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 9', 'file_in_readonly.svn-base', tmpResult[9]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 10', 'file_in_readonly.svn-base', tmpResult[10]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 11', 'file_in_system', tmpResult[11]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 12', 'file_in_system.svn-base', tmpResult[12]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 13', 'file_in_system.svn-base', tmpResult[13]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithHidden 14', 'file1.ex1', tmpResult[14]);
+
+    tmpResult.Destroy;
+  end;
+
+
+  Procedure testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden;
+  var
+    tmpResult : TStringList;
+  begin
+    tmpResult := TStringList.Create;
+
+    ListFilesInDirectoryRecursiveWithTermination(TEST_PATH + '\unittests\testdir', '*.ex1;ex2;file_in_*', true, true, tmpResult, nil, false);
+
+    assertEqualsInt('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden', 15, tmpResult.count);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 0', TEST_PATH + '\unittests\testdir\' + 'file1.ex1', tmpResult[0]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 1', TEST_PATH + '\unittests\testdir\' + 'file2.ex1', tmpResult[1]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 2', TEST_PATH + '\unittests\testdir\dir_archived\' + 'file_in_archived', tmpResult[2]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 3', TEST_PATH + '\unittests\testdir\dir_archived\.svn\prop-base\' + 'file_in_archived.svn-base', tmpResult[3]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 4', TEST_PATH + '\unittests\testdir\dir_archived\.svn\text-base\' + 'file_in_archived.svn-base', tmpResult[4]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 5', TEST_PATH + '\unittests\testdir\dir_hidden\' + 'file_in_hidden', tmpResult[5]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 6', TEST_PATH + '\unittests\testdir\dir_hidden\.svn\prop-base\' + 'file_in_hidden.svn-base', tmpResult[6]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 7', TEST_PATH + '\unittests\testdir\dir_hidden\.svn\text-base\' + 'file_in_hidden.svn-base', tmpResult[7]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 8', TEST_PATH + '\unittests\testdir\dir_readonly\' + 'file_in_readonly', tmpResult[8]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 9', TEST_PATH + '\unittests\testdir\dir_readonly\.svn\prop-base\' + 'file_in_readonly.svn-base', tmpResult[9]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 10', TEST_PATH + '\unittests\testdir\dir_readonly\.svn\text-base\' + 'file_in_readonly.svn-base', tmpResult[10]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 11', TEST_PATH + '\unittests\testdir\dir_system\' + 'file_in_system', tmpResult[11]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 12', TEST_PATH + '\unittests\testdir\dir_system\.svn\prop-base\' + 'file_in_system.svn-base', tmpResult[12]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 13', TEST_PATH + '\unittests\testdir\dir_system\.svn\text-base\' + 'file_in_system.svn-base', tmpResult[13]);
+    assertEqualsString('testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden 14', TEST_PATH + '\unittests\testdir\subdir1\' + 'file1.ex1', tmpResult[14]);
 
     tmpResult.Destroy;
   end;
@@ -1289,6 +1326,7 @@ Implementation
 
     result.add(@testListFilesInDirectoryRecursiveWithTermination);
     result.add(@testListFilesInDirectoryRecursiveWithTermination_WithHidden);
+    result.add(@testListFilesInDirectoryRecursiveWithTermination_WithDirAndHidden);
     result.add(@testListFilesInDirectoryRecursiveWithTermination_WithDirectoryInResult);
     result.add(@testListFilesInDirectoryRecursiveWithTermination_1WithDirectoryInResultWithHidden);
 
