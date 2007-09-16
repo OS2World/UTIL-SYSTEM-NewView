@@ -504,6 +504,7 @@ Begin
                                        Dir,
                                        '*.inf;*.hlp',
                                        true,
+                                       false,
                                        Files,
                                        ThreadManager.StopRequested,
                                        true ); // check termination
