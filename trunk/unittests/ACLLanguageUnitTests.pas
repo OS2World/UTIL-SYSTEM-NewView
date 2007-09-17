@@ -154,6 +154,60 @@ Implementation
   END;
 
 
+  PROCEDURE testTLanguageItemList_Read;
+  var
+    tmpItems : TLanguageItemList;
+    tmpTextFile : TextFile;
+    tmpFound : String;
+  begin
+    tmpItems := TLanguageItemList.Create;
+
+{
+    tmpItems.setValue('emptyText', '');
+    tmpItems.setValue('normalText', 'abcd');
+    tmpItems.setValue('textWithDoubleQuotesAtBeginning', '"abcd');
+    tmpItems.setValue('textWithDoubleQuotesAtEnd', 'abcd"');
+    tmpItems.setValue('textWithDoubleQuotesAtInside', 'ab"cd');
+    tmpItems.setValue('textWithDoubleQuotes', 'aaa b "c " d  ');
+
+    AssignFile(tmpTextFile, TEST_PATH + '\unittests\languageUnit\test.lng');
+    ReWrite(tmpTextFile);
+    tmpItems.saveTo(tmpTextFile);
+    CloseFile(tmpTextFile);
+}
+    FileMode := fmInput;
+    AssignFile(tmpTextFile, TEST_PATH + '\unittests\languageUnit\test.lng');
+    tmpItems.saveTo(tmpTextFile);
+    Reset(tmpTextFile);
+
+    tmpItems.readFrom(tmpTextFile);
+    CloseFile(tmpTextFile);
+
+    tmpFound := tmpItems.getValue('unknown', 'default');
+    assertEqualsString('testTLanguageItemList_ReadFromEmpty unknown', '', tmpFound);
+
+    tmpFound := tmpItems.getValue('emptyText', 'default');
+    assertEqualsString('testTLanguageItemList_ReadFromEmpty emptyText', '', tmpFound);
+
+    tmpFound := tmpItems.getValue('normalText', 'default');
+    assertEqualsString('testTLanguageItemList_ReadFromEmpty normalText', 'abcd', tmpFound);
+
+    tmpFound := tmpItems.getValue('textWithDoubleQuotesAtBeginning', 'default');
+    assertEqualsString('testTLanguageItemList_ReadFromEmpty textWithDoubleQuotesAtBeginning', '"abcd', tmpFound);
+
+    tmpFound := tmpItems.getValue('textWithDoubleQuotesAtEnd', 'default');
+    assertEqualsString('testTLanguageItemList_ReadFromEmpty textWithDoubleQuotesAtEnd', 'abcd"', tmpFound);
+
+    tmpFound := tmpItems.getValue('textWithDoubleQuotesAtInside', 'default');
+    assertEqualsString('testTLanguageItemList_ReadFromEmpty textWithDoubleQuotesAtInside', 'ab"cd', tmpFound);
+
+    tmpFound := tmpItems.getValue('textWithDoubleQuotes', 'default');
+    assertEqualsString('testTLanguageItemList_ReadFromEmpty textWithDoubleQuotes', 'aaa b "c " d  ', tmpFound);
+
+    tmpItems.Destroy;
+  END;
+
+
   // ----------------------------------------------------------
 
 
@@ -168,6 +222,7 @@ Implementation
     result.add(@testTLanguageItemList_ManyValues);
 
     result.add(@testTLanguageItemList_ReadFromEmpty);
+    result.add(@testTLanguageItemList_Read);
   END;
 
 END.
