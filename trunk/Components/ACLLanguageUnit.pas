@@ -47,6 +47,7 @@ type
 
     function getValue(const aLabel : String; const aDefaultValue : String) : String;
     procedure setValue(const aLabel : String; const aValue : String);
+    procedure readFrom(aTextFile : TextFile);
     procedure saveTo(const aTextFile : TextFile);
   end;
 
@@ -244,6 +245,45 @@ var
     tmpPLanguageItem^.isDefault := aDefaultFlag;
 
     translationsList.AddObject(UpperCase(aLabel), TObject(tmpPLanguageItem));
+  end;
+
+
+  procedure TLanguageItemList.readFrom(aTextFile : TextFile);
+  var
+    tmpLine : string;
+    tmpLabel : string;
+    tmpValue : string;
+    tmpLineParts : TStringList;
+  begin
+    tmpLineParts := TStringList.Create;
+
+    while not Eof(aTextFile) do
+    begin
+      ReadLn(aTextFile, tmpLine);
+
+      tmpLineParts.clear;
+      StrExtractStringsQuoted(tmpLineParts, tmpLine);
+
+      if tmpLineParts.count > 0 then
+      begin
+        tmpLabel := tmpLineParts[0];
+
+        // TODO trim leading blanks
+        if tmpLabel[1] <> LANGUAGE_COMMENT_CHAR then
+        begin
+          // Got a name, read the value and store.
+          tmpValue := '';
+          if tmpLineParts.count > 0 then
+          begin
+            tmpValue := tmpLineParts[1];
+          end;
+
+          setValue(tmpLabel, tmpValue);
+        end;
+      end;
+    end;
+
+    tmpLineParts.Destroy;
   end;
 
 
@@ -458,10 +498,6 @@ Type
   constructor TLanguageFile.Create( const aFileName : String);
   var
     tmpTextFile : TextFile;
-    tmpLine : string;
-    tmpLabel : string;
-    tmpValue : string;
-    tmpLineParts : TStringList;
   begin
     filename := aFileName;
 
@@ -477,35 +513,8 @@ Type
     AssignFile(tmpTextFile, aFileName);
     Reset(tmpTextFile);
 
-    tmpLineParts := TStringList.Create;
+    languageItems.readFrom(tmpTextFile);
 
-    while not Eof(tmpTextFile) do
-    begin
-      ReadLn(tmpTextFile, tmpLine);
-
-      tmpLineParts.clear;
-      StrExtractStringsQuoted(tmpLineParts, tmpLine);
-
-      if tmpLineParts.count > 0 then
-      begin
-        tmpLabel := tmpLineParts[0];
-
-        // TODO trim leading blanks
-        if tmpLabel[1] <> LANGUAGE_COMMENT_CHAR then
-        begin
-          // Got a name, read the value and store.
-          tmpValue := '';
-          if tmpLineParts.count > 0 then
-          begin
-            tmpValue := tmpLineParts[1];
-          end;
-
-          languageItems.setValue(tmpLabel, tmpValue);
-        end;
-      end;
-    end;
-
-    tmpLineParts.Destroy;
     CloseFile(tmpTextFile);
   end;
 
