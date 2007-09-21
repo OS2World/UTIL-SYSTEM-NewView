@@ -167,7 +167,7 @@ begin
   for DictIndex := 0 to HelpFile.DictionaryCount - 1 do
   begin
     DictWord := HelpFile.DictionaryWords[ DictIndex ];
-    if StrStartsWithIgnoringCase( SearchWord, DictWord ) then
+    if StrStartsWithIgnoringCase(DictWord, SearchWord) then
       Results[ DictIndex ] := MatchedWordRelevance( SearchWord, DictWord );
   end;
 end;

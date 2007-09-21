@@ -1051,10 +1051,10 @@ begin
 
       ProgramFilename := ExtractFilename( ProgramPath );
 
-      if    StrStartsWithIgnoringCase(PRGM_EXPLORER, ProgramFilename ) // web explorer?
-         or StrStartsWithIgnoringCase(PRGM_NETSCAPE, ProgramFilename )
-         or StrStartsWithIgnoringCase(PRGM_MOZILLA, ProgramFilename )
-         or StrStartsWithIgnoringCase(PRGM_FIREFOX, ProgramFilename )
+      if    StrStartsWithIgnoringCase(ProgramFilename, PRGM_EXPLORER)
+         or StrStartsWithIgnoringCase(ProgramFilename, PRGM_NETSCAPE)
+         or StrStartsWithIgnoringCase(ProgramFilename, PRGM_MOZILLA)
+         or StrStartsWithIgnoringCase(ProgramFilename, PRGM_FIREFOX)
          then
       begin
         OutputString := '<blue><link ' + PARAM_LINK_URL + ' '
