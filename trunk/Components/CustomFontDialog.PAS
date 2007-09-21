@@ -137,12 +137,12 @@ begin
   SubstituteAllOccurencesOfChar( Result, '_', ' ' );
 
   if Result = 'Roman' then
-    if StrStartsWithIgnoringCase( 'Tms Rmn', Font.FaceName ) then
+    if StrStartsWithIgnoringCase(Font.FaceName,'Tms Rmn') then
       // one particularly stupid example
       Result := 'Tms Rmn';
 
   if Result = 'Swiss' then
-    if StrStartsWithIgnoringCase( 'Helv', Font.FaceName ) then
+    if StrStartsWithIgnoringCase(Font.FaceName, 'Helv') then
       // one particularly stupid example
       Result := 'Helv';
 
@@ -160,7 +160,7 @@ begin
   SubstituteAllOccurencesOfChar( Result, '_', ' ' );
 
   FamilyName := GetFontFamilyName( Font );
-  if StrStartsWithIgnoringCase( FamilyName, Result ) then
+  if StrStartsWithIgnoringCase(Result, FamilyName) then
   begin
     Result := StrSubstringFrom( Result, length( FamilyName ) + 1 );
     Result := StrTrimChars( Result, [ ' ', '-', '_' ] );
