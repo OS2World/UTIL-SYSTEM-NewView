@@ -84,7 +84,8 @@ uses
 {$ifdef os2}
   ACLLanguageUnit, ControlsUtility,
 {$endif}
-  CharUtilsUnit;
+  CharUtilsUnit,
+  DebugUnit;
 
 // -------------------------------------------------
 
@@ -306,7 +307,6 @@ Procedure OnLanguageEvent(Language: TLanguageFile; const Apply: boolean);
 var
   tmpPrefix : String;
 begin
-  tmpPrefix := '';
   if Language = nil then
   begin
     OKButtonCaption := '~OK';
@@ -380,7 +380,9 @@ Function DoInputQuery( Const ACaption: String;
                        Var Value: String ): Boolean;
 Begin
   if QueryDlg = nil then
+  begin
     QueryDlg := TACLQueryDialog.Create( Screen.ActiveForm );
+  end;
 
   QueryDlg.Caption := ACaption;
   QueryDlg.FMessageLabel.Caption := APrompt;
