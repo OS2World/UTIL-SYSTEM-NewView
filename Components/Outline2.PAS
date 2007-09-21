@@ -2216,7 +2216,7 @@ begin
       // searched all nodes, done.
       exit;
 
-    if StrStartsWithIgnoringCase( S, Node.Text ) then
+    if StrStartsWithIgnoringCase(Node.Text, S) then
     begin
       // found
       Result := Node;
