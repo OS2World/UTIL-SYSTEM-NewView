@@ -530,11 +530,15 @@ Type
                               const aLabel: string;
                               const aDefaultValue: string );
   begin
-    // LogEvent(LogI18n, 'TLanguageFile.LL(' + BoolToStr(Apply) + ')');
+    // LogEvent(LogI18n, 'TLanguageFile.LL(' + BoolToStr(anApplyFlag) + ' "' + aLabel + '" "' + aDefaultValue +'")');
 
     if anApplyFlag then
     begin
-      aValue := languageItems.getValue(aLabel, aDefaultValue)
+      aValue := languageItems.getValue(aLabel, aDefaultValue);
+      if '' = aValue then
+      begin
+        aValue := aDefaultValue;
+      end
     end
     else
     begin
