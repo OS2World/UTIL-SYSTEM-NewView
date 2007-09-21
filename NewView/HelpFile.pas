@@ -668,12 +668,14 @@ end;
 function THelpFile.FindTopicByIndexStartsWith( const SearchText: string ): TTopic;
 var
   i: longint;
+  tmpIndex: String;
 begin
   result := nil;
   GetIndex; // make sure it's read
   for i := 0 to _Index.Count - 1 do
   begin
-    if StrStartsWithIgnoringCase( SearchText, _Index.ValuePtrs[ i ] ^ ) then
+    tmpIndex := _Index.ValuePtrs[i]^;
+    if StrStartsWithIgnoringCase(tmpIndex, SearchText) then
     begin
       // found
       result := TTopic( Index.Objects[ i ] );
@@ -717,7 +719,7 @@ begin
       tmpTopic := _Topics[i];
       if tmpLevel = tmpTopic.ContentsLevel then
       begin
-        if StrStartsWithIgnoringCase( SearchText, tmpTopic.TitlePtr ^ ) then
+        if StrStartsWithIgnoringCase(tmpTopic.TitlePtr^, SearchText) then
         begin
           result := tmpTopic;
           exit;
