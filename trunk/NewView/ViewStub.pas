@@ -72,7 +72,7 @@ var
     tmpFileItems := TStringList.Create;
     tmpFilenames := TStringList.Create;
 
-    StrExtractStrings(tmpFileItems, aCmdLineParameters.getFileNames(false), ['+'], #0);
+    StrExtractStrings(tmpFileItems, aCmdLineParameters.getFileNames(false), [HELP_FILE_DELIMITER], #0);
     TranslateIPFEnvironmentVars(tmpFileItems, tmpFileNames );
 
     for i := 0 to tmpFileNames.Count - 1 do
