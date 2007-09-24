@@ -18,6 +18,7 @@ uses
 
 const
   OWN_HELP_MARKER = '[NVHELP]';
+  HELP_FILE_DELIMITER = '+';
 
 
 function AccessSharedMemory: TSuballocatedSharedMemory;
@@ -71,7 +72,7 @@ begin
     begin
       // environment var exists - use it's value
       LogEvent(LogStartup, '    Environment var found; translated to: ' + tmpEnvironmentVarValue);
-      StrExtractStrings(ExpandedItems, tmpEnvironmentVarValue, ['+'], #0);
+      StrExtractStrings(ExpandedItems, tmpEnvironmentVarValue, [HELP_FILE_DELIMITER], #0);
     end
     else
     begin
