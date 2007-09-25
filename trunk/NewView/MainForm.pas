@@ -1667,19 +1667,20 @@ End;
 Function TMainForm.OpenFilesFromTextList( const TextList: string;
                                           const DisplayFirstTopic: boolean ): boolean;
 var
-  Filenames: TStringList;
+  tmpFileNames: TStringList;
 begin
-  Filenames := TStringList.Create;
-  StrExtractStringsIgnoreEmpty(Filenames, TextList, ['+'], #0);
-  if Filenames.Count > 0 then
+  tmpFileNames := TStringList.Create;
+
+  StrExtractStringsIgnoreEmpty(tmpFileNames, TextList, [HELP_FILE_DELIMITER], #0);
+  if tmpFileNames.Count > 0 then
   begin
-    result := OpenFiles( Filenames, '', DisplayFirstTopic );
+    result := OpenFiles(tmpFileNames, '', DisplayFirstTopic );
   end
   else
   begin
     CloseFile;
   end;
-  Filenames.Destroy;
+  tmpFileNames.Destroy;
 end;
 
 Procedure TMainForm.OpenSpecialMIOnClick (Sender: TObject);
@@ -4166,6 +4167,7 @@ var
   Filenames: TStringList;
   M1: longword;
   OpenFirstTopic: boolean;
+  tmpFileNames : AnsiString;
 begin
   if Application.HelpFile = '' then
     DoErrorDlg( 'NewView Help', 'NewView help file not found' );
@@ -4208,12 +4210,18 @@ begin
 
   HelpManagerWindows.Add( pointer( CmdLineParameters.getHelpManagerWindow ) );
 
-  if CmdLineParameters.getFileNames(Settings.StartupHelp) <> '' then
+  if CmdLineParameters.getShowIndexFlag then
+  begin
+    DisplayIndex;
+  end;
+
+  tmpFileNames := CmdLineParameters.getFileNames(Settings.StartupHelp);
+  if tmpFileNames <> '' then
   begin
     // open specified files
     Filenames := TStringList.Create;
 
-    StrExtractStringsIgnoreEmpty(Filenames, cmdLineParameters.getFileNames(Settings.StartupHelp), ['+'], #0);
+    StrExtractStringsIgnoreEmpty(Filenames, tmpFileNames, [HELP_FILE_DELIMITER], #0);
 
     LogEvent(LogStartup, 'Call OpenFiles');
 
@@ -4278,6 +4286,7 @@ begin
 
   LogEvent(LogStartup, 'RUN PROGRAM');
 end;
+
 
 Procedure TMainForm.MainFormOnResize (Sender: TObject);
 Begin
@@ -5669,14 +5678,14 @@ begin
 
         if FileNameIndex > 0 then
         begin
-          MRUText := MRUText + '+';
+          MRUText := MRUText + HELP_FILE_DELIMITER;
         end;
         MRUText := MRUText + FileName;
 
         // stop after 50 chars
         if Length( MRUText ) > 50 then
         begin
-          MRUText := MRUText + '+ ...';
+          MRUText := MRUText + HELP_FILE_DELIMITER + ' ...';
           break;
         end;
       end;
@@ -6724,8 +6733,7 @@ begin
 
   HelpFiles := TList.Create;
 
-  if not LoadFiles( FileNames,
-                    HelpFiles ) then
+  if not LoadFiles(FileNames, HelpFiles ) then
   begin
     ClearWaitCursor;
     HelpFiles.Destroy;
