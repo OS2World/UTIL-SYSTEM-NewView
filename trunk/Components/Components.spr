@@ -110,22 +110,22 @@ CompInstallDir=P:\NEWVIEW_DEV\build\components
 
 [Find History]
 
-Find0=write
-Find1=LogEvent
-Find2=g_LanguageCallbacks
-Find3=DestroyListAndObjects
-Find4=LoadString
-Find5=OnLanguageEvent
-Find6=LL
-Find7=updatel
-Find8=ApplyLanguage
-Find9=Apply
-Find10=register
-Find11=update
-Find12=UpdateLanguage
-Find13=Unit
-Find14=apply
-Find15=prefix
+Find0='+'
+Find1=write
+Find2=LogEvent
+Find3=g_LanguageCallbacks
+Find4=DestroyListAndObjects
+Find5=LoadString
+Find6=OnLanguageEvent
+Find7=LL
+Find8=updatel
+Find9=ApplyLanguage
+Find10=Apply
+Find11=register
+Find12=update
+Find13=UpdateLanguage
+Find14=Unit
+Find15=apply
 
 [General]
 
@@ -142,47 +142,46 @@ Platform=OS/2
 [Last Closed Files]
 
 File0=..\.\NewView\GlobalSearchForm.pas
-File1=.\ACLLanguageUnit.pas.v2
-File2=..\.\NewView\MainForm.pas
-File3=..\.\unittests\ACLLanguageUnitTests.pas
+File1=..\.\NewView\MainForm.pas
+File2=..\.\unittests\ACLLanguageUnitTests.pas
 
 [Last Open Files]
 
-File0=.\ACLLanguageUnit.pas.v1
+File0=.\Components.pas
 File0.Left=-4
 File0.Bottom=-4
 File0.Width=1296
 File0.Height=629
-File0.Column=22
-File0.Line=185
-File1=.\Components.pas
+File0.Column=1
+File0.Line=3
+File1=.\ACLLanguageUnit.pas
 File1.Left=-4
 File1.Bottom=-4
 File1.Width=1296
 File1.Height=629
-File1.Column=1
-File1.Line=3
-File2=.\ACLLanguageUnit.pas
+File1.Column=91
+File1.Line=293
+File2=.\ACLMessageForm.pas
 File2.Left=-4
 File2.Bottom=-4
 File2.Width=1296
 File2.Height=629
-File2.Column=91
-File2.Line=293
-File3=.\ACLMessageForm.pas
+File2.Column=1
+File2.Line=86
+File3=.\ACLDialogs.pas
 File3.Left=-4
 File3.Bottom=-4
 File3.Width=1296
 File3.Height=629
 File3.Column=1
-File3.Line=86
-File4=.\ACLDialogs.pas
+File3.Line=1
+File4=..\.\NEWVIEW\FileDialogForm.pas
 File4.Left=-4
 File4.Bottom=-4
 File4.Width=1296
 File4.Height=629
-File4.Column=1
-File4.Line=1
+File4.Column=48
+File4.Line=35
 
 [Linker Options]
 
