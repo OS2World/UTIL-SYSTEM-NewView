@@ -61,7 +61,7 @@ begin
   LogEvent(LogStartup, 'Translating environment vars' );
   for i := 0 to Items.Count - 1 do
   begin
-    tmpItem := Items[ i ];
+    tmpItem := Items[i];
 
     tmpItem := StrTrimChars(tmpItem, [StrSingleQuote]); // remove single quotes
     tmpItem := StrTrimChars(tmpItem, [StrDoubleQuote]); // remove double quotes
@@ -77,7 +77,7 @@ begin
     else
     begin
       // not an environment var
-      ExpandedItems.Add( tmpItem );
+      ExpandedItems.Add(tmpItem);
     end;
   end;
 end;
