@@ -31,6 +31,7 @@ Implementation
     assertFalse('testParseCmdLine_Empty', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Empty', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Empty', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Empty', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Empty', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Empty', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Empty', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -54,6 +55,7 @@ Implementation
     assertFalse('testParseCmdLine_QuestionMark', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_QuestionMark', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuestionMark', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuestionMark', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuestionMark', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuestionMark', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuestionMark', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -77,6 +79,7 @@ Implementation
     assertFalse('testParseCmdLine_QuotedQuestionMark', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_QuotedQuestionMark', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuotedQuestionMark', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedQuestionMark', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuotedQuestionMark', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuotedQuestionMark', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuotedQuestionMark', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -100,6 +103,7 @@ Implementation
     assertFalse('testParseCmdLine_lowerH', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_lowerH', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_lowerH', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_lowerH', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_lowerH', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_lowerH', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_lowerH', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -123,6 +127,7 @@ Implementation
     assertFalse('testParseCmdLine_upperH', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_upperH', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_upperH', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_upperH', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_upperH', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_upperH', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_upperH', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -146,6 +151,7 @@ Implementation
     assertFalse('testParseCmdLine_lowerHelp', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_lowerHelp', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_lowerHelp', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_lowerHelp', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_lowerHelp', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_lowerHelp', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_lowerHelp', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -169,6 +175,7 @@ Implementation
     assertFalse('testParseCmdLine_upperHELP', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_upperHELP', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_upperHELP', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_upperHELP', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_upperHELP', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_upperHELP', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_upperHELP', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -192,6 +199,7 @@ Implementation
     assertFalse('testParseCmdLine_upperHE', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_upperHELP', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_upperHE', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_upperHE', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_upperHE', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_upperHE', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_upperHE', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -215,6 +223,7 @@ Implementation
     assertTrue('testParseCmdLine_h_between', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_h_between', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_h_between', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_h_between', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_h_between', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_h_between', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_h_between', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -238,6 +247,7 @@ Implementation
     assertTrue('testParseCmdLine_h_between_withSpace', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_h_between_withSpace', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_h_between_withSpace', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_h_between_withSpace', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_h_between_withSpace', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_h_between_withSpace', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_h_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -261,6 +271,7 @@ Implementation
     assertTrue('testParseCmdLine_lowerS', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_lowerS', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_lowerS', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_lowerS', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_lowerS', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_lowerS', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_lowerS', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -284,6 +295,7 @@ Implementation
     assertTrue('testParseCmdLine_upperS', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_upperS', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_upperS', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_upperS', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_upperS', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_upperS', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_upperS', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -308,6 +320,7 @@ Implementation
     assertTrue('testParseCmdLine_upperS_withBlank', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_upperS_withBlank', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_upperS_withBlank', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_upperS_withBlank', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_upperS_withBlank', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_upperS_withBlank', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_upperS_withBlank', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -331,6 +344,7 @@ Implementation
     assertTrue('testParseCmdLine_QuotedS', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_QuotedS', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuotedS', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedS', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuotedS', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuotedS', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuotedS', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -354,6 +368,7 @@ Implementation
     assertTrue('testParseCmdLine_emptyS', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_emptyS', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_emptyS', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_emptyS', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_emptyS', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_emptyS', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_emptyS', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -377,6 +392,7 @@ Implementation
     assertTrue('testParseCmdLine_s_between', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_s_between', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_emptyS', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_emptyS', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_s_between', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_s_between', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_s_between', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -400,6 +416,7 @@ Implementation
     assertTrue('testParseCmdLine_s_between_withSpace', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_s_between_withSpace', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_s_between_withSpace', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_s_between_withSpace', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_s_between_withSpace', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_s_between_withSpace', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_s_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -423,6 +440,7 @@ Implementation
     assertTrue('testParseCmdLine_help_and_s', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_help_and_s', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_help_and_s', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_help_and_s', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_help_and_s', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_help_and_s', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_help_and_s', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -446,6 +464,7 @@ Implementation
     assertTrue('testParseCmdLine_s_and_help', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_s_and_help', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_s_and_help', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_s_and_help', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_s_and_help', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_s_and_help', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_s_and_help', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -469,6 +488,7 @@ Implementation
     assertTrue('testParseCmdLine_help_and_s_without_blank', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_help_and_s_without_blank', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_help_and_s_without_blank', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_help_and_s_without_blank', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_help_and_s_without_blank', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_help_and_s_without_blank', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_help_and_s_without_blank', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -493,6 +513,7 @@ Implementation
     assertFalse('testParseCmdLine_lowerG', tmpCmdLineParameters.getSearchFlag);
     assertTrue('testParseCmdLine_lowerG', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_lowerG', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_lowerG', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_lowerG', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_lowerG', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_lowerG', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -516,6 +537,7 @@ Implementation
     assertFalse('testParseCmdLine_upperG', tmpCmdLineParameters.getSearchFlag);
     assertTrue('testParseCmdLine_upperG', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_upperG', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_upperG', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_upperG', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_upperG', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_upperG', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -539,6 +561,7 @@ Implementation
     assertFalse('testParseCmdLine_QuotedG', tmpCmdLineParameters.getSearchFlag);
     assertTrue('testParseCmdLine_QuotedG', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuotedG', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedG', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuotedG', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuotedG', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuotedG', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -562,6 +585,7 @@ Implementation
     assertFalse('testParseCmdLine_emptyG', tmpCmdLineParameters.getSearchFlag);
     assertTrue('testParseCmdLine_emptyG', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_emptyG', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_emptyG', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_emptyG', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_emptyG', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_emptyG', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -585,6 +609,7 @@ Implementation
     assertTrue('testParseCmdLine_g_between', tmpCmdLineParameters.getSearchFlag);
     assertTrue('testParseCmdLine_g_between', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_g_between', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_g_between', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_g_between', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_g_between', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_g_between', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -608,6 +633,7 @@ Implementation
     assertTrue('testParseCmdLine_g_between_withSpace', tmpCmdLineParameters.getSearchFlag);
     assertTrue('testParseCmdLine_g_between_withSpace', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_g_between_withSpace', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_g_between_withSpace', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_g_between_withSpace', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_g_between_withSpace', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_g_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -615,6 +641,150 @@ Implementation
     assertEqualsString('testParseCmdLine_g_between_withSpace', '', tmpCmdLineParameters.getFileNames(true));
     assertEqualsString('testParseCmdLine_g_between_withSpace', '', tmpCmdLineParameters.getFileNames(false));
     assertEqualsString('testParseCmdLine_g_between_withSpace', '', tmpCmdLineParameters.getSearchText);
+  END;
+
+
+ PROCEDURE testParseCmdLine_lowerI;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '-i file';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_lowerI', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_lowerI', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_lowerI', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_lowerI', '', tmpCmdLineParameters.getLanguage);
+    assertTrue('testParseCmdLine_lowerI', tmpCmdLineParameters.getShowIndexFlag);
+    assertFalse('testParseCmdLine_lowerI', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_lowerI', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_lowerI', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_lowerI', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_lowerI', 'file', tmpCmdLineParameters.getFileNames(true));
+    assertEqualsString('testParseCmdLine_lowerI', 'file', tmpCmdLineParameters.getFileNames(false));
+    assertEqualsString('testParseCmdLine_lowerI', '', tmpCmdLineParameters.getSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_upperI;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '-I fiLe seArch';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_upperI', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_upperI', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_upperI', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_upperI', '', tmpCmdLineParameters.getLanguage);
+    assertTrue('testParseCmdLine_upperI', tmpCmdLineParameters.getShowIndexFlag);
+    assertFalse('testParseCmdLine_upperI', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_upperI', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_upperI', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_upperI', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_upperI', 'fiLe', tmpCmdLineParameters.getFileNames(true));
+    assertEqualsString('testParseCmdLine_upperI', 'fiLe', tmpCmdLineParameters.getFileNames(false));
+    assertEqualsString('testParseCmdLine_upperI', 'seArch', tmpCmdLineParameters.getSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_QuotedI;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '"-I" seArch';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_QuotedI', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_QuotedI', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_QuotedI', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_QuotedI', '', tmpCmdLineParameters.getLanguage);
+    assertTrue('testParseCmdLine_QuotedI', tmpCmdLineParameters.getShowIndexFlag);
+    assertFalse('testParseCmdLine_QuotedI', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_QuotedI', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_QuotedI', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_QuotedI getWindowTitle', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_QuotedI getFileNames(true)', 'seArch', tmpCmdLineParameters.getFileNames(true));
+    assertEqualsString('testParseCmdLine_QuotedI getFileNames(false)', 'seArch', tmpCmdLineParameters.getFileNames(false));
+    assertEqualsString('testParseCmdLine_QuotedI getSearchText', '', tmpCmdLineParameters.getSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_emptyI;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '-I';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertFalse('testParseCmdLine_emptyI', tmpCmdLineParameters.getShowUsageFlag);
+    assertFalse('testParseCmdLine_emptyI', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_emptyI', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_emptyI', '', tmpCmdLineParameters.getLanguage);
+    assertTrue('testParseCmdLine_emptyI', tmpCmdLineParameters.getShowIndexFlag);
+    assertFalse('testParseCmdLine_emptyI', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_emptyI', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_emptyI', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_emptyI getWindowTitle', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_emptyI getFileNames(true)', 'C:\ecs\help\NewView.hlp', tmpCmdLineParameters.getFileNames(true));
+    assertEqualsString('testParseCmdLine_emptyI getFileNames(false)', '', tmpCmdLineParameters.getFileNames(false));
+    assertEqualsString('testParseCmdLine_emptyI getSearchText', '', tmpCmdLineParameters.getSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_i_between;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '-h-i-s';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertTrue('testParseCmdLine_i_between', tmpCmdLineParameters.getShowUsageFlag);
+    assertTrue('testParseCmdLine_i_between', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_i_between', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_i_between', '', tmpCmdLineParameters.getLanguage);
+    assertTrue('testParseCmdLine_i_between', tmpCmdLineParameters.getShowIndexFlag);
+    assertFalse('testParseCmdLine_i_between', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_i_between', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_i_between', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_i_between', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_i_between', 'C:\ecs\help\NewView.hlp', tmpCmdLineParameters.getFileNames(true));
+    assertEqualsString('testParseCmdLine_i_between', '', tmpCmdLineParameters.getFileNames(false));
+    assertEqualsString('testParseCmdLine_i_between', '', tmpCmdLineParameters.getSearchText);
+  END;
+
+
+  PROCEDURE testParseCmdLine_i_between_withSpace;
+  VAR
+    tmpCmdLineString : String;
+    tmpCmdLineParameters : TCmdLineParameters;
+  BEGIN
+    tmpCmdLineString := '-h -I -s';
+    tmpCmdLineParameters := TCmdLineParameters.Create;
+    tmpCmdLineParameters.parseCmdLine(tmpCmdLineString);
+
+    assertTrue('testParseCmdLine_i_between_withSpace', tmpCmdLineParameters.getShowUsageFlag);
+    assertTrue('testParseCmdLine_i_between_withSpace', tmpCmdLineParameters.getSearchFlag);
+    assertFalse('testParseCmdLine_i_between_withSpace', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertEqualsString('testParseCmdLine_i_between_withSpace', '', tmpCmdLineParameters.getLanguage);
+    assertTrue('testParseCmdLine_i_between_withSpace', tmpCmdLineParameters.getShowIndexFlag);
+    assertFalse('testParseCmdLine_i_between_withSpace', tmpCmdLineParameters.getHelpManagerFlag);
+    assertEqualsInt('testParseCmdLine_i_between_withSpace', 0, tmpCmdLineParameters.getHelpManagerWindow);
+    assertEqualsInt('testParseCmdLine_i_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
+    assertEqualsString('testParseCmdLine_i_between_withSpace', '', tmpCmdLineParameters.getWindowTitle);
+    assertEqualsString('testParseCmdLine_i_between_withSpace', 'C:\ecs\help\NewView.hlp', tmpCmdLineParameters.getFileNames(true));
+    assertEqualsString('testParseCmdLine_i_between_withSpace', '', tmpCmdLineParameters.getFileNames(false));
+    assertEqualsString('testParseCmdLine_i_between_withSpace', '', tmpCmdLineParameters.getSearchText);
   END;
 
 
@@ -631,6 +801,7 @@ Implementation
     assertFalse('testParseCmdLine_Language', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Language', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Language', 'DE', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Language', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Language', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Language', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Language', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -654,6 +825,7 @@ Implementation
     assertFalse('testParseCmdLine_Language_Empty', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Language_Empty', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Language_Empty', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Language_Empty', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Language_Empty', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Language_Empty', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Language_Empty', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -677,6 +849,7 @@ Implementation
     assertFalse('testParseCmdLine_Language_Empty_WithColon', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Language_Empty_WithColon', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Language_Empty_WithColon', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Language_Empty_WithColon', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Language_Empty_WithColon', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Language_Empty_WithColon', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Language_Empty_WithColon', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -700,6 +873,7 @@ Implementation
     assertFalse('testParseCmdLine_Language_WithFile', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Language_WithFile', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Language_WithFile', 'DE', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Language_WithFile', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Language_WithFile', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Language_WithFile', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Language_WithFile', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -723,6 +897,7 @@ Implementation
     assertFalse('testParseCmdLine_QuotedLanguage', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_QuotedLanguage', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuotedLanguage', 'DE', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedLanguage', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuotedLanguage', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuotedLanguage', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuotedLanguage', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -746,6 +921,7 @@ Implementation
     assertFalse('testParseCmdLine_QuotedLanguage2', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_QuotedLanguage2', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuotedLanguage2', 'DE', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedLanguage2', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuotedLanguage2', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuotedLanguage2', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuotedLanguage2', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -769,6 +945,7 @@ Implementation
     assertTrue('testParseCmdLine_Language_between', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Language_between', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Language_between', 'DE', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Language_between', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Language_between', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Language_between', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Language_between', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -792,6 +969,7 @@ Implementation
     assertTrue('testParseCmdLine_Language_between_withSpace', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Language_between_withSpace', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Language_between_withSpace', 'DE', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Language_between_withSpace', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Language_between_withSpace', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Language_between_withSpace', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Language_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -815,6 +993,7 @@ Implementation
     assertFalse('testParseCmdLine_HelpManagerNumber', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_HelpManagerNumber', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_HelpManagerNumber', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_HelpManagerNumber', tmpCmdLineParameters.getShowIndexFlag);
     assertTrue('testParseCmdLine_HelpManagerNumber', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber', 123, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -838,6 +1017,7 @@ Implementation
     assertFalse('testParseCmdLine_HelpManagerBigNumber', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_HelpManagerBigNumber', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_HelpManagerBigNumber', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_HelpManagerBigNumber', tmpCmdLineParameters.getShowIndexFlag);
     assertTrue('testParseCmdLine_HelpManagerBigNumber', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_HelpManagerBigNumber', 2147484546, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_HelpManagerBigNumber', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -861,6 +1041,7 @@ Implementation
     assertFalse('testParseCmdLine_HelpManagerNumber_WithoutColon', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_HelpManagerNumber_WithoutColon', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_WithoutColon', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_HelpManagerNumber_WithoutColon', tmpCmdLineParameters.getShowIndexFlag);
     assertTrue('testParseCmdLine_HelpManagerNumber_WithoutColon', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_WithoutColon', 123, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_WithoutColon', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -884,6 +1065,7 @@ Implementation
     assertFalse('testParseCmdLine_HelpManagerNumber_Invalid', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_HelpManagerNumber_Invalid', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_Invalid', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_HelpManagerNumber_Invalid', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_HelpManagerNumber_Invalid', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_Invalid', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_Invalid', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -907,6 +1089,7 @@ Implementation
     assertTrue('testParseCmdLine_HelpManagerNumber_between', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_HelpManagerNumber_between', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_between', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_HelpManagerNumber_between', tmpCmdLineParameters.getShowIndexFlag);
     assertTrue('testParseCmdLine_HelpManagerNumber_between', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_between', 12, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_between', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -930,6 +1113,7 @@ Implementation
     assertTrue('testParseCmdLine_HelpManagerNumber_between_withSpace', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_HelpManagerNumber_between_withSpace', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_HelpManagerNumber_between_withSpace', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_HelpManagerNumber_between_withSpace', tmpCmdLineParameters.getShowIndexFlag);
     assertTrue('testParseCmdLine_HelpManagerNumber_between_withSpace', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_between_withSpace', 12, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_HelpManagerNumber_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -953,6 +1137,7 @@ Implementation
     assertFalse('testParseCmdLine_OwnerNumber', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_OwnerNumber', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_OwnerNumber', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_OwnerNumber', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_OwnerNumber', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_OwnerNumber', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_OwnerNumber', 1234, tmpCmdLineParameters.getOwnerWindow);
@@ -976,6 +1161,7 @@ Implementation
     assertFalse('testParseCmdLine_OwnerNumber_WithoutColon', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_OwnerNumber_WithoutColon', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_OwnerNumber_WithoutColon', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_OwnerNumber_WithoutColon', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_OwnerNumber_WithoutColon', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_OwnerNumber_WithoutColon', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_OwnerNumber_WithoutColon', 134, tmpCmdLineParameters.getOwnerWindow);
@@ -999,6 +1185,7 @@ Implementation
     assertFalse('testParseCmdLine_OwnerNumber_Invalid', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_OwnerNumber_Invalid', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_OwnerNumber_Invalid', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_OwnerNumber_Invalid', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_OwnerNumber_Invalid', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_OwnerNumber_Invalid', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_OwnerNumber_Invalid', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1022,6 +1209,7 @@ Implementation
     assertTrue('testParseCmdLine_OwnerNumber_between', tmpCmdLineParameters.getSearchFlag);
     assertTrue('testParseCmdLine_OwnerNumber_between', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_OwnerNumber_between', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_OwnerNumber_between', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_OwnerNumber_between', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_OwnerNumber_between', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_OwnerNumber_between', 14, tmpCmdLineParameters.getOwnerWindow);
@@ -1045,6 +1233,7 @@ Implementation
     assertTrue('testParseCmdLine_OwnerNumber_between_withSpace', tmpCmdLineParameters.getSearchFlag);
     assertTrue('testParseCmdLine_OwnerNumber_between_withSpace', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_OwnerNumber_between_withSpace', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_OwnerNumber_between_withSpace', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_OwnerNumber_between_withSpace', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_OwnerNumber_between_withSpace', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_OwnerNumber_between_withSpace', 14, tmpCmdLineParameters.getOwnerWindow);
@@ -1068,6 +1257,7 @@ Implementation
     assertFalse('testParseCmdLine_Title', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Title', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Title', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Title', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Title', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Title', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Title', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1091,6 +1281,7 @@ Implementation
     assertFalse('testParseCmdLine_Title_WithoutColon', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Title_WithoutColon', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Title_WithoutColon', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Title_WithoutColon', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Title_WithoutColon', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Title_WithoutColon', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Title_WithoutColon', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1114,6 +1305,7 @@ Implementation
     assertFalse('testParseCmdLine_Title_Empty', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Title_Empty', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Title_Empty', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Title_Empty', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Title_Empty', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Title_Empty', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Title_Empty', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1137,6 +1329,7 @@ Implementation
     assertFalse('testParseCmdLine_QuotedTitle', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_QuotedTitle', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuotedTitle', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedTitle', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuotedTitle', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuotedTitle', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuotedTitle', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1160,6 +1353,7 @@ Implementation
     assertFalse('testParseCmdLine_QuotedTitle2', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_QuotedTitle2', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuotedTitle2', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedTitle2', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuotedTitle2', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuotedTitle2', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuotedTitle2', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1183,6 +1377,7 @@ Implementation
     assertFalse('testParseCmdLine_QuotedTitle_AfterFile', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_QuotedTitle_AfterFile', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuotedTitle_AfterFile', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedTitle_AfterFile', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuotedTitle_AfterFile', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuotedTitle_AfterFile', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuotedTitle_AfterFile', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1206,6 +1401,7 @@ Implementation
     assertTrue('testParseCmdLine_Title_between', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Title_between', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Title_between', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Title_between', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Title_between', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Title_between', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Title_between', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1229,6 +1425,7 @@ Implementation
     assertTrue('testParseCmdLine_Title_between_withSpace', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Title_between_withSpace', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Title_between_withSpace', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Title_between_withSpace', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Title_between_withSpace', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Title_between_withSpace', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Title_between_withSpace', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1255,6 +1452,7 @@ Implementation
     assertFalse('testParseCmdLine_WindowPos', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_WindowPos', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_WindowPos', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_WindowPos', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_WindowPos', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_WindowPos', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_WindowPos', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1286,6 +1484,7 @@ Implementation
     assertFalse('testParseCmdLine_WindowPosPercentage', tmpCmdLineParameters.getShowUsageFlag);
     assertFalse('testParseCmdLine_WindowPosPercentage', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_WindowPosPercentage', tmpCmdLineParameters.getGlobalSearchFlag);
+    assertFalse('testParseCmdLine_WindowPosPercentage', tmpCmdLineParameters.getShowIndexFlag);
     assertEqualsString('testParseCmdLine_WindowPos', '', tmpCmdLineParameters.getLanguage);
     assertFalse('testParseCmdLine_WindowPosPercentage', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_WindowPosPercentage', 0, tmpCmdLineParameters.getHelpManagerWindow);
@@ -1317,6 +1516,7 @@ Implementation
     assertFalse('testParseCmdLine_Topic->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_Topic->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_Topic', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_Topic', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_Topic', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_Topic', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_Topic', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1340,6 +1540,7 @@ Implementation
     assertFalse('testParseCmdLine_QuotedTopic->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_QuotedTopic->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_QuotedTopic', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_QuotedTopic', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_QuotedTopic', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_QuotedTopic', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_QuotedTopic', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1363,6 +1564,7 @@ Implementation
     assertFalse('testParseCmdLine_file->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_file->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_file', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_file', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_file', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_file', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_file', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1386,6 +1588,7 @@ Implementation
     assertFalse('testParseCmdLine_fileLeadingBlanks->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_fileLeadingBlanks->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_fileLeadingBlanks', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_fileLeadingBlanks',  tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_fileLeadingBlanks', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_fileLeadingBlanks', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_fileLeadingBlanks', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1409,6 +1612,7 @@ Implementation
     assertFalse('testParseCmdLine_fileTrailingBlanks->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_fileTrailingBlanks->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_fileTrailingBlanks', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_fileTrailingBlanks', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_fileTrailingBlanks', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_fileTrailingBlanks', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_fileTrailingBlanks', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1432,6 +1636,7 @@ Implementation
     assertFalse('testParseCmdLine_fileQuoted->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_fileQuoted->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_fileQuoted', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_fileQuoted', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_fileQuoted', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_fileQuoted', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_fileQuoted', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1455,6 +1660,7 @@ Implementation
     assertFalse('testParseCmdLine_fileQuotedMissingClosedQuote->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_fileQuotedMissingClosedQuote->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_fileQuotedMissingClosedQuote', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_fileQuotedMissingClosedQuote', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_fileQuotedMissingClosedQuote', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_fileQuotedMissingClosedQuote', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_fileQuotedMissingClosedQuote', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1478,6 +1684,7 @@ Implementation
     assertFalse('testParseCmdLine_fileQuotedAndText->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_fileQuotedAndText->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_fileQuotedAndText', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_fileQuotedAndText', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_fileQuotedAndText', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_fileQuotedAndText', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_fileQuotedAndText', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1501,6 +1708,7 @@ Implementation
     assertFalse('testParseCmdLine_fileQuotedAndTextManyBlanks->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_fileQuotedAndTextManyBlanks->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_fileQuotedAndTextManyBlanks', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_fileQuotedAndTextManyBlanks', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_fileQuotedAndTextManyBlanks', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_fileQuotedAndTextManyBlanks', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_fileQuotedAndTextManyBlanks', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1524,6 +1732,7 @@ Implementation
     assertFalse('testParseCmdLine_fileQuotedInside->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_fileQuotedInside->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_fileQuotedInside', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_fileQuotedInside', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_fileQuotedInside', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_fileQuotedInside', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_fileQuotedInside', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1547,6 +1756,7 @@ Implementation
     assertTrue('testParseCmdLine_SwitchAndFileQuoted->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_SwitchAndFileQuoted->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_SwitchAndFileQuoted', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_SwitchAndFileQuoted', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_SwitchAndFileQuoted', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_SwitchAndFileQuoted', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_SwitchAndFileQuoted', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1570,6 +1780,7 @@ Implementation
     assertTrue('testParseCmdLine_SwitchAndFileAndTextQuoted->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_SwitchAndFileAndTextQuoted->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_SwitchAndFileAndTextQuoted', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_SwitchAndFileAndTextQuoted', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_SwitchAndFileAndTextQuoted', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_SwitchAndFileAndTextQuoted', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_SwitchAndFileAndTextQuoted', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1609,6 +1820,7 @@ Implementation
     assertTrue('testParseCmdLine_ReallyLong->SearchFlag', tmpCmdLineParameters.getSearchFlag);
     assertFalse('testParseCmdLine_ReallyLong->GlobalSearchFlag', tmpCmdLineParameters.getGlobalSearchFlag);
     assertEqualsString('testParseCmdLine_ReallyLong', '', tmpCmdLineParameters.getLanguage);
+    assertFalse('testParseCmdLine_ReallyLong', tmpCmdLineParameters.getShowIndexFlag);
     assertFalse('testParseCmdLine_ReallyLong', tmpCmdLineParameters.getHelpManagerFlag);
     assertEqualsInt('testParseCmdLine_ReallyLong', 0, tmpCmdLineParameters.getHelpManagerWindow);
     assertEqualsInt('testParseCmdLine_ReallyLong', 0, tmpCmdLineParameters.getOwnerWindow);
@@ -1658,6 +1870,13 @@ Implementation
     result.add(@testParseCmdLine_emptyG);
     result.add(@testParseCmdLine_g_between);
     result.add(@testParseCmdLine_g_between_withSpace);
+
+    result.add(@testParseCmdLine_lowerI);
+    result.add(@testParseCmdLine_upperI);
+    result.add(@testParseCmdLine_QuotedI);
+    result.add(@testParseCmdLine_emptyI);
+    result.add(@testParseCmdLine_i_between);
+    result.add(@testParseCmdLine_i_between_withSpace);
 
     result.add(@testParseCmdLine_Language);
 

@@ -70,7 +70,7 @@ MaxErrors=10
 
 [Debugger Options]
 
-DebugInfo=LineNumbers,LocalSymbols
+DebugInfo=LocalSymbols
 EvalHints=True
 Dbg_Options=1
 RTL_Exceptions=1073741823
@@ -78,7 +78,7 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\COMPONENTS
+LastDir=P:\NEWVIEW_DEV\NEWVIEW
 OutDir=P:\NEWVIEW_DEV\build\unittest
 LibDir=P:\NEWVIEW_DEV\build\newview;P:\NEWVIEW_DEV\build\library;P:\NEWVIEW_DEV\build\components;P:\NEWVIEW_DEV\build\sibyl\lib
 LibSrcDir=P:\NEWVIEW_DEV\NEWVIEW;P:\NEWVIEW_DEV\Library;D:\PROGS\SIBYL\Source\RTL;D:\PROGS\SIBYL\Source\SPCC
@@ -87,22 +87,22 @@ CompInstallDir=D:\PROGS\SIBYL\Compnt
 
 [Find History]
 
-Find0=OnLanguageEvent
-Find1=isDefault
+Find0=testParseCmdLine_upperI
+Find1=testParseCmdLine_lowerG
 Find2=language
-Find3=prefix
-Find4=TextInputForm
-Find5=TLanguageProc
-Find6=TLanguageEvent
-Find7=Register
-Find8=loadstring
-Find9=LoadString
-Find10=GetTranslationFor
-Find11=FCallbackMethod
-Find12=gettrans
-Find13=LL
-Find14=loaddefau
-Find15=LoadComponentLanguage
+Find3=OnLanguageEvent
+Find4=isDefault
+Find5=prefix
+Find6=TextInputForm
+Find7=TLanguageProc
+Find8=TLanguageEvent
+Find9=Register
+Find10=loadstring
+Find11=LoadString
+Find12=GetTranslationFor
+Find13=FCallbackMethod
+Find14=gettrans
+Find15=LL
 
 [General]
 
@@ -120,9 +120,8 @@ Platform=Standard
 
 File0=..\.\Components\SplitBar.PAS
 File1=..\.\Library\FileUtilsUnit.pas
-File2=.\CmdLineParameterUnitTests.pas
-File3=.\StringUtilsUnitTests.pas
-File4=.\FileUtilsUnitTests.pas
+File2=.\StringUtilsUnitTests.pas
+File3=.\FileUtilsUnitTests.pas
 
 [Last Open Files]
 
@@ -168,6 +167,34 @@ File5.Width=1296
 File5.Height=629
 File5.Column=26
 File5.Line=294
+File6=..\.\NewView\FileDialogForm.pas
+File6.Left=-4
+File6.Bottom=-4
+File6.Width=1296
+File6.Height=629
+File6.Column=42
+File6.Line=300
+File7=..\.\NewView\HelpFile.pas
+File7.Left=-4
+File7.Bottom=-4
+File7.Width=1296
+File7.Height=629
+File7.Column=35
+File7.Line=702
+File8=.\CmdLineParameterUnitTests.pas
+File8.Left=-4
+File8.Bottom=-4
+File8.Width=1296
+File8.Height=629
+File8.Column=88
+File8.Line=785
+File9=..\.\NewView\CmdLineParameterUnit.pas
+File9.Left=-4
+File9.Bottom=-4
+File9.Width=1296
+File9.Height=629
+File9.Column=60
+File9.Line=475
 
 [Linker Options]
 
