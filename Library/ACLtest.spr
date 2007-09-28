@@ -1,6 +1,6 @@
 [Application Options]
 
-ApplicationIcon=
+ApplicationIcon=D:\PROGS\SIBYL\BIN\default.ico
 
 [Browser Files]
 
@@ -32,18 +32,17 @@ File24=CHARUTILSUNIT
 File25=DEBUGUNIT
 File26=STRINGUTILSUNIT
 File27=ACLFILEIOUTILITY
-File28=ACLFINDFUNCTIONS
-File29=PCHARLIST
-File30=ACLRESOURCEUTILITY
-File31=ACLVERSIONUTILITYUNIT
-File32=SEMAPHORES
-File33=SHAREDMEMORYUNIT
-File34=BSEDEV
-File35=FILEUTILSUNIT
-File36=ACLSTRING
-File37=ASTRINGUTILITYUNIT
-File38=RUNPROGRAMUNIT
-File39=ACLLIBRARYTESTFORM
+File28=PCHARLIST
+File29=ACLRESOURCEUTILITY
+File30=ACLVERSIONUTILITYUNIT
+File31=SEMAPHORES
+File32=SHAREDMEMORYUNIT
+File33=BSEDEV
+File34=FILEUTILSUNIT
+File35=ACLSTRING
+File36=ASTRINGUTILITYUNIT
+File37=RUNPROGRAMUNIT
+File38=ACLLIBRARYTESTFORM
 
 [Compiler Options]
 
@@ -73,8 +72,8 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\Library
-OutDir=P:\newview_dev\build\newview
+LastDir=P:\newview_dev\build\library
+OutDir=P:\newview_dev\build\library
 LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\components;P:\newview_dev\build\library
 LibSrcDir=P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl;P:\newview_dev\library;P:\newview_dev\components
 IncSrcDir=
@@ -82,10 +81,12 @@ CompInstallDir=P:\NEWVIEW_DEV\build\components
 
 [Find History]
 
-Find0=Check
-Find1=AddAndResize
-Find2=GetMaskedFilesForDir
-Find3=StrRightFrom
+Find0=TTerminateCheck
+Find1=TerminateCheck
+Find2=Check
+Find3=AddAndResize
+Find4=GetMaskedFilesForDir
+Find5=StrRightFrom
 
 [General]
 
@@ -99,57 +100,68 @@ InActiveLanguages=
 CurrentLanguage=Default
 Platform=OS/2
 
+[Last Closed Files]
+
+File0=.\RunProgramUnit.pas
+
 [Last Open Files]
 
 File0=.\ACLUtility.pas
 File0.Left=-4
-File0.Bottom=-5
-File0.Width=1399
+File0.Bottom=-4
+File0.Width=1296
 File0.Height=629
-File0.Column=33
-File0.Line=4
+File0.Column=14
+File0.Line=141
 File1=.\StringUtilsUnit.pas
 File1.Left=-4
-File1.Bottom=-5
-File1.Width=1399
+File1.Bottom=-4
+File1.Width=1296
 File1.Height=629
-File1.Column=1
-File1.Line=46
-File2=..\.\NewView\unittests\StringUtilsUnitTests.pas
+File1.Column=7
+File1.Line=984
+File2=.\ACLFileIOUtility.pas
 File2.Left=-4
-File2.Bottom=-5
-File2.Width=1399
+File2.Bottom=-4
+File2.Width=1296
 File2.Height=629
 File2.Column=1
-File2.Line=446
-File3=.\ACLStringUtility.pas
+File2.Line=41
+File3=.\CharUtilsUnit.pas
 File3.Left=-4
-File3.Bottom=-5
-File3.Width=1399
+File3.Bottom=-4
+File3.Width=1296
 File3.Height=629
-File3.Column=1
-File3.Line=1163
-File4=.\ACLFileIOUtility.pas
+File3.Column=31
+File3.Line=109
+File4=.\ACLLibraryTestForm.pas
 File4.Left=-4
-File4.Bottom=-5
-File4.Width=1399
+File4.Bottom=-4
+File4.Width=1296
 File4.Height=629
-File4.Column=1
-File4.Line=41
-File5=.\CharUtilsUnit.pas
+File4.Column=87
+File4.Line=141
+File5=.\ACLLibrary.pas
 File5.Left=-4
-File5.Bottom=-5
-File5.Width=1399
+File5.Bottom=-4
+File5.Width=1296
 File5.Height=629
-File5.Column=31
-File5.Line=109
-File6=.\ACLLibraryTestForm.pas
+File5.Column=38
+File5.Line=4
+File6=.\AStringUtilityUnit.pas
 File6.Left=-4
-File6.Bottom=-5
-File6.Width=1399
+File6.Bottom=-4
+File6.Width=1296
 File6.Height=629
 File6.Column=1
-File6.Line=10
+File6.Line=212
+File7=.\FileUtilsUnit.pas
+File7.Left=-4
+File7.Bottom=-4
+File7.Width=1296
+File7.Height=629
+File7.Column=26
+File7.Line=1057
 
 [Linker Options]
 
@@ -177,7 +189,7 @@ Page0.Installed=True
 [SCU]
 
 SCUName=.\ACLLibrary.scu
-MainForm=
+MainForm=ACLLibraryTestForm
 
 [Win32 Application Options]
 

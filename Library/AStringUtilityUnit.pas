@@ -138,7 +138,6 @@ function IsEmailAddress( s: TAstring ): boolean;
 var
   AtPos: longint;
   SecondAtPos: longint;
-  DotPos: longint;
 begin
   result := false;
   // must be a @...
@@ -210,7 +209,6 @@ const
 
 procedure TrimPunctuation( s: TAString );
 var
-  c: char;
   ChangesMade: boolean;
 begin
   while s.Length > 0 do
