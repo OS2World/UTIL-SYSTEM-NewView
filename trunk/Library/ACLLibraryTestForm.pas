@@ -6,7 +6,6 @@ Uses
   Classes, Forms, Graphics, Buttons,
   StdCtrls,
   ACLFileIOUtility,
-  ACLFindFunctions,
   ACLUtility,
   PCharList,
   ACLResourceUtility,
