@@ -22,7 +22,7 @@ to act as command line parameter tests.
 .*
 .*
 .**********************************************************
-:h2.TestTopic
+:h2 id=1234.TestTopic
 :p.Page: TestTopic
 .*
 .*

@@ -7,7 +7,7 @@
 .**********************************************************
 .*
 :userdoc.
-:docprof toc=12 ctrlarea=none.
+:docprof toc=123 ctrlarea=none.
 :title.NewView Rendering Tests
 .*
 .*
@@ -21,6 +21,11 @@ some samples/tests for a specific problem
 :h1.Tests
 :p.
 Tests
+.*
+.*
+.**********************************************************
+:h2 id=1234.TestTopic
+:p.Page: TestTopic
 .*
 .*
 .**********************************************************
@@ -144,18 +149,116 @@ Test
 .*
 .*
 .**********************************************************
-:h2.Link type 'launch'
+:h2.Link Tests
+.*
+.*
+.**********************************************************
+:h3.Link type 'hd'
+:p.This type links to some heading.
+:ol.
+:li.:link reftype=hd refid='1234'.
+&colon.link reftype=hd refid='1234'.
+.br
+(internal link to our TestTopic)
+:elink.
+:li.:link reftype=hd refid='1234' database=test_topics.
+&colon.link reftype=hd refid='1234' database=test_topics.
+.br
+(external link to the TestTopic in file test_topics.hlp).
+:elink.
+:eol.
+.*
+.*
+.**********************************************************
+:h3.Link type 'fn'
+:p.This type links to some footnote.
+.*
+:fn id=testfn.
+This is a test footnote.
+:efn.
+.*
+:ol.
+:li.:link reftype=fn refid='testfn'.
+&colon.link reftype=fn refid='testfn'.
+.br
+Internal link to our TestFootnote
+:elink.
+:li.:link reftype=fn refid='testfn' database=test_topics.
+&colon.link reftype=fn refid='testfn' database=test_topics.
+.br
+Internal link to our TestFootnote in file test_topics.hlp.
+The database is ignored by view and newview.
+:elink.
+:eol.
+.*
+.*
+.**********************************************************
+:h3.Link type 'launch'
 :p.This kind of links are used to start an external program.
 There are serveral test to launch view.exe.
 :ol.
+:li.:link reftype=launch object='view.exe'.
+&colon.link reftype=launch object='view.exe'.
+.br
+Start view.exe without params.
+:elink.
+:li.:link reftype=launch object='view.exe' data=''.
+&colon.link reftype=launch object='view.exe' data=''. (possible but generates a compiler warning)
+.br
+Start view.exe without params.
+:elink.
 :li.:link reftype=launch object='view.exe' data='test_topics.hlp TestTopic'.
-object='view.exe' data='test_topics.hlp TestTopic'
+&colon.link reftype=launch object='view.exe' data='test_topics.hlp TestTopic'.
+.br
+Start view.exe with command line 'test_topics.hlp TestTopic'.
 :elink.
-:li.NewView (and also the original view) is not able to handle the call of
+:li.:link reftype=launch object='p:\newview_dev\test\rendering\dir with blank\e.exe' data='config.sys'.
+&colon.link reftype=launch object='p&colon.\newview_dev\test\rendering\dir with blank\e.exe' data='config.sys'.
+.br
+NewView (and also the original view) is not able to handle the call of
 executables with blanks in file/path name correct.
-:link reftype=launch object='c:\os 2\e.exe' data=''.
-object='c:\os 2\e.exe' data=''
 :elink.
+:eol.
+.*
+.*
+.**********************************************************
+:h3.Link type 'url'
+:p.This kind of links are used to start the default browser.
+:ol.
+:li.http&colon.&slash.&slash.www&per.rbri&per.org
+.br
+Plain url
+:li.:link reftype=launch object='firefox.exe' data='http://www.rbri.org'.
+&colon.link reftype=launch object='firefox.exe' data='http&colon.&slash.&slash.www&per.rbri&per.org'.
+.br
+Start firefox with url.
+:elink.
+:li.:link reftype=launch object='fireFOX.exe' data='http://www.rbri.org'.
+&colon.link reftype=launch object='fireFOX.exe' data='http&colon.&slash.&slash.www&per.rbri&per.org'.
+.br
+Start firefox with url (detect must be case insensitive).
+:elink.
+:li.:link reftype=launch object='mozilla.exe' data='http://www.rbri.org'.
+&colon.link reftype=launch object='mozilla.exe' data='http&colon.&slash.&slash.www&per.rbri&per.org'.
+.br
+Start mozilla with url.
+:elink.
+:li.:link reftype=launch object='netscape.exe' data='http://www.rbri.org'.
+&colon.link reftype=launch object='netscape.exe' data='http&colon.&slash.&slash.www&per.rbri&per.org'.
+.br
+Start netscape with url.
+:elink.
+:li.:link reftype=launch object='explore.exe' data='http://www.rbri.org'.
+&colon.link reftype=launch object='explore.exe' data='http&colon.&slash.&slash.www&per.rbri&per.org'.
+.br
+Start explore with url.
+:elink.
+:eol.
+.*
+.*
+.**********************************************************
+:h2.Link type 'inform'
+:p.Not supported by NewView at the moment.
 :eol.
 .*
 .*
