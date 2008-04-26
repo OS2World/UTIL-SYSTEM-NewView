@@ -985,8 +985,7 @@ begin
       // then put code in to show it.
       if not Link.Automatic then
       begin
-        OutputString := '<blue>'
-                        + GetBeginLink( State.LinkIndex );
+        OutputString := '<blue>' + GetBeginLink(State.LinkIndex);
       end;
 
       inc( State.LinkIndex );
@@ -1059,7 +1058,7 @@ begin
       then
       begin
         OutputString := '<blue><link ' + PARAM_LINK_URL + ' '
-                        + FullDoubleQuote( ProgramLink )
+                        + FullDoubleQuote(StrSubstringFrom(ProgramLink, Length(ProgramPath) + 2))
                         + '>';
       end
       else
