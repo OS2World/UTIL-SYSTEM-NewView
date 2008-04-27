@@ -49,6 +49,8 @@ uses
 
   Procedure SetLogAspects(const aCommaSeparatedListOfAspectNames : String);
 
+  Procedure writeDebugSetupDetailsTo(aStrings : TStrings);
+
 
 var
   startTime : ULONG;
@@ -56,6 +58,8 @@ var
   PMPrintfModuleHandle : HMODULE;
   PMPrintfString : Function(aString : PChar) : ULONG; APIENTRY;
   activeLogAspects : LogAspects;
+  infoMessage1 : String;
+  infoMessage2 : String;
 
 
 
@@ -64,6 +68,14 @@ Implementation
 uses
   BseDos,
   StringUtilsUnit;
+
+  Procedure writeDebugSetupDetailsTo(aStrings : TStrings);
+  begin
+    aStrings.Add('---- Debug ----');
+    aStrings.Add('  ' + infoMessage1);
+    aStrings.Add('  ' + infoMessage2);
+  end;
+
 
   FUNCTION LoadPMPrinfFLib : integer;
   Var
@@ -78,6 +90,7 @@ uses
 
     tmpDllName:='PMPRINTF';
     tmpRC := DosLoadModule(tmpErrorInfo, 255, tmpDllName, PMPrintfModuleHandle);
+    infoMessage1 := 'DosLoadModule ' + tmpDllName + ' rc: ' + IntToStr(tmpRC);
     if tmpRC <> 0 then
     begin
         PMPrintfModuleHandle := 0;
@@ -87,6 +100,7 @@ uses
 
     tmpProcedureName := 'PmPrintfString';
     tmpRC := DosQueryProcAddr(PMPrintfModuleHandle, 0, tmpProcedureName, tmpProcedureAddress);
+    infoMessage2 := 'DosQueryProcAddr ' + tmpProcedureName + ' rc: ' + IntToStr(tmpRC);
     if tmpRC <> 0 then
     begin
       DosFreeModule(PMPrintfModuleHandle);
