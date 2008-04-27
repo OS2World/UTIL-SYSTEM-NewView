@@ -31,7 +31,9 @@ const
   BookshelfEnvironmentVar = 'BOOKSHELF';
   LanguageEnvironmentVar = 'LANG';
   DEFAULT_LANGUAGE = 'EN_US';
+  HELP_FILE_DELIMITER = '+';
   HELP_FILE_EXTENSION = FILE_EXTENSION_DELIMITER + 'hlp';
+  INF_FILE_EXTENSION = FILE_EXTENSION_DELIMITER + 'inf';
 
 
 type
@@ -645,7 +647,7 @@ type
     tmpDirectory := RemoveRightDirectorySeparator(aDirectory);
     if tmpDirectory = '' then
     begin
-      Result:= true;
+      Result := true;
       exit;
     end;
 
@@ -654,7 +656,7 @@ type
       if tmpDirectory[2] = ':' then
       begin
         // a drive only has been specified
-        tmpDrive:= UpCase(tmpDirectory[1] );
+        tmpDrive := UpCase(tmpDirectory[1] );
         if (tmpDrive < 'A') or (tmpDrive > 'Z') then
         begin
           // invalid drive; return false;
