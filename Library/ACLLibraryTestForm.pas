@@ -6,17 +6,12 @@ Uses
   Classes, Forms, Graphics, Buttons,
   StdCtrls,
   ACLFileIOUtility,
-  ACLUtility,
+  ACLFileUtility, ACLFindFunctions,
+  ACLProfile,
+  ACLStringUtility, ACLUtility,
   PCharList,
-  ACLResourceUtility,
-  ACLVersionUtilityUnit,
-  Semaphores,
-  SharedMemoryUnit,
-
-  FileUtilsUnit,
-  StringUtilsUnit,
-  CharUtilsUnit,
-  DebugUnit;
+  ACLResourceUtility, ACLVersionUtilityUnit,
+  Semaphores, SharedMemoryUnit;
 
 Type
   TACLLibraryTestForm = Class (TForm)

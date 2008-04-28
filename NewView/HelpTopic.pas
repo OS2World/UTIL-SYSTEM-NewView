@@ -310,7 +310,8 @@ var
 Procedure OnLanguageEvent( Language: TLanguageFile;
                            const Apply: boolean );
 begin
-  Language.LL( Apply, DefaultTitle, 'HelpTopic' + LANGUAGE_LABEL_DELIMITER + 'DefaultTitle', '(No title)' );
+  Language.Prefix := 'HelpTopic.';
+  Language.LL( Apply, DefaultTitle, 'DefaultTitle', '(No title)' );
 end;
 
 
@@ -984,8 +985,7 @@ begin
       // then put code in to show it.
       if not Link.Automatic then
       begin
-        OutputString := '<blue>'
-                        + GetBeginLink( State.LinkIndex );
+        OutputString := '<blue>' + GetBeginLink(State.LinkIndex);
       end;
 
       inc( State.LinkIndex );
@@ -1051,21 +1051,21 @@ begin
 
       ProgramFilename := ExtractFilename( ProgramPath );
 
-      if    StrStartsWithIgnoringCase(ProgramFilename, PRGM_EXPLORER)
+      if    StrStartsWithIgnoringCase(ProgramFilename, PRGM_EXPLORER) // web explorer?
          or StrStartsWithIgnoringCase(ProgramFilename, PRGM_NETSCAPE)
          or StrStartsWithIgnoringCase(ProgramFilename, PRGM_MOZILLA)
          or StrStartsWithIgnoringCase(ProgramFilename, PRGM_FIREFOX)
-         then
+      then
       begin
         OutputString := '<blue><link ' + PARAM_LINK_URL + ' '
-                        + FullDoubleQuote( ProgramLink )
+                        + FullDoubleQuote(StrSubstringFrom(ProgramLink, Length(ProgramPath) + 2))
                         + '>';
       end
       else
       begin
         ProgramInfo := TSerializableStringList.create;
         ProgramInfo.add(ProgramPath);
-        ProgramInfo.add(ProgramLink);
+        ProgramInfo.add(StrSubstringFrom(ProgramLink, Length(ProgramPath) + 2));
         OutputString := '<blue><link ' + PARAM_LINK_PROGRAM + ' '
                         + ProgramInfo.getSerializedString
                         + '>';

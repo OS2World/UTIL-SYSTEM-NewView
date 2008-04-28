@@ -1,13 +1,5 @@
 NewView release changes
 
-V2.20
-- big parts of the translation engine are refactored. The files are now sorted by label
-  if you export them.
-- More german translations added
-- There was a print message that was not 'translatable'; fixed
-- The File Open dialog had problems with archived directories; fixed (see bug #31)
-
-
 V2.19
 - the display of a bubble help at some places of the left panel is removed
 - the default of the option 'Show left panel for - Online help for applications' is changed to true.

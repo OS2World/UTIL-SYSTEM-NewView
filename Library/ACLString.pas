@@ -178,11 +178,9 @@ Implementation
 
 uses
 {$Ifdef os2}
-  OS2Def,
-  ACLFileIOUtility,
+  OS2Def, ACLFileIOUtility,
 {$endif}
-  ACLUtility,
-  CharUtilsUnit;
+  ACLUtility, ACLStringUtility;
 
 const
   GlobalAStringCreatedCount: longint = 0;
@@ -402,7 +400,7 @@ begin
   end;
   // EndP now points to one byte past last non-space char
 
-  _Length:= PCharPointerDiff( EndP, StartP );
+  _Length:= PCharDiff( EndP, StartP );
 
   if _Length > 0 then
     if StartP > _S then
@@ -487,7 +485,7 @@ begin
     C:= P^;
     if C = CharToFind then
     begin
-      Result:= PCharPointerDiff( p, _S );
+      Result:= PCharDiff( p, _S );
       break;
     end;
     inc( P );

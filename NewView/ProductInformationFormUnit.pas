@@ -66,20 +66,16 @@ End;
 
 Procedure TProductInformationForm.OnLanguageEvent( Language: TLanguageFile;
                                                    const Apply: boolean );
-var
-  tmpPrefix : String;
 begin
-  // LogEvent(LogI18n, 'TProductInformationForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  LogEvent(LogI18n, 'TProductInformationForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
-  tmpPrefix := 'ProductInformationForm' + LANGUAGE_LABEL_DELIMITER;
-
-  Language.LL( Apply, VersionMsg, tmpPrefix + 'VersionMsg', 'Version: ' );
+  Language.LL( Apply, VersionMsg, 'VersionMsg', 'Version: ' );
 end;
 
 Procedure TProductInformationForm.AboutBoxOnCreate (Sender: TObject);
 Begin
-  RegisterEventForLanguages( OnLanguageEvent );
+  RegisterForLanguages( OnLanguageEvent );
 
   NameAndVersionEdit.Text := 'NewView ' + GetAppVersion;
 
@@ -110,6 +106,5 @@ end;
 Initialization
   RegisterClasses ([TProductInformationForm, TButton,
     TEdit, TImage, TLabel, TBevel]);
-
   RegisterUpdateProcForLanguages( EnsureProductInformationFormLoaded );
 End.

@@ -77,15 +77,12 @@ Implementation
 
 uses
   SysUtils,
-  Forms,
-  Dialogs,
-  StdCtrls,
-  Buttons,
+  Forms, Dialogs, StdCtrls, Buttons,
+  ACLStringUtility
 {$ifdef os2}
-  ACLLanguageUnit, ControlsUtility,
+  , ACLLanguageUnit, ControlsUtility
 {$endif}
-  CharUtilsUnit,
-  DebugUnit;
+  ;
 
 // -------------------------------------------------
 
@@ -103,7 +100,7 @@ var
 Begin
   TheDialog := TMessageForm.Create( nil );
   TheDialog.Caption := Caption;
-  PMessage := NewPCharAsCopyOfStr(Message);
+  PMessage := StrDupPas( Message );
   TheDialog.TheText := PMessage;
 
   TheDialog.ShowCancel := ShowCancel;
@@ -303,21 +300,14 @@ var
   OKButtonCaption: string;
   CancelButtonCaption: string;
 
-Procedure OnLanguageEvent(Language: TLanguageFile; const Apply: boolean);
-var
-  tmpPrefix : String;
+Procedure OnLanguageEvent( Language: TLanguageFile;
+                           const Apply: boolean );
 begin
-  if Language = nil then
-  begin
-    OKButtonCaption := '~OK';
-    CancelButtonCaption :='~Cancel';
-  end
-  else
-  begin
-    tmpPrefix := 'TextInputForm' + LANGUAGE_LABEL_DELIMITER; // use messageform captions
-    Language.LL(Apply, OKButtonCaption, tmpPrefix + 'OKButtonCaption', '~OK');
-    Language.LL(Apply, CancelButtonCaption, tmpPrefix + 'CancelButtonCaption', '~Cancel');
-  end;
+  if Language <> nil then
+    Language.Prefix := 'TextInputForm.';
+
+  LoadString( Language, Apply, OKButtonCaption, 'OKButtonCaption', '~OK' );
+  LoadString( Language, Apply, CancelButtonCaption, 'CancelButtonCaption', '~Cancel' );
 end;
 
 type
@@ -380,9 +370,7 @@ Function DoInputQuery( Const ACaption: String;
                        Var Value: String ): Boolean;
 Begin
   if QueryDlg = nil then
-  begin
     QueryDlg := TACLQueryDialog.Create( Screen.ActiveForm );
-  end;
 
   QueryDlg.Caption := ACaption;
   QueryDlg.FMessageLabel.Caption := APrompt;

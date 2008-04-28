@@ -172,21 +172,19 @@ var
 
 Procedure OnLanguageEvent( Language: TLanguageFile;
                            const Apply: boolean );
-var
-  tmpPrefix : String;
 begin
-  tmpPrefix := 'HelpFile' + LANGUAGE_LABEL_DELIMITER;
 
-  Language.LL( Apply, FileErrorNotFound, tmpPrefix + 'FileErrorNotFound', 'File not found' );
-  Language.LL( Apply, FileErrorAccessDenied, tmpPrefix + 'FileErrorAccessDenied', 'Access denied' );
-  Language.LL( Apply, FileErrorInUse, tmpPrefix + 'FileErrorInUse', 'File in use by another program' );
+  Language.Prefix := 'HelpFile.';
+  Language.LL( Apply, FileErrorNotFound, 'FileErrorNotFound', 'File not found' );
+  Language.LL( Apply, FileErrorAccessDenied, 'FileErrorAccessDenied', 'Access denied' );
+  Language.LL( Apply, FileErrorInUse, 'FileErrorInUse', 'File in use by another program' );
   Language.LL( Apply,
                FileErrorInvalidHeader,
-               tmpPrefix + 'FileErrorInvalidHeader',
+               'FileErrorInvalidHeader',
                'File doesn''t appear to be an OS/2 Help document (header ID not correct)' );
   Language.LL( Apply,
                ErrorCorruptHelpFile,
-               tmpPrefix + 'ErrorCorruptHelpFile',
+               'ErrorCorruptHelpFile',
                'File is corrupt' );
 end;
 
@@ -668,14 +666,12 @@ end;
 function THelpFile.FindTopicByIndexStartsWith( const SearchText: string ): TTopic;
 var
   i: longint;
-  tmpIndex: String;
 begin
   result := nil;
   GetIndex; // make sure it's read
   for i := 0 to _Index.Count - 1 do
   begin
-    tmpIndex := _Index.ValuePtrs[i]^;
-    if StrStartsWithIgnoringCase(tmpIndex, SearchText) then
+    if StrStartsWithIgnoringCase( SearchText, _Index.ValuePtrs[ i ] ^ ) then
     begin
       // found
       result := TTopic( Index.Objects[ i ] );
@@ -719,7 +715,7 @@ begin
       tmpTopic := _Topics[i];
       if tmpLevel = tmpTopic.ContentsLevel then
       begin
-        if StrStartsWithIgnoringCase(tmpTopic.TitlePtr^, SearchText) then
+        if StrStartsWithIgnoringCase( SearchText, tmpTopic.TitlePtr ^ ) then
         begin
           result := tmpTopic;
           exit;
