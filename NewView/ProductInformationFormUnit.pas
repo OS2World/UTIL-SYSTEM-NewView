@@ -86,6 +86,10 @@ Begin
   WebPageEdit.Font.Attributes := [ faUnderscore ];
   EmailEdit.Font := WebPageEdit.Font;
 
+  CopyrightEdit.Text := GetCopyrightMsg;
+  LicenseEdit.Text := GetLicenseMsg;
+
+
   // custom cursor used to prevent user from selecting the text :(
   // fix in SPCC forms.pas now makes it work
   // Argh! That causes other problems, due to default cursor being set
