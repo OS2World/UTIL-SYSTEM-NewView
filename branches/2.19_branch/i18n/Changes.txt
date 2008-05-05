@@ -1,5 +1,10 @@
 NewView release changes
 
+V2.19.1
+- Fix: Broken link hanlding; NewView was unable to start a program or open the web browser.
+- Fix: Detection of links pointing to a url was not working.
+
+
 V2.19
 - the display of a bubble help at some places of the left panel is removed
 - the default of the option 'Show left panel for - Online help for applications' is changed to true.
