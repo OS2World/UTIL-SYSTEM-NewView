@@ -23,6 +23,7 @@ const
   LanguageEnvironmentVar = 'LANG';
   DEFAULT_LANGUAGE = 'EN_US';
   HELP_FILE_EXTENSION = '.hlp';
+  INF_FILE_EXTENSION = '.inf';
 
 
   // Adds a slash to the end of dir if not present
