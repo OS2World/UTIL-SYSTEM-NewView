@@ -2687,13 +2687,37 @@ end;
 Procedure TMainForm.WMFollowExternalLink( Var Msg: TMessage );
 var
   FilePath: string;
+  AlternativeFilePath: string;
+  FileIndex: longint;
+  HelpFile: THelpFile;
   Topic: TTopic;
+  IsFileAlreadyOpened: boolean;
 begin
   // try in same dir as source file
   FilePath := AddDirectorySeparator( ExtractFilePath( g_ExternalLinkSourceFilename ) )
               + g_ExternalLinkFilename;
 
-  if not StrEqualIgnoringCase( FilePath, g_ExternalLinkSourceFilename ) then
+  AlternativeFilePath := FilePath;
+
+  if ExtractFileExt(g_ExternalLinkFilename) = '' then
+  begin
+    FilePath := ChangeFileExt(FilePath, INF_FILE_EXTENSION);
+    AlternativeFilePath := ChangeFileExt(FilePath, HELP_FILE_EXTENSION);
+  end;
+
+  // figure out, if the file is already open
+  IsFileAlreadyOpened := false;
+  for FileIndex := 0 to CurrentOpenFiles.Count - 1 do
+  begin
+    HelpFile := CurrentOpenFiles[FileIndex];
+    if StrEndsWithIgnoringCase(HelpFile.Filename, FilePath)
+       or StrEndsWithIgnoringCase(HelpFile.Filename, g_ExternalLinkFilename + HELP_FILE_EXTENSION) then
+    begin
+      IsFileAlreadyOpened := true;
+    end;
+  end;
+
+  if not IsFileAlreadyOpened then
   begin
     // different file - try and open it
     if not FileExists( FilePath ) then
@@ -2702,9 +2726,7 @@ begin
 
     if not FileExists( FilePath ) then
     begin
-      DoErrorDlg( 'Link Error',
-                  'Cannot find linked file '
-                  + g_ExternalLinkFilename );
+      DoErrorDlg('Link Error', 'Cannot find linked file ''' + g_ExternalLinkFilename +'''');
       exit;
     end;
 
@@ -2718,7 +2740,6 @@ begin
       if not OpenFile( FilePath, '', false ) then
         exit;
     end;
-
   end;
 
   if g_ExternalLinkTopic = '' then
@@ -2728,12 +2749,23 @@ begin
     exit;
   end;
 
-  Topic := FindTopicByGlobalName( g_ExternalLinkTopic );
+  // don't call this search here;
+  // because we know the file to search in
+  // Topic := FindTopicByGlobalName( g_ExternalLinkTopic );
+  Topic := nil;
+  for FileIndex := 0 to CurrentOpenFiles.Count - 1 do
+  begin
+    HelpFile := CurrentOpenFiles[FileIndex];
+    if StrEndsWithIgnoringCase(HelpFile.Filename, g_ExternalLinkFilename + INF_FILE_EXTENSION)
+       or StrEndsWithIgnoringCase(HelpFile.Filename, g_ExternalLinkFilename + HELP_FILE_EXTENSION) then
+    begin
+      Topic := HelpFile.FindTopicByGlobalName(g_ExternalLinkTopic);
+    end;
+  end;
+
   if Topic = nil then
   begin
-    DoErrorDlg( 'Link Error',
-                'Unable to find topic with global name '
-                + g_ExternalLinkTopic );
+    DoErrorDlg('Link Error', 'Unable to find topic with global name ''' + g_ExternalLinkTopic + ''');
     exit;
   end;
 
@@ -5533,16 +5565,16 @@ Begin
   begin
     LinkDetails := StrSubstringFrom(LinkString, Length(PARAM_LINK_EXTERNAL) + 2);
 
+    Window := FindWindowFromView(Sender, Windows);
+    SourceFile := Window.Topic.HelpFile as THelpFile;
+
     tmpLinkDetails := TStringList.Create;
     StrExtractStrings(tmpLinkDetails, LinkDetails, [' '], #0);
     LinkIndex := StrToInt(tmpLinkDetails[0]);
+    g_ExternalLinkFileName := SourceFile.ReferencedFiles[ LinkIndex ];
+    g_ExternalLinkTopic := tmpLinkDetails[1];
     tmpLinkDetails.Destroy;
 
-    Window := FindWindowFromView( Sender, Windows );
-    SourceFile := Window.Topic.HelpFile as THelpFile;
-
-    g_ExternalLinkFileName := SourceFile.ReferencedFiles[ LinkIndex ];
-    g_ExternalLinkTopic := LinkDetails;
     g_ExternalLinkSourceFilename := SourceFile.Filename;
     g_ExternalLinkKeepCurrent := true; // hm... what would be nice?
 
