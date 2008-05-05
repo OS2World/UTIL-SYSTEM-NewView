@@ -2765,7 +2765,7 @@ begin
 
   if Topic = nil then
   begin
-    DoErrorDlg('Link Error', 'Unable to find topic with global name ''' + g_ExternalLinkTopic + ''');
+    DoErrorDlg('Link Error', 'Unable to find topic with global name ''' + g_ExternalLinkTopic + '''');
     exit;
   end;
 
