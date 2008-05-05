@@ -257,7 +257,8 @@ uses
   ACLLanguageUnit,
   StringUtilsUnit,
   CharUtilsUnit,
-  SettingsUnit;
+  SettingsUnit,
+  DebugUnit;
 
 const
   IPFColors: array[ 0..15 ] of string =
@@ -1036,7 +1037,6 @@ begin
                       + ' '
                       + ExternalLinkTopicID
                       + '>'
-
     end;
 
     ecProgramLink:
