@@ -2,7 +2,7 @@
 .*
 .* NewView Rendering Tests
 .*
-.* RBRi 2006
+.* RBRi 2006-2008
 .*
 .**********************************************************
 .*
@@ -19,13 +19,17 @@ some samples/tests for a specific problem
 .*
 .**********************************************************
 :h1.Tests
-:p.
-Tests
+:p.Tests
 .*
 .*
 .**********************************************************
 :h2 id=1234.TestTopic
 :p.Page: TestTopic
+.*
+.*
+.**********************************************************
+:h2 id=1235 global.Global TestTopic
+:p.Page: Global TestTopic
 .*
 .*
 .**********************************************************
@@ -150,22 +154,80 @@ Test
 .*
 .**********************************************************
 :h2.Link Tests
+:p.
+Link Tests
 .*
 .*
 .**********************************************************
 :h3.Link type 'hd'
 :p.This type links to some heading.
 :ol.
-:li.:link reftype=hd refid='1234'.
+:li.
+:link reftype=hd.
+&colon.link reftype=hd.
+:elink.
+.br
+(emty link definition test)
+.br
+this is not clickable
+:li.
+:link reftype=hd refid='1234'.
 &colon.link reftype=hd refid='1234'.
 .br
 (internal link to our TestTopic)
 :elink.
-:li.:link reftype=hd refid='1234' database=test_topics.
+:li.
+:link reftype=hd database=rendering.
+&colon.link reftype=hd database=rendering.
+:elink.
+.br
+(external link without refid test)
+.br
+this is not clickable
+:li.:link reftype=hd refid='1234' database=rendering.
+&colon.link reftype=hd refid='1234' database=rendering.
+:elink.
+.br
+:link reftype=hd refid='1234' database='rendering.hlp'.
+&colon.link reftype=hd refid='1234' database='rendering.hlp'.
+:elink.
+.br
+(external link to our TestTopic)
+.br
+This is not working because the topic is not global
+
+:li.
+:link reftype=hd refid='1235' database=rendering.
+&colon.link reftype=hd refid='1235' database=rendering.
+:elink.
+.br
+:link reftype=hd refid='1235' database='rendering.hlp'.
+&colon.link reftype=hd refid='1235' database='rendering.hlp'.
+:elink.
+.br
+(external link to our Global TestTopic)
+:li.
+:link reftype=hd refid='1234' database=test_topics.
 &colon.link reftype=hd refid='1234' database=test_topics.
+:elink.
+.br
+:link reftype=hd refid='1234' database='test_topics.hlp'.
+&colon.link reftype=hd refid='1234' database='test_topics.hlp'.
+:elink.
 .br
 (external link to the TestTopic in file test_topics.hlp).
+.br
+This is not working because the topic is not global
+:li.
+:link reftype=hd refid='1235' database=test_topics.
+&colon.link reftype=hd refid='1235' database=test_topics.
 :elink.
+.br
+:link reftype=hd refid='1235' database='test_topics.hlp'.
+&colon.link reftype=hd refid='1235' database='test_topics.hlp'.
+:elink.
+.br
+(external link to the TestTopic in file test_topics.hlp).
 :eol.
 .*
 .*
@@ -259,7 +321,6 @@ Start explore with url.
 .**********************************************************
 :h2.Link type 'inform'
 :p.Not supported by NewView at the moment.
-:eol.
 .*
 .*
 .**********************************************************
