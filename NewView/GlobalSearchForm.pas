@@ -143,6 +143,7 @@ uses
   DebugUnit,
   ACLDialogs,
   ControlsUtility,
+  DriveInfoUnit,
   IPFFileFormatUnit,
   HelpTopic,
   SearchUnit,
@@ -317,29 +318,25 @@ Begin
 End;
 
 Procedure TGlobalSearchForm.OnLanguageEvent(Language: TLanguageFile; const Apply: boolean );
-var
-  tmpPrefix : String;
 begin
-  // LogEvent(LogI18n, 'TGlobalSearchForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  LogEvent(LogI18n, 'TGlobalSearchForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
 
   Language.LoadComponentLanguage(self, Apply);
 
-  tmpPrefix := 'GlobalSearchForm' + LANGUAGE_LABEL_DELIMITER;
+  Language.LL(Apply, SearchCaption, 'SearchCaption', '~Search');
+  Language.LL(Apply, StopCaption, 'StopCaption', '~Stop');
+  Language.LL(Apply, NoResultsMsg, 'NoResultsMsg', '(No results found)');
+  Language.LL(Apply, ScanDirectoriesMsg, 'ScanDirectoriesMsg', 'Finding help files...');
+  Language.LL(Apply, SearchingFileMsg, 'SearchingFileMsg', 'Searching ');
+  Language.LL(Apply, OfMsg, 'OfMsg', ' of ');
+  Language.LL(Apply, DoneMsg, 'DoneMsg', 'Done');
+  Language.LL(Apply, SearchErrorTitle, 'SearchErrorTitle', 'Search');
+  Language.LL(Apply, SearchError, 'SearchError', 'Error in search syntax: ');
 
-  Language.LL(Apply, SearchCaption, tmpPrefix + 'SearchCaption', '~Search');
-  Language.LL(Apply, StopCaption, tmpPrefix + 'StopCaption', '~Stop');
-  Language.LL(Apply, NoResultsMsg, tmpPrefix + 'NoResultsMsg', '(No results found)');
-  Language.LL(Apply, ScanDirectoriesMsg, tmpPrefix + 'ScanDirectoriesMsg', 'Finding help files...');
-  Language.LL(Apply, SearchingFileMsg, tmpPrefix + 'SearchingFileMsg', 'Searching ');
-  Language.LL(Apply, OfMsg, tmpPrefix + 'OfMsg', ' of ');
-  Language.LL(Apply, DoneMsg, tmpPrefix + 'DoneMsg', 'Done');
-  Language.LL(Apply, SearchErrorTitle, tmpPrefix + 'SearchErrorTitle', 'Search');
-  Language.LL(Apply, SearchError, tmpPrefix + 'SearchError', 'Error in search syntax: ');
-
-  Language.LL(Apply, StandardHelpPathsLocation, tmpPrefix + 'StandardHelpPathsLocation', 'Standard Help Paths');
-  Language.LL(Apply, FixedDrivesLocation, tmpPrefix + 'FixedDrivesLocation', 'All Hard Drives');
-  Language.LL(Apply, SelectedHelpPathsLocation, tmpPrefix + 'SelectedHelpPathsLocation', 'Selected Help Paths');
-  Language.LL(Apply, CustomPathsLocation, tmpPrefix + 'CustomPathsLocation', 'Directory List');
+  Language.LL(Apply, StandardHelpPathsLocation, 'StandardHelpPathsLocation', 'Standard Help Paths');
+  Language.LL(Apply, FixedDrivesLocation, 'FixedDrivesLocation', 'All Hard Drives');
+  Language.LL(Apply, SelectedHelpPathsLocation, 'SelectedHelpPathsLocation', 'Selected Help Paths');
+  Language.LL(Apply, CustomPathsLocation, 'CustomPathsLocation', 'Directory List');
 end;
 
 
@@ -406,7 +403,7 @@ End;
 
 Procedure TGlobalSearchForm.GlobalSearchFormOnCreate (Sender: TObject);
 Begin
-  RegisterEventForLanguages( OnLanguageEvent );
+  RegisterForLanguages( OnLanguageEvent );
 
   UpdateButtons;
 
@@ -504,7 +501,6 @@ Begin
                                        Dir,
                                        '*.inf;*.hlp',
                                        true,
-                                       false,
                                        Files,
                                        ThreadManager.StopRequested,
                                        true ); // check termination
@@ -753,6 +749,5 @@ end;
 Initialization
   RegisterClasses ([TGlobalSearchForm, TEdit, TLabel,
     TProgressBar, TButton, TOutline2, TComboBox, TBevel, TLed, TTimer]);
-
-  RegisterUpdateProcForLanguages(EnsureGlobalSearchFormLoaded);
+  RegisterUpdateProcForLanguages( EnsureGlobalSearchFormLoaded );
 End.

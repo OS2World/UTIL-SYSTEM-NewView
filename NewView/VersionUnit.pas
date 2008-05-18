@@ -10,12 +10,17 @@ Interface
 // This file contains the version number and history.
 
 function GetAppVersion: string;
+function GetCopyrightMsg: string;
+function GetLicenseMsg: string;
 
 Implementation
 
 const
-  Version =        'V2.20.beta2'; // $SS_REQUIRE_NEW_VERSION$
-  BldLevelVersion = '2.20.beta2'; // Embedded for IBM BLDLEVEL tool
+  Version =        'V2.19.1'; // $SS_REQUIRE_NEW_VERSION$
+  BldLevelVersion = '2.19.1'; // Embedded for IBM BLDLEVEL tool
+  CopyrightMsg = 'Copyright 2005 Aaron Lawrence; 2006-2008 Ronald Brill';
+  LicenseMsg   = 'Licensed under the GNU Public License';
+
 
 // RELEASE PROCESS
 // - notify translators
@@ -198,6 +203,16 @@ Minor
 function GetAppVersion: string;
 begin
   Result:= Version;
+end;
+
+function GetCopyrightMsg: string;
+begin
+  Result:= CopyrightMsg;
+end;
+
+function GetLicenseMsg: string;
+begin
+  Result:= LicenseMsg;
 end;
 
 const

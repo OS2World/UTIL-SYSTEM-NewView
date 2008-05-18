@@ -48,7 +48,6 @@ type
     Memo1: TMemo;
     Button16: TButton;
     Image1: TImage;
-    DirectoryListBox1: TCustomDirectoryListBox;
     Button15: TButton;
     Panel1: TPanel;
     Button12: TButton;
@@ -116,11 +115,10 @@ uses
   Printers,
   ControlScrolling,
   ACLResourceUtility,
+  ACLStringUtility,
   RichTextPrintUnit,
   RichTextStyleUnit,
-  ACLLanguageUnit,
-  CharUtilsUnit,
-  DebugUnit;
+  ACLLanguageUnit;
 
 {$R DialogIcons}
 
@@ -146,7 +144,7 @@ Begin
            ULONG( p ),
            4 );
 
-  Memo1.Lines.Add( StrPasWithLength( p, l ) );
+  Memo1.Lines.Add( StrNPas( p, l ) );
 
   StrDispose( p );
 End;
@@ -517,6 +515,4 @@ Initialization
     TCustomDriveComboBox,
     TCustomDirectoryListBox, TCustomFilelistBox, TListBox, TRadioGroup
    , TEdit, TSpeedButton, TPanel, THeaderControl, TMemo, TImage]);
-
-   SetLogAspects('LogDebug');
 End.

@@ -83,19 +83,15 @@ End;
 
 Procedure TBookmarksForm.OnLanguageEvent( Language: TLanguageFile;
                                           const Apply: boolean );
-var
-  tmpPrefix : String;
 begin
-  // LogEvent(LogI18n, 'TBookmarksForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  LogEvent(LogI18n, 'TBookmarksForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
-  tmpPrefix := 'BookmarksForm' + LANGUAGE_LABEL_DELIMITER;
-
-  Language.LL( Apply, DeleteBookmarkTitle, tmpPrefix + 'DeleteBookmarkTitle', 'Delete Bookmark' );
-  Language.LL( Apply, DeleteBookmarkA, tmpPrefix + 'DeleteBookmarkA', 'Delete the bookmark named ' );
-  Language.LL( Apply, DeleteBookmarkB, tmpPrefix + 'DeleteBookmarkB', '?' );
-  Language.LL( Apply, RenameBookmarkTitle, tmpPrefix + 'RenameBookmarkTitle', 'Rename Bookmark' );
-  Language.LL( Apply, RenameBookmark, tmpPrefix + 'RenameBookmark', 'Enter the new name of the bookmark' );
+  Language.LL( Apply, DeleteBookmarkTitle, 'DeleteBookmarkTitle', 'Delete Bookmark' );
+  Language.LL( Apply, DeleteBookmarkA, 'DeleteBookmarkA', 'Delete the bookmark named ' );
+  Language.LL( Apply, DeleteBookmarkB, 'DeleteBookmarkB', '?' );
+  Language.LL( Apply, RenameBookmarkTitle, 'RenameBookmarkTitle', 'Rename Bookmark' );
+  Language.LL( Apply, RenameBookmark, 'RenameBookmark', 'Enter the new name of the bookmark' );
 end;
 
 Procedure TBookmarksForm.BookmarksListBoxOnScan (Sender: TObject;
@@ -117,7 +113,7 @@ End;
 
 Procedure TBookmarksForm.BookmarksFormOnCreate (Sender: TObject);
 Begin
-  RegisterEventForLanguages( OnLanguageEvent );
+  RegisterForLanguages( OnLanguageEvent );
 End;
 
 Procedure TBookmarksForm.BookmarksListBoxOnItemFocus (Sender: TObject;

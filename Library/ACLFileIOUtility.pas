@@ -36,11 +36,8 @@ function ReadFileBlock( F: HFile;
 Implementation
 
 uses
-  OS2Def,
-  SysUtils,
-  ACLUtility,
-  StringUtilsUnit,
-  CharUtilsUnit;
+  OS2Def, SysUtils,
+  ACLStringUtility, ACLUtility;
 
 // skips over Length bytes
 Procedure MySkip( F: HFile; Length: longword );

@@ -6,13 +6,7 @@ Unit CustomFileControls;
 Interface
 
 Uses
-  Dos,
-  SysUtils,
-  Classes,
-  Forms,
-  StdCtrls,
-  CustomListBox,
-  Graphics;
+  Dos, SysUtils, Classes, Forms, StdCtrls, CustomListBox, Graphics;
 
 
 Type
@@ -342,16 +336,16 @@ Exports
 Implementation
 
 Uses
-  BseDos,
-  OS2Def,
-  BseDev,
-  BseErr,
+{$IFDEF OS2}
+  BseDos, OS2Def, DriveInfoUnit,
+  BseDev, BseErr,
+{$ENDIF}
 
+{$IFDEF Win95}
+  WinBase,
+{$ENDIF}
   Dialogs,
-  FileUtilsUnit,
-  ACLUtility,
-  BitmapUtility,
-  StringUtilsUnit;
+  ACLStringUtility, ACLUtility, ACLFileUtility, BitmapUtility;
 
 var
   DriveTypeBitmaps: array[ Low( TDriveType ).. High( TDriveType ) ] of TBitmap;
@@ -464,7 +458,7 @@ Begin
      S:=fExcludeMask;
      While S<>'' Do
      Begin
-          NextFilter:=Pos(PATH_SEPARATOR,S);
+          NextFilter:=Pos(';',S);
           If NextFilter<>0 Then
           Begin
             ThisFilter:=Copy( S, 1, NextFilter-1 );
@@ -476,7 +470,7 @@ Begin
             S:='';
           End;
 
-          Status := SysUtils.FindFirst(FDirectory + DIRECTORY_SEPARATOR + ThisFilter, Attr,Search);
+          Status := SysUtils.FindFirst(FDirectory + '\' + ThisFilter, Attr,Search);
           While Status = 0 Do
           Begin
                ExcludeList.Add( Search.Name );
@@ -489,15 +483,15 @@ Begin
      S:=fMask;
      While S<>'' Do
      Begin
-          If Pos(PATH_SEPARATOR,S)<>0 Then
+          If Pos(';',S)<>0 Then
           Begin
                s1:=S;
-               Delete(s1,1,Pos(PATH_SEPARATOR,S));
-               SetLength(S,Pos(PATH_SEPARATOR,S)-1);
+               Delete(s1,1,Pos(';',S));
+               SetLength(S,Pos(';',S)-1);
           End
           Else s1:='';
 
-          Status := SysUtils.FindFirst(FDirectory + DIRECTORY_SEPARATOR + S, Attr,Search);
+          Status := SysUtils.FindFirst(FDirectory + '\' + S, Attr,Search);
           While Status = 0 Do
           Begin
                if not ExcludeList.Find( Search.Name,
@@ -559,12 +553,12 @@ Begin
           {$I-}
           GetDir(Ord(UpCase(Drive))-Ord('A')+1,s);
           {$I+}
-          If (s[length(s)])=DIRECTORY_SEPARATOR Then dec(s[0]);
-          If not (NewDir[1] In ['/',DIRECTORY_SEPARATOR]) Then s:=s+DIRECTORY_SEPARATOR;
+          If (s[length(s)])='\' Then dec(s[0]);
+          If not (NewDir[1] In ['/','\']) Then s:=s+'\';
           NewDir:=s+NewDir;
      End;
 
-     If NewDir[Length(NewDir)] = DIRECTORY_SEPARATOR Then SetLength(NewDir,Length(NewDir)-1);
+     If NewDir[Length(NewDir)] = '\' Then SetLength(NewDir,Length(NewDir)-1);
      If FDirectory=NewDir Then exit;
      FDirectory := NewDir;
 
@@ -607,8 +601,8 @@ Begin
      If (idx < 0) Or (idx >= Items.Count) Then Result := ''
      Else Result := Items[ idx ];
      s:=Directory;
-     If s[Length(s)] In [DIRECTORY_SEPARATOR,'/'] Then dec(s[0]);
-     If s<>'' Then If Result<>'' Then Result:=s+DIRECTORY_SEPARATOR+Result;
+     If s[Length(s)] In ['\','/'] Then dec(s[0]);
+     If s<>'' Then If Result<>'' Then Result:=s+'\'+Result;
 End;
 
 
@@ -869,7 +863,7 @@ Begin
     S := Items[ Index ];
     Data:= longint( Items.Objects[ Index ] );
     if ( Data and dfSubDir ) = 0 then
-      FullPath:= AddDirectorySeparator( S ) + FullPath;
+      FullPath:= AddSlash( S ) + FullPath;
     dec( Index );
   end;
 
@@ -887,8 +881,6 @@ Var
   SubDirs: TStringList;
   IndentLevel: longint;
   PathSoFar: string;
-  tmpPathElements : TStringList;
-  i : integer;
 Begin
   Screen.Cursor := crHourGlass;
   BeginUpdate;
@@ -904,14 +896,10 @@ Begin
   // Add all subdirs
   Path := Copy( Directory, 4, 255 );
   PathSoFar := Copy( Directory, 1, 3 );
-
-  tmpPathElements := TStringList.Create;
-  StrExtractStrings(tmpPathElements, Path, [DIRECTORY_SEPARATOR], #0);
-
-  for i := 0 to tmpPathElements.Count - 1 do
-  begin
+  While Path <> '' Do
+  Begin
     inc( IndentLevel );
-    S := tmpPathElements[i];
+    S:= ExtractNextValue( Path, '\' );
 
     if not DirectoryExists( PathSoFar + S ) then
     begin
@@ -920,17 +908,16 @@ Begin
       break;
     end;
     Items.AddObject( S, pointer( IndentLevel ) );
-    PathSoFar := PathSoFar + S + DIRECTORY_SEPARATOR;
+    PathSoFar := PathSoFar + S + '\';
   End;
 
-  tmpPathElements.Destroy;
   ItemIndex:= Items.Count - 1;
 
   inc( IndentLevel );
 
   SubDirs:= TStringList.Create;
 
-  Status := SysUtils.FindFirst( AddDirectorySeparator( Directory ) + '*.*', faDirectory, Search);
+  Status := SysUtils.FindFirst( AddSlash( Directory ) + '*.*', faDirectory, Search);
   While Status = 0 Do
   Begin
     S := Search.Name;
@@ -979,12 +966,12 @@ Begin
     // Get current directory on specified drive
     GetDir(Ord(UpCase(Drive))-Ord('A')+1,s);
     {$I+}
-    S:= RemoveRightDirectorySeparator( S );
-    S:= AddDirectorySeparator( S );
+    S:= RemoveSlash( S );
+    S:= AddSlash( S );
     NewDir:=s+NewDir;
   End;
 
-  NewDir:= RemoveRightDirectorySeparator( NewDir );
+  NewDir:= RemoveSlash( NewDir );
 
   FDirectory := NewDir;
   if Handle <> 0 then
@@ -1128,7 +1115,7 @@ Begin
       if DriveType = dtHard then
       begin
         try
-          DriveLabel := GetVolumeLabel( DriveNumberToDriveLetter( DriveNumber ) );
+          DriveLabel := GetVolumeLabel( DriveNumberToLetter( DriveNumber ) );
           DriveString := DriveString + DriveLabel;
         except
         end;
@@ -1154,7 +1141,7 @@ Begin
   except
     on EInOutError do
       // Current drive inaccessible
-      Drive := GetBootDriveLetter;
+      Drive := GetBootDrive;
   end;
 End;
 
@@ -1273,7 +1260,7 @@ Begin
                                 // current drive, and it failed,
                                 // and the user doesn't want to retry,
                                 // so go back to boot drive.
-                                SetDrive(GetBootDriveLetter);
+                                SetDrive( GetBootDrive );
                                 Screen.Cursor := crDefault;
                                 Exit;
                               end;

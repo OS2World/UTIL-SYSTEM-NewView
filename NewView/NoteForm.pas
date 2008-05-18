@@ -53,7 +53,7 @@ End;
 Procedure TNoteForm.OnLanguageEvent( Language: TLanguageFile;
                                      const Apply: boolean );
 begin
-  // LogEvent(LogI18n, 'TNoteForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  LogEvent(LogI18n, 'TNoteForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 end;
 
@@ -64,7 +64,7 @@ End;
 
 Procedure TNoteForm.NoteFormOnCreate (Sender: TObject);
 Begin
-  RegisterEventForLanguages( OnLanguageEvent );
+  RegisterForLanguages( OnLanguageEvent );
 
   Text := TAString.Create;
 End;

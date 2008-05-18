@@ -27,12 +27,10 @@ File19=DEBUGUNIT
 File20=SEMAPHORES
 File21=SHAREDMEMORYUNIT
 File22=GLOBALFILELISTUNIT
-File23=BSEDEV
-File24=FILEUTILSUNIT
-File25=VERSIONUNIT
-File26=CMDLINEPARAMETERUNIT
-File27=HELPMANAGERUNIT
-File28=STARTUPUNIT
+File23=FILEUTILSUNIT
+File24=CMDLINEPARAMETERUNIT
+File25=HELPMANAGERUNIT
+File26=STARTUPUNIT
 
 [Compiler Options]
 
@@ -58,36 +56,36 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\NEWVIEW
+LastDir=P:\NEWVIEW_DEV\Components
 OutDir=P:\newview_dev\build\newview_stub
-LibDir=P:\newview_dev\build\components;P:\newview_dev\build\library;P:\newview_dev\build\sibyl\lib
-LibSrcDir=P:\newview_dev\components;P:\newview_dev\library;P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl
+LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\components;P:\newview_dev\build\library
+LibSrcDir=P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl;P:\newview_dev\library;P:\newview_dev\components
 IncSrcDir=
-CompInstallDir=P:\newview_dev\build\components
+CompInstallDir=P:\newview_dev\sibyl\lib;P:\newview_dev\components
 
 [Find History]
 
-Find0=var
-Find1=2
-Find2=Procedure
-Find3=aCmdLineParameters
-Find4=FindExistingWindow
-Find5=SharedMemory
-Find6=false
-Find7=not
-Find8=Startup
-Find9=Program
-Find10=getHelpManagerFlag
-Find11=splitted
-Find12=CmdLineParameterUnit
-Find13=parsec
-Find14=ParseCommandLineParameters
-Find15=ShowUsageFlag
+Find0=2
+Find1=Procedure
+Find2=aCmdLineParameters
+Find3=FindExistingWindow
+Find4=SharedMemory
+Find5=false
+Find6=not
+Find7=Startup
+Find8=Program
+Find9=getHelpManagerFlag
+Find10=splitted
+Find11=CmdLineParameterUnit
+Find12=parsec
+Find13=ParseCommandLineParameters
+Find14=ShowUsageFlag
+Find15=parameters
 
 [General]
 
 Version=Sibyl Project Ver2.02
-ProjectName=P:\NEWVIEW_DEV\NewView\viewstub.spr
+ProjectName=P:\NEWVIEW_DEV\NEWVIEW\viewstub.spr
 ProjectType=Visual
 CompLibName=D:\progs\Sibyl\Bin\CompLib.dll
 Win32CompLibName=D:\progs\Sibyl\Bin\CompLib.dll
@@ -98,12 +96,10 @@ Platform=OS/2
 
 [Last Closed Files]
 
-File0=.\GlobalFilelistUnit.pas
-File1=.\StartupUnit.pas
-File2=.\VersionUnit.pas
-File3=.\CmdLineParameterUnit.pas
-File4=..\.\Components\ACLLanguageUnit.pas
-File5=.\unittests\StringUtilsUnitTests.pas
+File0=..\.\Components\ACLLanguageUnit.pas
+File1=.\unittests\StringUtilsUnitTests.pas
+File2=.\NewView.pas
+File3=.\MainForm.pas
 
 [Last Open Files]
 
@@ -112,15 +108,50 @@ File0.Left=-4
 File0.Bottom=-5
 File0.Width=1399
 File0.Height=629
-File0.Column=1
-File0.Line=35
-File1=.\MainForm.pas
+File0.Column=45
+File0.Line=70
+File1=.\StartupUnit.pas
 File1.Left=-4
 File1.Bottom=-5
 File1.Width=1399
 File1.Height=629
 File1.Column=1
-File1.Line=35
+File1.Line=49
+File2=.\VersionUnit.pas
+File2.Left=-4
+File2.Bottom=-5
+File2.Width=1399
+File2.Height=629
+File2.Column=47
+File2.Line=26
+File3=.\DebugUnit.pas
+File3.Left=-4
+File3.Bottom=-5
+File3.Width=1399
+File3.Height=629
+File3.Column=49
+File3.Line=55
+File4=.\CmdLineParameterUnit.pas
+File4.Left=-4
+File4.Bottom=-5
+File4.Width=1399
+File4.Height=629
+File4.Column=14
+File4.Line=42
+File5=.\GlobalFilelistUnit.pas
+File5.Left=-4
+File5.Bottom=-5
+File5.Width=1399
+File5.Height=629
+File5.Column=13
+File5.Line=13
+File6=.\StringUtilsUnit.pas
+File6.Left=-4
+File6.Bottom=-5
+File6.Width=1399
+File6.Height=629
+File6.Column=21
+File6.Line=47
 
 [Linker Options]
 
@@ -274,7 +305,7 @@ MainFile0.Dependency98=.\MAINFORM.PAS
 MainFile0.Dependency99=.\NewView.scu
 MainFile1=.\ViewStub.pas
 MainFile1.Ext=.EXE
-MainFile1.Checksum=7680
+MainFile1.Checksum=7424
 MainFile1.Expanded=False
 MainFile1.File0=[Dependencies]
 MainFile1.Dependency0=..\.\sibyl\rtl\SYSTEM.PAS
@@ -289,23 +320,22 @@ MainFile1.Dependency8=..\.\sibyl\spcc\LANGUAGE.PAS
 MainFile1.Dependency9=..\.\sibyl\spcc\SYSUTILS.PAS
 MainFile1.Dependency10=..\.\sibyl\rtl\DOS.PAS
 MainFile1.Dependency11=..\.\sibyl\spcc\CLASSES.PAS
-MainFile1.Dependency12=..\.\library\CHARUTILSUNIT.PAS
+MainFile1.Dependency12=.\CHARUTILSUNIT.PAS
 MainFile1.Dependency13=..\.\sibyl\spcc\INIFILES.PAS
 MainFile1.Dependency14=..\.\sibyl\rtl\PMBITMAP.PAS
 MainFile1.Dependency15=..\.\sibyl\rtl\PMGPI.PAS
 MainFile1.Dependency16=..\.\sibyl\rtl\PMDEV.PAS
 MainFile1.Dependency17=..\.\library\ACLUTILITY.PAS
-MainFile1.Dependency18=..\.\library\STRINGUTILSUNIT.PAS
-MainFile1.Dependency19=..\.\library\DEBUGUNIT.PAS
+MainFile1.Dependency18=.\STRINGUTILSUNIT.PAS
+MainFile1.Dependency19=.\DEBUGUNIT.PAS
 MainFile1.Dependency20=..\.\library\SEMAPHORES.PAS
 MainFile1.Dependency21=..\.\library\SHAREDMEMORYUNIT.PAS
 MainFile1.Dependency22=.\GLOBALFILELISTUNIT.PAS
-MainFile1.Dependency23=..\.\sibyl\rtl\BSEDEV.PAS
-MainFile1.Dependency24=..\.\library\FILEUTILSUNIT.PAS
-MainFile1.Dependency25=.\VERSIONUNIT.PAS
-MainFile1.Dependency26=.\CMDLINEPARAMETERUNIT.PAS
-MainFile1.Dependency27=.\HELPMANAGERUNIT.PAS
-MainFile1.Dependency28=.\STARTUPUNIT.PAS
+MainFile1.Dependency23=.\FILEUTILSUNIT.PAS
+MainFile1.Dependency24=.\CMDLINEPARAMETERUNIT.PAS
+MainFile1.Dependency25=.\HELPMANAGERUNIT.PAS
+MainFile1.Dependency26=.\STARTUPUNIT.PAS
+MainFile1.Dependency27=.\VIEWSTUB.RC
 
 [Replace History]
 
