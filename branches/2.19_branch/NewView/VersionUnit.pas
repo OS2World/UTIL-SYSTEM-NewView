@@ -16,8 +16,8 @@ function GetLicenseMsg: string;
 Implementation
 
 const
-  Version =        'V2.19.2'; // $SS_REQUIRE_NEW_VERSION$
-  BldLevelVersion = '2.19.2'; // Embedded for IBM BLDLEVEL tool
+  Version =        'V2.19.3'; // $SS_REQUIRE_NEW_VERSION$
+  BldLevelVersion = '2.19.3'; // Embedded for IBM BLDLEVEL tool
   CopyrightMsg = 'Copyright 2005 Aaron Lawrence; 2006-2008 Ronald Brill';
   LicenseMsg   = 'Licensed under the GNU Public License';
 
