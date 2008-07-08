@@ -25,7 +25,7 @@ copy Changes.txt nv_build_dir
 
 
 /* compile the ipf file */
-ipfc NewView_de.ipf nv_build_dir||'\NewView_de.hlp -D:001 -C:850 -L:ENU'
+ipfc NewView.ipf nv_build_dir||'\NewView.hlp -D:001 -C:850 -L:ENU'
 
 call SysFileTree nv_i18n_dir||'\', subdirs, 'DO'
 do i=1 to subdirs.0
@@ -35,7 +35,7 @@ do i=1 to subdirs.0
         do
             cd subdirs.i
             /* call makeall for every dir */
-            makeall
+            makeall.cmd
             cd ..
         end
     end
