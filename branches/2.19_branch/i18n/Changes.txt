@@ -1,5 +1,13 @@
 NewView release changes
 
+V2.19.3
+- Support for 'Internet-Application-Integration' added.
+  NewView is now able to start different applications for news, mail and ftp.
+- Fix: More link fixes.
+
+V2.19.2
+- never released to the public
+
 V2.19.1
 - Fix: Broken link hanlding; NewView was unable to start a program or open the web browser.
 - Fix: Detection of links pointing to a url was not working.
