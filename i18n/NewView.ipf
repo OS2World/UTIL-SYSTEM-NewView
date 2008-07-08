@@ -103,7 +103,7 @@ contents:elink.&comma. use the :link reftype=hd refid='Index'.alphabetical
 index:elink.&comma. or :link reftype=hd refid='search'.search:elink.&per.
 :p.To simply read the help file like a paper book&comma. use the &odq.Previous&cdq.
 :artwork runin name='images\previous.bmp'.
- and &odq.Next&Cdq.
+ and &odq.Next&cdq.
 :artwork runin name='images\next.bmp'.
  buttons to work your way through all the topics&per.
 :p.You can also use the help file like web pages&comma. using &odq.Back&cdq.
@@ -436,9 +436,9 @@ Hobbes
 .br
 :p.Browsers may also have the ability to make themselves the default&comma.
 either at install time or in preferences&per.
-:p.Email&comma. Newsgroups and FTP links are also passed to the web browser&per.
-At this time&comma. it isn&apos.t possible to choose a different program for
-these links&per.
+:p.NewView takes care of the setup done by Internet-Application-Integration (IAI). Email&comma. Newsgroups and FTP
+links are passed to the program you have configured. If there is no program for a specific url type&comma.
+then the links are passed to the web browser.
 :p.:hp2.Note to help file authors:ehp2.
 :p.The original View had no understanding of URL or email links&comma. so the
 only way to implement them was a link to&comma. for example&comma.
@@ -621,7 +621,7 @@ from cmdref&per.inf&per. The indexes are combined alphabetically&per.
 .*
 :p.:hp2.view &odq.c&colon.&bsl.os2 book&bsl.os2ug&per.inf&cdq.:ehp2.
 :lm margin=4.
-:p.Surround path&sl.file with double quotes if they contain special characters (like blank)&per.
+:p.Surround path&bsl.file with double quotes if they contain special characters (like blank)&per.
 :lm margin=1.
 .*
 :p.:hp2.view cmdref dir:ehp2.
