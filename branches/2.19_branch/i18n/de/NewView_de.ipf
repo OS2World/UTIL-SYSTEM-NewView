@@ -29,7 +29,7 @@ Hilfedateien&per.
 einer Hilfedatei ge&oe.ffnet wird&comma. rufen Sie die Indexzunge Werkzeuge &endash.
 Optionen &endash. Allgemeines auf&per.:ehp1.
 :p.:hp2.Geschichte:ehp2.
-:p.NewView ersetzt das originale, mit OS&slash.2 ausgelieferte Programm von IBM&per.
+:p.NewView ersetzt das originale&comma. mit OS&slash.2 ausgelieferte Programm von IBM&per.
 :p.Es bietet Verbesserungen vieler Aspekte von View&comma. besitzt eine moderne&comma. einfach
 zu bedienende Oberfl&ae.che&comma. mehr Optionen und neue Funktionen&comma. die View ganz
 einfach nicht besessen hat&per.
@@ -46,52 +46,52 @@ einfach nicht besessen hat&per.
 :p.:hp2.Support und Lizenzbedingungen:ehp2.
 :p.
 :p.NewView ist Copyright 1999-2006 Aaron Lawrence&per. Desweiteren unterliegt NewView
-der GNU Public License, d&per.h&per. Sie haben das Recht, sich den Quellcode
+der GNU Public License&comma. d&per.h&per. Sie haben das Recht&comma. sich den Quellcode
 zu besorgen&per.
 :p.Seit 2006 pflegt Ronald Brill dieses Produkt&per.
 .br
 NewView ist eine Netlabs Projekts&per.
 :p.Technische Details entnehmen Sie bitte der Datei Readme&per.txt&per.
 :p.In der Datei Changes&per.txt finden Sie die Entwicklungsgeschichte von NewView aufgezeichnet&per.
-:p.Wenn Sie NewView n&ue.tzlich finden, senden Sie mir eine E-Mail und&slash.oder spenden Sie,
-um die weitere Entwicklung zu unterst&ue.tzen&per. Es w&ae.re sch&oe.n, von Ihnen zu h&oe.ren&xclm.
+:p.Wenn Sie NewView n&ue.tzlich finden&comma. senden Sie mir eine E-Mail und&slash.oder spenden Sie&comma.
+um die weitere Entwicklung zu unterst&ue.tzen&per. Es w&ae.re sch&oe.n&comma. von Ihnen zu h&oe.ren&xclm.
 :ul.
-:li.Vorschl&ae.ge, Komplimente oder Fehlerberichte senden Sie bitte an http&colon.&slash.&slash.svn&per.netlabs&per.org&slash.newview
+:li.Vorschl&ae.ge&comma. Komplimente oder Fehlerberichte senden Sie bitte an http&colon.&slash.&slash.svn&per.netlabs&per.org&slash.newview
 :li.šbersetzen Sie NewView in Ihre Sprache&per.
 :li.Eine Spende f&ue.r Netlabs http&colon.&slash.&slash.www&per.mensys&per.nl
 :eul.
 :p.:hp2.Melden von Fehlern:ehp2.
-:p.Wenn Sie einen Absturz oder ein anderes Problem melden wollen, geben Sie bitte
-m&oe.glichst genau an, welche Dateien verwendet wurden, was Sie getan haben
-usw&per. Falls vorhanden, legen Sie BITTE die Datei newview&per.log bei&per. Die
+:p.Wenn Sie einen Absturz oder ein anderes Problem melden wollen&comma. geben Sie bitte
+m&oe.glichst genau an&comma. welche Dateien verwendet wurden&comma. was Sie getan haben
+usw&per. Falls vorhanden&comma. legen Sie BITTE die Datei newview&per.log bei&per. Die
 Protokolldatei befindet sich ENTWEDER
 .br
  &endash. im selben Verzeichnis wie NewView selbst oder
 .br
- &endash. im Ordner, der durch die Umgebungsvariable LOGFILES bestimmt wird
+ &endash. im Ordner&comma. der durch die Umgebungsvariable LOGFILES bestimmt wird
 &lpar.typischerweise bei eCS 1&per.1+&rpar.
 .br
-Taucht das Problem im Zusammenhang mit einer bestimmten Hilfedatei auf, dann
-schicken Sie sie mir bitte zu, es sei denn, Sie w&ae.re sehr gro&Beta.
+Taucht das Problem im Zusammenhang mit einer bestimmten Hilfedatei auf&comma. dann
+schicken Sie sie mir bitte zu&comma. es sei denn&comma. Sie w&ae.re sehr gro&Beta.
 &lpar.gr&oe.&Beta.er als 1MB&rpar.&per.
-:p.Aus der Datei newview&per.log kann ich die meisten folgenden Informationen entnehmen,
-aber es w&ae.re von Vorteil, wenn Sie sie zur šberpr&ue.fung dennoch
+:p.Aus der Datei newview&per.log kann ich die meisten folgenden Informationen entnehmen&comma.
+aber es w&ae.re von Vorteil&comma. wenn Sie sie zur šberpr&ue.fung dennoch
 ang&ae.ben&colon.
 :ul.
 :li.NewView-Version &lpar.Hilfe - Produktinformation&rpar.
 :li.Die Dateinamen der Hilfedateien&per.
 :eul.
-:p.Ein Bildschirmphoto kann n&ue.tzlich sein, wenn es sich bei dem Problem um eine
+:p.Ein Bildschirmphoto kann n&ue.tzlich sein&comma. wenn es sich bei dem Problem um eine
 falsche oder verzerrte Anzeige handelt&per.
 :p.:hp2.Warum funktioniert meine Hilfedatei nicht richtig?:ehp2.
 :p.
 Einige der seltener verwendeten Funktionen Views wurden noch nicht implementiert&per.
-Der Grund daf&ue.r ist entweder, da&Beta. ich noch nicht dazu gekommen bin, oder
+Der Grund daf&ue.r ist entweder&comma. da&Beta. ich noch nicht dazu gekommen bin&comma. oder
 da&Beta. sie den Aufwand einfach nicht wert sind&per. Dazu geh&oe.ren beispielsweise
-Metadateien, Registersynonyme, der gesamte Anwendungskontroll-API usw&per.
+Metadateien&comma. Registersynonyme&comma. der gesamte Anwendungskontroll-API usw&per.
 :p.
 Leider scheint mindestens ein Entwickler jede dieser Funktionen benutzt zu haben;
-Sie werden also wahrscheinlich gelegentlich &ue.ber eine Datei stolpern, die
+Sie werden also wahrscheinlich gelegentlich &ue.ber eine Datei stolpern&comma. die
 nicht geladen wird oder nicht ordnungsgem&ae.&Beta. funktioniert&per.
 .*
 .*
@@ -101,22 +101,22 @@ nicht geladen wird oder nicht ordnungsgem&ae.&Beta. funktioniert&per.
 :h1 res=2 id='Using'.NewView verwenden
 :p.:hp2.NewView verwenden:ehp2.
 :p.Nach dem :link reftype=hd refid='OpeningFiles'.&Oe.ffnen einer Datei:elink.
-gibt es mehrere M&oe.glichkeiten, diese durchzulesen&per.
+gibt es mehrere M&oe.glichkeiten&comma. diese durchzulesen&per.
 :p.Man kann das :link reftype=hd refid='contents'.Inhaltsverzeichnis:elink.
-lesen, das :link reftype=hd refid='index'.alphabetisch sortierte Register:elink.
+lesen&comma. das :link reftype=hd refid='index'.alphabetisch sortierte Register:elink.
 oder die :link reftype=hd refid='search'.Suche:elink. verwenden&per.
-:p.Um die Hilfedatei wie ein normales Buch zu lesen, verwendet man die
+:p.Um die Hilfedatei wie ein normales Buch zu lesen&comma. verwendet man die
 Druckkn&oe.pfe &odq.R&ue.ckw&ae.rts&cdq.
 :artwork runin name='..\images\previous.bmp'.
 und &odq.Vorw&ae.rts&cdq.
 :artwork runin name='..\images\next.bmp'.
 zum Bl&ae.ttern durch die Themen&per.
-:p.Die Hilfedatei kann auch wie Internetseiten gelesen werden, indem man die
+:p.Die Hilfedatei kann auch wie Internetseiten gelesen werden&comma. indem man die
 Druckkn&oe.pfe &odq.Zur&ue.ck&cdq.
 :artwork runin name='..\images\back.bmp'.
 und &odq.Weiter&cdq.
 :artwork runin name='..\images\forward.bmp'.
-verwendet, um zu einem bereits besuchten Punkt zur&ue.ckzukehren oder den Weg
+verwendet&comma. um zu einem bereits besuchten Punkt zur&ue.ckzukehren oder den Weg
 noch einmal zu verfolgen&per.
 :p.Farben und einige von NewViews Verhaltensweisen lassen sich &ue.ber das Men&ue.
 &odq.Werkzeuge&cdq. &endash. &odq.Optionen&cdq. anpassen&per.
@@ -133,7 +133,7 @@ noch einmal zu verfolgen&per.
 :p.
 :p.Zum ™ffnen einer Hilfedatei k&oe.nnen Sie&colon.
 :ul.
-:li.auf ein bereits vorhandenes Hilfesymbol doppelklicken,
+:li.auf ein bereits vorhandenes Hilfesymbol doppelklicken&comma.
 :li.an einer Befehlszeile &odq.NewView:hp1. dateiname:ehp1.&cdq. eingeben oder
 :li.innerhalb NewViews auf den Druckknopf &odq.&Oe.ffnen&cdq.
 :artwork runin name='..\images\open.bmp'.
@@ -141,10 +141,10 @@ klicken oder
 :li.eine k&ue.rzlich betrachtete Datei aus dem NewView-Men&ue. &odq.Datei&cdq. wieder laden&per.
 :li.eine Hilfedatei von der Arbeitsoberfl&ae.che Ziehen und &Ue.bergeben&per.
 :eul.
-:p.Sobald die Datei geladen wurde, sollten das :link reftype=hd refid='contents'.Inhaltverzeichnis:elink.
+:p.Sobald die Datei geladen wurde&comma. sollten das :link reftype=hd refid='contents'.Inhaltverzeichnis:elink.
 und das erste Thema angezeigt werden&per.
 :p.:hp2.Mehrere Dateien auf einmal laden:ehp2.
-:p.Wie View kann auch NewView mehrere Dateien auf einmal laden, sie dabei so darstellen,
+:p.Wie View kann auch NewView mehrere Dateien auf einmal laden&comma. sie dabei so darstellen&comma.
 als ob es sich um ein Buch handelte und Umgebungsvariablen f&ue.r Dateinamen lesen&per.
 :p.Im Zusammenhang mit der Dokumentation des OS&slash.2 Developers Toolkit l&ae.dt z&per.B&per.
 .br
@@ -152,49 +152,49 @@ NewView cpref
 .br
 die &odq.Control Program Guide and Reference&cdq.&per. CPREF ist eine Umgebungsvariable&comma.
 die in der Datei CONFIG&per.SYS gesetzt ist und &odq.CP1+CP2+CP3&cdq. enth&ae.lt&comma. wodurch NewView
-&lpar.oder View&rpar. angewiesen wird, die Hilfedateien CP1, CP2 und CP3 zu laden&per. Nach den Dateien
-wird in den Pfaden gesucht, die &ue.ber zwei
+&lpar.oder View&rpar. angewiesen wird&comma. die Hilfedateien CP1&comma. CP2 und CP3 zu laden&per. Nach den Dateien
+wird in den Pfaden gesucht&comma. die &ue.ber zwei
 :link reftype=hd refid='L_EnvironmentVariables'.Umgebungsvariablen:elink. angegeben werden&per.&asterisk.
 :p.Die Dateien werden dann alle geladen und jeweils der vorangegangenen angef&ue.gt&per.
 :p.Mehrere Dateien auf einmal laden zu k&oe.nnen&comma. kann aus verschiedenen
 Gr&ue.nden n&ue.tzlich sein&per. Beispielsweise nutzt 4OS&slash.2 &lpar.ein Ersatz f&ue.r
-CMD&per.EXE&rpar. diese F&ae.higkeit, um der originalen CMD-Hilfe seine eigene
+CMD&per.EXE&rpar. diese F&ae.higkeit&comma. um der originalen CMD-Hilfe seine eigene
 voranzustellen&per. Sie k&oe.nnen dies auch selbst mit allen beliebigen Dateien
-tun, etwa wenn Sie beide immer zusammen verwenden&per.
+tun&comma. etwa wenn Sie beide immer zusammen verwenden&per.
 :p.Man kann auch &ue.ber die grafische Oberfl&ae.che mehrere Dateien auf einmal
-laden, indem man Strg und die Umschalttaste verwendet, um mehrere Dateien auszuw&ae.hlen&per.
+laden&comma. indem man Strg und die Umschalttaste verwendet&comma. um mehrere Dateien auszuw&ae.hlen&per.
 :p.W&ae.hlt man einen Verweis auf eine andere Hilfedatei&comma. so l&ae.dt NewView die andere
 Datei&comma. ohne die derzeitigen zu schlie&Beta.en&per.
 :p.Man kann jederzeit &ue.ber das Men&ue. Datei &endash. Information herausfinden&comma. welche
 Dateien gerade ge&oe.ffnet sind&per.
 :p.:hp2.Weitere Dateien laden:ehp2.
 :p.Wird im Dialog &odq.Datei &oe.ffnen&cdq. das Markierungsfeld &odq.Aktuelle Dateien ge&oe.ffnet lassen&cdq.
-ausgew&ae.hlt, so l&ae.dt NewView die ausgew&ae.hlten Dateien, ohne die derzeit ge&oe.ffneten
+ausgew&ae.hlt&comma. so l&ae.dt NewView die ausgew&ae.hlten Dateien&comma. ohne die derzeit ge&oe.ffneten
 vorher zu schlie&Beta.en&per.
 :p.:hp2.Ziehen und &Ue.bergeben:ehp2.
 :p.&per.INF&endash. und &per.HLP&endash.Dateien lassen sich durch Ziehen und
 &Ue.bergeben an NewView &oe.ffnen&per. Wird dabei die Umschalttaste gedr&ue.ckt
-gehalten, werden sie ge&oe.ffnet&comma. ohne die aktuellen Dateien vorher zu
+gehalten&comma. werden sie ge&oe.ffnet&comma. ohne die aktuellen Dateien vorher zu
 schlie&Beta.en.
-:p.Dateien k&oe.nnen an jeden der Hauptinhaltsbereiche &ue.bergeben werden,
+:p.Dateien k&oe.nnen an jeden der Hauptinhaltsbereiche &ue.bergeben werden&comma.
 wie etwa die Fenster des Inhaltverzeichnisses oder des Registers oder ein vorhandenes
 Themenfenster&per.
-:note text='Hinweis:'.Einige Links, die &ue.ber Dateien hinweg verweisen, funktionieren nur, wenn
+:note text='Hinweis:'.Einige Links&comma. die &ue.ber Dateien hinweg verweisen&comma. funktionieren nur&comma. wenn
 der richtige Satz von Dateien geladen wurde&per.
 .* ************************************************************
 .* Help Icons
 .* ************************************************************
 :h2 res=17 id='HelpIcons'.Hilfeobjekte
 :p.:hp2.Hilfeobjekte:ehp2.
-:p.Hilfeobjekte auf der Arbeitsoberfl&ae.che sind gew&oe.hnlich &odq.Programmobjekte&cdq.,
+:p.Hilfeobjekte auf der Arbeitsoberfl&ae.che sind gew&oe.hnlich &odq.Programmobjekte&cdq.&comma.
 bei denen der Programmname auf &odq.view&per.exe&cdq. verweist und deren Parameterfeld den
 Namen der Hilfedatei enth&ae.lt.
 :p.Manche Anwendungen erzeugen diese Objekte automatisch bei der Installation&per.
 :p.Diese Objekte k&oe.nnen Sie mit Hilfe der Programm-Schablone selbst anlegen.
 Weitere Informationen siehe die Hilfe der Arbeitsoberfl&ae.che.
-:p.Wenn man Objekte durch Ziehen der Hilfedateien auf die Arbeitsoberfl&ae.che anlegt,
-ist es nicht m&oe.glich, diesen sinnvolle Namen zu geben&comma. weil dadurch die
-Dateinamen ge&ae.ndert w&ue.rden, was wiederum dazu f&ue.hren k&oe.nnte&comma. da&Beta.
+:p.Wenn man Objekte durch Ziehen der Hilfedateien auf die Arbeitsoberfl&ae.che anlegt&comma.
+ist es nicht m&oe.glich&comma. diesen sinnvolle Namen zu geben&comma. weil dadurch die
+Dateinamen ge&ae.ndert w&ue.rden&comma. was wiederum dazu f&ue.hren k&oe.nnte&comma. da&Beta.
 Anwendungen ihre Hilfedateien nicht mehr finden k&oe.nnen&per. Aus diesem Grund sind
 derzeit Programmobjekte die bevorzugte Methode zum Anlegen von Hilfeobjekten&per.
 .*
@@ -227,14 +227,14 @@ und das Navigationsfenster wird automatisch angezeigt.
 :i1 id=30006.Inhaltsverzeichnis
 :p.:hp2.Inhaltsverzeichnis:ehp2.
 :p.
-:p.Die meisten Hilfedateien besitzen ein Inhaltsverzeichnis, welches die in
+:p.Die meisten Hilfedateien besitzen ein Inhaltsverzeichnis&comma. welches die in
 der Datei vorhandenen Themen in einer Hierarchie oder einem &odq.Baum&cdq. anzeigt&per.
 Gew&oe.hnlich wird diese Ansicht nach dem ™ffnen einer Datei zuerst angezeigt&per.
 :p.Die Zweige des Baums k&oe.nnen durch Klicken auf die Druckkn&oe.pfe &plus. oder &endash.
 oder Bet&ae.tigen der Leertaste aus- und eingeklappt werden&per.
 :p.Ein Thema aus dem Inhalt kann durch einfaches Klicken darauf aufgerufen werden&per. Mit Hilfe der
 Pfeiltasten kann man sich durch den Inhalt bewegen&per.
-:p.Um sich der Reihe nach durch :hp2.alle:ehp2. Themen des Inhaltsbaumes zu bewegen, verwendet
+:p.Um sich der Reihe nach durch :hp2.alle:ehp2. Themen des Inhaltsbaumes zu bewegen&comma. verwendet
 man die Tasten Strg &plus. Pfeil&endash.hoch und Strg &plus. Pfeil&endash.ab oder die Druckkn&oe.pfe
 &odq.R&ue.ckw&ae.rts&cdq.
 :artwork runin name='..\images\previous.bmp'.
@@ -242,10 +242,10 @@ und &odq.Vorw&ae.rts&cdq.
 :artwork runin name='..\images\next.bmp'.&per.
 Auf diese Weise kann die Datei wie ein normales Buch behandelt werden; man lie&Beta.t
 jede Seite&per.
-:p.Desweiteren l&ae.&Beta.t sich das gesamte Inhaltsverzeichnis anzeigen, indem &odq.Alle erweitern&cdq.
+:p.Desweiteren l&ae.&Beta.t sich das gesamte Inhaltsverzeichnis anzeigen&comma. indem &odq.Alle erweitern&cdq.
 aus dem Men&ue. &odq.Ansicht&cdq. ausgew&ae.hlt wird&per. Dadurch werden alle Zweige des Inhaltsverzeichnisses
-ausgeklappt, so da&Beta. man schnell eine šbersicht erh&ae.lt&per.
-Normalerweise ist es allerdings einfacher, f&ue.r diesen Zweck die
+ausgeklappt&comma. so da&Beta. man schnell eine šbersicht erh&ae.lt&per.
+Normalerweise ist es allerdings einfacher&comma. f&ue.r diesen Zweck die
 :link reftype=hd refid='search'.Suche:elink. oder das :link reftype=hd refid='Index'.Register:elink. zu verwenden&per.
 .* ************************************************************
 .* Index
@@ -255,20 +255,20 @@ Normalerweise ist es allerdings einfacher, f&ue.r diesen Zweck die
 :p.
 :p.Unter der Indexzunge &odq.Register&cdq. befindet sich eine alphabetisch geordnete
 Aufstellung aller Themen und Schl&ue.sselw&oe.rter der Hilfedatei&per.
-Sie l&ae.&Beta.t sich einfach durchsuchen, indem man die ersten Zeichen
-des Wortes eingibt, nach dem man sucht&per. NewView springt dann automatisch
+Sie l&ae.&Beta.t sich einfach durchsuchen&comma. indem man die ersten Zeichen
+des Wortes eingibt&comma. nach dem man sucht&per. NewView springt dann automatisch
 zum ersten Treffer im Register&per. Das hervorgehobene Thema l&ae.&Beta.t
 sich durch Dr&ue.cken der Eingabetaste anzeigen&per.
 :p.:hp5.Hinweise:ehp5.
 :p.Hilfedateien k&oe.nnen ein &odq.offizielles&cdq. Register enthalten oder auch nicht&per.
-Das Register wird vom Autor von Hand erstellt, seine N&ue.tzlichkeit &lpar.f&ue.r View&rpar.
-h&ae.ngt also allein davon ab, wieviel Arbeit der Autor darin investiert hat&per.
-Es kann auch vorkommen, da&Beta. keines vorhanden ist&per.
-:p.Ein n&ue.tzliches Register kann jedoch schon durch einfaches, alphabetisches Auflisten
-s&ae.mtlicher Themen bereitgestellt werden, und dies ist, was NewView macht&per.
+Das Register wird vom Autor von Hand erstellt&comma. seine N&ue.tzlichkeit &lpar.f&ue.r View&rpar.
+h&ae.ngt also allein davon ab&comma. wieviel Arbeit der Autor darin investiert hat&per.
+Es kann auch vorkommen&comma. da&Beta. keines vorhanden ist&per.
+:p.Ein n&ue.tzliches Register kann jedoch schon durch einfaches&comma. alphabetisches Auflisten
+s&ae.mtlicher Themen bereitgestellt werden&comma. und dies ist&comma. was NewView macht&per.
 Dann verschmilzt es das originale Register &lpar.falls vorhanden&rpar. mit der Liste der
 Titel der Themen&per.
-:p.Wem dies aus irgendeinem Grund nicht genehm ist, kann die Funktion &ue.ber die Indexzunge
+:p.Wem dies aus irgendeinem Grund nicht genehm ist&comma. kann die Funktion &ue.ber die Indexzunge
 &odq.Werkzeuge&cdq. &endash. &odq.Optionen&cdq. &endash. &odq.Allgemeines&cdq. abschalten&per.
 .* ************************************************************
 .* Search
@@ -276,11 +276,11 @@ Titel der Themen&per.
 :h2 res=6 id='search'.Suche
 :p.:hp2.Suchen:ehp2.
 :p.
-:p.Das Suchen stellt eine M&oe.glichkeit dar, schnell Informationen zu finden,
-wenn man nicht wei&Beta., wo man anfangen soll&per. Rufen Sie einfach die Indexzunge
-Suchen auf, geben Sie ein paar Worte mit Bezug zum Thema ein und klicken Sie auf den
-Druckknopf Suchen&per. Sie erhalten eine Aufstellung aller Themen, die das
-Wort oder die W&oe.rter enthalten, bei der die besten Treffer zuoberst angezeigt
+:p.Das Suchen stellt eine M&oe.glichkeit dar&comma. schnell Informationen zu finden&comma.
+wenn man nicht wei&Beta.&comma. wo man anfangen soll&per. Rufen Sie einfach die Indexzunge
+Suchen auf&comma. geben Sie ein paar Worte mit Bezug zum Thema ein und klicken Sie auf den
+Druckknopf Suchen&per. Sie erhalten eine Aufstellung aller Themen&comma. die das
+Wort oder die W&oe.rter enthalten&comma. bei der die besten Treffer zuoberst angezeigt
 werden&per.
 :p.Mit dem Suchbegriff &ue.bereinstimmende W&oe.rter werden im Thema hervorgehoben&per.
 :p.:hp2.Globale Suche:ehp2.
@@ -289,19 +289,19 @@ Hilfedateien des Systems &ue.ber die :link reftype=hd refid='GlobalSearch'.Globa
 Suche:elink. durchsucht werden&per.
 :p.:hp2.Ausdruckssuche:ehp2.
 :p.Wenn man nach einen aus mehr als einem Wort bestehenden Ausdruck suchen m&oe.chte&comma.
-mu&Beta. dieser in Anf&ue.hrungszeichen eingeschlossen werden, wie etwa bei &odq.os&slash.2 warp&cdq.&per.
+mu&Beta. dieser in Anf&ue.hrungszeichen eingeschlossen werden&comma. wie etwa bei &odq.os&slash.2 warp&cdq.&per.
 :p.:hp2.Vergleichsfunktionen:ehp2.
 :p.NewView erlaubt bei der Suche eine feinere Kontrolle&per.
-:p.&plus. zeigt ein Wort an, welches enthalten sein :hp2.mu&Beta.:ehp2..
-:p.&endash. zeigt ein Wort an, welches :hp2.nicht:ehp2. enthalten sein darf.
-:p.NewView f&ue.hrt immer Teilvergleiche durch&per. Das hei&Beta.t, wenn nach
-&odq.win&cdq. gesucht w&ue.rde, f&ae.nde NewView auch &odq.window&cdq. und &odq.showing&cdq.&per.
-Es gilt jedoch, da&Beta. das Resultat umso h&oe.her eingeordnet wird, je
+:p.&plus. zeigt ein Wort an&comma. welches enthalten sein :hp2.mu&Beta.:ehp2..
+:p.&endash. zeigt ein Wort an&comma. welches :hp2.nicht:ehp2. enthalten sein darf.
+:p.NewView f&ue.hrt immer Teilvergleiche durch&per. Das hei&Beta.t&comma. wenn nach
+&odq.win&cdq. gesucht w&ue.rde&comma. f&ae.nde NewView auch &odq.window&cdq. und &odq.showing&cdq.&per.
+Es gilt jedoch&comma. da&Beta. das Resultat umso h&oe.her eingeordnet wird&comma. je
 besser der Vergleich zutrifft&per.
 :p.:hp2.Wie NewView Ergebnisse ordnet:ehp2.
 :p.NewView ordnet zutreffende Vergleiche nach mehreren Kriterien an&colon.
 :ul.
-:li.Treffer, die n&ae.her an einem ganzen Wort liegen
+:li.Treffer&comma. die n&ae.her an einem ganzen Wort liegen
 :li.der Anzahl der zutreffenden Worte in einem Thema
 :li.Treffer innerhalb des Titels
 :li.Treffer innerhalb eines Registereintrags
@@ -312,25 +312,25 @@ besser der Vergleich zutrifft&per.
 :h2 res=7 id='notes'.Anmerkungen
 :p.:hp2.Anmerkungen hinzuf&ue.gen und benutzen:ehp2.
 :p.
-:p.NewView erlaubt es, den Hilfedateien Anmerkungen hinzuzuf&ue.gen&per.
-:p.Um eine Anmerkung hinzuzuf&ue.gen, klickt man einfach dorthin, wo die Anmerkung
-eingef&ue.gt werden soll, dann auf den Druckknopf &odq.Anmerkung&cdq.
+:p.NewView erlaubt es&comma. den Hilfedateien Anmerkungen hinzuzuf&ue.gen&per.
+:p.Um eine Anmerkung hinzuzuf&ue.gen&comma. klickt man einfach dorthin&comma. wo die Anmerkung
+eingef&ue.gt werden soll&comma. dann auf den Druckknopf &odq.Anmerkung&cdq.
 :artwork runin name='..\images\note.bmp'.&comma. gibt dann den Text ein und
 dr&ue.ckt die Eingabetaste&per. Der Text wird dem Hilfethema mit einer anderen
 Farbe hinzugef&ue.gt. &lpar.Gr&ue.n ist voreingestellt; dies kann jedoch unter
 &odq.Werkzeuge&cdq. &endash. &odq.Optionen&cdq. &endash. &odq.Farben&cdq. angepa&Beta.t werden&per.&rpar.
-:p.Um eine Anmerkung zu bearbeiten oder zu l&oe.schen, klickt man auf den farbigen
+:p.Um eine Anmerkung zu bearbeiten oder zu l&oe.schen&comma. klickt man auf den farbigen
 Anmerkungstext; anschlie&Beta.end kann man ihn bearbeiten oder durch Klicken
 auf &odq.L&oe.schen&cdq. loswerden&per.
 :p.Es kann auch eine šbersicht aller in der&slash.den aktuellen Hilfedatei&lpar.en&rpar. gemachten Anmerkungen
 &ue.ber die Indexzunge Anmerkungen angezeigt werden&per. Diese bietet M&oe.glichkeiten
-zum Hinzuf&ue.gen, Bearbeiten und L&oe.schen von Anmerkungen sowie zum Anspringen
-der Themen, welche die Anmerkungen enthalten&per.
+zum Hinzuf&ue.gen&comma. Bearbeiten und L&oe.schen von Anmerkungen sowie zum Anspringen
+der Themen&comma. welche die Anmerkungen enthalten&per.
 :p.
-:p.Anmerkungen werden in einer Datei mit der Erweiterung &per.nte gespeichert, die sich
-im selben Verzeichnis befindet, wie die zugeh&oe.rige Hilfedatei&per.
+:p.Anmerkungen werden in einer Datei mit der Erweiterung &per.nte gespeichert&comma. die sich
+im selben Verzeichnis befindet&comma. wie die zugeh&oe.rige Hilfedatei&per.
 :note text='Hinweis:'.Wenn sich eine Hilfedatei &ae.ndert &lpar.beispielsweise wenn ein Programm
-aktualisiert wird&rpar., dann werden die Anmerkungen nicht mehr an der richtigen Stelle
+aktualisiert wird&rpar.&comma. dann werden die Anmerkungen nicht mehr an der richtigen Stelle
 erscheinen; sie k&oe.nnen jedoch nach wie vor von der Indexzunge Anmerkungen aus
 gelesen werden&per.
 .*
@@ -345,7 +345,7 @@ Druckknopfes &odq.Globale Suche&cdq.
 :artwork runin name='..\images\search.bmp'.&comma. durch Auswahl von &odq.Werkzeuge&cdq. &endash.
 &odq.Alle Hilfedateien durchsuchen&cdq. oder Dr&ue.cken der Tastenkombination Strg&plus.S durchsuchen.
 :p.Diese Suche funktioniert &ae.hnlich der :link reftype=hd refid='search'.Suche
-in Dateien:elink.&semi. es wird jedoch zus&ae.tzlich ausgegeben, in welcher Datei
+in Dateien:elink.&semi. es wird jedoch zus&ae.tzlich ausgegeben&comma. in welcher Datei
 ein Treffer gefunden wurde&per.
 :p.Abh&ae.ngig von den eingegebenen Suchkriterien kann die Suche einige Zeit
 dauern. Sie k”nnen die Suche zu jeder Zeit abbrechen.
@@ -357,13 +357,13 @@ BOOKSHELF und HELP definiert werden.
 Suche an ihre Erfordernisse anpassen&per.
 :p.:hp2.Suche in&colon. Standardhilfepfade:ehp2.
 :p.Dies ist die Voreinstellung. NewView sucht wie oben beschrieben&per.
-:p.Mit Hilfe des Druckknopfes &odq.Ausw&ae.hlen&per.&per.&per.&cdq. k&oe.nnen sie festlegen, welche der Verzeichnisse
+:p.Mit Hilfe des Druckknopfes &odq.Ausw&ae.hlen&per.&per.&per.&cdq. k&oe.nnen sie festlegen&comma. welche der Verzeichnisse
 des Hilfepfades verwendet werden soll. Per Mausklick k&oe.nnen sie beliebige Eintr&ae.ge der Liste
-selektieren bzw&per. deselektieren. Wenn sie eine Auswahl vorgenommen und best&ae.tigt haben, dann
+selektieren bzw&per. deselektieren. Wenn sie eine Auswahl vorgenommen und best&ae.tigt haben&comma. dann
 wird als Auswahl &odq.Ausgew&ae.lte Hilfepfade&cdq. angezeigt.
 :p.:hp2.Suche in&colon. Alle Festplatten:ehp2.
 :p.Mit der Auswahl dieser Option k&oe.nnen sie alle Hilfedateien auf allen &lpar.festeingebauten&rpar. Festplatten ihres
-Computers durchsuchen. Mit Hilfe des Druckknopfes &odq.Ausw&ae.hlen&per.&per.&per.&cdq. k&oe.nnen sie festlegen, welche Festplatten
+Computers durchsuchen. Mit Hilfe des Druckknopfes &odq.Ausw&ae.hlen&per.&per.&per.&cdq. k&oe.nnen sie festlegen&comma. welche Festplatten
 durchsucht werden soll&per.
 :p.Das Durchsuchen aller Hilfedateien auf allen Festplatten kann mehr Treffer finden. Normalerweise ist es daf&ue.r aber
 deutlich langsamer als die Suchen in den Hilfepfaden&per.
@@ -379,7 +379,7 @@ W&ae.hlen sie das Laufwerk und das gew&ue.nschte Verzeichnis aus und bet&ae.tige
 Druckknopf &odq.&lt. Verzeichnis hinzuf&ue.gen&cdq.. Selektieren sie &odq.Einschlie&Beta.lich Unterverzeichnisse&cdq. um
 auch die Unterverzeichnisse des ausgew&ae.hlten Verzeichnissses zu durchsuchen&per. Diese Verzeichnisse k&oe.nnen
 sie an der Endung &odq.&per.&per.&per.&cdq. erkennen&per.
-:p.Wenn sie auf diese Weise ein Verzeichnis hinzugef&ue.gt haben, dann erscheint es in der Liste der zu
+:p.Wenn sie auf diese Weise ein Verzeichnis hinzugef&ue.gt haben&comma. dann erscheint es in der Liste der zu
 durchsuchenden Verzeichnisse&per.
 :note text='Hinweis:'.
 Wenn sie den Standardhilfepfaden oder den Ausgew&ae.hlten Hilfepfaden ein Verzeichnis hinzuf&ue.gen&comma.
@@ -402,22 +402,22 @@ um auch in den Unterverzeichnissen zu suchen&per.
 :h1 res=8 id='bookmarks'.Lesezeichen
 :p.:hp2.Lesezeichen:ehp2.
 :p.
-:p.NewView erlaubt es, bestimmte Themen innerhalb der aktuellen Hilfedatei mit
+:p.NewView erlaubt es&comma. bestimmte Themen innerhalb der aktuellen Hilfedatei mit
 Lesezeichen zu versehen&per. Dazu klickt man einfach auf den Druckknopf
 Lesezeichen
 :artwork runin name='..\images\bookmark.bmp'. und f&ue.gt
 dem aktuellen Thema ein Lesezeichen hinzu&per.
-:p.Um zu einem Lesezeichen zu springen, klickt man im Men&ue. &odq.Lesezeichen&cdq. auf
+:p.Um zu einem Lesezeichen zu springen&comma. klickt man im Men&ue. &odq.Lesezeichen&cdq. auf
 das zu &oe.ffnende Lesezeichen&per.
-:p.S&ae.mtliche Lesezeichen k&oe.nnen angezeigt oder gel&oe.scht werden, indem
+:p.S&ae.mtliche Lesezeichen k&oe.nnen angezeigt oder gel&oe.scht werden&comma. indem
 man auf &odq.Bearbeiten&per.&per.&per.&cdq. im Men&ue. &odq.Lesezeichen&cdq. klickt&per. Das Fenster bleibt
-w&ae.hrend des Lesens ge&oe.ffnet, so da&Beta. man die Lesezeichen stets
+w&ae.hrend des Lesens ge&oe.ffnet&comma. so da&Beta. man die Lesezeichen stets
 schnell zur Verf&ue.gung hat&per.
 :p.
 :p.:hp5.Hinweise:ehp5.
-:p.NewViews Lesezeichen beachten alle ge&oe.ffneten Themenfenster, wenn mehr als eines
+:p.NewViews Lesezeichen beachten alle ge&oe.ffneten Themenfenster&comma. wenn mehr als eines
 ge&oe.ffnet ist&per.
-:p.Die Lesezeichen werden in einer Datei mit der Erweiterung &per.bmk gespeichert, die sich
+:p.Die Lesezeichen werden in einer Datei mit der Erweiterung &per.bmk gespeichert&comma. die sich
 im selben Verzeichnis wie die zugeh&oe.rige Hilfedatei befindet&per.
 .*
 .*
@@ -429,18 +429,19 @@ im selben Verzeichnis wie die zugeh&oe.rige Hilfedatei befindet&per.
 :p.Klickt man auf eine Web&endash.URL wie etwa
 http&colon.&slash.&slash.www&per.google&per.com&comma. started NewView den
 Standard&endash.Web&endash.Browser&per.
-:p.Dieser Web-Browser wird durch Einstellungen des Betriebssystems festgelegt,
-nicht von NewView selbst&per. Um hier Einstellungen vorzunehmen, kan man ein
+:p.Dieser Web-Browser wird durch Einstellungen des Betriebssystems festgelegt&comma.
+nicht von NewView selbst&per. Um hier Einstellungen vorzunehmen&comma. kann man ein
 URL&endash.Objekt auf der Arbeitsoberfl&ae.che &oe.ffnen&comma. den Browser&endash.Pfad unter
 der Indexzunge :hp2.Browser:ehp2. eingeben und dann auf &odq.Neuer Standard&cdq. dr&ue.cken&per.
 :p.Browser k&oe.nnen auch in der Lage sein&comma. sich selbst zum Standard zu machen. Dies geschieht
 entweder bei der Installation oder &ue.ber ihre Einstellungen&per.
-:p.Links der Typen E&endash.Mail&comma. Newsgruppen und FTP werden ebenfalls an den Web&endash.Browser
-weitergeleitet. Derzeit ist es nicht m&oe.glich&comma. hierf&ue.r eine andere Anwendung
-festzulegen&per.
+:p.NewView ber&ue.cksichtigt die vom Programm Internet-Application-Integration (IAI) erstellten Definitionen.
+Links der Typen E&endash.Mail&comma. Newsgruppen und FTP werden an das jeweilige mit IAI definierte
+Programm weitergegeben. Wurde kein spezielles Programm f&ue.r den entsprechenden URL Typen definiert&comma.
+dann wird die URL an den Web&endash.Browser weitergeleitet.
 :p.:hp2.Hinweis f&ue.r Autoren von Hilfedateien:ehp2.
-:p.Das Original-View versteht weder URLs noch E&endash.Mail&endash.Links, deshalb war
-die einzige M&oe.glichkeit ihrer Implemtierung, einen Link auf z&per.B&per. &odq.netscape&per.exe&cdq.
+:p.Das Original-View versteht weder URLs noch E&endash.Mail&endash.Links&comma. deshalb war
+die einzige M&oe.glichkeit ihrer Implemtierung&comma. einen Link auf z&per.B&per. &odq.netscape&per.exe&cdq.
 mit den korrekten Parametern zu plazieren&per.
 :p.NewView &ue.bersetzt Programm-Links auf &odq.netscape&cdq.&comma. &odq.explore&cdq. oder &odq.mozilla&cdq.
 in Links f&ue.r den Standard&endash.Browser&per.
@@ -462,7 +463,7 @@ erkannt&colon.
 :h1  res=9 id='CommandLine'.Befehlszeilenparameter
 :p.:hp2.Befehlszeilenparameter:ehp2.
 :p.Beim Aufruf von NewView aus einer Befehlszeile heraus k&oe.nnen diverse Parameter
-&ue.bergeben werden, die alle optional sind&per.
+&ue.bergeben werden&comma. die alle optional sind&per.
 :p.
 :p.:hp2.NewView &lbracket.optionen&rbracket. &lbracket.&lt.dateiname&gt. &lbracket.&lt.suchbegriff&gt.&rbracket.&rbracket.:ehp2.
 :p.Wurde NewView als Ersatz f&ue.r view installiert&comma. beginnt die Befehlszeile mit
@@ -471,13 +472,13 @@ view anstelle von newview&per.
 :p.:hp2.&lt.dateiname&gt.:ehp2.
 :p.
 Die von NewView zu ladende Datei&per. Es k&oe.nnen mehrere Dateien auf einmal
-geladen werden, indem dateiname1&plus.dateiname2 usw&per. angegeben wird&per.
+geladen werden&comma. indem dateiname1&plus.dateiname2 usw&per. angegeben wird&per.
 .br
-Wird kein Pfad angegeben, so wird in den
+Wird kein Pfad angegeben&comma. so wird in den
 :link reftype=hd refid='L_EnvironmentVariables'.Pfaden BOOKSHELF und HELP:elink.
 nach den Dateien gesucht&per.
 .br
-Wenn ihr Verzeichnis&dash. oder Dateiname Sonderzeichen (wie z&per.B&per. Leerzeichen) enth&ae.lt, dann m&ue.ssen sie den
+Wenn ihr Verzeichnis&dash. oder Dateiname Sonderzeichen (wie z&per.B&per. Leerzeichen) enth&ae.lt&comma. dann m&ue.ssen sie den
 Dateinamen in doppelte Hochkommatas einschlie&Beta.en&per.
 :p.:hp2.&lt.suchbegriff&gt.:ehp2.
 :p.Es wird nach auf diesen Text passenden Thementiteln und Indexeintr&ae.gen
@@ -489,7 +490,7 @@ um die normale Suche&per. Eine richtige Suche wird bei Verwendung der Option
 :p.:hp2.&slash.s:ehp2.
 :p.Nach dem &Oe.ffnen der Datei wird eine :link reftype=hd refid='search'.Suche:elink.
 (in diesem Fall anders als bei der Themensuche eine echte Volltextsuche) nach dem angegebenen Text durchgef&ue.hrt&per.
-Sie erhalten das geleiche Ergebnis, wenn sie eine Suche &ue.ber das
+Sie erhalten das geleiche Ergebnis&comma. wenn sie eine Suche &ue.ber das
 :link reftype=hd
 refid='search'.Indexzunge Suche im Navigationsfenster:elink. durchf&ue.hren&per.
 :p.Beispiele&colon.
@@ -504,7 +505,7 @@ refid='search'.Indexzunge Suche im Navigationsfenster:elink. Hier ein Beispiel f
 :xmp.
   newview &slash.s cmdref net access
 :exmp.
-Um eine UND-Verkn&ue.pfung der Suchbegriffe zu erreichen, m&ue.ssen sie die Begriffe in dopplete Hochkommatas einfassen&per.
+Um eine UND-Verkn&ue.pfung der Suchbegriffe zu erreichen&comma. m&ue.ssen sie die Begriffe in dopplete Hochkommatas einfassen&per.
 :xmp.
   newview &slash.s cmdref &odq.net access&cdq.
 :exmp.
@@ -520,7 +521,7 @@ Um nach dem Begriff copy in allen Hilfedateien zu suchen k&oe.nnen sie folgenden
 :xmp.
   newview &slash.g copy
 :exmp.
-Sie k&oe.nnen auch eine Dateinamen als ersten Parameter angeben, um vor dem Start der Suche
+Sie k&oe.nnen auch eine Dateinamen als ersten Parameter angeben&comma. um vor dem Start der Suche
 eine Hilfedatei zu &Oe.ffnen.
 :xmp.
   newview &slash.g cmdref copy
@@ -541,8 +542,8 @@ Befehlszeilen-Themensuche
 :p.Der an der Befehlszeile angegebene Themensuchparameter ahmt das Verhalten
 des alten view nach&per.
 :p.Nach dem Text wird nicht innerhalb der Themen gesucht&comma. nur in Titeln und Registereintr&ae.gen&per.
-Das macht diese Funktion f&ue.r Menschen eher ungeeignet, aber sie wird von einigen
-Anwendungen verwendet, um auf vorhersehbare Weise auf Hilfethemen zu verweisen&per.
+Das macht diese Funktion f&ue.r Menschen eher ungeeignet&comma. aber sie wird von einigen
+Anwendungen verwendet&comma. um auf vorhersehbare Weise auf Hilfethemen zu verweisen&per.
 :p.Es k&oe.nnen mehrere W&oe.rter verwendet werden&per.
 :p.Die Suche wird folgenderma&Beta.en durchgef&ue.hrt&colon.
 :ul.
@@ -551,7 +552,7 @@ Anwendungen verwendet, um auf vorhersehbare Weise auf Hilfethemen zu verweisen&p
 :li.Thematitel enth&ae.lt Suchtext
 :li.Registereintrag enth&ae.lt Suchtext
 :eul.
-:p.Entwickler sollten sicherstellen, da&Beta. das erwartete Dokument auch gefunden wird,
+:p.Entwickler sollten sicherstellen&comma. da&Beta. das erwartete Dokument auch gefunden wird&comma.
 wenn sie diese Methode zur Identifizierung von Themen beim Starten des alten oder neuen
 view verwenden&per.
 .* ************************************************************
@@ -574,17 +575,17 @@ Englisch&per. Weitere Informationen finden sie in der Datei readme&per.txt&per.
 Es m&ue.ssen s&ae.mtliche Werte angegeben werden&per. Ein :hp2.P:ehp2. nach einem Wert
 gibt einen Prozentwert an&per. Beispielsweise zentriert
 :xmp.
-  newview &slash.pos&colon.10P,10P,80P,80P
+  newview &slash.pos&colon.10P&comma.10P&comma.80P&comma.80P
 :exmp.
 das Fenster und l&ae.&Beta.t es 80% des Bildschirms einnehmen&per.
 :p.:hp2.&slash.title&colon.&lt.fenstertitel&gt.:ehp2.
 :p.Legt als Titel des NewView-Fensters den angegebenen Text fest und &ue.berschreibt
 dabei die Angaben in der Hilfedatei&per. Vor dem angegebenen Text wird stets der
-Text &odq.Hilfe &endash.  &cdq. eingef&ue.gt, es sei denn, der angegebene Text w&ae.re
+Text &odq.Hilfe &endash.  &cdq. eingef&ue.gt&comma. es sei denn&comma. der angegebene Text w&ae.re
 &odq.Hilfe&cdq.&per. In diesem Fall wird der Titel einfach zu &odq.Hilfe&cdq.&per. Damit soll erreicht
-werden, da&Beta. Hilfefenster in der Fensterliste immer als solche hervorstechen&per.
-:p.Wenn es notwendig ist, mehrere W&oe.rter anzugeben, schlie&Beta.en Sie die gesamte Option
-in Anf&ue.hrungszeichen ein, wie beispielsweise in&colon.
+werden&comma. da&Beta. Hilfefenster in der Fensterliste immer als solche hervorstechen&per.
+:p.Wenn es notwendig ist&comma. mehrere W&oe.rter anzugeben&comma. schlie&Beta.en Sie die gesamte Option
+in Anf&ue.hrungszeichen ein&comma. wie beispielsweise in&colon.
 :xmp.
   newview cmdref &odq.&slash.title&colon.Command Line Help&cdq.
 :exmp.
@@ -595,7 +596,7 @@ in Anf&ue.hrungszeichen ein, wie beispielsweise in&colon.
 Befehlszeilenbeispiele
 :p.:hp2.Befehlszeilenbeispiele:ehp2.
 .*
-:p.In den folgenden Beispielen wird vorausgesetzt, da&Beta. NewView als vollst&ae.ndiger
+:p.In den folgenden Beispielen wird vorausgesetzt&comma. da&Beta. NewView als vollst&ae.ndiger
 Ersatz f&ue.r view installiert wurde und view damit tats&ae.chlich newview ist&per.
 :p.:hp2.view cmdref:ehp2.
 :lm margin=4.
@@ -619,7 +620,7 @@ von cmdref&per.inf hinzugef&ue.gt&per. Die Register werden alphabetisch sortiert
 .*
 :p.:hp2.view &odq.c&colon.&bsl.os2 book&bsl.os2ug&per.inf&cdq.:ehp2.
 :lm margin=4.
-:p.Wenn das Verzeichnis oder der Dateiname Sonderzeichen enhh&ae.lt, dann mu&Beta. er in Hochkommatas eingschlossen werden&per.
+:p.Wenn das Verzeichnis oder der Dateiname Sonderzeichen enhh&ae.lt&comma. dann mu&Beta. er in Hochkommatas eingschlossen werden&per.
 :lm margin=1.
 .*
 :p.:hp2.view cmdref dir:ehp2.
@@ -655,7 +656,7 @@ Die zweite Zeile &oe.ffnet die drei Dateien&per.
 :h1 res=10 id='KeyboardShortcuts'.
 Tastenk&ue.rzel
 :p.:hp2.Tastenk&ue.rzel:ehp2.
-:p.Die meisten Tastenk&ue.rzel werden in den Men&ue.s angezeigt, aber nicht alle&per.
+:p.Die meisten Tastenk&ue.rzel werden in den Men&ue.s angezeigt&comma. aber nicht alle&per.
 Es gibt folgende weitere Tastenk&ue.rzel&colon.
 :p.:hp2.Alt&plus.F4:ehp2. Beenden
 :p.:hp2.Strg&plus.C:ehp2. Ausgew&ae.hlten Text in Zwischenablage kopieren
@@ -718,11 +719,11 @@ NewView macht bei der Verwendung der Pfade keinen Unterschied&per.
 :li.eine :link reftype=hd refid='GlobalSearch'.Globale Suche:elink. durchf&ue.hrt
 :eul.
 :p.Man kann den Pfaden aus :hp2.HELP:ehp2. und :hp2.BOOKSHELF:ehp2. neue Verzeichnisse
-permanent hinzuf&ue.gen, indem man die Datei CONFIG&per.SYS anpa&Beta.t&per. Wenn auch
-das alte view die Dateien finden k&oe.nnen soll, f&ue.gen Sie die Verzeichnisse
+permanent hinzuf&ue.gen&comma. indem man die Datei CONFIG&per.SYS anpa&Beta.t&per. Wenn auch
+das alte view die Dateien finden k&oe.nnen soll&comma. f&ue.gen Sie die Verzeichnisse
 beiden Pfaden hinzu&per.
 :p.:hp2.Weitere Umgebungsvariablen:ehp2.
-:p.Die Umgebungsvariable :hp2.LANG:ehp2. wird untersucht, um die bei der Anzeige von
+:p.Die Umgebungsvariable :hp2.LANG:ehp2. wird untersucht&comma. um die bei der Anzeige von
 NewView zu verwendende Sprache festzustellen&per. &lpar.Wird durch den
 &slash.lang :link reftype=hd refid='AdvancedParameters'.Befehlszeilenparameter:elink.
 &ue.bersteuert&per.&rpar. Weitere Informationen &ue.ber Sprachen siehe readme&per.txt.
@@ -752,10 +753,10 @@ refid='InternetLinks'.Internet-Links :elink.&per.
 :p.
 :p.OS&slash.2-Hilfedateien werden mit Hilfe des IPF-Compilers erstellt&per. IPF steht f&ue.r Information
 Presentation Facility&per.
-:p.Der IPF-Compiler lie&Beta.t eine Textdatei, die in einer Sprache geschrieben ist,
-welche ihm alles &ue.ber Dinge wie šberschriften, Verweise, Text und Bilder
-mitteilt, und produziert entweder eine &per.INF- oder eine &per.HLP-Datei&per.
-:p.Der offizielle Weg, sich den IPF-Compiler &lpar.ipfc&per.exe&rpar. zu besorgen, ist das OS&slash.2
+:p.Der IPF-Compiler lie&Beta.t eine Textdatei&comma. die in einer Sprache geschrieben ist&comma.
+welche ihm alles &ue.ber Dinge wie šberschriften&comma. Verweise&comma. Text und Bilder
+mitteilt&comma. und produziert entweder eine &per.INF- oder eine &per.HLP-Datei&per.
+:p.Der offizielle Weg&comma. sich den IPF-Compiler &lpar.ipfc&per.exe&rpar. zu besorgen&comma. ist das OS&slash.2
 Developers Toolkit&per. Dies ist Teil des Lieferumfangs von eComStation
 &lpar.http&colon.&slash.&slash.www&per.ecomstation&per.com&rpar.&per.
 :p.Da die Sprache f&ue.r IPFC recht erm&ue.dend ist &lpar.beispielsweise mu&Beta.
@@ -765,7 +766,7 @@ Dienstprogramme&per.
 :p.
 Ich verwende Vyperhelp &lpar.http&colon.&slash.&slash.www&per.vyperhelp&per.com&rpar.&comma.
 weil es einfach und grafisch ist&per.
-Es kann auch Windows-Hilfe, HTML und andere Formate exportieren, obwohl es nur unter
+Es kann auch Windows-Hilfe&comma. HTML und andere Formate exportieren&comma. obwohl es nur unter
 OS&slash.2 l&ae.uft&per. Kostenpflichtig&per.
 :p.Einige weitere beliebte M&oe.glichkeiten&colon.
 :ul.
@@ -794,7 +795,7 @@ noch erh&ae.ltlich sein und zu einem gewissen Ma&Beta. unterst&ue.tzt werden&per
 zur Identifizierung von Hilfethemen verwendet&per. Anwendungen rufen den Hilfe-Manager
 unter Angabe einer Ressourcenkennung auf &endash. entweder direkt &ue.ber
 die HM&us.DISPLAY&us.HELP Nachricht oder indirekt &ue.ber
-ihren Ressourcen hinzugef&ue.gte Hilfetabellen, die der PM automatisch handhabt&per.
+ihren Ressourcen hinzugef&ue.gte Hilfetabellen&comma. die der PM automatisch handhabt&per.
 Die Ressourcenkennung wird in einer Tabelle innerhalb der Hilfedatei gespeichert&per.
 :p.Autoren von Dokumenten bietet NewView die F&ae.higkeit&comma. Ressourcenkennungen
 zu sehen und zu finden&per.
@@ -812,7 +813,7 @@ Themen-Namen
 :p.:hp2.Themen-Namen:ehp2.
 :p.
 :p.&Ae.hnlich wie Ressourcenkennungen k&oe.nnen auch Ressourcennamen von Applikationsentwicklern
-genutzt werden, um Themen in der Hilfedatei zu referenzieren (per HM&us.DISPLAY&us.HELP
+genutzt werden&comma. um Themen in der Hilfedatei zu referenzieren (per HM&us.DISPLAY&us.HELP
 Nachricht mit dem HM&us.PANELNAME als zwetem Parameter&per.
 :p.Diese Variante wird allerdings nicht so h&ae.ufig verwendet&per.
 :p.NewView kann einen Themennamen finden. Verwenden sie dazu Werkzeuge &endash. Thema
