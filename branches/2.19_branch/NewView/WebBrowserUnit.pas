@@ -159,7 +159,9 @@ const
       raise Exception.Create('You don''t have a default browser configured.');
     end;
 
-    if StrStartsWithIgnoringCase(aURL, '"ftp') then
+    if StrStartsWithIgnoringCase(aURL, '"ftp')
+       or StrStartsWithIgnoringCase(aURL, 'ftp')
+    then
     begin
       tmpAlternativeExe := GetDefaultFtpExe;
       if tmpAlternativeExe <> '' then
@@ -169,7 +171,9 @@ const
         tmpParameters := GetDefaultFtpParameters;
       end
     end
-    else if StrStartsWithIgnoringCase(aURL, '"mailto') then
+    else if StrStartsWithIgnoringCase(aURL, '"mailto')
+            or StrStartsWithIgnoringCase(aURL, 'mailto')
+    then
     begin
       tmpAlternativeExe := GetDefaultMailExe;
       if tmpAlternativeExe <> '' then
@@ -179,7 +183,9 @@ const
         tmpParameters := GetDefaultMailParameters;
       end
     end
-    else if StrStartsWithIgnoringCase(aURL, '"news') then
+    else if StrStartsWithIgnoringCase(aURL, '"news')
+            or StrStartsWithIgnoringCase(aURL, '"news')
+    then
     begin
       tmpAlternativeExe := GetDefaultNewsExe;
       if tmpAlternativeExe <> '' then
