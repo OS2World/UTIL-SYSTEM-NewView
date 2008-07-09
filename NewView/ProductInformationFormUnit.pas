@@ -51,18 +51,20 @@ uses
 
 Procedure TProductInformationForm.EmailEditOnClick (Sender: TObject);
 Begin
-  LaunchURL( 'mailto://' + EmailEdit.Text );
+  LaunchURL('"mailto:' + EmailEdit.Text + '"');
 End;
 
 Procedure TProductInformationForm.WebPageEditOnClick (Sender: TObject);
 Begin
-  LaunchURL( 'http://' + WebPageEdit.Text );
+  LaunchURL('"http://' + WebPageEdit.Text + '"');
 End;
+
 
 Procedure TProductInformationForm.ProductInformationFormOnSetupShow (Sender: TObject);
 Begin
   ScaleForm( self, 11, 16 );
 End;
+
 
 Procedure TProductInformationForm.OnLanguageEvent( Language: TLanguageFile;
                                                    const Apply: boolean );
