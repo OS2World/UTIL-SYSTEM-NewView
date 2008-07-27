@@ -91,16 +91,8 @@ Begin
   CopyrightEdit.Text := GetCopyrightMsg;
   LicenseEdit.Text := GetLicenseMsg;
 
-
-  // custom cursor used to prevent user from selecting the text :(
-  // fix in SPCC forms.pas now makes it work
-  // Argh! That causes other problems, due to default cursor being set
-  // by the default window proc on every mouse move... (?)
-
-  // Might be able to use WM_CONTROLPOINTER instead... 
-
-  //  WebPageEdit.Cursor := GetLinkCursor;
-  // EmailEdit.Cursor := GetLinkCursor;
+  WebPageEdit.Cursor := GetLinkCursor;
+  EmailEdit.Cursor := GetLinkCursor;
 End;
 
 procedure EnsureProductInformationFormLoaded;
