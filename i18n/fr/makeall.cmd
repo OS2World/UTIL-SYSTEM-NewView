@@ -30,5 +30,5 @@ copy 'lisezmoi.txt' nv_build_dir
 copy 'newview_fr.lng' nv_build_dir
 
 /* compile the ipf file */
-ipfc NewView_fr.ipf nv_build_dir||'\NewView_fr.hlp -D:033 -C:850 -L:FRA'
+ipfc NewView_fr.ipf nv_build_dir||'\NewView_fr.hlp -s -x -D:033 -C:850 -L:FRA'
 

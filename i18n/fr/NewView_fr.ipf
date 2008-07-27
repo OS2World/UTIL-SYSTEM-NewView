@@ -7,7 +7,7 @@
 .* Copyright: Copyright 2005 Aaron Lawrence
 .* Author: Aaron Lawrence
 .* French translation : Guillaume Gay
-.* French version : 2007-05-25
+.* French version : 2008-07-13
 
 .**************************************************************************
 .* SECTION : INTRODUCTION                                                 *
@@ -490,9 +490,11 @@ pouvez tÇlÇcharger l'utilitaire ConfigApps depuis Hobbes &colon.
 http&colon.&slash.&slash.hobbes&per.nmsu&per.edu&slash.cgi-bin&slash.h-search?key=configapps
 :p.Certains navigateurs peuvent aussi proposer de se paramÇtrer comme
 navigateur par dÇfaut soit Ö l'installation, soit dans les prÇfÇrences.
-:p.Les liens Mêl, FTP et vers les fora de discussion ("newsgroups") sont
-aussi passÇs au navigateur. ∑ l'heure actuelle, il n'est pas possible de
-choisir un programme diffÇrent pour chacun de ces liens.
+:p.NewView prend en compte les paramätres mis en place par l'application
+Internet-Application-Integration (IAI). Les liens Mêl, FTP et vers les
+fora de discussion ("newsgroups") sont passÇs aux programmes que vous
+avez choisis. S'il n'y a aucun programme dÇfini pour un type d'URL
+spÇcifique, le lien sera alors passÇ au navigateur web.
 :p.:hp2.Remarques pour les auteurs de fichiers d'aide:ehp2.
 :p.Le programme View original ne "comprends" absolument rien aux URL ou
 liens Mêl. La seule faáon de les implÇmenter Çtait de faire un appel Ö,
