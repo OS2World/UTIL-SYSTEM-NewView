@@ -331,7 +331,9 @@ begin
                                          Dest,
                                          StartPosition,
                                          Length ) then
+  begin
     raise EHelpFileException.Create( ErrorCorruptHelpFile );
+  end
 end;
 
 // -------------------------------------------------------------------------
