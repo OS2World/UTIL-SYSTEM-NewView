@@ -20,12 +20,10 @@ Type
     Edit2: TEdit;
     FindButton: TButton;
     Button1: TButton;
-    Button2: TButton;
     Button3: TButton;
     Procedure FindButtonOnClick (Sender: TObject);
     Procedure Button4OnClick (Sender: TObject);
     Procedure Button3OnClick (Sender: TObject);
-    Procedure Button2OnClick (Sender: TObject);
     Procedure ACLLibraryTestFormOnCreate (Sender: TObject);
     Procedure ACLLibraryTestFormOnDestroy (Sender: TObject);
     Procedure ACLLibraryTestFormOnDismissDlg (Sender: TObject);
@@ -69,31 +67,6 @@ Procedure TACLLibraryTestForm.Button3OnClick (Sender: TObject);
 Begin
 End;
 
-const
-  test: string = 'This is the string I want to test the CRC with. Ha ha haa';
-  test2: string = 'HERES ANOTHER #&*#^*& STRING';
-  test3: string = #234#221#014;
-
-Procedure TACLLibraryTestForm.Button2OnClick (Sender: TObject);
-var
-  crc: longword;
-Begin
-  crc := GetCRC32( Addr( test ), Length( test ) + 1 );
-  Memo1.Lines.Add( 'Asm Crc =    ' + IntToStr( crc ) );
-  crc := Pascal_GetCRC32( Addr( test ), Length( test ) + 1 );
-  Memo1.Lines.Add( 'Pascal Crc = ' + IntToStr( crc ) );
-
-  crc := GetCRC32( Addr( test2 ), Length( test2 ) + 1 );
-  Memo1.Lines.Add( 'Asm Crc =    ' + IntToStr( crc ) );
-  crc := Pascal_GetCRC32( Addr( test2 ), Length( test2 ) + 1 );
-  Memo1.Lines.Add( 'Pascal Crc = ' + IntToStr( crc ) );
-
-  crc := GetCRC32( Addr( test3 ), Length( test3 ) + 1 );
-  Memo1.Lines.Add( 'Asm Crc =    ' + IntToStr( crc ) );
-  crc := Pascal_GetCRC32( Addr( test3 ), Length( test3 ) + 1 );
-  Memo1.Lines.Add( 'Pascal Crc = ' + IntToStr( crc ) );
-
-End;
 
 type
   TTestSharedMemObject = record
