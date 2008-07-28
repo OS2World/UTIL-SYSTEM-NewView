@@ -8,11 +8,6 @@ uses
   Classes,
   ACLString;
 
-// Puts specified program command line parameter
-// into AString
-procedure AString_ParamStr( item: byte;
-                            S: TAString );
-
 // Splits up an AString at the given separator CHAR
 // Puts the individual strings into List, truncating
 // each string at 255 chars max.
@@ -56,16 +51,6 @@ implementation
 
 uses
   ACLUtility;
-
-procedure AString_ParamStr( item: byte;
-                            S: TAString );
-var
-  p: pchar;
-  l: longint;
-begin
-  GetCommandLineParameter( item, p, l );
-  S.AssignPCharLen( p, l );
-end;
 
 procedure AStringToList( S: TAstring;
                          List: TStrings;
