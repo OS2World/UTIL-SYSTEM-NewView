@@ -107,8 +107,7 @@ Type
     Function Search( Parameters: TObject ): TObject;
 
   protected
-    Procedure OnLanguageEvent( Language: TLanguageFile;
-                               const Apply: boolean );
+    Procedure OnLanguageEvent( Language: TLanguageFile; const Apply: boolean );
 
     SearchCaption: string;
     StopCaption: string;
@@ -467,9 +466,11 @@ var
   tmpSearchParameters : TSearchParameters;
   Query: TTextSearchQuery;
   i: longint;
-  Dir: string;
+  tmpDir: string;
 
 Begin
+  // LogEvent(LogDebug, 'TGlobalSearchForm.Search');
+
   tmpSearchParameters := Parameters as TSearchParameters;
 
   Query := tmpSearchParameters.Query;
@@ -490,15 +491,14 @@ Begin
       break;
     end;
 
-    ThreadManager.UpdateProgress( i * 10 div tmpSearchParameters.Directories.Count,
-                                  100,
-                                  ScanDirectoriesMsg );
-    Dir := tmpSearchParameters.Directories[ i ];
-    if StrEndsWith('...', Dir) then
+    ThreadManager.UpdateProgress( i * 10 div tmpSearchParameters.Directories.Count, 100, ScanDirectoriesMsg );
+    tmpDir := tmpSearchParameters.Directories[i];
+    // LogEvent(LogDebug, 'TGlobalSearchForm.Search in dir: ' + tmpDir);
+    if StrEndsWith(tmpDir, '...') then
     begin
-      Dir := StrLeftWithout( Dir, 3 );
+      tmpDir := StrLeftWithout(tmpDir, 3 );
       ListFilesInDirectoryRecursiveWithTermination(
-                                       Dir,
+                                       tmpDir,
                                        '*.inf;*.hlp',
                                        true,
                                        Files,
@@ -507,7 +507,7 @@ Begin
     end
     else
     begin
-      ListFilesInDirectory( Dir, '*.inf;*.hlp', true, Files);
+      ListFilesInDirectory( tmpDir, '*.inf;*.hlp', true, Files);
     end;
   end;
 
@@ -597,23 +597,26 @@ Procedure TGlobalSearchForm.DoSearch;
 var
   tmpSelectedDirectories : TStringList;
   i : integer;
+  tmpSearchText: string;
 
-  SearchText: string;
   Query: TTextSearchQuery;
   SearchParameters: TSearchParameters;
 Begin
+  // LogEvent(LogDebug, 'DoSearch');
+
   if ThreadManager.IsRunning then
   begin
     ThreadManager.Stop;
     exit;
   end;
 
-  SearchText := trim( SearchTextEdit.Text );
-  if SearchText = '' then
+  tmpSearchText := trim( SearchTextEdit.Text );
+  if tmpSearchText = '' then
     exit;
 
+  // LogEvent(LogDebug, 'DoSearch: ' + tmpSearchText);
   try
-    Query := TTextSearchQuery.Create(SearchText);
+    Query := TTextSearchQuery.Create(tmpSearchText);
   except
     on e: ESearchSyntaxError do
     begin
@@ -635,6 +638,8 @@ Begin
 
   tmpSelectedDirectories := TStringList.Create;
   GetSelectedDirectories(tmpSelectedDirectories);
+
+  LogEvent(LogDebug, 'DoSearch: tmpSelectedDirectories.Count ' + IntToStr(tmpSelectedDirectories.Count));
 
   // clear the list and add only the selected ones
   for i := 0 to tmpSelectedDirectories.Count - 1 do
