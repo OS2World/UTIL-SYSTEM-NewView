@@ -4,6 +4,8 @@ V2.19.3
 - Support for 'Internet-Application-Integration' added.
   NewView is now able to start different applications for news, mail and ftp.
 - Fix: More link fixes.
+- Fix: Links in the about dialog are working as expected.
+- Fix: Searching all drives works again.
 
 V2.19.2
 - never released to the public
