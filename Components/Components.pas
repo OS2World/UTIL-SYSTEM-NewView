@@ -4,6 +4,7 @@ Uses
   Forms,
   Graphics,
   ComponentsTestForm;
+//  NonSizableDialogUnit;
 
 {$r Components.scu}
 

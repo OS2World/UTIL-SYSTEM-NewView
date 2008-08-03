@@ -4,10 +4,7 @@ Interface
 
 Uses
   OS2Def,
-  Classes,
-  Forms,
-  PMWIN,
-  Graphics;
+  Classes, Forms, PMWIN, Graphics;
 
 Const
   // This defines the fraction of a pixel that
@@ -134,12 +131,9 @@ procedure SibylFontToFontSpec( Font: TFont; Var FontSpec: TFontSpec );
 Implementation
 
 uses
-  PMWin,
-  PMGpi,
-  OS2Def,
-  PmDev,
+  PMWin, PMGpi, OS2Def, PmDev,
   SysUtils,
-  StringUtilsUnit;
+  ACLStringUtility;
 
 Imports
   Function GpiQueryCharStringPosAt( PS: Hps;
@@ -248,7 +242,7 @@ begin
   begin
     Face := FontFaces[ FaceIndex ];
 
-    if StrEqualIgnoringCase( Face.pName^, Name ) then
+    if StringsSame( Face.pName^, Name ) then
     begin
       Result := Face;
       exit;
@@ -482,15 +476,15 @@ end;
 //------------------------------------------------------------------------
 function SubstituteBitmapFontToOutline( const FaceName: string ): string;
 begin
-  if StrEqualIgnoringCase( FaceName, 'Helv' ) then
+  if StringsSame( FaceName, 'Helv' ) then
     result := 'Helvetica'
-  else if StrEqualIgnoringCase( FaceName, 'Tms Rmn' ) then
+  else if StringsSame( FaceName, 'Tms Rmn' ) then
     result := 'Times New Roman'
-  else if StrEqualIgnoringCase( FaceName, 'System Proportional' ) then
+  else if StringsSame( FaceName, 'System Proportional' ) then
     result := 'Helvetica'
-  else if StrEqualIgnoringCase( FaceName, 'System Monospaced' ) then
+  else if StringsSame( FaceName, 'System Monospaced' ) then
     result := 'Courier'
-  else if StrEqualIgnoringCase( FaceName, 'System VIO' ) then
+  else if StringsSame( FaceName, 'System VIO' ) then
     result := 'Courier'
   else
     result := FaceName; // no substitution
