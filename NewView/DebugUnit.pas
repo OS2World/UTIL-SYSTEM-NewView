@@ -28,6 +28,7 @@ uses
                         LogNHM,
                         LogViewStub,
                         LogObjConstDest,
+                        LogMem,
                         LogDebug
     );
     LogAspects = SET OF LogAspect;
@@ -129,6 +130,7 @@ uses
       LogNHM          : result := 'NewHelpManager';
       LogViewStub     : result := 'ViewStub';
       LogObjConstDest : result := 'ObjConstDest';
+      LogMem          : result := 'Mem';
       LogDebug        : result := 'Debug';
       else              result := 'Unknown';
       end;
@@ -155,6 +157,7 @@ uses
       if tmpAspects[i] = 'LogNHM'          then activeLogAspects := activeLogAspects + [ LogNHM ];
       if tmpAspects[i] = 'LogViewStub'     then activeLogAspects := activeLogAspects + [ LogViewStub ];
       if tmpAspects[i] = 'LogObjConstDest' then activeLogAspects := activeLogAspects + [ LogObjConstDest ];
+      if tmpAspects[i] = 'LogMem'          then activeLogAspects := activeLogAspects + [ LogMem ];
       if tmpAspects[i] = 'LogDebug'        then activeLogAspects := activeLogAspects + [ LogDebug ];
     end;
 
