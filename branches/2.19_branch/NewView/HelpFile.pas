@@ -372,19 +372,27 @@ var
   EntryIndex: longint;
   pEntry: pTTOCEntryStart;
   pEnd: pTTOCEntryStart;
+  tmpSizeAsLongword : longword;
 begin
   LogEvent(LogParse, 'Read contents');
 
   if _pHeader^.ntoc = 0 then
+  begin
     exit; // explicit check required since ntoc is unsigned
+  end;
 
   // Presize the topics list to save reallocation time
   _Topics.Capacity := _pHeader^.ntoc;
 
+  // this has to be used because we multiply a longword with
+  // this; otherwise the compiler generates code that
+  // calculates the wrong value
+  tmpSizeAsLongword := sizeof(uint32);
+
   // read slots first so that Topics can refer to it.
   ReadFileBlock( _pSlotOffsets,
                  _pHeader^.slotsstart,
-                 _pHeader^.nslots * sizeof( uint32 ) );
+                 _pHeader^.nslots *  tmpSizeAsLongword);
 
   ReadFileBlock( _pContentsData,
                  _pHeader^.tocstart,
@@ -495,8 +503,10 @@ begin
   for IndexIndex := 0 to _pHeader^.nindex - 1 do
   begin
     if p >= pEnd then
+    begin
       // ran off end of data
       raise EHelpFileException.Create( ErrorCorruptHelpFile );
+    end;
 
     pEntryHeader := p;
     IndexTitleLen := pEntryHeader^.TextLength;
@@ -504,7 +514,9 @@ begin
 
     GetMemString( p, EntryText, IndexTitleLen );
     if ( pEntryHeader^.flags and 2 ) > 0 then
+    begin
       EntryText := '- ' + EntryText;
+    end;
     if pEntryHeader^.TOCIndex < _Topics.Count then
       _Index.AddObject( EntryText, _Topics[ pEntryHeader^.TOCIndex ] )
     else
