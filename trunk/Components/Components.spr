@@ -101,7 +101,7 @@ SPCC_Exceptions=4194303
 
 [Directories]
 
-LastDir=P:\NEWVIEW_DEV\NEWVIEW
+LastDir=P:\NEWVIEW_DEV\BUILD\LIBRARY
 OutDir=P:\newview_dev\build\components
 LibDir=P:\newview_dev\build\sibyl\lib;P:\newview_dev\build\library
 LibSrcDir=P:\newview_dev\library;P:\newview_dev\sibyl\spcc;P:\newview_dev\sibyl\rtl
@@ -141,9 +141,12 @@ Platform=OS/2
 
 [Last Closed Files]
 
-File0=..\.\NewView\GlobalSearchForm.pas
-File1=..\.\NewView\MainForm.pas
-File2=..\.\unittests\ACLLanguageUnitTests.pas
+File0=.\ACLLanguageUnit.pas
+File1=.\ACLMessageForm.pas
+File2=.\ACLDialogs.pas
+File3=..\.\NEWVIEW\FileDialogForm.pas
+File4=.\ControlsUtility.pas
+File5=.\CanvasFontManager.pas
 
 [Last Open Files]
 
@@ -152,36 +155,8 @@ File0.Left=-4
 File0.Bottom=-4
 File0.Width=1296
 File0.Height=629
-File0.Column=1
-File0.Line=3
-File1=.\ACLLanguageUnit.pas
-File1.Left=-4
-File1.Bottom=-4
-File1.Width=1296
-File1.Height=629
-File1.Column=91
-File1.Line=293
-File2=.\ACLMessageForm.pas
-File2.Left=-4
-File2.Bottom=-4
-File2.Width=1296
-File2.Height=629
-File2.Column=1
-File2.Line=86
-File3=.\ACLDialogs.pas
-File3.Left=-4
-File3.Bottom=-4
-File3.Width=1296
-File3.Height=629
-File3.Column=1
-File3.Line=1
-File4=..\.\NEWVIEW\FileDialogForm.pas
-File4.Left=-4
-File4.Bottom=-4
-File4.Width=1296
-File4.Height=629
-File4.Column=48
-File4.Line=35
+File0.Column=66
+File0.Line=4
 
 [Linker Options]
 
