@@ -2380,7 +2380,7 @@ begin
 
   Filename := THelpFile( CurrentOpenFiles[ 0 ] ).Filename;
   NamePart := ExtractFileName( Filename );
-  Result := StrStartsWithIgnoringCase('newview', NamePart);
+  Result := StrStartsWithIgnoringCase(NamePart, 'newview');
 end;
 
 Procedure TMainForm.HelpMIOnClick (Sender: TObject);
@@ -4550,31 +4550,32 @@ End;
 
 Procedure TMainForm.IndexSearchEditOnChange (Sender: TObject);
 var
-  MatchIndex: longint;
-  IndexINdex: longint;
-  SearchText: string;
+  tmpMatchIndex : longint;
+  tmpSearchText: string;
+  i : longint;
 Begin
   if InIndexSearch then
     exit;
 
-  MatchIndex:= -1;
-  SearchText:= trim( IndexSearchEdit.Text );
-  for IndexIndex:= 0 to DisplayedIndex.Count - 1 do
+  tmpMatchIndex := -1; 
+  tmpSearchText := trim(IndexSearchEdit.Text);
+
+  for i := 0 to DisplayedIndex.Count - 1 do
   begin
-    if StrStartsWithIgnoringCase( SearchText, DisplayedIndex[ IndexIndex ] ) then //IndexEntry ) then
+    if StrStartsWithIgnoringCase(DisplayedIndex[i], tmpSearchText) then
     begin
-      MatchIndex:= IndexIndex;
+      tmpMatchIndex := i;
       break;
     end;
   end;
 
-  if MatchIndex = -1 then
+  if tmpMatchIndex = -1 then
     exit;
 
   InIndexSearch:= true;
 
-  if IndexListBox.ItemIndex <> MatchIndex then
-    IndexListBox.ItemIndex:= MatchIndex;
+  if IndexListBox.ItemIndex <> tmpMatchIndex then
+    IndexListBox.ItemIndex := tmpMatchIndex;
 
   InIndexSearch:= false;
 End;
