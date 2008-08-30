@@ -28,9 +28,11 @@ Type
     Parts: TStringList;
     CombineMethod: TSearchTermCombineMethod;
 
-    constructor Create( const TheText: string;
-                        const TheCombineMethod: TSearchTermCombineMethod );
+    constructor Create( const aText: string;
+                        const aCombineMethod: TSearchTermCombineMethod );
     destructor Destroy; override;
+
+    function AsLogText: String;
   end;
 
   TTextSearchQuery = class
@@ -39,11 +41,13 @@ Type
     function GetTerm( Index: longint ): TSearchTerm;
     function GetTermCount: longint;
   public
-    constructor Create( const SearchString: string );
+    constructor Create(const aSearchString: String);
     destructor Destroy; override;
 
     property Term[ Index: longint ]: TSearchTerm read GetTerm;
     property TermCount: longint read GetTermCount;
+
+    procedure Log;
   end;
 
 Implementation
@@ -62,16 +66,16 @@ var
 Procedure OnLanguageEvent( Language: TLanguageFile;
                            const Apply: boolean );
 begin
-
   Language.Prefix := 'SearchQuery.';
   Language.LL( Apply, QueryErrorMissingWord1, 'QueryErrorMissingWord1', 'No search word given after ' );
   Language.LL( Apply, QueryErrorMissingWord2, 'QueryErrorMissingWord2', ' before ' );
 end;
 
-constructor TTextSearchQuery.Create( const SearchString: string );
+
+constructor TTextSearchQuery.Create(const aSearchString: string);
 var
-  TermText: string;
-  CombineMethod: TSearchTermCombineMethod;
+  tmpTermText: string;
+  tmpCombineMethod: TSearchTermCombineMethod;
   Term: TSearchTerm;
   tmpTerms : TStringList;
   i : integer;
@@ -79,41 +83,40 @@ begin
   Terms := TList.Create;
   try
     tmpTerms := TStringList.Create;
-    StrExtractStringsQuoted(tmpTerms, SearchString);
+    StrExtractStringsQuoted(tmpTerms, aSearchString);
 
     for i := 0 to tmpTerms.count-1 do
     begin
-      TermText := tmpTerms[i];
+      tmpTermText := tmpTerms[i];
 
       // Check for modifiers:
       //  + word must be matched
       //  - word must not be matched
-      case TermText[ 1 ] of
+      case tmpTermText[ 1 ] of
        '+':
-         CombineMethod := cmRequired;
+         tmpCombineMethod := cmRequired;
        '-':
-         CombineMethod := cmExcluded;
+         tmpCombineMethod := cmExcluded;
        else
-         CombineMethod := cmOptional;
+         tmpCombineMethod := cmOptional;
       end;
 
-      if CombineMethod <> cmOptional then
+      if tmpCombineMethod <> cmOptional then
       begin
         // delete + or -
-        if Length( TermText ) = 1 then
+        if Length( tmpTermText ) = 1 then
           if (i < tmpTerms.count-1) then
             raise ESearchSyntaxError.Create( QueryErrorMissingWord1
-                                             + StrInDoubleQuotes(TermText)
+                                             + StrInDoubleQuotes(tmpTermText)
                                              + QueryErrorMissingWord2
                                              + StrInDoubleQuotes(tmpTerms[i+1]) )
           else
             raise ESearchSyntaxError.Create( QueryErrorMissingWord1
-                                             + StrInDoubleQuotes(TermText));
-        Delete( TermText, 1, 1 );
+                                             + StrInDoubleQuotes(tmpTermText));
+        Delete( tmpTermText, 1, 1 );
       end;
 
-      Term := TSearchTerm.Create( TermText,
-                                  CombineMethod );
+      Term := TSearchTerm.Create( tmpTermText, tmpCombineMethod );
       Terms.Add( Term );
     end;
     tmpTerms.Destroy;
@@ -124,24 +127,48 @@ begin
   end;
 end;
 
+
 destructor TTextSearchQuery.Destroy;
 begin
   DestroyListObjects( Terms );
   Terms.Destroy;
 end;
 
+
+function TSearchTerm.AsLogText: String;
+var
+  i : integer;
+begin
+  result := 'TSearchTerm: ''' + text + '''  (' + IntToStr(Parts.Count) + ' parts; ';
+
+  case CombineMethod of
+  cmRequired :
+    result := result + 'cmRequired';
+  cmExcluded :
+    result := result + 'cmExcluded';
+  cmOptional :
+    result := result + 'cmOptional';
+  end;
+
+  result := result + ')';
+end;
+
+
+
 function TTextSearchQuery.GetTerm( index: longint ): TSearchTerm;
 begin
   Result := Terms[ Index ];
 end;
+
 
 function TTextSearchQuery.GetTermCount: longint;
 begin
   Result := Terms.Count;
 end;
 
-constructor TSearchTerm.Create( const TheText: string;
-                                const TheCombineMethod: TSearchTermCombineMethod );
+
+constructor TSearchTerm.Create( const aText: string;
+                                const aCombineMethod: TSearchTermCombineMethod );
 var
   TermParseIndex: longint;
   TermChar: char;
@@ -149,8 +176,8 @@ var
 begin
   Parts := TStringList.Create;
 
-  Text := TheText;
-  CombineMethod := TheCombineMethod;
+  Text := aText;
+  CombineMethod := aCombineMethod;
 
   // Break out each part of the term as IPF does:
   // consecutive alphanumeric chars become a "word"
@@ -202,6 +229,24 @@ destructor TSearchTerm.Destroy;
 begin
   Parts.Destroy;
 end;
+
+
+procedure TTextSearchQuery.Log;
+var
+  i : longint;
+begin
+  if IsLogAspectsEnabled(LogSearch) then
+  begin
+    LogEvent(LogSearch, ' TTextSearchQuery:');
+
+    for i := 0 to TermCount - 1 do
+    begin
+      LogEvent(LogSearch, '  Term ' + IntToStr(0) + ' [' + Term[i].AsLogText + ']');
+    end;
+  end;
+end;
+
+
 
 Initialization
    RegisterProcForLanguages( OnLanguageEvent );
