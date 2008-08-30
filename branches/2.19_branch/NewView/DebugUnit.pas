@@ -33,6 +33,7 @@ uses
     );
     LogAspects = SET OF LogAspect;
 
+  Function IsLogAspectsEnabled(const aLogAspect: LogAspect) : boolean;
   Procedure LogEvent(const aLogAspect: LogAspect; const anEventDescription: String);
 
 
@@ -165,11 +166,17 @@ uses
   End;
 
 
+  Function IsLogAspectsEnabled(const aLogAspect: LogAspect) : boolean;
+  Begin
+    result := aLogAspect IN activeLogAspects;
+  End;
+
+
   Procedure LogEvent(const aLogAspect: LogAspect; const anEventDescription: String);
   Var
     tmpMessage : String;
   Begin
-    if (aLogAspect IN activeLogAspects) then
+    if IsLogAspectsEnabled(aLogAspect) then
     begin
       tmpMessage := 'Log[' + GetAspectPrefix(aLogAspect) + ']  ' + anEventDescription;
       PmPrintf(tmpMessage);
