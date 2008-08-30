@@ -3054,8 +3054,7 @@ begin
               nil,
               nil,
               true );
-  SetStatus( OpenedTopicMsg
-             + IntToStr( Topic.Index ) );
+  SetStatus( OpenedTopicMsg + IntToStr( Topic.Index ) );
 
   Navigating:= true;
 
@@ -4644,6 +4643,7 @@ Begin
   if SelectedObject( SearchResultsListBox ) = nil then
     // the "no results" place holder
     exit;
+
   Topic := SelectedObject( SearchResultsListBox ) as TTopic;
   DisplayTopic( Topic );
 End;
