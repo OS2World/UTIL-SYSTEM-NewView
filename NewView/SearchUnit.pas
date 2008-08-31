@@ -123,14 +123,13 @@ procedure SearchDictionary( HelpFile: THelpFile;
                             SearchWord: string;
                             Results: UInt32ArrayPointer );
 var
-  DictIndex: integer;
+  tmpDictIndex: integer;
   pDictWord: pstring;
 begin
-  for DictIndex := 0 to HelpFile.DictionaryCount - 1 do
+  for tmpDictIndex := 0 to HelpFile.DictionaryCount - 1 do
   begin
-    pDictWord := HelpFile.DictionaryWordPtrs[ DictIndex ];
-    Results[ DictIndex ] := CompareWord( SearchWord,
-                                         pDictWord^ );
+    pDictWord := HelpFile.DictionaryWordPtrs[ tmpDictIndex ];
+    Results[ tmpDictIndex ] := CompareWord( SearchWord, pDictWord^ );
   end;
 end;
 
@@ -162,15 +161,23 @@ var
   DictIndex: integer;
   DictWord: string;
 begin
+  if IsLogAspectsEnabled(LogSearch) then
+  begin
+    LogEvent(LogSearch, '  calling SearchDictionaryStarts "' + SearchWord + '"');
+  end;
+  
   FillUInt32Array( Results, HelpFile.DictionaryCount, 0 );
 
   for DictIndex := 0 to HelpFile.DictionaryCount - 1 do
   begin
     DictWord := HelpFile.DictionaryWords[ DictIndex ];
     if StrStartsWithIgnoringCase(DictWord, SearchWord) then
-      Results[ DictIndex ] := MatchedWordRelevance( SearchWord, DictWord );
+    begin
+      Results[ DictIndex ] := MatchedWordRelevance( SearchWord, DictWord )
+    end;
   end;
 end;
+
 
 // Search the help file dictionary for words that
 // end with the given word
@@ -181,13 +188,19 @@ var
   DictIndex: integer;
   DictWord: string;
 begin
+  if IsLogAspectsEnabled(LogSearch) then
+  begin
+    LogEvent(LogSearch, ' calling SearchDictionaryEnds for "' + SearchWord + '"');
+  end;
   FillUInt32Array( Results, HelpFile.DictionaryCount, 0 );
 
   for DictIndex := 0 to HelpFile.DictionaryCount - 1 do
   begin
     DictWord := HelpFile.DictionaryWords[ DictIndex ];
     if StrEndsWithIgnoringCase(DictWord, SearchWord ) then
+    begin
       Results[ DictIndex ] := MatchedWordRelevance( SearchWord, DictWord );
+    end;
   end;
 end;
 
@@ -206,6 +219,11 @@ var
   tmpTitleWords : TStringList;
   i : integer;
 begin
+  if IsLogAspectsEnabled(LogSearch) then
+  begin
+    LogEvent(LogSearch, ' calling SearchTopicTitles for "' + SearchWord + '"');
+  end;
+
   tmpTitleWords := TStringList.Create;
 
   // Search topic titles
@@ -222,8 +240,7 @@ begin
     begin
       TitleWord := tmpTitleWords[i];
 
-      WordRelevance := CompareWord( SearchWord,
-                                    TitleWord );
+      WordRelevance := CompareWord( SearchWord, TitleWord );
       if WordRelevance > 0 then
       begin
         if TitleWordIndex = 0 then
@@ -232,17 +249,14 @@ begin
           if i = tmpTitleWords.count-1 then
           begin
             // in fact it's the only word
-            TitleWordRelevance := mwOnlyTitleWord
-                                  * WordRelevance
+            TitleWordRelevance := mwOnlyTitleWord * WordRelevance
           end
           else
-            TitleWordRelevance := mwFirstTitleWord
-                                  * WordRelevance
+            TitleWordRelevance := mwFirstTitleWord * WordRelevance
         end
         else
         begin
-          TitleWordRelevance := mwTitleWord
-                                * WordRelevance;
+          TitleWordRelevance := mwTitleWord * WordRelevance;
         end;
         inc( Results[ TopicIndex ],
              TitleWordRelevance );
@@ -268,6 +282,11 @@ var
   tmpIndexWords : TStringList;
   i : integer;
 begin
+  if IsLogAspectsEnabled(LogSearch) then
+  begin
+    LogEvent(LogSearch, ' calling SearchIndex for "' + SearchWord + '"');
+  end;
+  
   tmpIndexWords := TStringList.Create;
 
   for IndexIndex := 0 to HelpFile.Index.Count - 1 do
@@ -283,8 +302,7 @@ begin
     begin
       IndexEntryWord := tmpIndexWords[i];
 
-      WordRelevance := CompareWord( SearchWord,
-                                    IndexEntryWord );
+      WordRelevance := CompareWord( SearchWord, IndexEntryWord );
       if WordRelevance > 0 then
       begin
         if IndexEntryWordIndex = 0 then
@@ -293,17 +311,14 @@ begin
           if i = tmpIndexWords.count-1 then
           begin
             // in fact it's the only word
-            IndexEntryWordRelevance := mwOnlyIndexWord
-                                       * WordRelevance
+            IndexEntryWordRelevance := mwOnlyIndexWord * WordRelevance
           end
           else
-            IndexEntryWordRelevance := mwFirstIndexWord
-                                    * WordRelevance
+            IndexEntryWordRelevance := mwFirstIndexWord * WordRelevance
         end
         else
         begin
-          IndexEntryWordRelevance := mwIndexWord
-                                  * WordRelevance;
+          IndexEntryWordRelevance := mwIndexWord * WordRelevance;
         end;
         inc( Results[ Topic.Index ],
              IndexEntryWordRelevance );
@@ -326,11 +341,11 @@ procedure SearchHelpFile( HelpFile: THelpFile;
                           Results: TList;
                           WordSequences: TList );
 var
-  TopicCount: longint;
-  Topic: TTopic;
-  TopicIndex: longint;
-  TermIndex: longint;
-  Term: TSearchTerm;
+  tmpTopicCount: longint;
+  tmpTopic: TTopic;
+  tmpTopicIndex: longint;
+  tmpTermIndex: longint;
+  tmpTerm: TSearchTerm;
 
   DictionaryRelevances: UInt32ArrayPointer;
 
@@ -352,95 +367,123 @@ var
 
   TermWordSequence: TList;
 begin
+  LogEvent(LogSearch, 'SearchHelpFile');
+  Query.Log;
+
   if HelpFile.SearchTable = nil then
   begin
     exit;
   end;
 
   // Reset flags per topic
-  TopicCount := HelpFile.TopicCount;
+  tmpTopicCount := HelpFile.TopicCount;
 
   // Get memory for topic relevance arrays
 
-  AllocUInt32Array( TopicsMatchingDictWord,
-                    TopicCount );
-  AllocUInt32Array( TopicsMatchingTermPart,
-                    TopicCount );
-  AllocUInt32Array( TopicsMatchingTerm,
-                    TopicCount );
-  AllocUInt32Array( TopicRelevances,  // functions as a flag and a cumulative relevance
-                    TopicCount );
-  AllocUInt32Array( TopicsExcluded, // Exclusions are treated as boolean only
-                    TopicCount );
+  AllocUInt32Array( TopicsMatchingDictWord, tmpTopicCount );
+  AllocUInt32Array( TopicsMatchingTermPart, tmpTopicCount );
+  AllocUInt32Array( TopicsMatchingTerm, tmpTopicCount );
+  AllocUInt32Array( TopicRelevances, tmpTopicCount ); // functions as a flag and a cumulative relevance
 
-  ClearUInt32Array( TopicRelevances,
-                    TopicCount );
-  ClearUInt32Array( TopicsExcluded,
-                    TopicCount );
+  AllocUInt32Array( TopicsExcluded, tmpTopicCount ); // Exclusions are treated as boolean only
 
-  for TermIndex := 0 to Query.TermCount - 1 do
+
+  ClearUInt32Array( TopicRelevances, tmpTopicCount );
+  ClearUInt32Array( TopicsExcluded, tmpTopicCount );
+
+  for tmpTermIndex := 0 to Query.TermCount - 1 do
   begin
-    Term := Query.Term[ TermIndex ];
+    tmpTerm := Query.Term[ tmpTermIndex ];
 
-    LogEvent(LogSearch, 'Searching for term "'
-                  + Term.Text
+    if IsLogAspectsEnabled(LogSearch) then
+    begin
+      LogEvent(LogSearch, 'Searching for term "'
+                  + tmpTerm.Text
                   + '", '
-                  + IntToStr( Term.Parts.Count )
+                  + IntToStr( tmpTerm.Parts.Count )
                   + ' parts' );
+    end;
 
     // look thru all parts of the term.           eg. CAKE_SAUSAGE
 
     TermWordSequence := TList.Create;
 
     if WordSequences <> nil then
-      if Term.CombineMethod <> cmExcluded then
+      if tmpTerm.CombineMethod <> cmExcluded then
+      begin
         // this term is an inclusive one, so we want to remember the matches
         WordSequences.Add( TermWordSequence );
+      end;
 
-    for TermPartIndex := 0 to Term.Parts.Count - 1 do
+    for TermPartIndex := 0 to tmpTerm.Parts.Count - 1 do
     begin
-      TermPart := Term.Parts[ TermPartIndex ];
+      TermPart := tmpTerm.Parts[ TermPartIndex ];
 
-      LogEvent(LogSearch, '  Searching for [' + TermPart + ']' );
+      if IsLogAspectsEnabled(LogSearch) then
+      begin
+        LogEvent(LogSearch, '  Searching for TermPart [' + TermPart + ']' );
+      end;
 
-      AllocUInt32Array( DictionaryRelevances,
-                        HelpFile.DictionaryCount );
+      AllocUInt32Array( DictionaryRelevances, HelpFile.DictionaryCount );
 
       TermWordSequence.Add( DictionaryRelevances );
 
       // Search the dictionary for matches.
       // alpha numeric match
 
-      if Term.Parts.Count = 1 then
+      if tmpTerm.Parts.Count = 1 then
+      begin
+        if IsLogAspectsEnabled(LogSearch) then
+        begin
+          LogEvent(LogSearch, '  Term has only one part...' );
+          LogEvent(LogSearch, '  SearchDictionary [' + TermPart + ']' );
+        end;
+
         // general match allowing all kinds of partial matches
-        SearchDictionary( HelpFile,
-                          TermPart,
-                          DictionaryRelevances )
+        SearchDictionary( HelpFile, TermPart, DictionaryRelevances )
+      end
 
       else if TermPartIndex = 0 then
-        // first term part: word must match end of a topic word e.g. must end in "cake"
-        SearchDictionaryEnds( HelpFile,
-                              TermPart,
-                              DictionaryRelevances )
+      begin
+        if IsLogAspectsEnabled(LogSearch) then
+        begin
+          LogEvent(LogSearch, '  Term has more then one part... we are at first' );
+          LogEvent(LogSearch, '  SearchDictionaryEnd [' + TermPart + ']' );
+        end;
 
-      else if TermPartIndex = Term.Parts.Count - 1 then
+        // first term part: word must match end of a topic word e.g. must end in "cake"
+        SearchDictionaryEnds( HelpFile, TermPart, DictionaryRelevances )
+      end
+
+      else if TermPartIndex = tmpTerm.Parts.Count - 1 then
+      begin
+        if IsLogAspectsEnabled(LogSearch) then
+        begin
+          LogEvent(LogSearch, '  Term has more then one part... we are at last' );
+          LogEvent(LogSearch, '  SearchDictionaryEnd [' + TermPart + ']' );
+        end;
+
         // last term part: word must match start of a topic word e.g. must start with "sausage"
-        SearchDictionaryStarts( HelpFile,
-                                TermPart,
-                                DictionaryRelevances )
+        SearchDictionaryStarts( HelpFile, TermPart, DictionaryRelevances )
+      end
 
       else
+      begin
+        if IsLogAspectsEnabled(LogSearch) then
+        begin
+          LogEvent(LogSearch, '  Term has more then one part... we are inside' );
+          LogEvent(LogSearch, '  SearchDictionaryEnd [' + TermPart + ']' );
+        end;
+
         // intermediate term part: word must match exactly  e.g. must be "_"
-        SearchDictionaryExact( HelpFile,
-                               TermPart,
-                               DictionaryRelevances );
+        SearchDictionaryExact( HelpFile, TermPart, DictionaryRelevances )
+      end;
 
       // For each word in the dictionary that matches
       // this search term part, search topic texts
 
       LogEvent(LogSearch, '  Dictionary search done' );
-      ClearUInt32Array( TopicsMatchingTermPart,
-                        TopicCount );
+      ClearUInt32Array( TopicsMatchingTermPart, tmpTopicCount );
 
       for DictIndex := 0 to HelpFile.DictionaryCount - 1 do
       begin
@@ -459,22 +502,22 @@ begin
 
           OrUInt32Array( TopicsMatchingDictWord,
                          TopicsMatchingTermPart,
-                         TopicCount );
+                         tmpTopicCount );
         end
       end;
 
-      LogEvent(LogSearch, 'Topic searches done' );
+      LogEvent(LogSearch, '  Topic searches done' );
 
       if TermPartIndex = 0 then
         // first part, just copy
         CopyUInt32Array( TopicsMatchingTermPart,
                          TopicsMatchingTerm,
-                         TopicCount )
+                         tmpTopicCount )
       else
         // and with previous term part results
         AndUInt32Array( TopicsMatchingTermPart,
                         TopicsMatchingTerm,
-                        TopicCount );
+                        tmpTopicCount );
 
       // loop for next term part (IPF word)
     end;
@@ -483,25 +526,22 @@ begin
     // for all parts of the term. Now combine all together
 
     LogEvent(LogSearch, 'Checking for sequences' );
-    for TopicIndex := 0 to TopicCount - 1 do
+    for tmpTopicIndex := 0 to tmpTopicCount - 1 do
     begin
-      if TopicsMatchingTerm[ TopicIndex ] > 0 then
+      if TopicsMatchingTerm[ tmpTopicIndex ] > 0 then
       begin
-        Topic := HelpFile.Topics[ TopicIndex ];
+        tmpTopic := HelpFile.Topics[ tmpTopicIndex ];
         // Topic text contained a match for the all the parts
         // of the term.
         // Now we need to:
         // - verify that they actually occur all in a sequence (if it's a multi-part term)
         // - count occurrences for relevance.
 
-        TopicRelevanceForTerm :=
-          Topic.SearchForWordSequences( TermWordSequence,
-                                        false ); // don't stop at first match
+        TopicRelevanceForTerm := tmpTopic.SearchForWordSequences( TermWordSequence, false ); // don't stop at first match
 
-        TopicRelevanceForTerm :=
-          TopicRelevanceForTerm div Term.Parts.Count; // divide to bring back into scale
+        TopicRelevanceForTerm := TopicRelevanceForTerm div tmpTerm.Parts.Count; // divide to bring back into scale
 
-        TopicsMatchingTerm[ TopicIndex ] := TopicRelevanceForTerm;
+        TopicsMatchingTerm[ tmpTopicIndex ] := TopicRelevanceForTerm;
 
       end;
     end;
@@ -517,34 +557,41 @@ begin
     // Search titles and index
 
     LogEvent(LogSearch, '  Searching titles' );
-    SearchTopicTitles( HelpFile, Term.Text, TopicsMatchingTerm );
+    SearchTopicTitles( HelpFile, tmpTerm.Text, TopicsMatchingTerm );
 
     LogEvent(LogSearch, '  Searching index' );
-    SearchIndex( HelpFile, Term.Text, TopicsMatchingTerm );
+    SearchIndex( HelpFile, tmpTerm.Text, TopicsMatchingTerm );
 
     LogEvent(LogSearch, '  Combining' );
-    case Term.CombineMethod of
+    case tmpTerm.CombineMethod of
       cmOptional:
+      begin
+        LogEvent(LogSearch, '  Combining optional');
         AddUInt32Array( TopicsMatchingTerm,
                         TopicRelevances,
-                        TopicCount );
+                        tmpTopicCount );
+      end;
 
       cmRequired:
       begin
+        LogEvent(LogSearch, '  Combining required');
         // if zero then add to exclusions
         NotOrUInt32Array( TopicsMatchingTerm,
                           TopicsExcluded,
-                          TopicCount );
+                          tmpTopicCount );
 
         AddUInt32Array( TopicsMatchingTerm,
                         TopicRelevances,
-                        TopicCount );
+                        tmpTopicCount );
       end;
 
       cmExcluded:
+      begin
+        LogEvent(LogSearch, '  Combining excluded');
         OrUInt32Array( TopicsMatchingTerm,
                        TopicsExcluded,
-                       TopicCount );
+                       tmpTopicCount );
+      end;
     end;
 
 //    Term.ClearMatches;
@@ -556,25 +603,25 @@ begin
 
   // Now convert to list form.
 
-  for TopicIndex := 0 to TopicCount - 1 do
+  for tmpTopicIndex := 0 to tmpTopicCount - 1 do
   begin
-    if TopicsExcluded[ TopicIndex ] = 0 then
+    if TopicsExcluded[ tmpTopicIndex ] = 0 then
     begin
-      Topic := HelpFile.Topics[ TopicIndex ];
-      Topic.SearchRelevance := TopicRelevances[ TopicIndex ];
-      if Topic.SearchRelevance > 0 then
+      tmpTopic := HelpFile.Topics[ tmpTopicIndex ];
+      tmpTopic.SearchRelevance := TopicRelevances[ tmpTopicIndex ];
+      if tmpTopic.SearchRelevance > 0 then
       begin
-        Results.Add( Topic );
+        Results.Add( tmpTopic );
       end;
     end;
   end;
 
   LogEvent(LogSearch, 'Freeing arrays' );
-  FreeUInt32Array( TopicRelevances, TopicCount );
-  FreeUInt32Array( TopicsExcluded, TopicCount );
-  FreeUInt32Array( TopicsMatchingTerm, TopicCount );
-  FreeUInt32Array( TopicsMatchingTermPart, TopicCount );
-  FreeUInt32Array( TopicsMatchingDictWord, TopicCount );
+  FreeUInt32Array( TopicRelevances, tmpTopicCount );
+  FreeUInt32Array( TopicsExcluded, tmpTopicCount );
+  FreeUInt32Array( TopicsMatchingTerm, tmpTopicCount );
+  FreeUInt32Array( TopicsMatchingTermPart, tmpTopicCount );
+  FreeUInt32Array( TopicsMatchingDictWord, tmpTopicCount );
 
   LogEvent(LogSearch, 'Done' );
 end;
