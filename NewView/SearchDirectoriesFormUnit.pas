@@ -111,13 +111,13 @@ End;
 Procedure TSearchDirectoriesForm.OnLanguageEvent( Language: TLanguageFile;
                                                    const Apply: boolean );
 begin
-  // LogEvent(LogI18n, 'TSearchDirectoriesForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  LogEvent(LogI18n, 'TSearchDirectoriesForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 end;
 
 Procedure TSearchDirectoriesForm.SearchDirectoriesFormOnCreate (Sender: TObject);
 Begin
-  RegisterEventForLanguages( OnLanguageEvent );
+  RegisterForLanguages( OnLanguageEvent );
   ClientWidth := DirectoriesListBox.Left + DirectoriesListBox.Width + DirectoriesListBox.Left;
 
   ShowBrowseControls( false );

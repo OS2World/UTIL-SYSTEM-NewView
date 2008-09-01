@@ -1,11 +1,23 @@
 NewView release changes
 
-V2.20
-- big parts of the translation engine are refactored. The files are now sorted by label
-  if you export them.
-- More german translations added
-- There was a print message that was not 'translatable'; fixed
-- The File Open dialog had problems with archived directories; fixed (see bug #31)
+V2.19.4
+- Swedish translation added (Thanks to Bj”rn S”derstr”m)
+- Fix: NewView is now able to open really large help files (e.g. jdk14corba.inf with 11921536bytes).
+- Fix: In some situations the highlighting of the search results marks to many places in a topic.
+
+V2.19.3
+- Support for 'Internet-Application-Integration' added.
+  NewView is now able to start different applications for news, mail and ftp.
+- Fix: More link fixes.
+- Fix: Links in the about dialog are working as expected.
+- Fix: Searching all drives works again.
+
+V2.19.2
+- never released to the public
+
+V2.19.1
+- Fix: Broken link hanlding; NewView was unable to start a program or open the web browser.
+- Fix: Detection of links pointing to a url was not working.
 
 
 V2.19

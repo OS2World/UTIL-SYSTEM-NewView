@@ -40,7 +40,6 @@ CONST
        searchFlag : boolean;
        globalSearchFlag : boolean;
        language : string;
-       showIndexFlag : boolean;
        helpManagerFlag : boolean;
        helpManagerWindow : HWND;
        windowPositionFlag: boolean;
@@ -66,7 +65,6 @@ CONST
        PROPERTY getSearchFlag : boolean read searchFlag;
        PROPERTY getGlobalSearchFlag : boolean read globalSearchFlag;
        PROPERTY getLanguage : string read language;
-       PROPERTY getShowIndexFlag : boolean read showIndexFlag;
        PROPERTY getHelpManagerFlag : boolean read helpManagerFlag;
        FUNCTION setHelpManagerFlag(const aNewValue : boolean) : boolean;
        PROPERTY getHelpManagerWindow : HWND read helpManagerWindow;
@@ -119,7 +117,6 @@ uses
     aStrings.Add('  parsedSearchText: ' + getParsedSearchText);
     aStrings.Add('  globalSearchFlag: ' + boolToStr(getGlobalSearchFlag));
     aStrings.Add('  language: ' + getLanguage);
-    aStrings.Add('  showIndexFlag: ' + boolToStr(getShowIndexFlag));
     aStrings.Add('  helpManagerFlag: ' + boolToStr(getHelpManagerFlag));
     aStrings.Add('  helpManagerWindow: ' + LongWordToStr(getHelpManagerWindow));
     aStrings.Add('  windowPositionFlag: ' + boolToStr(getWindowPositionFlag));
@@ -164,7 +161,6 @@ uses
     LogEvent(LogStartup, '  parsedSearchText: ' + getParsedSearchText);
     LogEvent(LogStartup, '  globalSearchFlag: ' + boolToStr(getGlobalSearchFlag));
     LogEvent(LogStartup, '  language: ' + getLanguage);
-    LogEvent(LogStartup, '  showIndexFlag: ' + boolToStr(getShowIndexFlag));
     LogEvent(LogStartup, '  helpManagerFlag: ' + boolToStr(getHelpManagerFlag));
     LogEvent(LogStartup, '  helpManagerWindow: ' + LongWordToStr(getHelpManagerWindow));
     LogEvent(LogStartup, '  windowPositionFlag: ' + boolToStr(getWindowPositionFlag));
@@ -219,7 +215,6 @@ uses
     searchFlag := false;
     globalSearchFlag := false;
     language := '';
-    showIndexFlag := false;
     helpManagerFlag := false;
     helpManagerWindow := 0;
     windowPositionFlag := false;
@@ -610,11 +605,6 @@ uses
       's', 'S' :
         begin
           searchFlag := true;
-        end;
-
-      'i', 'I' :
-        begin
-          showIndexFlag := true;
         end;
 
       'g', 'G' :

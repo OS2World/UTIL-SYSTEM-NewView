@@ -18,7 +18,6 @@ uses
 
 const
   OWN_HELP_MARKER = '[NVHELP]';
-  HELP_FILE_DELIMITER = '+';
 
 
 function AccessSharedMemory: TSuballocatedSharedMemory;
@@ -61,7 +60,7 @@ begin
   LogEvent(LogStartup, 'Translating environment vars' );
   for i := 0 to Items.Count - 1 do
   begin
-    tmpItem := Items[i];
+    tmpItem := Items[ i ];
 
     tmpItem := StrTrimChars(tmpItem, [StrSingleQuote]); // remove single quotes
     tmpItem := StrTrimChars(tmpItem, [StrDoubleQuote]); // remove double quotes
@@ -72,12 +71,12 @@ begin
     begin
       // environment var exists - use it's value
       LogEvent(LogStartup, '    Environment var found; translated to: ' + tmpEnvironmentVarValue);
-      StrExtractStrings(ExpandedItems, tmpEnvironmentVarValue, [HELP_FILE_DELIMITER], #0);
+      StrExtractStrings(ExpandedItems, tmpEnvironmentVarValue, ['+'], #0);
     end
     else
     begin
       // not an environment var
-      ExpandedItems.Add(tmpItem);
+      ExpandedItems.Add( tmpItem );
     end;
   end;
 end;

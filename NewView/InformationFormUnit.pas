@@ -55,13 +55,13 @@ End;
 
 Procedure TInformationForm.InformationFormOnCreate (Sender: TObject);
 Begin
-  RegisterEventForLanguages( OnLanguageEvent );
+  RegisterForLanguages( OnLanguageEvent );
 End;
 
 Procedure TInformationForm.OnLanguageEvent( Language: TLanguageFile;
                                             const Apply: boolean );
 begin
-  // LogEvent(LogI18n, 'TInformationForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  LogEvent(LogI18n, 'TInformationForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 end;
 

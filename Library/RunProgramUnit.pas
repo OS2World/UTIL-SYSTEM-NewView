@@ -385,6 +385,8 @@ Begin
   // we don't care if it just started in the background!
   if rc = ERROR_SMG_START_IN_BACKGROUND then
     rc := 0;
+
+  result := rc;
 end;
 {$endif}
 

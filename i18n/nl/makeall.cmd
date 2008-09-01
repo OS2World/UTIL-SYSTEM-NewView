@@ -24,11 +24,12 @@ nv_rc = SysMkDir(nv_build_dir)
 /* copy Changes.txt nv_build_dir */
 
 /* copy the readme.txt file */
-/* TODO copy 'readme.txt' nv_build_dir */
+/* copy 'lisezmoi.txt' nv_build_dir */
 
 /* copy the lang file */
 copy 'newview_nl.lng' nv_build_dir
 
 /* compile the ipf file */
-ipfc NewView_nl.ipf nv_build_dir||'\NewView_nl.hlp -D:031 -C:850 -L:NLD'
+/* ipfc NewView_fr.ipf nv_build_dir||'\NewView_fr.hlp -s -x -D:033 -C:850 -L:FRA' */
+copy 'newview_nl.hlp' nv_build_dir
 
