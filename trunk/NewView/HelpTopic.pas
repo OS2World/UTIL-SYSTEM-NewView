@@ -257,7 +257,8 @@ uses
   ACLLanguageUnit,
   StringUtilsUnit,
   CharUtilsUnit,
-  SettingsUnit;
+  SettingsUnit,
+  DebugUnit;
 
 const
   IPFColors: array[ 0..15 ] of string =
@@ -437,6 +438,7 @@ end;
 
 destructor TTopic.Destroy;
 begin
+  LogEvent(LogObjConstDest, 'TTopic.Destroy');
   DestroyListAndObjects( Links );
   FreePString( _Title );
   DestroyListAndObjects( _Slots );
