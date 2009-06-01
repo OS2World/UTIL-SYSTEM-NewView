@@ -382,8 +382,7 @@ Type
 
     Procedure AddCurrentToMRUFiles;
 
-    Function LoadFiles( const FileNames: TStrings;
-                        HelpFiles: TList ): boolean;
+    Function LoadFiles(const aFileNames: TStrings; aHelpFiles: TList) : boolean;
     Procedure DisplayFiles( NewFiles: TList;
                             Var FirstContentsNode: TNode );
 
@@ -1611,7 +1610,7 @@ Begin
       exit;
     end;
   end;
- 
+
   CreateMRUMenuItems;
 End;
 
@@ -1671,10 +1670,10 @@ var
 begin
   tmpFileNames := TStringList.Create;
 
-  StrExtractStringsIgnoreEmpty(tmpFileNames, TextList, [HELP_FILE_DELIMITER], #0);
+  ParseAndExpandFileNames(TextList, tmpFileNames);
   if tmpFileNames.Count > 0 then
   begin
-    result := OpenFiles(tmpFileNames, '', DisplayFirstTopic );
+    result := OpenFiles(tmpFileNames, '', DisplayFirstTopic);
   end
   else
   begin
@@ -2282,6 +2281,7 @@ Begin
 
     CmdLineParameters.writeDetailsTo(Lines);
     writeSettingsDetailsTo(Lines);
+    writeDebugSetupDetailsTo(Lines);
   end;
 
   InformationForm.ShowModal;
@@ -4064,11 +4064,8 @@ Begin
 
   if CmdLineParameters.getOwnerWindow <> NULLHANDLE then
   begin
-    LogEvent(LogStartup, 'Setting owner: '
-                  + IntToStr( CmdLineParameters.getOwnerWindow));
-    WinSetOwner( Frame.Handle,
-                 CmdLineParameters.getOwnerWindow );
-
+    LogEvent(LogStartup, 'Setting owner: ' + IntToStr( CmdLineParameters.getOwnerWindow));
+    WinSetOwner( Frame.Handle, CmdLineParameters.getOwnerWindow );
   end;
 
   if CmdLineParameters.getHelpManagerFlag then
@@ -4084,8 +4081,6 @@ Begin
 
   CoolBar.SetMinConstButtonWidth;
 
-  LogEvent(LogStartup, 'Post WM_OPENED');
-
   ResetProgress;
 
   AddShortcut( kbF11, kbF11 ); // prev in contents
@@ -4094,6 +4089,7 @@ Begin
   AddShortcut( kbF8, kbF8 ); // forward
   AddShortcut( kbCtrlCLeft, kbCtrlCLeft ); // back
 
+  LogEvent(LogStartup, 'Post WM_OPENED');
   PostMsg( Handle, WM_OPENED, 0, 0 );
 End;
 
@@ -4195,6 +4191,8 @@ begin
 
   LogEvent(LogStartup, 'Finish paint');
   Update;
+  LogEvent(LogStartup, 'BringToFront');
+  MainForm.BringToFront;
 
   if not CmdLineParameters.getHelpManagerFlag then
   begin
@@ -4221,8 +4219,7 @@ begin
     // open specified files
     Filenames := TStringList.Create;
 
-    StrExtractStringsIgnoreEmpty(Filenames, tmpFileNames, [HELP_FILE_DELIMITER], #0);
-
+    ParseAndExpandFileNames(tmpFileNames, Filenames);
     LogEvent(LogStartup, 'Call OpenFiles');
 
     OpenFirstTopic := true;
@@ -5721,6 +5718,7 @@ begin
   MenuItem:= Sender as TMenuItem;
   Tag:= MenuItem.Tag;
   MRUItem := Settings.MRUList[ Tag ];
+// RBRi woher kommt die liste?
   if OpenFiles( MRUItem.FileNames, '', true ) then
   begin
     ClearHelpManager;
@@ -6227,29 +6225,27 @@ type
 
 procedure TMainForm.LoadIndex;
 var
-  HelpFile: THelpFile;
-  TextCompareResult: integer;
+  tmpHelpFile: THelpFile;
+  tmpTextCompareResult: integer;
 
   FileIndex: longint;
 
   Contents: TList;
   ContentsLists: TList; // of tlist
-  IndexLists: TList; // of tstringlist
+  tmpIndexLists: TList; // of tstringlist
   ContentsNextIndex: array[ 0..255 ] of longint;
   IndexNextIndex: array[ 0..255 ] of longint;
   Topic: TTopic;
-
-  ListIndex: longint;
 
   pListEntry: pstring;
   pLowestEntry: pstring;
   pLastEntry: pstring;
 
-  LowestEntryListIndex: longint;
-  LowestEntryListType: TListType;
-  LowestEntryTopic: TTopic;
+  tmpLowestEntryListIndex: longint;
+  tmpLowestEntryListType: TListType;
+  tmpLowestEntryTopic: TTopic;
 
-  Index: TStringList;
+  tmpIndex: TStringList;
 
   i : longint;
 begin
@@ -6263,23 +6259,23 @@ begin
   SetStatus( 'Building index... ' );
 
   ContentsLists := TList.Create;
-  IndexLists := TList.Create;
+  tmpIndexLists := TList.Create;
 
   // collect the contents and index lists from the files
   for FileIndex := 0 to CurrentOpenFiles.Count - 1 do
   begin
-    HelpFile := CurrentOpenFiles[ FileIndex ];
+    tmpHelpFile := CurrentOpenFiles[ FileIndex ];
     ProgressBar.Position := 70 + 10 * FileIndex div CurrentOpenFiles.Count;
 
     if Settings.IndexStyle in [ isAlphabetical, isFull ] then
     begin
       Contents := TList.Create;
-      Contents.Capacity := HelpFile.TopicCount;
+      Contents.Capacity := tmpHelpFile.TopicCount;
 
       // copy [contents] topic list
-      for i := 0 to HelpFile.TopicCount - 1 do
+      for i := 0 to tmpHelpFile.TopicCount - 1 do
       begin
-        Topic := HelpFile.Topics[ i ];
+        Topic := tmpHelpFile.Topics[ i ];
         if Topic.ShowInContents then
           Contents.Add( Topic );
       end;
@@ -6295,8 +6291,8 @@ begin
 
     if Settings.IndexStyle in [ isFileOnly, isFull ] then
     begin
-      IndexLists.Add( HelpFile.Index );
-      IndexNextIndex[ IndexLists.Count - 1 ] := 0;
+      tmpIndexLists.Add(tmpHelpFile.Index.GetLabels);
+      IndexNextIndex[ tmpIndexLists.Count - 1 ] := 0;
     end;
   end;
 
@@ -6312,85 +6308,89 @@ begin
   while true do
   begin
     pLowestEntry := NullStr;
-    LowestEntryListIndex := -1;
+    tmpLowestEntryListIndex := -1;
 
     // Find alphabetically lowest (remaining) topic
 
     // first, look in contents lists
-    for ListIndex := 0 to ContentsLists.Count - 1 do
+    LogEvent(LogDebug, '  Merge contents' );
+    for i := 0 to ContentsLists.Count - 1 do
     begin
-      Contents := ContentsLists[ ListIndex ];
-      if ContentsNextIndex[ ListIndex ] < Contents.Count then
+      Contents := ContentsLists[i];
+      if ContentsNextIndex[i] < Contents.Count then
       begin
         // list is not yet finished, get next entry
-        Topic := Contents[ ContentsNextIndex[ ListIndex ] ];
+        Topic := Contents[ ContentsNextIndex[i] ];
         pListEntry := Topic.TitlePtr;
 
         if pLowestEntry^ <> '' then
-          TextCompareResult := CompareText( pListEntry^, pLowestEntry^ )
+          tmpTextCompareResult := CompareText( pListEntry^, pLowestEntry^ )
         else
-          TextCompareResult := -1;
+          tmpTextCompareResult := -1;
 
-        if TextCompareResult < 0 then
+        if tmpTextCompareResult < 0 then
         begin
           // this index entry comes before the lowest one so far
           pLowestEntry := pListEntry;
-          LowestEntryListIndex := ListIndex;
-          LowestEntryListType := ltContents;
-          LowestEntryTopic := Topic;
+          tmpLowestEntryListIndex := i;
+          tmpLowestEntryListType := ltContents;
+          tmpLowestEntryTopic := Topic;
         end;
       end;
     end;
 
     // look in indices
-    for ListIndex := 0 to IndexLists.Count - 1 do
+    LogEvent(LogDebug, '  Merge indices' );
+    for i := 0 to tmpIndexLists.Count - 1 do
     begin
-      Index := IndexLists[ ListIndex ];
-      if IndexNextIndex[ ListIndex ] < Index.Count then
+      LogEvent(LogDebug, '  Merge indices ' + IntToStr(i) );
+      tmpIndex := tmpIndexLists[i];
+      if IndexNextIndex[i] < tmpIndex.Count then
       begin
         // list is not yet finished, get next entry
-        pListEntry := Index.ValuePtrs[ IndexNextIndex[ ListIndex ] ];
+        pListEntry := tmpIndex.ValuePtrs[ IndexNextIndex[i] ];
 
         if pLowestEntry^ <> '' then
-          TextCompareResult := CompareText( pListEntry^, pLowestEntry^ )
+          tmpTextCompareResult := CompareText( pListEntry^, pLowestEntry^ )
         else
-          TextCompareResult := -1;
+          tmpTextCompareResult := -1;
 
-        if TextCompareResult < 0 then
+        if tmpTextCompareResult < 0 then
         begin
           // this index entry comes before the lowest one so far
           pLowestEntry := pListEntry;
-          LowestEntryListIndex := ListIndex;
-          LowestEntryListType := ltIndex;
-          LowestEntryTopic := TTopic( Index.Objects[ IndexNextIndex[ ListIndex ] ] );
+          tmpLowestEntryListIndex := i;
+          tmpLowestEntryListType := ltIndex;
+
+          LogEvent(LogDebug, '  Merge indices ' + tmpIndex.Objects[ IndexNextIndex[i] ].ClassName);
+          tmpLowestEntryTopic := TIndexEntry( tmpIndex.Objects[ IndexNextIndex[i] ] ).getTopic;
         end;
       end;
     end;
 
-    if LowestEntryListIndex = -1 then
+    if tmpLowestEntryListIndex = -1 then
       // we're out
       break;
 
     if ( pLowestEntry^ ) <> ( pLastEntry^ ) then
       // add, if different from last
-      DisplayedIndex.AddObject( pLowestEntry^,
-                                LowestEntryTopic );
+      DisplayedIndex.AddObject( pLowestEntry^, tmpLowestEntryTopic );
     pLastEntry := pLowestEntry;
 
-    if LowestEntryListType = ltContents then
+    if tmpLowestEntryListType = ltContents then
     begin
-      inc( ContentsNextIndex[ LowestEntryListIndex ] );
+      inc( ContentsNextIndex[ tmpLowestEntryListIndex ] );
     end
     else
     begin
       // found in one of indices.
       // Check for subsequent indented strings
-      Index := IndexLists[ LowestEntryListIndex ];
+      tmpIndex := tmpIndexLists[ tmpLowestEntryListIndex ];
 
-      i := IndexNextIndex[ LowestEntryListIndex ] + 1;
-      while i < Index.Count do
+      i := IndexNextIndex[ tmpLowestEntryListIndex ] + 1;
+      while i < tmpIndex.Count do
       begin
-        pListEntry := Index.ValuePtrs[ i ];
+        pListEntry := tmpIndex.ValuePtrs[ i ];
         if pListEntry^ = '' then
           break;
 
@@ -6399,12 +6399,12 @@ begin
           break;
 
         // found one,
-        Topic := Index.Objects[ i ] as TTopic;
+        Topic := TIndexEntry(tmpIndex.Objects[ i ]).getTopic;
         DisplayedIndex.AddObject( pListEntry^,
                                   Topic );
         inc( i );
       end;
-      IndexNextIndex[ LowestEntryListIndex ] := i;
+      IndexNextIndex[ tmpLowestEntryListIndex ] := i;
     end;
   end;
 
@@ -6418,7 +6418,7 @@ begin
 
   LogEvent(LogStartup, '  Tidy up' );
 
-  IndexLists.Destroy;
+  tmpIndexLists.Destroy;
 
   DestroyListAndObjects( ContentsLists );
 
@@ -6464,26 +6464,25 @@ Function TMainForm.OpenFile( const FileName: string;
                              const WindowTitle: string;
                              const SelectFirstContentsNode: boolean ): boolean;
 var
-  FileNames: TStringList;
+  tmpFileNames: TStringList;
 begin
-  FileNames := TStringList.Create;
-  FileNames.Add( FileName );
-  Result := OpenFiles( FileNames,
+  tmpFileNames := TStringList.Create;
+  ParseAndExpandFileNames(FileName, tmpFileNames);
+  Result := OpenFiles( tmpFileNames,
                        WindowTitle,
                        DisplayFirstTopic );
-  FileNames.Destroy;
+  tmpFileNames.Destroy;
 end;
 
 Function TMainForm.OpenAdditionalFile( const FileName: string;
                                        const DisplayFirstTopic: boolean ): boolean;
 var
-  FileNames: TStringList;
+  tmpFileNames: TStringList;
 begin
-  FileNames := TStringList.Create;
-  FileNames.Add( FileName );
-  Result := OpenAdditionalFiles( FileNames,
-                                 DisplayFirstTopic );
-  FileNames.Destroy;
+  tmpFileNames := TStringList.Create;
+  ParseAndExpandFileNames(FileName, tmpFileNames);
+  Result := OpenAdditionalFiles(tmpFileNames, DisplayFirstTopic );
+  tmpFileNames.Destroy;
 end;
 
 Function TMainForm.OpenWindowsHelp( const Filename: string ): boolean;
@@ -6527,11 +6526,10 @@ begin
 end;
 
 // Load the specified set of help files
-Function TMainForm.LoadFiles( const FileNames: TStrings;
-                              HelpFiles: TList ): boolean;
+Function TMainForm.LoadFiles(const aFileNames: TStrings; aHelpFiles: TList) : boolean;
 var
   HelpFile: THelpFile;
-  FileIndex: longint;
+  FileIndex, i: longint;
   FileName: string;
   FullFilePath: string;
 
@@ -6543,7 +6541,11 @@ begin
 
   LoadingFilenameList := TStringList.Create;
 
-  TranslateIPFEnvironmentVars( FileNames, LoadingFilenameList );
+// RBRi  TranslateIPFEnvironmentVars( FileNames, LoadingFilenameList );
+  for i := 0 to aFileNames.Count - 1 do
+  begin
+    LoadingFilenameList.Add(aFileNames[i]);
+  end;
 
   LogEvent(LogStartup, 'Finding files' );
 
@@ -6608,7 +6610,7 @@ begin
       if Settings.FixedFontSubstitution then
          HelpFile.SetupFontSubstitutes( Settings.FixedFontSubstitutes );
 
-      HelpFiles.Add( HelpFile );
+      aHelpFiles.Add( HelpFile );
 
     except
       on E: Exception do
@@ -6630,7 +6632,7 @@ begin
         // back out of the load process
         Result := false;
 
-        DestroyListObjects( HelpFiles );
+        DestroyListObjects( aHelpFiles );
 
         LoadingFilenameList.Destroy;
         ResetProgress;
@@ -6649,27 +6651,29 @@ end;
 // a Most Recently Used entry
 Procedure TMainForm.AddCurrentToMRUFiles;
 var
-  Filenames: TStringList;
+  tmpFilenames: TStringList;
   i: longint;
-  HelpFile: THelpFile;
+  tmpHelpFile: THelpFile;
 begin
-  Filenames := TStringList.Create;
+  tmpFilenames := TStringList.Create;
 
-  for i := 0 to CurrentOpenFiles.Count - 1 do
+  if CurrentOpenFiles.Count > 0 then
   begin
-    HelpFile := CurrentOpenFiles[ i ];
-    Filenames.Add( HelpFile.Filename );
-  end;
+    for i := 0 to CurrentOpenFiles.Count - 1 do
+    begin
+      tmpHelpFile := CurrentOpenFiles[ i ];
+      tmpFilenames.Add(tmpHelpFile.Filename);
+    end;
 
-  // update most-recently-used file list
-  HelpFile := CurrentOpenFiles[ 0 ];
-  AddToMRUList( HelpFile.Title,
-                Filenames );
+    // update most-recently-used file list
+    tmpHelpFile := CurrentOpenFiles[ 0 ];
+    AddToMRUList(tmpHelpFile.Title, tmpFilenames);
+  end;
 
   // recreate menu
   CreateMRUMenuItems;
 
-  Filenames.Destroy;
+  tmpFilenames.Destroy;
 end;
 
 // Display the specified set of files
@@ -6721,7 +6725,7 @@ Function TMainForm.OpenFiles( const FileNames: TStrings;
                               const WindowTitle: string;
                               const DisplayFirstTopic: boolean ): boolean;
 var
-  HelpFiles: TList;
+  tmpHelpFiles: TList;
   FirstContentsNode: TNode;
 begin
   LogEvent(LogStartup, 'OpenFiles' );
@@ -6731,12 +6735,13 @@ begin
 
   SetWaitCursor;
 
-  HelpFiles := TList.Create;
+  tmpHelpFiles := TList.Create;
 
-  if not LoadFiles(FileNames, HelpFiles ) then
+// RBRi Translate
+  if not LoadFiles(FileNames, tmpHelpFiles) then
   begin
     ClearWaitCursor;
-    HelpFiles.Destroy;
+    tmpHelpFiles.Destroy;
     exit;
   end;
 
@@ -6750,7 +6755,7 @@ begin
   // close the existing one.
   CloseFile;
 
-  AssignList( HelpFiles, CurrentOpenFiles );
+  AssignList(tmpHelpFiles, CurrentOpenFiles );
 
   ProgressBar.Position := 50;
   SetStatus( LoadingStatusDisplaying );
@@ -6769,7 +6774,7 @@ begin
 
   ContentsOutline.Clear;
 
-  DisplayFiles( HelpFiles,
+  DisplayFiles( tmpHelpFiles,
                 FirstContentsNode );
 
   if CmdLineParameters.getHelpManagerFlag then
@@ -6890,6 +6895,9 @@ begin
                                   Filenames ) then
       exit;
 
+    // no ParseAndExpandFileNames call required here
+    // this is the result of a file dialog
+    // no environment vars here
     if KeepCurrentFiles then
       OpenedOK := OpenAdditionalFiles( FileNames, true )
     else

@@ -18,14 +18,12 @@ uses
 
 const
   OWN_HELP_MARKER = '[NVHELP]';
-  HELP_FILE_DELIMITER = '+';
 
 
 function AccessSharedMemory: TSuballocatedSharedMemory;
 
 // Look for any items that are actually specifiying environment
 // variables, and expand them to the contents of the variables
-Procedure TranslateIPFEnvironmentVars(const Items: TStrings; ExpandedItems: TStrings );
 
 // Given a filename, which may or may not contain a path or extension,
 // finds the actual file. This can involve searching
@@ -50,37 +48,6 @@ uses
   StringUtilsUnit,
   FileUtilsUnit;
 
-// Look for any items that are actually specifiying environment
-// variables, and expand them to the contents of the variables
-Procedure TranslateIPFEnvironmentVars(const Items: TStrings; ExpandedItems: TStrings );
-var
-  i : longint;
-  tmpItem: string;
-  tmpEnvironmentVarValue: string;
-begin
-  LogEvent(LogStartup, 'Translating environment vars' );
-  for i := 0 to Items.Count - 1 do
-  begin
-    tmpItem := Items[i];
-
-    tmpItem := StrTrimChars(tmpItem, [StrSingleQuote]); // remove single quotes
-    tmpItem := StrTrimChars(tmpItem, [StrDoubleQuote]); // remove double quotes
-
-    LogEvent(LogStartup, '  Checking for environment var: ' + tmpItem );
-    tmpEnvironmentVarValue := GetEnv( Uppercase( tmpItem ) );
-    if DosError = 0 then
-    begin
-      // environment var exists - use it's value
-      LogEvent(LogStartup, '    Environment var found; translated to: ' + tmpEnvironmentVarValue);
-      StrExtractStrings(ExpandedItems, tmpEnvironmentVarValue, [HELP_FILE_DELIMITER], #0);
-    end
-    else
-    begin
-      // not an environment var
-      ExpandedItems.Add(tmpItem);
-    end;
-  end;
-end;
 
 // Given a filename, which may or may not contain a path or extension,
 // finds the actual file. This can involve searching
