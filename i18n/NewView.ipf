@@ -103,7 +103,7 @@ contents:elink.&comma. use the :link reftype=hd refid='Index'.alphabetical
 index:elink.&comma. or :link reftype=hd refid='search'.search:elink.&per.
 :p.To simply read the help file like a paper book&comma. use the &odq.Previous&cdq.
 :artwork runin name='images\previous.bmp'.
- and &odq.Next&Cdq.
+ and &odq.Next&cdq.
 :artwork runin name='images\next.bmp'.
  buttons to work your way through all the topics&per.
 :p.You can also use the help file like web pages&comma. using &odq.Back&cdq.
@@ -621,7 +621,7 @@ from cmdref&per.inf&per. The indexes are combined alphabetically&per.
 .*
 :p.:hp2.view &odq.c&colon.&bsl.os2 book&bsl.os2ug&per.inf&cdq.:ehp2.
 :lm margin=4.
-:p.Surround path&sl.file with double quotes if they contain special characters (like blank)&per.
+:p.Surround path&bsl.file with double quotes if they contain special characters (like blank)&per.
 :lm margin=1.
 .*
 :p.:hp2.view cmdref dir:ehp2.
