@@ -317,6 +317,22 @@ Start explore with url.
 :elink.
 :eol.
 .*
+:p.Different URL types.
+:ol.
+:li.http&colon.&slash.&slash.www&per.rbri&per.org; https&colon.&slash.&slash.www&per.rbri&per.org
+.br
+Start firefox with url.
+:li.mailto&colon.rbri&atsign.rbri&per.de
+.br
+Start mail programm.
+:li.news&colon.news.ecomstation.com
+.br
+Start mail programm.
+:li.ftp&colon.&slash.&slash.ftp.netlabs.org/pub/
+.br
+Start ftp programm.
+:eol.
+.*
 .*
 .**********************************************************
 :h2.Link type 'inform'
