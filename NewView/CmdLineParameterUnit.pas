@@ -85,6 +85,14 @@ CONST
        PROCEDURE addNhmDebugMessage(const aString : String);
   end;
 
+
+  // add all file name parts of aFileNameString to the result
+  // check for containing environment vars
+  // and include all help files if the environment var points
+  // to a directory
+  PROCEDURE ParseAndExpandFileNames(const aFileNameString: String; aResult: TStrings );
+
+
   // returns a string containing the whole
   // command line parametes
   FUNCTION nativeOS2GetCmdLineParameter : AnsiString;
@@ -676,6 +684,44 @@ uses
     end;
 
     nhmDebugMessages.add(aString);
+  end;
+
+
+  PROCEDURE ParseAndExpandFileNames(const aFileNameString : String; aResult: TStrings);
+  var
+    i : longint;
+    tmpFileNamesList: TStringList;
+    tmpItem: String;
+    tmpEnvironmentVarValue: string;
+  begin
+    LogEvent(LogDebug, 'ParseAndExpandFileNames "' + aFileNameString + '"');
+
+    tmpFileNamesList := TStringList.Create;
+
+    StrExtractStrings(tmpFileNamesList, aFileNameString, [HELP_FILE_DELIMITER, PATH_SEPARATOR], #0);
+    for i := 0 to tmpFileNamesList.Count - 1 do
+    begin
+      tmpItem := tmpFileNamesList[i];
+
+      // is this a environment var
+      tmpEnvironmentVarValue := GetEnv(tmpItem);
+      if DosError = 0 then
+      begin
+        // environment var exists
+        LogEvent(LogStartup, '    Environment var found; translated to: "' + tmpEnvironmentVarValue + '"');
+        ParseAndExpandFileNames(tmpEnvironmentVarValue, aResult);
+      end
+      else if DirectoryExists(tmpItem) then
+      begin
+        ListFilesInDirectory(tmpItem, '*' + HELP_FILE_EXTENSION, true, aResult);
+      end
+      else
+      begin
+        aResult.Add(tmpItem);
+      end;
+    end;
+
+    tmpFileNamesList.Destroy;
   end;
 
 

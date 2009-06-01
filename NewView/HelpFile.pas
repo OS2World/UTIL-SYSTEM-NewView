@@ -21,6 +21,38 @@ uses
   SearchTable;
 
 type
+
+  TIndexEntry = class
+  private
+    name: String;
+    topic: TTopic;
+    flags: uint8;
+  public
+    CONSTRUCTOR Create(aName: String; aTopic: TTopic; aFlags: uint8);
+    DESTRUCTOR Destroy; override;
+
+    PROPERTY getTopic: TTopic read topic;
+    FUNCTION getLabel: String;
+    FUNCTION isGlobal: boolean;
+    FUNCTION getLevel: integer;
+  end;
+
+
+  TIndex = class
+  private
+    entries: TStringList;
+    // labels: TStringList;
+  public
+    CONSTRUCTOR Create;
+    DESTRUCTOR Destroy; override;
+
+    FUNCTION Count: longint;
+    FUNCTION GetLabels: TStringList;
+    FUNCTION GetTopic(aPos: longint): TTopic;
+    PROCEDURE Add(anIndexEntry: TIndexEntry);
+  end;
+
+
   THelpFile = class
   protected
     _Filename : string;
@@ -36,7 +68,7 @@ type
 
     _Dictionary: TList; // pointers to strings.
 
-    _Index: TStringList;
+    _Index: TIndex;
 
     _SearchTable: TSearchTable;
 
@@ -81,7 +113,6 @@ type
     function GetDictionaryWord( Index: longint ): string;
     function GetDictionaryWordPtr( Index: longint ): pstring;
 
-    function GetIndexEntryPtr( Index: longint ): pstring;
     function GetHighlightWords: UInt32ArrayPointer;
 
     function GetSearchTable: TSearchTable;
@@ -93,18 +124,17 @@ type
                               Offset: longint ): TTopic;
 
   public
-    constructor Create( const FileName: string );
+    constructor Create( const aFileName: string );
 
     destructor Destroy; override;
 
-    function GetIndex: TStringList;
+    function GetIndex: TIndex;
 
     property Title: string read _Title;
     property Topics[ Index: longint ]: TTopic read GetTopic;
     property TopicList: TList read _Topics;
     property TopicCount: longint read GetTopicCount;
-    property Index: TStringList read GetIndex;
-    property IndexEntryPtr[ index: longint ]: pstring read GetIndexEntryPtr;
+    property Index: TIndex read GetIndex;
     property Filename: string read _FileName;
 
     property ReferencedFiles: TStringList read _ReferencedFiles;
@@ -170,6 +200,126 @@ var
   FileErrorInUse: string;
   FileErrorInvalidHeader: string;
 
+
+  // -----------
+  // TIndexEntry
+  // -----------
+
+  CONSTRUCTOR TIndexEntry.Create(aName: String; aTopic: TTopic; aFlags: uint8);
+  begin
+    LogEvent(LogObjConstDest, 'TIndexEntry.Create');
+    name := aName;
+    topic := aTopic;
+    flags := aFlags;
+  end;
+
+
+  DESTRUCTOR TIndexEntry.Destroy;
+  begin
+    LogEvent(LogObjConstDest, 'TIndexEntry.Destroy');
+    topic := nil;
+    // inherited Destroy;
+  end;
+
+
+  FUNCTION TIndexEntry.getLabel: String;
+  begin
+    result := name;
+
+    // index level check (level 1 or 2)
+    if (getLevel) > 1 then
+    begin
+      result := '- ' + result;
+    end;
+
+    if isGlobal then
+    begin
+      result := result + ' (g)';
+    end;
+  end;
+
+
+  FUNCTION TIndexEntry.isGlobal: boolean;
+  begin
+    result := (flags and 64) > 0
+  end;
+
+
+  FUNCTION TIndexEntry.getLevel: integer;
+  begin
+    result := 1;
+
+    // index level check (level 1 or 2)
+    if (flags and 2 ) > 0 then
+    begin
+      result := 2;
+    end;
+  end;
+
+
+
+
+  // -----------
+  // TIndex
+  // -----------
+  CONSTRUCTOR TIndex.Create;
+  begin
+    inherited Create;
+
+    entries := TStringList.Create;
+    // labels := nil; // lazy
+  end;
+
+
+  DESTRUCTOR TIndex.Destroy;
+  var
+    i : longint;
+    tmpEntry : TIndexEntry;
+  begin
+    LogEvent(LogObjConstDest, 'TIndex.Destroy (size:' + IntToStr(entries.Count) + ')');
+
+    for i := 0 to entries.Count - 1 do
+    begin
+      tmpEntry := TIndexEntry(entries.Objects[i]);
+      if tmpEntry <> nil then
+      begin
+        tmpEntry.Destroy;
+        entries.Objects[i] := nil;
+      end;
+    end;
+    entries.Destroy;
+
+    inherited Destroy;
+  end;
+
+
+  FUNCTION TIndex.Count: longint;
+  begin
+    result := entries.Count;
+  end;
+
+
+  FUNCTION TIndex.GetLabels: TStringList;
+  begin
+    result := entries;
+  end;
+
+
+  FUNCTION TIndex.GetTopic(aPos: longint): TTopic;
+  begin
+    result := TTopic(entries.Objects[aPos]);
+  end;
+
+
+  PROCEDURE TIndex.add(anIndexEntry: TIndexEntry);
+  begin
+    // LogEvent(LogDebug, 'TIndex.add(' + aName + ', ' + anIndexEntry.ClassName);
+    entries.AddObject(anIndexEntry.getLabel, anIndexEntry);
+  end;
+
+
+
+
 Procedure OnLanguageEvent( Language: TLanguageFile;
                            const Apply: boolean );
 var
@@ -220,11 +370,13 @@ begin
   NotesLoaded := false;
 end;
 
-constructor THelpFile.Create( const FileName: string );
-begin
-  LogEvent(LogParse, 'Helpfile Load: ' + FileName);
 
-  _FileName := FileName;
+constructor THelpFile.Create(const aFileName: string);
+begin
+  LogEvent(LogObjConstDest, 'THelpFile.Create (file:' + aFileName + ')');
+  LogEvent(LogParse, 'Helpfile Load: ' + aFileName);
+
+  _FileName := aFileName;
 
   InitMembers;
 
@@ -247,8 +399,10 @@ begin
   // the rest is loaded on demand
 end;
 
+
 destructor THelpFile.Destroy;
 begin
+  LogEvent(LogObjConstDest, 'THelpFile.Destroy');
   DeallocateMemory( _pHeader );
   DeallocateMemory( _pExtendedHeader );
   DeallocateMemory( _pContentsData );
@@ -261,11 +415,17 @@ begin
 
   DeallocateMemory( _pHighlightWords );
 
-  if Assigned( _Topics ) then
-    DestroyListAndObjects( _Topics );
-
+  // index entries are pointing to topics
+  // so let us clean them first
   if Assigned( _Index ) then
+  begin
     _Index.Destroy;
+  end;
+
+  if Assigned( _Topics ) then
+  begin
+    DestroyListAndObjects( _Topics );
+  end;
 
   _Dictionary.Free;
   _SearchTable.Free;
@@ -452,7 +612,8 @@ begin
   end;
 end;
 
-function THelpFile.GetIndex: TStringList;
+
+function THelpFile.GetIndex: TIndex;
 begin
   if _Index = nil then
     ReadIndex;
@@ -476,10 +637,12 @@ var
   p: pointer;
   pEnd: pointer;
   pIndexData: pointer;
+
+  tmpIndexEntry: TIndexEntry;
 begin
   LogEvent(LogParse, 'Read index');
 
-  _Index := TStringList.Create;
+  _Index := TIndex.Create;
 
   if _pHeader^.nindex = 0 then
     exit; // explicit check required since ndict is unsigned
@@ -503,10 +666,12 @@ begin
     inc( p, sizeof( TIndexEntryHeader ) );
 
     GetMemString( p, EntryText, IndexTitleLen );
-    if ( pEntryHeader^.flags and 2 ) > 0 then
-      EntryText := '- ' + EntryText;
+
     if pEntryHeader^.TOCIndex < _Topics.Count then
-      _Index.AddObject( EntryText, _Topics[ pEntryHeader^.TOCIndex ] )
+    begin
+      tmpIndexEntry := TIndexEntry.Create(EntryText, _Topics[pEntryHeader^.TOCIndex], pEntryHeader^.flags);
+      _Index.Add(tmpIndexEntry);
+    end
     else
 //      raise EHelpFileException.Create( 'Error reading help file index - out of range topic reference' );
       ; // pass! something special
@@ -665,41 +830,49 @@ begin
   end;
 end;
 
+
+// TODO move to index class
 function THelpFile.FindTopicByIndexStartsWith( const SearchText: string ): TTopic;
 var
   i: longint;
-  tmpIndex: String;
+  tmpLabel: String;
 begin
   result := nil;
   GetIndex; // make sure it's read
+
   for i := 0 to _Index.Count - 1 do
   begin
-    tmpIndex := _Index.ValuePtrs[i]^;
-    if StrStartsWithIgnoringCase(tmpIndex, SearchText) then
+    tmpLabel := _Index.GetLabels.ValuePtrs[i]^;
+    if StrStartsWithIgnoringCase(tmpLabel, SearchText) then
     begin
       // found
-      result := TTopic( Index.Objects[ i ] );
+      result := Index.getTopic(i);
       exit;
     end;
   end;
 end;
 
-function THelpFile.FindTopicByIndexContains( const SearchText: string ): TTopic;
+
+function THelpFile.FindTopicByIndexContains(const SearchText: string): TTopic;
 var
   i: longint;
+  tmpLabel: String;
 begin
   result := nil;
   GetIndex; // make sure it's read
+
   for i := 0 to _Index.Count - 1 do
   begin
-    if CaseInsensitivePos( SearchText, _Index.ValuePtrs[ i ] ^ ) > 0 then
+    tmpLabel := _Index.GetLabels.ValuePtrs[i]^;
+    if CaseInsensitivePos(SearchText, tmpLabel) > 0 then
     begin
       // found
-      result := TTopic( Index.Objects[ i ] );
+      result := Index.getTopic(i);
       exit;
     end;
   end;
 end;
+
 
 function THelpFile.FindTopicByTitleStartsWith( const SearchText: string ): TTopic;
 var
@@ -945,13 +1118,6 @@ end;
 function THelpFile.GetDictionaryWordPtr( Index: longint ): pstring;
 begin
   Result := pstring( _Dictionary[ Index ] );
-end;
-
-function THelpFile.GetIndexEntryPtr( Index: longint ): pstring;
-begin
-  if _Index = nil then
-    ReadIndex;
-  Result := _Index.ValuePtrs[ Index ];
 end;
 
 

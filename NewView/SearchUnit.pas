@@ -272,8 +272,8 @@ begin
 
   for IndexIndex := 0 to HelpFile.Index.Count - 1 do
   begin
-    Topic := HelpFile.Index.Objects[ IndexIndex ] as TTopic;
-    pIndexEntry := HelpFile.IndexEntryPtr[ IndexIndex ];
+    Topic := HelpFile.Index.getTopic(IndexIndex);
+    pIndexEntry := HelpFile.Index.GetLabels.ValuePtrs[IndexIndex];
     IndexEntryWordIndex := 0;
 
     tmpIndexWords.Clear;
