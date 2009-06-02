@@ -3019,8 +3019,7 @@ begin
               nil,
               nil,
               true );
-  SetStatus( OpenedTopicMsg
-             + IntToStr( Topic.Index ) );
+  SetStatus( OpenedTopicMsg + IntToStr( Topic.Index ) );
 
   Navigating:= true;
 
@@ -3727,8 +3726,7 @@ begin
   end;
   try
     if CurrentTopic <> nil then
-      WriteLn( F, 'Last major topic index: '
-                  + IntToStr( CurrentTopic.Index ) );
+      WriteLn( F, 'Last major topic index: ' + IntToStr( CurrentTopic.Index ) );
   except
     // ignore exceptions if there isn't a valid current topic
   end;
