@@ -209,10 +209,10 @@ begin
   tmpTitleWords := TStringList.Create;
 
   // Search topic titles
-  for TopicIndex:= 0 to HelpFile.TopicCount - 1 do
+  for TopicIndex := 0 to HelpFile.TopicCount - 1 do
   begin
-    Topic:= HelpFile.Topics[ TopicIndex ];
-    pTitle:= Topic.TitlePtr;
+    Topic := HelpFile.Topics[ TopicIndex ];
+    pTitle := Topic.TitlePtr;
     TitleWordIndex := 0;
 
     tmpTitleWords.Clear;
@@ -232,20 +232,16 @@ begin
           if i = tmpTitleWords.count-1 then
           begin
             // in fact it's the only word
-            TitleWordRelevance := mwOnlyTitleWord
-                                  * WordRelevance
+            TitleWordRelevance := mwOnlyTitleWord * WordRelevance
           end
           else
-            TitleWordRelevance := mwFirstTitleWord
-                                  * WordRelevance
+            TitleWordRelevance := mwFirstTitleWord * WordRelevance
         end
         else
         begin
-          TitleWordRelevance := mwTitleWord
-                                * WordRelevance;
+          TitleWordRelevance := mwTitleWord * WordRelevance;
         end;
-        inc( Results[ TopicIndex ],
-             TitleWordRelevance );
+        inc( Results[ Topic.Index ], TitleWordRelevance );
       end;
       inc( TitleWordIndex );
     end;
@@ -261,7 +257,7 @@ var
   IndexIndex: longint;
   pIndexEntry: pstring;
   IndexEntryWord: string;
-  Topic: TTopic;
+  tmpTopic: TTopic;
   IndexEntryWordIndex: longint;
   WordRelevance: longint;
   IndexEntryWordRelevance: longint;
@@ -272,7 +268,6 @@ begin
 
   for IndexIndex := 0 to HelpFile.Index.Count - 1 do
   begin
-    Topic := HelpFile.Index.getTopic(IndexIndex);
     pIndexEntry := HelpFile.Index.GetLabels.ValuePtrs[IndexIndex];
     IndexEntryWordIndex := 0;
 
@@ -283,8 +278,7 @@ begin
     begin
       IndexEntryWord := tmpIndexWords[i];
 
-      WordRelevance := CompareWord( SearchWord,
-                                    IndexEntryWord );
+      WordRelevance := CompareWord( SearchWord, IndexEntryWord );
       if WordRelevance > 0 then
       begin
         if IndexEntryWordIndex = 0 then
@@ -293,20 +287,17 @@ begin
           if i = tmpIndexWords.count-1 then
           begin
             // in fact it's the only word
-            IndexEntryWordRelevance := mwOnlyIndexWord
-                                       * WordRelevance
+            IndexEntryWordRelevance := mwOnlyIndexWord * WordRelevance
           end
           else
-            IndexEntryWordRelevance := mwFirstIndexWord
-                                    * WordRelevance
+            IndexEntryWordRelevance := mwFirstIndexWord * WordRelevance
         end
         else
         begin
-          IndexEntryWordRelevance := mwIndexWord
-                                  * WordRelevance;
+          IndexEntryWordRelevance := mwIndexWord * WordRelevance;
         end;
-        inc( Results[ Topic.Index ],
-             IndexEntryWordRelevance );
+        tmpTopic := HelpFile.Index.getTopic(IndexIndex);
+        inc( Results[ tmpTopic.Index ], IndexEntryWordRelevance );
       end;
       inc( IndexEntryWordIndex );
     end;
