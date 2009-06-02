@@ -307,7 +307,7 @@ var
 
   FUNCTION TIndex.GetTopic(aPos: longint): TTopic;
   begin
-    result := TTopic(entries.Objects[aPos]);
+    result := TIndexEntry(entries.Objects[aPos]).getTopic;
   end;
 
 
@@ -386,7 +386,6 @@ begin
   try
     ReadHeader;
     ReadContents;
-    // ReadIndex;
     ReadDictionary;
     ReadFontTableData;
     ParseFontTable;
@@ -616,7 +615,9 @@ end;
 function THelpFile.GetIndex: TIndex;
 begin
   if _Index = nil then
+  begin
     ReadIndex;
+  end;
   Result := _Index;
 end;
 
