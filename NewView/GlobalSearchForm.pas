@@ -698,8 +698,7 @@ begin
   for TopicIndex := 0 to SearchResult.MatchingTopics.Count - 1 do
   begin
     Topic := SearchResult.MatchingTopics[ TopicIndex ];
-    FileNode.AddChild( Topic.Title,
-                       TObject( Topic.Index ) );
+    FileNode.AddChild( Topic.Title, TObject(Topic.Index) );
   end;
 end;
 
