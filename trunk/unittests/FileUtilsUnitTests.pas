@@ -536,9 +536,9 @@ Implementation
 
     GetDirsInPath('HELP', tmpResult);
 
-    assertEqualsInt('testGetDirsInPath_Help', 9, tmpResult.count);
-    assertEqualsString('testGetDirsInPath_Help', 'D:\progs\watcom\BINP\HELP', tmpResult[0]);
-    assertEqualsString('testGetDirsInPath_Help', 'C:\MMOS2\HELP', tmpResult[8]);
+    assertEqualsInt('testGetDirsInPath_Help', 8, tmpResult.count);
+    assertEqualsString('testGetDirsInPath_Help', 'D:\progs\develop\watcom_18\BINP\HELP', tmpResult[0]);
+    assertEqualsString('testGetDirsInPath_Help', 'C:\MMOS2\HELP', tmpResult[7]);
 
     tmpResult.Destroy;
   end;

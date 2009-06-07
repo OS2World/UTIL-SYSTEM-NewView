@@ -1948,16 +1948,20 @@ Implementation
     tmpFileNamesList := TStringList.Create;
     ParseAndExpandFileNames(tmpFileNamesString, tmpFileNamesList);
 
-    assertEqualsInt('testParseAndExpandFileNames_HELP', 118, tmpFileNamesList.Count);
+    assertEqualsInt('testParseAndExpandFileNames_HELP', 116, tmpFileNamesList.Count);
     assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\ide.hlp', tmpFileNamesList[0]);
     assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wbrw.hlp', tmpFileNamesList[1]);
     assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wccerrs.hlp', tmpFileNamesList[2]);
     assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wd.hlp', tmpFileNamesList[3]);
     assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wpperrs.hlp', tmpFileNamesList[4]);
     assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wprof.hlp', tmpFileNamesList[5]);
-    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\ide.hlp', tmpFileNamesList[6]);
-    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\ide.hlp', tmpFileNamesList[7]);
-    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\ide.hlp', tmpFileNamesList[8]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'C:\MPTN\ddccmst.hlp', tmpFileNamesList[6]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'C:\MPTN\dhcamst.hlp', tmpFileNamesList[7]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'C:\MPTN\dhcmmst.hlp', tmpFileNamesList[8]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'C:\MPTN\dipamst.hlp', tmpFileNamesList[9]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'C:\ecs\help\ae.hlp', tmpFileNamesList[10]);
+
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'C:\MMOS2\HELP\wepmplus.hlp', tmpFileNamesList[115]);
 
     tmpFileNamesList.Destroy;
   END;
