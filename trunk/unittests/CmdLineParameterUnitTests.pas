@@ -1,7 +1,7 @@
 Unit CmdLineParameterUnitTests;
 
 // NewView - a new OS/2 Help Viewer
-// Copyright 2006-2007 Ronald Brill (rbri at rbri dot de)
+// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
 // This software is released under the GNU Public License - see readme.txt
 
 // UnitTests for CmdLineParameterUnit
@@ -1496,9 +1496,9 @@ Implementation
 
     assertTrue('testParseCmdLine_WindowPosPercentage', tmpCmdLineParameters.getWindowPositionFlag);
     tmpWindowPosition := tmpCmdLineParameters.getWindowPosition;
-    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 1600, tmpWindowPosition.left);
+    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 1920, tmpWindowPosition.left);
     assertEqualsInt('testParseCmdLine_WindowPosPercentage', 1200, tmpWindowPosition.bottom);
-    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 800, tmpWindowPosition.width);
+    assertEqualsInt('testParseCmdLine_WindowPosPercentage', 960, tmpWindowPosition.width);
     assertEqualsInt('testParseCmdLine_WindowPosPercentage', 600, tmpWindowPosition.height);
   END;
 
@@ -1832,6 +1832,136 @@ Implementation
   END;
 
 
+  // ----------------------------------------------------------
+
+
+  PROCEDURE testParseAndExpandFileNames_EmptyString;
+  VAR
+    tmpFileNamesString : String;
+    tmpFileNamesList: TStringList;
+  BEGIN
+    tmpFileNamesString := '';
+
+    tmpFileNamesList := TStringList.Create;
+    ParseAndExpandFileNames(tmpFileNamesString, tmpFileNamesList);
+
+    assertEqualsInt('testParseAndExpandFileNames_EmptyString', 0, tmpFileNamesList.Count);
+
+    tmpFileNamesList.Destroy;
+  END;
+
+
+  PROCEDURE testParseAndExpandFileNames_OneFile;
+  VAR
+    tmpFileNamesString : String;
+    tmpFileNamesList: TStringList;
+  BEGIN
+    tmpFileNamesString := 'cmdref';
+
+    tmpFileNamesList := TStringList.Create;
+    ParseAndExpandFileNames(tmpFileNamesString, tmpFileNamesList);
+
+    assertEqualsInt('testParseAndExpandFileNames_OneFile', 1, tmpFileNamesList.Count);
+    assertEqualsString('testParseAndExpandFileNames_OneFile', 'cmdref', tmpFileNamesList[0]);
+
+    tmpFileNamesList.Destroy;
+  END;
+
+
+  PROCEDURE testParseAndExpandFileNames_TwoFiles;
+  VAR
+    tmpFileNamesString : String;
+    tmpFileNamesList: TStringList;
+  BEGIN
+    tmpFileNamesString := 'cmdref+second';
+
+    tmpFileNamesList := TStringList.Create;
+    ParseAndExpandFileNames(tmpFileNamesString, tmpFileNamesList);
+
+    assertEqualsInt('testParseAndExpandFileNames_TwoFiles', 2, tmpFileNamesList.Count);
+    assertEqualsString('testParseAndExpandFileNames_TwoFiles', 'cmdref', tmpFileNamesList[0]);
+    assertEqualsString('testParseAndExpandFileNames_TwoFiles', 'second', tmpFileNamesList[1]);
+
+    tmpFileNamesList.Destroy;
+  END;
+
+
+  PROCEDURE testParseAndExpandFileNames_PlusAtEnd;
+  VAR
+    tmpFileNamesString : String;
+    tmpFileNamesList: TStringList;
+  BEGIN
+    tmpFileNamesString := 'cmdref+second+';
+
+    tmpFileNamesList := TStringList.Create;
+    ParseAndExpandFileNames(tmpFileNamesString, tmpFileNamesList);
+
+    assertEqualsInt('testParseAndExpandFileNames_PlusAtEnd', 2, tmpFileNamesList.Count);
+    assertEqualsString('testParseAndExpandFileNames_PlusAtEnd', 'cmdref', tmpFileNamesList[0]);
+    assertEqualsString('testParseAndExpandFileNames_PlusAtEnd', 'second', tmpFileNamesList[1]);
+
+    tmpFileNamesList.Destroy;
+  END;
+
+
+  PROCEDURE testParseAndExpandFileNames_GLOSSARY;
+  VAR
+    tmpFileNamesString : String;
+    tmpFileNamesList: TStringList;
+  BEGIN
+    tmpFileNamesString := 'GLOSSARY';
+
+    tmpFileNamesList := TStringList.Create;
+    ParseAndExpandFileNames(tmpFileNamesString, tmpFileNamesList);
+
+    assertEqualsInt('testParseAndExpandFileNames_GLOSSARY', 1, tmpFileNamesList.Count);
+    assertEqualsString('testParseAndExpandFileNames_GLOSSARY', 'C:\OS2\HELP\GLOSS\WPGLOSS.HLP', tmpFileNamesList[0]);
+
+    tmpFileNamesList.Destroy;
+  END;
+
+
+  PROCEDURE testParseAndExpandFileNames_GlossaryMixedCase;
+  VAR
+    tmpFileNamesString : String;
+    tmpFileNamesList: TStringList;
+  BEGIN
+    tmpFileNamesString := 'Glossary';
+
+    tmpFileNamesList := TStringList.Create;
+    ParseAndExpandFileNames(tmpFileNamesString, tmpFileNamesList);
+
+    assertEqualsInt('testParseAndExpandFileNames_GlossaryMixedCase', 1, tmpFileNamesList.Count);
+    assertEqualsString('testParseAndExpandFileNames_GlossaryMixedCase', 'Glossary', tmpFileNamesList[0]);
+
+    tmpFileNamesList.Destroy;
+  END;
+
+
+  PROCEDURE testParseAndExpandFileNames_HELP;
+  VAR
+    tmpFileNamesString : String;
+    tmpFileNamesList: TStringList;
+  BEGIN
+    tmpFileNamesString := 'HELP';
+
+    tmpFileNamesList := TStringList.Create;
+    ParseAndExpandFileNames(tmpFileNamesString, tmpFileNamesList);
+
+    assertEqualsInt('testParseAndExpandFileNames_HELP', 118, tmpFileNamesList.Count);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\ide.hlp', tmpFileNamesList[0]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wbrw.hlp', tmpFileNamesList[1]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wccerrs.hlp', tmpFileNamesList[2]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wd.hlp', tmpFileNamesList[3]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wpperrs.hlp', tmpFileNamesList[4]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\wprof.hlp', tmpFileNamesList[5]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\ide.hlp', tmpFileNamesList[6]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\ide.hlp', tmpFileNamesList[7]);
+    assertEqualsString('testParseAndExpandFileNames_HELP', 'D:\progs\develop\watcom_18\BINP\HELP\ide.hlp', tmpFileNamesList[8]);
+
+    tmpFileNamesList.Destroy;
+  END;
+
 
   // ----------------------------------------------------------
 
@@ -1930,6 +2060,14 @@ Implementation
     result.add(@testParseCmdLine_SwitchAndFileAndTextQuoted);
 
     result.add(@testParseCmdLine_ReallyLong);
+
+    result.add(@testParseAndExpandFileNames_EmptyString);
+    result.add(@testParseAndExpandFileNames_OneFile);
+    result.add(@testParseAndExpandFileNames_TwoFiles);
+    result.add(@testParseAndExpandFileNames_PlusAtEnd);
+    result.add(@testParseAndExpandFileNames_GLOSSARY);
+    result.add(@testParseAndExpandFileNames_GlossaryMixedCase);
+    result.add(@testParseAndExpandFileNames_HELP);
 
   END;
 
