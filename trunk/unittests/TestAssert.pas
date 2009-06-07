@@ -1,10 +1,10 @@
 Unit TestAssert;
 
 // NewView - a new OS/2 Help Viewer
-// Copyright 2006-2007 Ronald Brill (rbri at rbri dot de)
+// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
 // This software is released under the GNU Public License - see readme.txt
 
-// Assert implementation for UnitTests 
+// Assert implementation for UnitTests
 
 Interface
 

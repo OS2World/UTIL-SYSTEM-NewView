@@ -1,7 +1,7 @@
 Unit FileUtilsUnitTests;
 
 // NewView - a new OS/2 Help Viewer
-// Copyright 2006-2007 Ronald Brill (rbri at rbri dot de)
+// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
 // This software is released under the GNU Public License - see readme.txt
 
 // UnitTests for FileUtilsUnit
@@ -536,9 +536,9 @@ Implementation
 
     GetDirsInPath('HELP', tmpResult);
 
-    assertEqualsInt('testGetDirsInPath_Help', 15, tmpResult.count);
+    assertEqualsInt('testGetDirsInPath_Help', 9, tmpResult.count);
     assertEqualsString('testGetDirsInPath_Help', 'D:\progs\watcom\BINP\HELP', tmpResult[0]);
-    assertEqualsString('testGetDirsInPath_Help', 'd:\progs\SIBYL\BIN', tmpResult[14]);
+    assertEqualsString('testGetDirsInPath_Help', 'C:\MMOS2\HELP', tmpResult[8]);
 
     tmpResult.Destroy;
   end;
