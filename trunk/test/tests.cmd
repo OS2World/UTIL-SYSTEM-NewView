@@ -74,7 +74,6 @@ say "* Expected                                                              *"
 say "* NewView start and shows the 'Command Reference' help                  *"
 say "* - left navigation is shown                                            *"
 say "* - no hits visible and the right part is empty                         *"
-say "* - 'COPY' is selected and visible at the right                         *"
 say "* - all contents are collapsed                                          *"
 say "*************************************************************************"
 "start ..\build\newview\newview /s cmdref"
@@ -139,6 +138,36 @@ say "* - left navigation is NOT shown                                        *"
 say "* - The 'Search all fieles' dialog is opend and searches for copy       *"
 say "*************************************************************************"
 "start ..\build\newview\newview /g copy"
+pull
+
+
+say "*************************************************************************"
+say "* newview -i                                                            *"
+say "*                                                                       *"
+say "* Expected                                                              *"
+say "* NewView start and shows the 'Command Reference' help.                 *"
+say "* - left navigation is shown                                            *"
+say "* - index tab is selected                                               *"
+say "* - all contents are collapsed                                          *"
+say "* - noting is selected                                                  *"
+say "* - 'Introduction' is visible at the right                              *"
+say "*************************************************************************"
+"start ..\build\newview\newview -i cmdref"
+pull
+
+
+say "*************************************************************************"
+say "* newview -i GLOSSARY                                                   *"
+say "*                                                                       *"
+say "* Expected                                                              *"
+say "* NewView start and shows the 'Glossary' help.                          *"
+say "* - left navigation is shown                                            *"
+say "* - index tab is selected                                               *"
+say "* - all contents are collapsed                                          *"
+say "* - noting is selected                                                  *"
+say "* - '3270 Telnet' is visible at the right                               *"
+say "*************************************************************************"
+"start ..\build\newview\newview -i GLOSSARY"
 pull
 
 
