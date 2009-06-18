@@ -1,4 +1,4 @@
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <string.h>
 
 #include "Utility.h"
@@ -7,7 +7,7 @@
 char GetBootDrive()
 {
   ULONG buffer;
-  DosQuerySysInfo( QSV_BOOT_DRIVE, 
+  DosQuerySysInfo( QSV_BOOT_DRIVE,
                    QSV_BOOT_DRIVE,
                    & buffer,
                    sizeof( buffer ) );
@@ -39,12 +39,12 @@ HWND GetTopLevelWindow( HWND hwnd )
 
   while( TRUE )
   {
-    parent = WinQueryWindow( hwnd, QW_PARENT );    
+    parent = WinQueryWindow( hwnd, QW_PARENT );
     if (    parent == hDesktopWindow
          || parent == NULLHANDLE )
       // this is a frame (top level) window
       break;
-    hwnd = parent; 
+    hwnd = parent;
   }
 
   return hwnd;
@@ -60,7 +60,7 @@ BOOL IsStandardWindowClass( HWND hwnd, PSZ ClassID )
 
   LogEvent( "IsStandardWindowClass" );
 
-  if ( WinQueryClassName( hwnd, 
+  if ( WinQueryClassName( hwnd,
                           sizeof( szClassName ),
                           szClassName ) == 0 )
     // not a valid window
@@ -86,16 +86,16 @@ BOOL IsStandardWindowClass( HWND hwnd, PSZ ClassID )
 void StoreString( char** dest,
                   char* source )
 {
-  if ( *dest != NULL )  
+  if ( *dest != NULL )
   {
     free( *dest );
     *dest = NULL;
   }
-  
-  if ( source == NULL )  
+
+  if ( source == NULL )
     return;
 
   *dest = (char*) malloc( strlen( source ) + 1 );
   strcpy( *dest, source );
 }
-
+

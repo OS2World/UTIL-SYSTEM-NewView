@@ -16,7 +16,7 @@ void EnsureViewerRunning( TPHelpInstance pHelpInstance )
   HWND FocusFrame;
   if ( ! pHelpInstance -> FViewerStarted )
   {
-    // get focus frame 
+    // get focus frame
     FocusFrame = GetTopLevelWindow( WinQueryFocus( HWND_DESKTOP ) );
     // associate viewer with that.
     if ( ViewHelpFile( pHelpInstance -> FHelpFileNames,
@@ -76,7 +76,7 @@ void PostViewerMessage( TPHelpInstance pHelpInstance,
                    mp1,
                    mp2 );
   if ( ok )
-    LogEvent( "  Posted OK" ); 
+    LogEvent( "  Posted OK" );
   else
     LogEvent( "  WinPostMsg failed" );
 }
@@ -85,7 +85,7 @@ void PostViewerMessage( TPHelpInstance pHelpInstance,
 // queued up waiting for it to complete startup
 //--------------------------------------------------------------------------------
 void PostQueuedViewerMessages( TPHelpInstance pHelpInstance )
-{  
+{
   int i;
   TQueuedViewerMessage ViewerMessage;
 
@@ -118,7 +118,7 @@ void CloseViewer( TPHelpInstance pHelpInstance )
 // Window Association
 //--------------------------------------------------------------------------------
 
-// Add the given window to the list of associated 
+// Add the given window to the list of associated
 // windows for this help instance
 //--------------------------------------------------------------------------------
 void AssociateWindow( TPHelpInstance pHelpInstance,
@@ -128,8 +128,8 @@ void AssociateWindow( TPHelpInstance pHelpInstance,
             hwnd,
             pHelpInstance );
 
-  if ( IsWindowAssociated( pHelpInstance, hwnd ) ) 
-  { 
+  if ( IsWindowAssociated( pHelpInstance, hwnd ) )
+  {
     LogEvent( "Already associated" );
     return;
   }
@@ -150,7 +150,7 @@ void AssociateWindow( TPHelpInstance pHelpInstance,
   }
 
   // see if it will fit.
-  if (    pHelpInstance -> FNumApplicationWindows 
+  if (    pHelpInstance -> FNumApplicationWindows
        >= pHelpInstance -> FMaxApplicationWindows )
   {
     // need more space.
@@ -159,18 +159,18 @@ void AssociateWindow( TPHelpInstance pHelpInstance,
       pHelpInstance -> FMaxApplicationWindows = 4;
     else
       // double space
-      pHelpInstance -> FMaxApplicationWindows *= 2; 
+      pHelpInstance -> FMaxApplicationWindows *= 2;
 
     LogEvent( "AssociateWIndow: allocating list space to %d",
               pHelpInstance -> FMaxApplicationWindows );
 
     // reallocate memory.
-    pHelpInstance -> FApplicationWindows 
-      = (HWND*) realloc( pHelpInstance -> FApplicationWindows, 
-                         pHelpInstance -> FMaxApplicationWindows 
+    pHelpInstance -> FApplicationWindows
+      = (HWND*) realloc( pHelpInstance -> FApplicationWindows,
+                         pHelpInstance -> FMaxApplicationWindows
                          * sizeof( HWND ) );
   }
-  
+
   pHelpInstance ->
     FApplicationWindows[ pHelpInstance -> FNumApplicationWindows ]
       = hwnd;
@@ -179,9 +179,9 @@ void AssociateWindow( TPHelpInstance pHelpInstance,
 
   LogEvent( "AssociateWindow: Now have %d windows associated",
             pHelpInstance -> FNumApplicationWindows );
-}  
+}
 
-// Removes the given window from the list of associated 
+// Removes the given window from the list of associated
 // windows for this help instance (if present)
 //--------------------------------------------------------------------------------
 void RemoveAssociatedWindow( TPHelpInstance pHelpInstance,
@@ -198,7 +198,7 @@ void RemoveAssociatedWindow( TPHelpInstance pHelpInstance,
       // found one, copy remaining elements down by one
       j = i;
       while( j < pHelpInstance -> FNumApplicationWindows - 1 )
-      { 
+      {
         pHelpInstance -> FApplicationWindows[ j ]
           = pHelpInstance -> FApplicationWindows[ j + 1 ];
         j ++;
@@ -244,7 +244,7 @@ TPHelpInstance GetHelpInstance( HWND hwnd )
 
   ulMagicNumber = WinQueryWindowULong( hwnd, QWL_HELPINSTANCEMAGICNUMBER );
 
-  if ( ulMagicNumber != HELPINSTANCEMAGICNUMBER ) 
+  if ( ulMagicNumber != HELPINSTANCEMAGICNUMBER )
     return NULL;
 
   ulInstance = WinQueryWindowULong( hwnd, QWL_HELPINSTANCEPTR );
@@ -262,7 +262,7 @@ void ReleaseHelpTable( TPHelpInstance pHelpInstance )
   if ( pHelpInstance -> HelpTableFromResource )
     // free copy of resource
     FreeHelpTable( & ( pHelpInstance -> pHelpTable ) );
-}   
+}
 
 //--------------------------------------------------------------------------------
 TPHelpInstance MakeNewHelpInstance()
@@ -275,10 +275,10 @@ TPHelpInstance MakeNewHelpInstance()
   // window list will be allocated on first association
   pHelpInstance -> FNumApplicationWindows = 0;
   pHelpInstance -> FMaxApplicationWindows = 0;
-  pHelpInstance -> FApplicationWindows = NULL; 
-    
-  pHelpInstance -> FActiveWindow = NULLHANDLE; 
+  pHelpInstance -> FApplicationWindows = NULL;
+
+  pHelpInstance -> FActiveWindow = NULLHANDLE;
 
   return pHelpInstance;
 }
-
+

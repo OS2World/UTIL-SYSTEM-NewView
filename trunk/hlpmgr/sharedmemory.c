@@ -16,7 +16,7 @@ APIRET GetSharedMemory( char* Name,
   APIRET rc;
   char FullName[ 260 ];
 
-  pSharedMemory -> FFirst = TRUE;  
+  pSharedMemory -> FFirst = TRUE;
 
   strcpy( FullName, "\\SHAREMEM\\" );
   strcat( FullName, Name );
@@ -30,7 +30,7 @@ APIRET GetSharedMemory( char* Name,
   if ( rc != 0 )
   {
     LogEvent( "  Unable to create shared mem: %d", rc );
-    if ( rc == ERROR_ALREADY_EXISTS ) 
+    if ( rc == ERROR_ALREADY_EXISTS )
     {
       LogEvent( "  - Already exists, open" );
       // memory already exists, just get it
@@ -54,17 +54,17 @@ APIRET OpenOrCreateMutex( PSZ pszName,
   Tries = 0;
   while( TRUE )
   {
-    rc = DosOpenMutexSem( pszName, 
-                          phmtx ); 
+    rc = DosOpenMutexSem( pszName,
+                          phmtx );
 
     if ( rc != ERROR_SEM_NOT_FOUND )
       // ok, or some error
       break;
 
-    rc = DosCreateMutexSem( pszName, 
+    rc = DosCreateMutexSem( pszName,
                             phmtx,
-                            0, 
-                            FALSE ); 
+                            0,
+                            FALSE );
     if ( rc != ERROR_DUPLICATE_NAME )
       // ok, or some error
       break;
@@ -90,7 +90,7 @@ void ReleaseSharedMemory( TSharedMemory* pSharedMemory )
 APIRET GetSubAllocatedSharedMemory( char* Name,
                                     ULONG Size,
                                     ULONG ReserveSize, // size to reserve at start of memory
-                                    TSubAllocatedSharedMemory* pSharedMemory ) 
+                                    TSubAllocatedSharedMemory* pSharedMemory )
 {
   APIRET rc;
   ULONG ActualSize;
@@ -112,7 +112,7 @@ APIRET GetSubAllocatedSharedMemory( char* Name,
 
   LogEvent( "  semaphore name: %s", SemaphoreName );
 
-  rc = OpenOrCreateMutex( SemaphoreName, 
+  rc = OpenOrCreateMutex( SemaphoreName,
                           & StartupSemaphore );
   if ( rc != 0 )
   {
@@ -150,7 +150,7 @@ APIRET GetSubAllocatedSharedMemory( char* Name,
     return ERROR_INVALID_PARAMETER;
   }
 
-  pSharedMemory -> FAllocationArea = 
+  pSharedMemory -> FAllocationArea =
     (PBYTE) pSharedMemory -> FMem.FPointer
     + ActualReserveSize;
 
@@ -206,7 +206,7 @@ APIRET SubAllocate( TSubAllocatedSharedMemory* pSharedMemory,
 void SubDeallocate( TSubAllocatedSharedMemory* pSharedMemory,
                     void** p )
 {
-  APIRET rc;  
+  APIRET rc;
   PULONG pSize;
   ULONG Size;
 
@@ -220,7 +220,7 @@ void SubDeallocate( TSubAllocatedSharedMemory* pSharedMemory,
                       Size );
 
   *p = NULL;
-}    
+}
 
 void ReleaseSubAllocatedSharedMemory( TSubAllocatedSharedMemory* pSharedMemory )
 {
@@ -231,4 +231,4 @@ void ReleaseSubAllocatedSharedMemory( TSubAllocatedSharedMemory* pSharedMemory )
   pSharedMemory -> FAllocationArea = NULL;
   ReleaseSharedMemory( & pSharedMemory -> FMem );
 }
-
+

@@ -31,9 +31,10 @@ HWND GetTopLevelWindow( HWND hwnd );
 // given standard class (e.g. WC_FRAME)
 BOOL IsStandardWindowClass( HWND hwnd, PSZ ClassID );
 
-// make a memory copy of the given source string into 
+// make a memory copy of the given source string into
 // dest. Accepts NULLs for either parameter.
 void StoreString( char** dest,
                   char* source );
 
 #endif
+
