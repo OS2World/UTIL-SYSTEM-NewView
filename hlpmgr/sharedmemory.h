@@ -6,7 +6,7 @@
 // the Data pointer can be used to read or write the data
 // in the memory.
 
-typedef struct 
+typedef struct
 {
   void* FPointer;
   BOOL FFirst; // true if this object created the shared mem block
@@ -24,16 +24,16 @@ void ReleaseSharedMemory( TSharedMemory* pSharedMemory );
 // A space can be reserved for using as a normal shared mem block.
 // Otherwise the Data property should not be used.
 
-typedef struct 
+typedef struct
 {
   TSharedMemory FMem;
-  void* FAllocationArea;  
+  void* FAllocationArea;
 } TSubAllocatedSharedMemory;
 
 APIRET GetSubAllocatedSharedMemory( char* Name,
                                     ULONG Size,
                                     ULONG ReserveSize, // size to reserve at start of memory
-                                    TSubAllocatedSharedMemory* pSharedMemory ); 
+                                    TSubAllocatedSharedMemory* pSharedMemory );
 
 // suballocate space of the given size
 APIRET SubAllocate( TSubAllocatedSharedMemory* pSharedMemory,
@@ -50,3 +50,4 @@ APIRET OpenOrCreateMutex( PSZ pszName,
                           PHMTX phmtx );
 
 #endif
+

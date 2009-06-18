@@ -12,7 +12,7 @@ typedef struct
 
 typedef TOpenFileEntry* TPOpenFileEntry;
 
-typedef struct 
+typedef struct
 {
   TSubAllocatedSharedMemory FMem;
   HMTX FMutex;
@@ -23,7 +23,7 @@ TGlobalFilelist* OpenGlobalFilelist();
 
 void CloseGlobalFilelist( TGlobalFilelist* pList );
 
-HWND FindFileInGlobalFilelist( TGlobalFilelist* pList,
-                               char* FilePath );
+HWND FindFileInGlobalFilelist( TGlobalFilelist* pList, char* FilePath );
 
 #endif
+
