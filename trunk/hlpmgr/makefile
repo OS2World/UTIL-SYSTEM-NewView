@@ -1,9 +1,12 @@
+# ---------------------------------------------
 # New Help Manager for use with NewView
 # For Watcom C/C++ 10.6 and higher
 # Use wmake DEBUG=1 to get debug info
 
-# Hlpmgr2.dll can be used for testing without 
+# Hlpmgr2.dll can be used for testing without
 # needing a reboot.
+# ---------------------------------------------
+
 all: hlpmgr2.dll helpmgr.dll
 
 OBJ_FILES=&
@@ -23,8 +26,13 @@ OBJ_FILES=&
 # debug all: link debug info in
 # remaining options set in helpmgr.def
 !ifdef DEBUG
-MODE_LINKFLAGS=debug all 
+MODE_LINKFLAGS=debug all
 !endif
+
+clean : .SYMBOLIC
+        -del .\*.obj
+        -del .\*.err
+
 
 test.exe:  test.obj
   wlink $(MODE_LINKFLAGS) file test.obj file log.obj system os2v2 name test.exe import SetHelpDatabase helpmgr.37 import IOLoadAllTOC helpmgr.28
