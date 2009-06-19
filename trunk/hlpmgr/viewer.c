@@ -11,10 +11,10 @@
 char* pszViewerFilename = "view.exe";
 char* OWN_HELP_MARKER = "[NVHELP]";
 
-BOOL StartViewer( char* pszParameters,
-		  HWND hTerminateNotify,
-                  HWND hAppWindow,
-                  HAB hab )
+BOOL StartViewer(   char* pszParameters,
+                    HWND hTerminateNotify,
+                    HWND hAppWindow,
+                    HAB hab )
 {
   PROGDETAILS Details;
   char pszMessageCaption[ 1024 ];
@@ -41,11 +41,9 @@ BOOL StartViewer( char* pszParameters,
   Details.swpInitial.ulReserved2      = 0;
 
 
-  LogEvent( "Launching: %s %s",
-            Details.pszExecutable,
-            pszParameters );
-             
-  hApplication = 
+  LogEvent( "Launching: %s %s", Details.pszExecutable, pszParameters );
+
+  hApplication =
     WinStartApp( hTerminateNotify,    // window to be notified of termination
                  & Details,           // details
                  NULL,                // parameters - used Details
@@ -54,11 +52,8 @@ BOOL StartViewer( char* pszParameters,
 
   if ( hApplication == NULL )
   {
-    LogEvent( "  Failed to launch viewer, rc=%8X", 
-              WinGetLastError( hab ) );  
-    sprintf( pszMessageCaption,
-             "Unable to start help viewer %s",
-             pszViewerFilename );
+    LogEvent( "  Failed to launch viewer, rc=%8X", WinGetLastError( hab ) );
+    sprintf( pszMessageCaption, "Unable to start help viewer %s", pszViewerFilename );
     WinMessageBox( HWND_DESKTOP, // parent
                    hAppWindow,   // owner
                    pszMessageCaption,
@@ -68,7 +63,7 @@ BOOL StartViewer( char* pszParameters,
     result = FALSE;
   }
   else
-  { 
+  {
     result = TRUE;
   }
 
@@ -76,11 +71,11 @@ BOOL StartViewer( char* pszParameters,
   return result;
 }
 
+
 // appends the given filenames to the output string,
 // replace spaces between filenames with a +
 // and stripping redundant spaces.
-void ModifyFilenames( char* Filenames,
-                      char* Output )
+void ModifyFilenames( char* Filenames, char* Output )
 {
   BOOL First;
   BOOL InQuote;
@@ -91,7 +86,7 @@ void ModifyFilenames( char* Filenames,
   while ( *Filenames != 0 )
   {
     // skip spaces
-    while (    *Filenames != 0 
+    while (    *Filenames != 0
             && *Filenames == ' ' )
       Filenames ++;
 
@@ -104,15 +99,15 @@ void ModifyFilenames( char* Filenames,
     }
 
     First = FALSE;
-    // copy non-space characters    
+    // copy non-space characters
     // or all characters if in quotes
-    while (    *Filenames != 0 
+    while (    *Filenames != 0
             && ( *Filenames != ' ' || InQuote ) )
     {
       * Output = *Filenames;
       if ( ! InQuote )
       {
-        if (    *Filenames == '\'' 
+        if (    *Filenames == '\''
              || *Filenames == '\"' )
         {
           InQuote = TRUE;
@@ -120,15 +115,15 @@ void ModifyFilenames( char* Filenames,
           * Output = '\"'; // change singles to doubles
         }
       }
-      else 
+      else
       {
         if ( *Filenames == QuoteChar )
         {
           InQuote = FALSE;
           * Output = '\"'; // change singles to doubles
         }
-      }        
-      
+      }
+
       Output ++;
       Filenames ++;
     }
@@ -137,6 +132,7 @@ void ModifyFilenames( char* Filenames,
   // null terminate
   *Output = 0;
 }
+
 
 BOOL ViewHelpFile( char* pszHelpFileName,
                    char* pszWindowTitle,
@@ -147,16 +143,14 @@ BOOL ViewHelpFile( char* pszHelpFileName,
   char* pszParameters;
 
   // set up viewer parameters:
-  // <helpfilename> /hm:<helpwindow> 
+  // <helpfilename> /hm:<helpwindow>
   // currently not used: /owner:<ownerwindow>
 
-  pszParameters = (char*) malloc(   strlen( pszHelpFileName ) 
+  pszParameters = (char*) malloc(   strlen( pszHelpFileName )
                                   + strlen( pszWindowTitle )
                                   + 512 );
 
-  sprintf( pszParameters,
-           "/hm:%u ",
-           hHelpWindow );
+  sprintf( pszParameters, "/hm:%u ", hHelpWindow );
 
   if ( pszHelpFileName != NULL )
   {
@@ -165,7 +159,7 @@ BOOL ViewHelpFile( char* pszHelpFileName,
                      pszParameters + strlen( pszParameters ) );
   }
 
-  if ( pszWindowTitle != NULL ) 
+  if ( pszWindowTitle != NULL )
   {
     // add window title parameter
     strcat( pszParameters, " \"/title:" );
@@ -173,17 +167,18 @@ BOOL ViewHelpFile( char* pszHelpFileName,
     strcat( pszParameters, "\"" );
   }
 
-  return StartViewer( pszParameters,
-	              hHelpWindow,
-	              hAppWindow,
-                      hab );
+  return StartViewer(   pszParameters,
+                        hHelpWindow,
+                        hAppWindow,
+                        hab );
 }
+
 
 void ViewHelpOnHelp( HAB hab )
 {
-  StartViewer( OWN_HELP_MARKER,
-	       NULL,
-               NULL,
-               hab );
+  StartViewer(  OWN_HELP_MARKER,
+                NULL,
+                NULL,
+                hab );
 }
 

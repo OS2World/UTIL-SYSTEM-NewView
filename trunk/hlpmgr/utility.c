@@ -83,8 +83,7 @@ BOOL IsStandardWindowClass( HWND hwnd, PSZ ClassID )
   return usClass == (USHORT) ClassID;
 }
 
-void StoreString( char** dest,
-                  char* source )
+void StoreString( char** dest, char* source )
 {
   if ( *dest != NULL )
   {
