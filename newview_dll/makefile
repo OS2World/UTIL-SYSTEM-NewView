@@ -18,6 +18,7 @@ newview.dll: newview.def $(OBJ_FILES)
     $(MODE_LINKFLAGS) &
     @newview.def &
     file newview.obj
+  copy newview.dll ..\build\newview\newview.dll
 
 # Compile step: .c -> .obj
 

@@ -5,6 +5,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+#define  _PMPRINTF_
+#include <PMPRINTF.H>
+
+
+#define VERSION "0.9.1"
+
+
+
 /********************************************************************
  *                                                                  *
  *  LZW decompression                                               *
@@ -60,8 +69,7 @@ static int max_code;
  * decode_string:
  *
  */
-char *decode_string(unsigned char *buffer, unsigned int code, BOOL* error)
-{
+char *decode_string(unsigned char *buffer, unsigned int code, BOOL* error) {
     int i = 0;
     *error = FALSE;
     while (code > 255) {
@@ -83,8 +91,7 @@ char *decode_string(unsigned char *buffer, unsigned int code, BOOL* error)
  *      this function reads in bytes from the input
  *      stream.
  */
-unsigned input_code(PBYTE *ppbInput, unsigned bytes_to_read)
-{
+unsigned input_code(PBYTE *ppbInput, unsigned bytes_to_read) {
     unsigned int return_value;
     static unsigned long bytes_out = 0;
     static int input_bit_count = 0;
@@ -135,6 +142,8 @@ BOOL APIENTRY LZWDecompressBlock( PBYTE pbInput,             // in: compressed d
     max_code = MAXVAL(num_bits);
 
     *pBytesOut = 0;
+
+    _Pmpf(("LZWDecompressBlock"));
 
     while ((new_code = input_code(&pbInput, number_bytes)) != TERMINATOR) {
         if (clear_flag) {
