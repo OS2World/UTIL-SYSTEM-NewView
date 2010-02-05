@@ -158,6 +158,7 @@ uses
   PROCEDURE TCmdLineParameters.LogDetails;
   var
     tmpWindowPosition : TWindowPosition;
+    i : integer;
   begin
     LogEvent(LogStartup, '''' + commandLine + '''');
     LogEvent(LogStartup, 'isDebugEnabled: ' + boolToStr(isDebugEnabled));
@@ -186,6 +187,17 @@ uses
                 );
     LogEvent(LogStartup, '  ownerWindow: ' + intToStr(getOwnerWindow));
     LogEvent(LogStartup, '  windowTitle: ' + getWindowTitle);
+
+    if nil <> nhmDebugMessages then
+    begin
+      LogEvent(LogStartup, '');
+      LogEvent(LogStartup, '---- NHM DebugMessages ----');
+      for i := 0 to nhmDebugMessages.count-1 do
+      begin
+        LogEvent(LogStartup, '  ' + nhmDebugMessages[i]);
+      end;
+    end;
+
   end;
 
 
