@@ -69,9 +69,10 @@ static int max_code;
  * decode_string:
  *
  */
-char *decode_string(unsigned char *buffer, unsigned int code, BOOL* error) {
+char* decode_string(unsigned char* buffer, unsigned int code, BOOL* error) {
     int i = 0;
     *error = FALSE;
+
     while (code > 255) {
         *buffer++ = append_character[code];
         code = prefix_code[code];
@@ -91,7 +92,7 @@ char *decode_string(unsigned char *buffer, unsigned int code, BOOL* error) {
  *      this function reads in bytes from the input
  *      stream.
  */
-unsigned input_code(PBYTE *ppbInput, unsigned bytes_to_read) {
+unsigned input_code(PBYTE* ppbInput, unsigned bytes_to_read) {
     unsigned int return_value;
     static unsigned long bytes_out = 0;
     static int input_bit_count = 0;
