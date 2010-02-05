@@ -1,6 +1,6 @@
 // Standard library
-#include <string.h> 
-#include <stdlib.h> 
+#include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 // Local
@@ -60,11 +60,11 @@ typedef struct
 TPHelpInstance g_pHelpInstances[ MAX_HELP_INSTANCES ] = { NULL };
 int g_HelpInstanceCount = 0;
 
-// 
+//
 
-MRESULT APIENTRY HelpManagerWndProc( HWND hwnd, 
-                                     ULONG msg, 
-                                     MPARAM mp1, 
+MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
+                                     ULONG msg,
+                                     MPARAM mp1,
                                      MPARAM mp2 );
 
 BOOL APIENTRY HelpHook( HAB hab,
@@ -74,7 +74,7 @@ BOOL APIENTRY HelpHook( HAB hab,
                         PRECTL prcPosition );
 
 
-// Find if there is a help instance associated with 
+// Find if there is a help instance associated with
 // this window
 //--------------------------------------------------------------------------------
 TPHelpInstance GetAssociatedHelpInstance( HWND hwnd )
@@ -84,13 +84,13 @@ TPHelpInstance GetAssociatedHelpInstance( HWND hwnd )
 
   LogEvent( "  GetAssociatedHelpInstance" );
 
-  for ( i = 0; i < MAX_HELP_INSTANCES; i ++ ) 
+  for ( i = 0; i < MAX_HELP_INSTANCES; i ++ )
   {
     pHelpInstance = g_pHelpInstances[ i ];
     if ( pHelpInstance != NULL )
     {
       LogEvent( "    Instance %d: %8x", i, pHelpInstance );
-      if ( IsWindowAssociated( pHelpInstance, 
+      if ( IsWindowAssociated( pHelpInstance,
                                hwnd ) )
       {
         LogEvent( "      Found associated window" );
@@ -98,7 +98,7 @@ TPHelpInstance GetAssociatedHelpInstance( HWND hwnd )
       }
     }
   }
-  
+
   return NULL;
 }
 
@@ -111,12 +111,12 @@ TPHelpInstance GetHelpInstanceForWindowChain( HWND hwndApp )
   HWND hDesktopWindow;
   HWND hwnd;
   HWND hClientWnd;
-  TPHelpInstance pHelpInstance;  
+  TPHelpInstance pHelpInstance;
   LONG SearchType;
 
   LogEvent( "QueryHelpInstance" );
 
-  hDesktopWindow = WinQueryDesktopWindow( WinQueryAnchorBlock( hwndApp ), 
+  hDesktopWindow = WinQueryDesktopWindow( WinQueryAnchorBlock( hwndApp ),
                                           NULLHANDLE );
 
   SearchType = QW_PARENT;
@@ -144,14 +144,14 @@ TPHelpInstance GetHelpInstanceForWindowChain( HWND hwndApp )
         {
           LogEvent( "        Found help instance: %8x", pHelpInstance );
           return pHelpInstance;
-        }      
+        }
       }
       else
       {
         LogEvent( "      No client window found" );
       }
     }
-     
+
     LogEvent( "  No help instance" );
 
     parentOrOwner = WinQueryWindow( hwnd, SearchType );
@@ -179,7 +179,7 @@ TPHelpInstance GetHelpInstanceForWindowChain( HWND hwndApp )
       }
     }
     hwnd = parentOrOwner;
-  }  
+  }
 
   LogEvent( "  No help instance found" );
   return NULL;
@@ -202,19 +202,15 @@ HWND APIENTRY NHM32CreateHelpInstance( HAB hab,
 
   LogEvent( "--------------------------------------------------" );
   LogEvent( "NHM32CreateHelpInstance" );
-  LogEvent( "  Help Manager Version: %s", 
-            HelpMgrVersion );
-
-  LogEvent( "  Filename(s): %s", 
-            phinitHMInitStructure -> pszHelpLibraryName );
-  LogEvent( "  Title: %s", 
-            phinitHMInitStructure -> pszHelpWindowTitle );
+  LogEvent( "  Help Manager Version: %s", HelpMgrVersion );
+  LogEvent( "  Filename(s): %s", phinitHMInitStructure -> pszHelpLibraryName );
+  LogEvent( "  Title: %s",       phinitHMInitStructure -> pszHelpWindowTitle );
 
   pHelpInstance = MakeNewHelpInstance();
 
   // find blank slot in help instance array
   FoundUnusedSlot = FALSE;
-  for ( i = 0; i < MAX_HELP_INSTANCES; i ++ ) 
+  for ( i = 0; i < MAX_HELP_INSTANCES; i ++ )
   {
     if ( g_pHelpInstances[ i ] == NULL )
     {
@@ -225,10 +221,10 @@ HWND APIENTRY NHM32CreateHelpInstance( HAB hab,
   }
   if ( ! FoundUnusedSlot )
   {
-    LogEvent( "Too many help instances, out of slots" );    
+    LogEvent( "Too many help instances, out of slots" );
     return NULLHANDLE;
   }
-      
+
   g_HelpInstanceCount ++;
 
   pHelpInstance -> Fhab = hab;
@@ -241,14 +237,14 @@ HWND APIENTRY NHM32CreateHelpInstance( HAB hab,
                            8 ) )                  // space for instance ptr and magic number
   {
     rc = WinGetLastError( hab );
-    LogEvent( "WinRegisterClass failed, error=%d", rc );    
+    LogEvent( "WinRegisterClass failed, error=%d", rc );
     return NULLHANDLE;
   }
 
   LogEvent( "Registered Window Class OK" );
 
   // Create help window as an object window (child of HWND_OBJECT)
-  pHelpInstance -> FHandle = 
+  pHelpInstance -> FHandle =
     WinCreateWindow( HWND_OBJECT,           // parent: object window
                      szNewHelpManagerClass, // window class
                      "New Help Manager",    // window title - irrelevant
@@ -259,7 +255,7 @@ HWND APIENTRY NHM32CreateHelpInstance( HAB hab,
                      1,                     // id - irrelevant
                      NULL,                  // control data - none
                      NULL );                // presentation parameters - none
-  
+
   if ( pHelpInstance -> FHandle == NULLHANDLE )
   {
     rc = WinGetLastError( hab );
@@ -270,10 +266,10 @@ HWND APIENTRY NHM32CreateHelpInstance( HAB hab,
 
   // store instance pointer and magic number for checking later.
   // Could just have used class name!
-  WinSetWindowULong( pHelpInstance -> FHandle, 
+  WinSetWindowULong( pHelpInstance -> FHandle,
                      QWL_HELPINSTANCEMAGICNUMBER,
                      HELPINSTANCEMAGICNUMBER );
-  WinSetWindowULong( pHelpInstance -> FHandle, 
+  WinSetWindowULong( pHelpInstance -> FHandle,
                      QWL_HELPINSTANCEPTR,
                      (ULONG) pHelpInstance );
 
@@ -307,7 +303,7 @@ HWND APIENTRY NHM32CreateHelpInstance( HAB hab,
 
   pHelpInstance -> HelpTableFromResource = FALSE;
 
-  if ( HelpTable != 0 ) 
+  if ( HelpTable != 0 )
   {
     if ( ( HelpTable & 0xffff0000 ) == 0xffff0000 )
     {
@@ -328,15 +324,14 @@ HWND APIENTRY NHM32CreateHelpInstance( HAB hab,
   }
   else
   {
-    pHelpInstance -> pHelpTable = NULL;   
+    pHelpInstance -> pHelpTable = NULL;
   }
 
   pHelpInstance -> FViewerStarted = FALSE;
   pHelpInstance -> FViewerWindow = NULLHANDLE;
   pHelpInstance -> FViewerStartupMessagesCount = 0;
 
-  LogEvent( "  Allocating shared memory: %s",
-            SHARED_MEM_NAME );
+  LogEvent( "  Allocating shared memory: %s", SHARED_MEM_NAME );
   rc = GetSubAllocatedSharedMemory( SHARED_MEM_NAME,
                                     SHARED_MEM_SIZE,
                                     SHARED_MEM_RESERVE_SIZE,
@@ -346,13 +341,11 @@ HWND APIENTRY NHM32CreateHelpInstance( HAB hab,
     LogEvent( "Could not allocate shared mem, rc = %d", rc );
     return NULLHANDLE;
   }
-  pSharedStruct = 
+  pSharedStruct =
     (TNewHelpMgrSharedStruct*) pHelpInstance -> SharedMemory.FMem.FPointer;
 
-  strcpy( pSharedStruct -> Title,
-          "NewView Help Manager" );
-  strcpy( pSharedStruct -> Version,
-          HelpMgrVersion );
+  strcpy( pSharedStruct -> Title, "NewView Help Manager" );
+  strcpy( pSharedStruct -> Version, HelpMgrVersion );
 
   phinitHMInitStructure -> ulReturnCode = 0;
 
@@ -380,7 +373,7 @@ void DestroyHelpInstance( TPHelpInstance pHelpInstance )
   ReleaseSubAllocatedSharedMemory( & pHelpInstance -> SharedMemory );
 
   // remove from list
-  for ( i = 0; i < MAX_HELP_INSTANCES; i ++ ) 
+  for ( i = 0; i < MAX_HELP_INSTANCES; i ++ )
     if ( g_pHelpInstances[ i ] == pHelpInstance )
       g_pHelpInstances[ i ] = NULL;
   g_HelpInstanceCount --;
@@ -442,9 +435,9 @@ BOOL APIENTRY NHM32AssociateHelpInstance( HWND hwndHelpInstance,
   LogEvent( "  Window: %8x", hwndApp );
 
   // Notify the window (Only required by SmartSuite?)
-  WinSendMsg( hwndApp, 
-              WM_SETHELPINFO, 
-              (MPARAM) hwndHelpInstance, 
+  WinSendMsg( hwndApp,
+              WM_SETHELPINFO,
+              (MPARAM) hwndHelpInstance,
               0 );
   // Note this call seems to fail on some apps, so ignore result
 
@@ -453,12 +446,12 @@ BOOL APIENTRY NHM32AssociateHelpInstance( HWND hwndHelpInstance,
     // clearing association with this window.
     LogEvent( "  Help Instance NULLHANDLE, clearing" );
 
-    for ( i = 0; i < MAX_HELP_INSTANCES; i ++ ) 
+    for ( i = 0; i < MAX_HELP_INSTANCES; i ++ )
     {
-      pHelpInstance = g_pHelpInstances[ i ]; 
-      if ( pHelpInstance != NULL ) 
+      pHelpInstance = g_pHelpInstances[ i ];
+      if ( pHelpInstance != NULL )
       {
-        RemoveAssociatedWindow( pHelpInstance, 
+        RemoveAssociatedWindow( pHelpInstance,
                                 hwndApp );
       }
     }
@@ -470,7 +463,7 @@ BOOL APIENTRY NHM32AssociateHelpInstance( HWND hwndHelpInstance,
     LogEvent( "  Window Title: %s", buffer );
   else
     LogEvent( "  Window Title: Blank/invalid" );
-   
+
   pHelpInstance = GetHelpInstance( hwndHelpInstance );
   if ( pHelpInstance == NULL )
   {
@@ -545,7 +538,7 @@ BOOL APIENTRY NHM32CreateHelpTable( HWND hwndHelpInstance,
 
 // Portions contributed by Aaron Reed at IBM
 
-// typedef void _Far16 * HWND16; 
+// typedef void _Far16 * HWND16;
 typedef HWND HWND16;
 typedef USHORT BOOL16;
 typedef char _Far16 * PSZ16;
@@ -561,7 +554,7 @@ typedef struct _HELPTABLE16
     USHORT        idAppWindow;
     PHELPSUBTABLE phstHelpSubTable;
     USHORT        idExtPanel;
-  
+
 } HELPTABLE16, _Far16 *PHELPTABLE16;
 
 typedef struct _HELPINIT16
@@ -577,7 +570,7 @@ typedef struct _HELPINIT16
     PSZ16        pszHelpWindowTitle;
     USHORT       usShowPanelId;
     PSZ16        pszHelpLibraryName;
-  
+
 } HELPINIT16, _Far16 *PHELPINIT16;
 
 #pragma pack()
@@ -607,7 +600,7 @@ HWND16 APIENTRY16 NHM16CreateHelpInstance( HAB hab,
 
   HelpTable = (ULONG) phinitHMInitStructure -> phtHelpTable;
   LogEvent( "    Help Table: %8x", HelpTable );
-  if ( HelpTable ) 
+  if ( HelpTable )
   {
     if ( ( HelpTable & 0xffff0000 ) == 0xffff0000 )
     {
@@ -619,22 +612,22 @@ HWND16 APIENTRY16 NHM16CreateHelpInstance( HAB hab,
     {
       // It's a pointer, so convert 16->32
       LogEvent( "    Converting pointer" );
-      helpinit.phtHelpTable = 
+      helpinit.phtHelpTable =
         (PHELPTABLE) (PHELPTABLE16) HelpTable;
     }
   }
 
-  helpinit.hmodHelpTableModule = 
+  helpinit.hmodHelpTableModule =
     (HMODULE) phinitHMInitStructure -> hmodHelpTableModule;
-  helpinit.pszHelpWindowTitle = 
+  helpinit.pszHelpWindowTitle =
     (PSZ) phinitHMInitStructure -> pszHelpWindowTitle;
-  helpinit.pszHelpLibraryName = 
+  helpinit.pszHelpLibraryName =
     (PSZ) phinitHMInitStructure -> pszHelpLibraryName;
-    
+
   LogEvent( "  Conversions done, calling 32 bit" );
 
   hInstance = NHM32CreateHelpInstance( hab, &helpinit );
- 
+
   LogEvent( "  32 bit returned, copying result code" );
 
   // copy return code back
@@ -662,7 +655,7 @@ BOOL16 APIENTRY16 NHM16AssociateHelpInstance( HWND16 hwndHelpInstance,
                                               HWND16 hwndApp )
 {
   LogEvent( "NHM16AssociateHelpInstance" );
-  return NHM32AssociateHelpInstance( (HWND) hwndHelpInstance, 
+  return NHM32AssociateHelpInstance( (HWND) hwndHelpInstance,
                                      (HWND) hwndApp );
 }
 
@@ -754,13 +747,13 @@ BOOL FindHelpTopic( TPHelpInstance pHelpInstance,
   }
 
   if ( ChildControlID != (USHORT) -1 )
-  {  
-    // Child control -1 means not applicable (e.g. top level menu)    
+  {
+    // Child control -1 means not applicable (e.g. top level menu)
     if ( FindIDInHelpSubTable( ChildControlID,
                                pHelpSubTable,
                                pHelpPanelID ) )
     {
-      LogEvent( "  Found Child Control ID, Panel: %hu", 
+      LogEvent( "  Found Child Control ID, Panel: %hu",
                 *pHelpPanelID );
       return TRUE;
     }
@@ -776,22 +769,22 @@ BOOL FindHelpTopic( TPHelpInstance pHelpInstance,
   if ( FindIDInHelpSubTable( ControlID,
                              pHelpSubTable,
                              pHelpPanelID ) )
-  { 
-    LogEvent( "  Found Control ID, Panel: %hu", 
+  {
+    LogEvent( "  Found Control ID, Panel: %hu",
               *pHelpPanelID );
     return TRUE;
   }
 
   LogEvent( "  Control ID not found" );
 
-  // Control not found, we can only show help for the 
-  // Window as a whole. First, see if the subtable 
-  // has an entry for the window 
+  // Control not found, we can only show help for the
+  // Window as a whole. First, see if the subtable
+  // has an entry for the window
   if ( FindIDInHelpSubTable( WindowID,
                              pHelpSubTable,
                              pHelpPanelID ) )
   {
-    LogEvent( "  Found Window ID in subtable, Panel: %hu", 
+    LogEvent( "  Found Window ID in subtable, Panel: %hu",
               *pHelpPanelID );
     return TRUE;
   }
@@ -807,12 +800,12 @@ BOOL FindHelpTopic( TPHelpInstance pHelpInstance,
 
 //--------------------------------------------------------------------------------
 // Help Hook function
-// 
+//
 // installed during WinCreateHelpInstance
 //
-// This function is called by the standard OS/2 windows on 
+// This function is called by the standard OS/2 windows on
 // WM_HELP messages.
-// 
+//
 // Notes:
 //   The parameters are ULONG but passed from USHORTs
 //   if the originating program was 16 bit (AFAIK).
@@ -832,11 +825,11 @@ BOOL APIENTRY HelpHook( HAB hab,
   USHORT ControlID;
   USHORT ChildControlID;
   USHORT Mode;
-  
+
   ControlID = (USHORT) ulControlID;
   ChildControlID = (USHORT) ulChildControlID;
   Mode = (USHORT) ulMode;
-  
+
   LogEvent( "--------------------------------------------------" );
   LogEvent( "HelpHook" );
 
@@ -851,7 +844,7 @@ BOOL APIENTRY HelpHook( HAB hab,
   LogEvent( "  Focus Frame ID: %d", WindowID );
 
   pHelpInstance = GetHelpInstanceForWindowChain( hFocusWindow );
-  
+
   if ( pHelpInstance == NULL )
   {
     LogEvent( "  No matching help instance found" );
@@ -866,9 +859,9 @@ BOOL APIENTRY HelpHook( HAB hab,
 
   switch( Mode )
   {
-    case HLPM_MENU:    
+    case HLPM_MENU:
       LogEvent( "  Menu Mode" );
-      LogEvent( "  Frame: %x", hFocusFrame );            
+      LogEvent( "  Frame: %x", hFocusFrame );
       break;
 
     case HLPM_FRAME:
@@ -882,7 +875,7 @@ BOOL APIENTRY HelpHook( HAB hab,
       if ( pHelpInstance -> FActiveWindow != NULLHANDLE )
       {
         // override if active window set.
-        WindowID = WinQueryWindowUShort( pHelpInstance -> FActiveWindow, 
+        WindowID = WinQueryWindowUShort( pHelpInstance -> FActiveWindow,
                                          QWS_ID );
         LogEvent( "    Active window set; overriding, Window ID: %d", WindowID );
       }
@@ -894,14 +887,14 @@ BOOL APIENTRY HelpHook( HAB hab,
   LogEvent( "  Control ID:    %hu", (USHORT) ControlID );
   LogEvent( "  Child Control ID: %hu", (USHORT) ChildControlID );
 
-  if ( pHelpInstance -> pHelpTable == NULL ) 
+  if ( pHelpInstance -> pHelpTable == NULL )
   {
     LogEvent( "  No Help Table loaded for instance" );
     return TRUE;
   }
 
   if ( ! FindHelpTopic( pHelpInstance,
-                        WindowID, 
+                        WindowID,
                         ControlID,
                         ChildControlID,
                         & PanelID,
@@ -926,11 +919,11 @@ BOOL APIENTRY HelpHook( HAB hab,
 // Help Window procedure
 //--------------------------------------------------------------------------------
 
-MRESULT APIENTRY HelpManagerWndProc( HWND hwnd, 
-                                     ULONG msg, 
-                                     MPARAM mp1, 
+MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
+                                     ULONG msg,
+                                     MPARAM mp1,
                                      MPARAM mp2 )
-{  
+{
   USHORT PanelID;
   char buffer[ 256 ];
 
@@ -944,14 +937,14 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
   char* PanelName;
   char* pMessageMem;
   HWND hAppWindow;
-  
+
   if (    msg == WM_CREATE
        || msg == WM_DESTROY
        || msg == WM_ADJUSTWINDOWPOS )
     // ignore window management messages
     return 0;
 
-  if (    msg >= WM_USER 
+  if (    msg >= WM_USER
        && msg != NHM_VIEWER_READY
        && msg != NHM_FORGET_VIEWER )
     // ignore these - somebody sends em, I dunno why
@@ -962,7 +955,7 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
   LogEvent( "  Window: %8x", hwnd );
 
   pHelpInstance = GetHelpInstance( hwnd );
-  if ( pHelpInstance == NULL ) 
+  if ( pHelpInstance == NULL )
   {
     LogEvent( "  Not a valid help manager window" );
     LogEvent( "  Picking first help instance" );
@@ -979,28 +972,28 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
   LogEvent( "  HelpInstance: %8x", (ULONG) pHelpInstance );
   LogEvent( "  Message:      %8x", msg );
   LogEvent( "  App Window:   %8x", (ULONG) hAppWindow );
-  
+
   switch( msg )
   {
-    case HM_HELP_CONTENTS: 
+    case HM_HELP_CONTENTS:
       LogEvent( "HM_HELP_CONTENTS" );
       EnsureViewerRunning( pHelpInstance );
-      PostViewerMessage( pHelpInstance, 
-                         NHM_HELP_CONTENTS, 
-                         0, 
+      PostViewerMessage( pHelpInstance,
+                         NHM_HELP_CONTENTS,
+                         0,
                          0 );
       break;
 
-    case HM_HELP_INDEX: 
+    case HM_HELP_INDEX:
       LogEvent( "HM_HELP_INDEX" );
       EnsureViewerRunning( pHelpInstance );
       PostViewerMessage( pHelpInstance,
-                         NHM_HELP_INDEX, 
-                         0, 
+                         NHM_HELP_INDEX,
+                         0,
                          0 );
       break;
 
-    case HM_DISPLAY_HELP: 
+    case HM_DISPLAY_HELP:
       LogEvent( "  HM_DISPLAY_HELP" );
       switch( (ULONG) mp2 )
       {
@@ -1040,7 +1033,7 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
                              NHM_TOPIC_BY_PANEL_NAME,
                              (MPARAM) pMessageMem,
                              0 );
-          
+
           break;
       }
 
@@ -1052,7 +1045,7 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
 
       // find active window
       hFrameWindow = GetTopLevelWindow( WinQueryFocus( HWND_DESKTOP ) );
-      
+
       // get ID
       WindowID = WinQueryWindowUShort( hFrameWindow, QWS_ID );
 
@@ -1072,14 +1065,14 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
                          0 );
       break;
 
-    case HM_KEYS_HELP: 
+    case HM_KEYS_HELP:
       LogEvent( "HM_KEYS_HELP" );
       if ( hAppWindow == NULLHANDLE )
       {
         LogEvent( "  No app windows; can't ask for keys help topic" );
         return 0;
-      }        
-      PanelID = 
+      }
+      PanelID =
         (USHORT) WinSendMsg( hAppWindow,
                              HM_QUERY_KEYS_HELP,
                              0,
@@ -1093,9 +1086,9 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
                            (MPARAM) PanelID,
                            0 );
       }
-                          
+
       break;
-    
+
     case HM_DISMISS_WINDOW:
       LogEvent( "HM_DISMISS_WINDOW" );
       CloseViewer( pHelpInstance );
@@ -1116,7 +1109,7 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
       LogEvent( "HM_SET_HELP_LIBRARY_NAME" );
       LogEvent( "  Filename(s): %s", (char*) mp1 );
       StoreString( & pHelpInstance -> FHelpFileNames,
-                   (char*) mp1 ); 
+                   (char*) mp1 );
       if ( pHelpInstance -> FViewerStarted )
       {
         rc = SubAllocate( & pHelpInstance -> SharedMemory,
@@ -1147,13 +1140,13 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
                            pMessageMem,
                            0 );
       }
-      break;   
+      break;
 
     case HM_LOAD_HELP_TABLE:
       LogEvent( "HM_LOAD_HELP_TABLE" );
       NHM32LoadHelpTable( pHelpInstance -> FHandle,
                           SHORT1FROMMP( mp1 ),
-                          (HMODULE) mp2 ); 
+                          (HMODULE) mp2 );
       break;
 
     case HM_CREATE_HELP_TABLE:
@@ -1169,19 +1162,19 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
       pHelpInstance -> FViewerWindow = (HWND) mp1;
       PostQueuedViewerMessages( pHelpInstance );
       break;
-    
+
     case NHM_FORGET_VIEWER:
       // viewer notifying us it is now doing something else
       // ie loaded another file.
       LogEvent( "Forget viewer" );
       pHelpInstance -> FViewerStarted = FALSE;
       pHelpInstance -> FViewerWindow = NULLHANDLE;
-      break;      
+      break;
 
 /*
-// This is worse han useless because View.exe 
-   is just the stub and will always exit immediately. 
-    case WM_APPTERMINATENOTIFY:  
+// This is worse han useless because View.exe
+   is just the stub and will always exit immediately.
+    case WM_APPTERMINATENOTIFY:
       // viewer has stopped
       LogEvent( "Viewer has stopped" );
       pHelpInstance -> FViewerStarted = FALSE;
@@ -1199,7 +1192,7 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
     case HM_REPLACE_USING_HELP:
       LogEvent( "  Ignoring unsupported: HM_REPLACE_USING_HELP" );
       break;
-       
+
     case HM_SET_OBJCOM_WINDOW:
       LogEvent( "  Ignoring unsupported: HM_SET_OBJCOM_WINDOW" );
       break;
@@ -1236,8 +1229,8 @@ MRESULT APIENTRY HelpManagerWndProc( HWND hwnd,
       LogEvent( "  Ignoring unsupported: HM_SET_COVERPAGE_SIZE" );
       break;
 
-    default: 
-      LogEvent( "  Unrecognised Message: %x", msg );   
+    default:
+      LogEvent( "  Unrecognised Message: %x", msg );
   }
 
   return 0;
@@ -1254,7 +1247,7 @@ void CloseAllInstances( void )
     pHelpInstance = g_pHelpInstances[ i ];
     if ( pHelpInstance != NULL )
     {
-      LogEvent( "    %8x (handle: %8x) active, destroying", 
+      LogEvent( "    %8x (handle: %8x) active, destroying",
                 pHelpInstance,
                 pHelpInstance -> FHandle );
       DestroyHelpInstance( pHelpInstance );
@@ -1271,7 +1264,7 @@ void p_dll_terminate( void )
 
   LogEvent( "--------------------------------------------------" );
 
-  GetApplicationFilename( ApplicationFilename, 
+  GetApplicationFilename( ApplicationFilename,
                           sizeof( ApplicationFilename ) );
 
   LogEvent( "p_dll_terminate: %s",
@@ -1288,7 +1281,7 @@ int __dll_initialize( void )
 
   LogEvent( "--------------------------------------------------" );
 
-  GetApplicationFilename( ApplicationFilename, 
+  GetApplicationFilename( ApplicationFilename,
                           sizeof( ApplicationFilename ) );
 
   LogEvent( "__dll_initialize: %s",
@@ -1302,7 +1295,7 @@ int __dll_initialize( void )
 // runtime library properly.
 // Tested - still required on Watcom 11.0c, OW 1.0, 1.1, 1.2rc3
 // NOTE! This function DOES NOT get called
-unsigned LibMain( unsigned hmod, unsigned termination ) 
+unsigned LibMain( unsigned hmod, unsigned termination )
 {
   return 1;
 }
