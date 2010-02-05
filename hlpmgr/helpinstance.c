@@ -9,6 +9,7 @@
 // Viewer handling
 //--------------------------------------------------------------------------------
 
+
 // Start the viewer if it's not already running
 //--------------------------------------------------------------------------------
 void EnsureViewerRunning( TPHelpInstance pHelpInstance )
@@ -29,6 +30,7 @@ void EnsureViewerRunning( TPHelpInstance pHelpInstance )
     }
   }
 }
+
 
 // Send a message to the viewer. If it hasn't
 // started yet, then queue the message.
@@ -81,6 +83,7 @@ void PostViewerMessage( TPHelpInstance pHelpInstance,
     LogEvent( "  WinPostMsg failed" );
 }
 
+
 // Post messages to the viewer that have been
 // queued up waiting for it to complete startup
 //--------------------------------------------------------------------------------
@@ -104,6 +107,7 @@ void PostQueuedViewerMessages( TPHelpInstance pHelpInstance )
   pHelpInstance -> FViewerStartupMessagesCount = 0;
 }
 
+
 void CloseViewer( TPHelpInstance pHelpInstance )
 {
   LogEvent( "    Close viewer" );
@@ -113,6 +117,7 @@ void CloseViewer( TPHelpInstance pHelpInstance )
     PostViewerMessage( pHelpInstance, WM_CLOSE, 0, 0 );
   }
 }
+
 
 //--------------------------------------------------------------------------------
 // Window Association
@@ -181,6 +186,7 @@ void AssociateWindow( TPHelpInstance pHelpInstance,
             pHelpInstance -> FNumApplicationWindows );
 }
 
+
 // Removes the given window from the list of associated
 // windows for this help instance (if present)
 //--------------------------------------------------------------------------------
@@ -213,6 +219,7 @@ void RemoveAssociatedWindow( TPHelpInstance pHelpInstance,
   }
 }
 
+
 // Returns true if the given window is associated with
 // the given help instance
 //--------------------------------------------------------------------------------
@@ -231,9 +238,11 @@ BOOL IsWindowAssociated( TPHelpInstance pHelpInstance,
   return FALSE;
 }
 
+
 //--------------------------------------------------------------------------------
 // Help instance
 //--------------------------------------------------------------------------------
+
 
 // return the HelpInstance with the given handle
 //--------------------------------------------------------------------------------
@@ -252,6 +261,7 @@ TPHelpInstance GetHelpInstance( HWND hwnd )
   return (TPHelpInstance) ulInstance;
 }
 
+
 //--------------------------------------------------------------------------------
 void ReleaseHelpTable( TPHelpInstance pHelpInstance )
 {
@@ -263,6 +273,7 @@ void ReleaseHelpTable( TPHelpInstance pHelpInstance )
     // free copy of resource
     FreeHelpTable( & ( pHelpInstance -> pHelpTable ) );
 }
+
 
 //--------------------------------------------------------------------------------
 TPHelpInstance MakeNewHelpInstance()
