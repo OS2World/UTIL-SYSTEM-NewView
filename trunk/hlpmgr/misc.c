@@ -12,6 +12,7 @@ USHORT APIENTRY NHMSearchMIndex( PVOID pInstance,
   return 0;
 }
 
+
 // e.g.   p = DBMstrtok2(EnvStr, "; \0");
 // probably just use strtok unless you really want to support dbcs
 PCH APIENTRY NHMDBMstrtok2( PCH s1, PCH s2 )
@@ -20,12 +21,14 @@ PCH APIENTRY NHMDBMstrtok2( PCH s1, PCH s2 )
   return strtok( s1, s2 );
 }
 
+
 INT APIENTRY NHMMscStrniCmp( PCH s1, PCH s2, INT len, PVOID thing )
 {
   LogEvent( "MscStrniCmp" );
   // No idea what thing parameter might be for
   return strnicmp( s1, s2, len );
 }
+
 
 // e.g.
 // pCountry = (PVOID)WinSendMsg ( _hwndMIndexInstance,
@@ -42,6 +45,7 @@ INT APIENTRY NHMMscStriCmp( PCH s1, PCH s2, PVOID thing )
 
 // typedef void* PINSTANCE;
 
+
 // Attempt to see if we can get OpenChat running (not with help tho)
 BOOL APIENTRY NHM32SetHelpDatabase(PINSTANCE pInstance, PSZ DatabaseName, USHORT usObtimizeType)
 {
@@ -53,17 +57,20 @@ BOOL APIENTRY NHM32SetHelpDatabase(PINSTANCE pInstance, PSZ DatabaseName, USHORT
   return TRUE;
 }
 
+
 BOOL APIENTRY NHM32IOLoadAllTOC( PINSTANCE pInstance )
 {
   LogEvent( "NHM32IOLoadAllTOC" );
   return TRUE;
 }
 
+
 BOOL APIENTRY NHM32IOFreeIOInfoList( PINSTANCE pInstance )
 {
   LogEvent( "NHM32IOFreeIOInfoList" );
   return TRUE;
 }
+
 
 BOOL APIENTRY NHM32IOFreeAllTOC( PINSTANCE pInstance )
 {

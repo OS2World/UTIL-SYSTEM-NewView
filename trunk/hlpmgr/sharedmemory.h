@@ -35,19 +35,23 @@ APIRET GetSubAllocatedSharedMemory( char* Name,
                                     ULONG ReserveSize, // size to reserve at start of memory
                                     TSubAllocatedSharedMemory* pSharedMemory );
 
+
 // suballocate space of the given size
 APIRET SubAllocate( TSubAllocatedSharedMemory* pSharedMemory,
                     ULONG Size,
                     void** p );
 
+
 // free the given space.
 void SubDeAllocate( TSubAllocatedSharedMemory* pSharedMemory,
                     void** p );
 
+
 void ReleaseSubAllocatedSharedMemory( TSubAllocatedSharedMemory* pSharedMemory );
 
-APIRET OpenOrCreateMutex( PSZ pszName,
-                          PHMTX phmtx );
+
+APIRET OpenOrCreateMutex( PSZ pszName, PHMTX phmtx );
+
 
 #endif
 
