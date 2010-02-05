@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdarg.h> 
+#include <stdarg.h>
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
@@ -43,7 +43,7 @@ void LogEvent( char* format, ... )
     if ( strlen( LogDir ) == 0 )
       /* defined as blank? */
       return;
-  
+
     /* allocate space for full path, plus slash, plus terminator */
     g_LogFilePath = malloc( strlen( LogDir ) + strlen( LOG_FILENAME ) + 2 );
     if ( g_LogFilePath == NULL )
@@ -51,7 +51,7 @@ void LogEvent( char* format, ... )
       return;
 
    /* copy path */
-    strcpy( g_LogFilePath, LogDir ); 
+    strcpy( g_LogFilePath, LogDir );
 
     /* add ending slash if needed */
     if ( g_LogFilePath[ strlen( g_LogFilePath ) - 1 ] != '\\' )
@@ -62,13 +62,13 @@ void LogEvent( char* format, ... )
   }
 
   f = fopen( g_LogFilePath, "a" );
-  if ( f == NULL ) 
+  if ( f == NULL )
   {
     DosBeep( 2000, 50 );
     printf( "fopen failed, errno %d: %s", errno, strerror( errno ) );
     return;
   }
-  
+
   va_start( ap, format );
   vfprintf( f, format, ap );
   fprintf( f, "\n" );
@@ -82,7 +82,7 @@ void LogData( char* data, int length )
   char buffer[ 64 ];
   char hex[ 4 ];
   int i;
-  
+
   i = 0;
   p = data;
 
@@ -101,7 +101,7 @@ void LogData( char* data, int length )
     i ++;
     if ( i == 16 )
     {
-      i = 0;    
+      i = 0;
       LogEvent( buffer );
     }
   }
