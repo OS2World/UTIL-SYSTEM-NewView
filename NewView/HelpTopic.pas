@@ -1739,8 +1739,7 @@ begin
             EscapeLen := pData^;
             for i := 1 to EscapeLen - 1 do
             begin
-              Text.AddString( ' '
-                              + IntToHex( ( pData + i )^, 2 ) );
+              Text.AddString( ' ' + IntToHex( ( pData + i )^, 2 ) );
             end;
 
           end;
