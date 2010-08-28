@@ -139,7 +139,6 @@ New features
 - Mouse wheel
 - Free-standing notes
 - Font lib from Innotek
-- Export whole file 1 day?
 
 Rich Text View
 - Select/copy and save support, for images.
