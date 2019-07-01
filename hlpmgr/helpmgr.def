@@ -4,6 +4,7 @@ system os2v2 dll initinstance terminstance
 option ManyAutoData
 option map
 option stack=1M
+option NOFARcalls
 
 export WINCREATEHELPINSTANCE      .1  = NHM16CREATEHELPINSTANCE
 export WINDESTROYHELPINSTANCE     .2  = NHM16DESTROYHELPINSTANCE

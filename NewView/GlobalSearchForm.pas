@@ -107,8 +107,7 @@ Type
     Function Search( Parameters: TObject ): TObject;
 
   protected
-    Procedure OnLanguageEvent( Language: TLanguageFile;
-                               const Apply: boolean );
+    Procedure OnLanguageEvent( Language: TLanguageFile; const Apply: boolean );
 
     SearchCaption: string;
     StopCaption: string;
@@ -143,6 +142,7 @@ uses
   DebugUnit,
   ACLDialogs,
   ControlsUtility,
+  DriveInfoUnit,
   IPFFileFormatUnit,
   HelpTopic,
   SearchUnit,
@@ -317,29 +317,25 @@ Begin
 End;
 
 Procedure TGlobalSearchForm.OnLanguageEvent(Language: TLanguageFile; const Apply: boolean );
-var
-  tmpPrefix : String;
 begin
-  // LogEvent(LogI18n, 'TGlobalSearchForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  LogEvent(LogI18n, 'TGlobalSearchForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
 
   Language.LoadComponentLanguage(self, Apply);
 
-  tmpPrefix := 'GlobalSearchForm' + LANGUAGE_LABEL_DELIMITER;
+  Language.LL(Apply, SearchCaption, 'SearchCaption', '~Search');
+  Language.LL(Apply, StopCaption, 'StopCaption', '~Stop');
+  Language.LL(Apply, NoResultsMsg, 'NoResultsMsg', '(No results found)');
+  Language.LL(Apply, ScanDirectoriesMsg, 'ScanDirectoriesMsg', 'Finding help files...');
+  Language.LL(Apply, SearchingFileMsg, 'SearchingFileMsg', 'Searching ');
+  Language.LL(Apply, OfMsg, 'OfMsg', ' of ');
+  Language.LL(Apply, DoneMsg, 'DoneMsg', 'Done');
+  Language.LL(Apply, SearchErrorTitle, 'SearchErrorTitle', 'Search');
+  Language.LL(Apply, SearchError, 'SearchError', 'Error in search syntax: ');
 
-  Language.LL(Apply, SearchCaption, tmpPrefix + 'SearchCaption', '~Search');
-  Language.LL(Apply, StopCaption, tmpPrefix + 'StopCaption', '~Stop');
-  Language.LL(Apply, NoResultsMsg, tmpPrefix + 'NoResultsMsg', '(No results found)');
-  Language.LL(Apply, ScanDirectoriesMsg, tmpPrefix + 'ScanDirectoriesMsg', 'Finding help files...');
-  Language.LL(Apply, SearchingFileMsg, tmpPrefix + 'SearchingFileMsg', 'Searching ');
-  Language.LL(Apply, OfMsg, tmpPrefix + 'OfMsg', ' of ');
-  Language.LL(Apply, DoneMsg, tmpPrefix + 'DoneMsg', 'Done');
-  Language.LL(Apply, SearchErrorTitle, tmpPrefix + 'SearchErrorTitle', 'Search');
-  Language.LL(Apply, SearchError, tmpPrefix + 'SearchError', 'Error in search syntax: ');
-
-  Language.LL(Apply, StandardHelpPathsLocation, tmpPrefix + 'StandardHelpPathsLocation', 'Standard Help Paths');
-  Language.LL(Apply, FixedDrivesLocation, tmpPrefix + 'FixedDrivesLocation', 'All Hard Drives');
-  Language.LL(Apply, SelectedHelpPathsLocation, tmpPrefix + 'SelectedHelpPathsLocation', 'Selected Help Paths');
-  Language.LL(Apply, CustomPathsLocation, tmpPrefix + 'CustomPathsLocation', 'Directory List');
+  Language.LL(Apply, StandardHelpPathsLocation, 'StandardHelpPathsLocation', 'Standard Help Paths');
+  Language.LL(Apply, FixedDrivesLocation, 'FixedDrivesLocation', 'All Hard Drives');
+  Language.LL(Apply, SelectedHelpPathsLocation, 'SelectedHelpPathsLocation', 'Selected Help Paths');
+  Language.LL(Apply, CustomPathsLocation, 'CustomPathsLocation', 'Directory List');
 end;
 
 
@@ -406,7 +402,7 @@ End;
 
 Procedure TGlobalSearchForm.GlobalSearchFormOnCreate (Sender: TObject);
 Begin
-  RegisterEventForLanguages( OnLanguageEvent );
+  RegisterForLanguages( OnLanguageEvent );
 
   UpdateButtons;
 
@@ -470,9 +466,11 @@ var
   tmpSearchParameters : TSearchParameters;
   Query: TTextSearchQuery;
   i: longint;
-  Dir: string;
+  tmpDir: string;
 
 Begin
+  // LogEvent(LogDebug, 'TGlobalSearchForm.Search');
+
   tmpSearchParameters := Parameters as TSearchParameters;
 
   Query := tmpSearchParameters.Query;
@@ -493,15 +491,14 @@ Begin
       break;
     end;
 
-    ThreadManager.UpdateProgress( i * 10 div tmpSearchParameters.Directories.Count,
-                                  100,
-                                  ScanDirectoriesMsg );
-    Dir := tmpSearchParameters.Directories[ i ];
-    if StrEndsWith('...', Dir) then
+    ThreadManager.UpdateProgress( i * 10 div tmpSearchParameters.Directories.Count, 100, ScanDirectoriesMsg );
+    tmpDir := tmpSearchParameters.Directories[i];
+    // LogEvent(LogDebug, 'TGlobalSearchForm.Search in dir: ' + tmpDir);
+    if StrEndsWith(tmpDir, '...') then
     begin
-      Dir := StrLeftWithout( Dir, 3 );
+      tmpDir := StrLeftWithout(tmpDir, 3 );
       ListFilesInDirectoryRecursiveWithTermination(
-                                       Dir,
+                                       tmpDir,
                                        '*.inf;*.hlp',
                                        true,
                                        false,
@@ -511,7 +508,7 @@ Begin
     end
     else
     begin
-      ListFilesInDirectory( Dir, '*.inf;*.hlp', true, Files);
+      ListFilesInDirectory( tmpDir, '*.inf;*.hlp', true, Files);
     end;
   end;
 
@@ -601,23 +598,26 @@ Procedure TGlobalSearchForm.DoSearch;
 var
   tmpSelectedDirectories : TStringList;
   i : integer;
+  tmpSearchText: string;
 
-  SearchText: string;
   Query: TTextSearchQuery;
   SearchParameters: TSearchParameters;
 Begin
+  // LogEvent(LogDebug, 'DoSearch');
+
   if ThreadManager.IsRunning then
   begin
     ThreadManager.Stop;
     exit;
   end;
 
-  SearchText := trim( SearchTextEdit.Text );
-  if SearchText = '' then
+  tmpSearchText := trim( SearchTextEdit.Text );
+  if tmpSearchText = '' then
     exit;
 
+  // LogEvent(LogDebug, 'DoSearch: ' + tmpSearchText);
   try
-    Query := TTextSearchQuery.Create(SearchText);
+    Query := TTextSearchQuery.Create(tmpSearchText);
   except
     on e: ESearchSyntaxError do
     begin
@@ -639,6 +639,8 @@ Begin
 
   tmpSelectedDirectories := TStringList.Create;
   GetSelectedDirectories(tmpSelectedDirectories);
+
+  LogEvent(LogDebug, 'DoSearch: tmpSelectedDirectories.Count ' + IntToStr(tmpSelectedDirectories.Count));
 
   // clear the list and add only the selected ones
   for i := 0 to tmpSelectedDirectories.Count - 1 do
@@ -698,7 +700,8 @@ begin
   for TopicIndex := 0 to SearchResult.MatchingTopics.Count - 1 do
   begin
     Topic := SearchResult.MatchingTopics[ TopicIndex ];
-    FileNode.AddChild( Topic.Title, TObject(Topic.Index) );
+    FileNode.AddChild( Topic.Title,
+                       TObject( Topic.Index ) );
   end;
 end;
 
@@ -752,6 +755,5 @@ end;
 Initialization
   RegisterClasses ([TGlobalSearchForm, TEdit, TLabel,
     TProgressBar, TButton, TOutline2, TComboBox, TBevel, TLed, TTimer]);
-
-  RegisterUpdateProcForLanguages(EnsureGlobalSearchFormLoaded);
+  RegisterUpdateProcForLanguages( EnsureGlobalSearchFormLoaded );
 End.

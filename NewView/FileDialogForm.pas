@@ -558,29 +558,25 @@ End;
 
 Procedure TFileDialogForm.OnLanguageEvent( Language: TLanguageFile;
                                            const Apply: boolean );
-var
-  tmpPrefix : String;
 begin
-  // LogEvent(LogI18n, 'TFileDialogForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
+  LogEvent(LogI18n, 'TFileDialogForm.OnLanguageEvent apply: "' + BoolToStr(Apply) + '"');
   Language.LoadComponentLanguage( self, Apply );
 
-  tmpPrefix := 'FileDialogForm' + LANGUAGE_LABEL_DELIMITER;
-
-  Language.LL( Apply, InvalidFilterErrorTitle, tmpPrefix + 'InvalidFilterErrorTitle', 'File Filter Error' );
+  Language.LL( Apply, InvalidFilterErrorTitle, 'InvalidFilterErrorTitle', 'File Filter Error' );
   Language.LL( Apply,
                InvalidFilterError,
-               tmpPrefix + 'InvalidFilterError',
+               'InvalidFilterError',
                ' is not a valid filename filter. '
                + 'You cannot use any of these characters: ' );
-  Language.LL( Apply, FileNotFoundErrorTitle, tmpPrefix + 'FileNotFoundErrorTitle', 'File Not Found' );
-  Language.LL( Apply, FileNotFoundError, tmpPrefix + 'FileNotFoundError', 'File does not exist:' );
-  Language.LL( Apply, MultiSelectErrorTitle, tmpPrefix + 'MultiSelectErrorTitle', 'Multi-Select' );
-  Language.LL( Apply, MultiSelectError, tmpPrefix + 'MultiSelectError', 'You can only select one file' );
+  Language.LL( Apply, FileNotFoundErrorTitle, 'FileNotFoundErrorTitle', 'File Not Found' );
+  Language.LL( Apply, FileNotFoundError, 'FileNotFoundError', 'File does not exist:' );
+  Language.LL( Apply, MultiSelectErrorTitle, 'MultiSelectErrorTitle', 'Multi-Select' );
+  Language.LL( Apply, MultiSelectError, 'MultiSelectError', 'You can only select one file' );
 end;
 
 Procedure TFileDialogForm.FileDialogFormOnCreate (Sender: TObject);
 Begin
-  RegisterEventForLanguages( OnLanguageEvent );
+  RegisterForLanguages( OnLanguageEvent );
 
   FileMask := '*.*';
 End;

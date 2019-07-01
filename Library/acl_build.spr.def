@@ -1,0 +1,8 @@
+[Directories]
+
+OutDir=@NV_DEV@\build\library
+LibDir=@NV_DEV@\build\sibyl\lib
+
+[Project Files]
+
+Primary=.\ACLLibrary.pas

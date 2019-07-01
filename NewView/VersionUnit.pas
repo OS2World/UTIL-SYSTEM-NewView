@@ -2,7 +2,7 @@ Unit VersionUnit;
 
 // NewView - a new OS/2 Help Viewer
 // Copyright 2003-2006 Aaron Lawrence (aaronl at consultant dot com)
-// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
+// Copyright 2006-2019 Ronald Brill (rbri at rbri dot de)
 // This software is released under the Gnu Public License - see readme.txt
 
 Interface
@@ -10,12 +10,17 @@ Interface
 // This file contains the version number and history.
 
 function GetAppVersion: string;
+function GetCopyrightMsg: string;
+function GetLicenseMsg: string;
 
 Implementation
 
 const
-  Version =        'V2.20.beta3'; // $SS_REQUIRE_NEW_VERSION$
-  BldLevelVersion = '2.20.beta3'; // Embedded for IBM BLDLEVEL tool
+  Version =        'V2.19.6'; // $SS_REQUIRE_NEW_VERSION$
+  BldLevelVersion = '2.19.6'; // Embedded for IBM BLDLEVEL tool
+  CopyrightMsg = 'Copyright 2005 Aaron Lawrence; 2006-2019 Ronald Brill';
+  LicenseMsg   = 'Licensed under the GNU Public License';
+
 
 // RELEASE PROCESS
 // - notify translators
@@ -39,8 +44,8 @@ const
 
 { Todo list
 
-Emphasis:
-  major bugs
+Emphasis: 
+  major bugs 
   missing features that original IPF had.
   major performance issues [none really remaining?]
     - decoding images/text on older machines
@@ -63,8 +68,8 @@ Emphasis:
 - MINOR Link control - custom cursors for default controls
  - default cursor for rich text view
    - don't call default window proc for wm_mousemove
-   - need to override .wmmousemove...
-
+   - need to override .wmmousemove... 
+   
 - MODERATE [PERF]: New art decoder from Sergei
 - MINOR [DEBUG]: Continue removing units to keep debugger
   e.g. Remove file dialog and color wheel to dll?
@@ -98,14 +103,14 @@ Printing
 - MAJOR [ENH] Complete
   - Contents
   - Index
-  - Page/Topic numbers
+  - Page/Topic numbers 
   - Optional hidden topics?
 
 International
 - MODERATE DBCS
   - cursor
   - find
-- Codepage support
+- Codepage support 
   - file
   - codepages in font specifications
 
@@ -139,6 +144,7 @@ New features
 - Mouse wheel
 - Free-standing notes
 - Font lib from Innotek
+- Export whole file 1 day?
 
 Rich Text View
 - Select/copy and save support, for images.
@@ -183,7 +189,7 @@ Performance
     version.
     Scott from IBM suggested using the original functions
     in helpmgr.dll.
-
+ 
 - Make navigation back and forth
   detect differences in windows and make minimum changes 1/2 day
   zorder
@@ -197,6 +203,16 @@ Minor
 function GetAppVersion: string;
 begin
   Result:= Version;
+end;
+
+function GetCopyrightMsg: string;
+begin
+  Result:= CopyrightMsg;
+end;
+
+function GetLicenseMsg: string;
+begin
+  Result:= LicenseMsg;
 end;
 
 const

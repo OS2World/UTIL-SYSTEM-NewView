@@ -13,7 +13,9 @@ Uses
   Semaphores,
   SharedMemoryUnit,
 
+  AStringUtilityUnit,
   FileUtilsUnit,
+  DriveInfoUnit,
   StringUtilsUnit,
   CharUtilsUnit,
   DebugUnit;
@@ -48,7 +50,8 @@ Implementation
 
 uses
   SysUtils,
-  ACLString, AStringUtilityUnit,
+  ACLString,
+  AStringUtilityUnit,
   RunProgramUnit;
 
 Procedure TACLLibraryTestForm.FindButtonOnClick (Sender: TObject);

@@ -28,10 +28,12 @@ uses
                         LogNHM,
                         LogViewStub,
                         LogObjConstDest,
+                        LogMem,
                         LogDebug
     );
     LogAspects = SET OF LogAspect;
 
+  Function IsLogAspectsEnabled(const aLogAspect: LogAspect) : boolean;
   Procedure LogEvent(const aLogAspect: LogAspect; const anEventDescription: String);
 
 
@@ -143,6 +145,7 @@ uses
       LogNHM          : result := 'NewHelpManager';
       LogViewStub     : result := 'ViewStub';
       LogObjConstDest : result := 'ObjConstDest';
+      LogMem          : result := 'Mem';
       LogDebug        : result := 'Debug';
       else              result := 'Unknown';
       end;
@@ -169,6 +172,7 @@ uses
       if tmpAspects[i] = 'LogNHM'          then activeLogAspects := activeLogAspects + [ LogNHM ];
       if tmpAspects[i] = 'LogViewStub'     then activeLogAspects := activeLogAspects + [ LogViewStub ];
       if tmpAspects[i] = 'LogObjConstDest' then activeLogAspects := activeLogAspects + [ LogObjConstDest ];
+      if tmpAspects[i] = 'LogMem'          then activeLogAspects := activeLogAspects + [ LogMem ];
       if tmpAspects[i] = 'LogDebug'        then activeLogAspects := activeLogAspects + [ LogDebug ];
     end;
 
@@ -176,11 +180,17 @@ uses
   End;
 
 
+  Function IsLogAspectsEnabled(const aLogAspect: LogAspect) : boolean;
+  Begin
+    result := aLogAspect IN activeLogAspects;
+  End;
+
+
   Procedure LogEvent(const aLogAspect: LogAspect; const anEventDescription: String);
   Var
     tmpMessage : String;
   Begin
-    if (aLogAspect IN activeLogAspects) then
+    if IsLogAspectsEnabled(aLogAspect) then
     begin
       tmpMessage := 'Log[' + GetAspectPrefix(aLogAspect) + ']  ' + anEventDescription;
       PmPrintf(tmpMessage);

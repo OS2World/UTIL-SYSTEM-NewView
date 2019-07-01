@@ -311,7 +311,8 @@ var
 Procedure OnLanguageEvent( Language: TLanguageFile;
                            const Apply: boolean );
 begin
-  Language.LL( Apply, DefaultTitle, 'HelpTopic' + LANGUAGE_LABEL_DELIMITER + 'DefaultTitle', '(No title)' );
+  Language.Prefix := 'HelpTopic.';
+  Language.LL( Apply, DefaultTitle, 'DefaultTitle', '(No title)' );
 end;
 
 
@@ -986,8 +987,7 @@ begin
       // then put code in to show it.
       if not Link.Automatic then
       begin
-        OutputString := '<blue>'
-                        + GetBeginLink( State.LinkIndex );
+        OutputString := '<blue>' + GetBeginLink(State.LinkIndex);
       end;
 
       inc( State.LinkIndex );
@@ -1038,7 +1038,6 @@ begin
                       + ' '
                       + ExternalLinkTopicID
                       + '>'
-
     end;
 
     ecProgramLink:
@@ -1053,21 +1052,21 @@ begin
 
       ProgramFilename := ExtractFilename( ProgramPath );
 
-      if    StrStartsWithIgnoringCase(ProgramFilename, PRGM_EXPLORER)
+      if    StrStartsWithIgnoringCase(ProgramFilename, PRGM_EXPLORER) // web explorer?
          or StrStartsWithIgnoringCase(ProgramFilename, PRGM_NETSCAPE)
          or StrStartsWithIgnoringCase(ProgramFilename, PRGM_MOZILLA)
          or StrStartsWithIgnoringCase(ProgramFilename, PRGM_FIREFOX)
-         then
+      then
       begin
         OutputString := '<blue><link ' + PARAM_LINK_URL + ' '
-                        + FullDoubleQuote( ProgramLink )
+                        + FullDoubleQuote(StrSubstringFrom(ProgramLink, Length(ProgramPath) + 2))
                         + '>';
       end
       else
       begin
         ProgramInfo := TSerializableStringList.create;
         ProgramInfo.add(ProgramPath);
-        ProgramInfo.add(ProgramLink);
+        ProgramInfo.add(StrSubstringFrom(ProgramLink, Length(ProgramPath) + 2));
         OutputString := '<blue><link ' + PARAM_LINK_PROGRAM + ' '
                         + ProgramInfo.getSerializedString
                         + '>';
@@ -1461,8 +1460,8 @@ function TTopic.CheckForSequence( WordSequences: TList;
                                   GlobalDictIndex: longint;
                                 ): longint;
 var
-  WordSequence: TList;
-  SequenceStepIndex: longint;
+  tmpWordSequence: TList;
+  tmpSequenceStepIndex: longint;
   pSequenceStepWords: Uint32ArrayPointer;
 
   SequenceIndex: longint;
@@ -1477,34 +1476,31 @@ begin
 
   for SequenceIndex := 0 to WordSequences.Count - 1 do
   begin
-    WordSequence := WordSequences[ SequenceIndex ];
-    pSequenceStepWords := WordSequence[ 0 ];
+    tmpWordSequence := WordSequences[ SequenceIndex ];
+    pSequenceStepWords := tmpWordSequence[ 0 ];
 
     if pSequenceStepWords^[ GlobalDictIndex ] > 0 then
     begin
       // matched first step in this sequence. Look ahead...
-
-      SequenceStepIndex := 0;
+      tmpSequenceStepIndex := 1;
 
       pDataTemp := pData;
       SlotIndexTemp := SlotIndex;
       StateTemp := State;
+
       while true do
       begin
-        inc( SequenceStepIndex );
-        if SequenceStepIndex = WordSequence.Count then
+        if tmpSequenceStepIndex = tmpWordSequence.Count then
         begin
-          // have a match for the sequence, insert start highlight
-          Result := WordSequence.Count;
+          // have a match for the sequence; time to leave
+          Result := tmpWordSequence.Count;
           break;
         end;
 
         // get words for next step in sequence
-        pSequenceStepWords := WordSequence[ SequenceStepIndex ];
+        pSequenceStepWords := tmpWordSequence[ tmpSequenceStepIndex ];
 
-        DictIndex := GetNextIPFTextItem( SlotIndexTemp,
-                                         pDataTemp,
-                                         StateTemp );
+        DictIndex := GetNextIPFTextItem( SlotIndexTemp, pDataTemp, StateTemp );
         if DictIndex = -2 then
         begin
           // end of text - abort
@@ -1519,6 +1515,9 @@ begin
         end;
 
         // s := pstring( _GlobalDictionary[ DictIndex ] )^; // for debug only
+
+
+        // ignore whitespace
         if not StrIsEmptyOrSpaces( pstring( _GlobalDictionary[ DictIndex ] )^ ) then
         begin
           if pSequenceStepWords^[ DictIndex ] = 0 then
@@ -1526,6 +1525,9 @@ begin
             // word doesn't match - abort
             break;
           end;
+
+          // match; next one
+          inc(tmpSequenceStepIndex);
         end;
 
       end; // while
@@ -1534,6 +1536,7 @@ begin
     // else - doesn't match first step, do nothing
   end; // for sequenceindex ...
 end;
+
 
 // Main translation function. Turns the IPF data into
 // a text string. Translates formatting codes into tags
@@ -1638,7 +1641,9 @@ begin
         GlobalDictIndex := Slot.pLocalDictionary^[ LocalDictIndex ];
 
         if ShowWordSeparators then
+        begin
           Text.AddString( '{' + IntToStr( GlobalDictIndex )+ '}' );
+        end;
 
         // normal lookup
         if GlobalDictIndex < _GlobalDictionary.Count then
@@ -1657,8 +1662,10 @@ begin
 
           // store string into "word"
           if State.TextBlock.Length = 0 then
+          begin
             // store start of block
             State.StartOfTextBlock := Text.Length;
+          end;
 
           State.TextBlock.AddString( StringToAdd );
 
@@ -1673,9 +1680,7 @@ begin
               if SequenceStepIndex = 0 then
               begin
                 // now finished, insert end highlight
-                StringToAdd := StringToAdd
-                               + State.BackgroundColorTag;
-
+                StringToAdd := StringToAdd + State.BackgroundColorTag;
               end;
             end
             else
@@ -1700,8 +1705,7 @@ begin
                 dec( SequenceStepIndex );
                 if SequenceStepIndex = 0 then
                   // and ends it.
-                  StringToAdd := StringToAdd
-                           + State.BackgroundColorTag;
+                  StringToAdd := StringToAdd + State.BackgroundColorTag;
               end;
 
             end;
@@ -1739,7 +1743,8 @@ begin
             EscapeLen := pData^;
             for i := 1 to EscapeLen - 1 do
             begin
-              Text.AddString( ' ' + IntToHex( ( pData + i )^, 2 ) );
+              Text.AddString( ' '
+                              + IntToHex( ( pData + i )^, 2 ) );
             end;
 
           end;
@@ -1821,8 +1826,8 @@ begin
     end; // for slotindex = ...
   end;
   State.TextBlock.Destroy;
-
 end;
+
 
 function TTopic.SearchForWord( DictIndex: integer;
                                StopAtFirstOccurrence: boolean )

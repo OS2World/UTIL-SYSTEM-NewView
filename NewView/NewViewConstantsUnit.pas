@@ -2,7 +2,7 @@ Unit NewViewConstantsUnit;
 
 // NewView - a new OS/2 Help Viewer
 // Copyright 2003 Aaron Lawrence (aaronl at consultant dot com)
-// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
+// Copyright 2007 Ronald Brill (rbri at rbri dot de)
 // This software is released under the Gnu Public License - see readme.txt
 
 // Common used constants for NewView

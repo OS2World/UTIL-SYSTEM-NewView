@@ -1,5 +1,12 @@
 unit RunProgramUnit;
 
+// NewView - a new OS/2 Help Viewer
+// Copyright 2003-2006 Aaron Lawrence
+// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
+// This software is released under the GNU Public License - see readme.txt
+
+// Helper functions for starting programs
+
 interface
 
 Uses
@@ -385,6 +392,8 @@ Begin
   // we don't care if it just started in the background!
   if rc = ERROR_SMG_START_IN_BACKGROUND then
     rc := 0;
+
+  result := rc;
 end;
 {$endif}
 

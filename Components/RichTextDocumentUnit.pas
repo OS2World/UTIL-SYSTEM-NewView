@@ -35,12 +35,15 @@ type
     Arguments: string;
   end;
 
-  TTextElementType = ( teText, // a character
+  TTextElementType = ( teText,              // a character
                        teWordBreak,
-                       teLineBreak, // end of para
+                       teLineBreak,         // end of para
                        teTextEnd,
                        teImage,
-                       teStyle );
+                       teStyle,
+                       teWrapChar,          // A non-whitespace wrappable character (ALT)
+                       teLeadByte,          // DBCS lead byte (ALT)
+                       teSecondByte );      // DBCS secondary byte (ALT)
 
   TTextElement = record
     ElementType: TTextElementType;
@@ -113,13 +116,41 @@ function CopyPlainTextToBuffer( StartP: PChar;
                                 Buffer: PChar;
                                 BufferLength: longint ): longint;
 
+
+// ALT begins
+//
+
+// Check for special text element types and adjust value accordingly.
+procedure CheckSpecialElementType( const Character:   Char;
+                                   var   ElementType: TTextElementType;
+                                   var   InsideDBC:   Boolean;
+                                   const Codepage:    LongInt );
+
+// Returns true if the given byte value is a legally-wrappable single-byte
+// character under the given Asian codepage.
+function IsAsianWrapChar( const CharByte: Byte;
+                          const Codepage: LongInt ): boolean;
+
+// Returns true if the given byte value is the leading byte of a multi-byte
+// character under the given Asian codepage.
+function IsDBCSLeadByte( const CharByte: Byte;
+                         const Codepage: LongInt ): boolean;
+
+// Returns true if the given byte value is valid as a possible second byte of
+// a multi-byte character (this does not guarantee that it IS one, just that
+// it COULD be).
+function IsDBCSSecondByte( const CharByte: Byte;
+                           const Codepage: LongInt ): boolean;
+//
+// ALT ends
+
+
 Implementation
 
 uses
   BseDOS, // for NLS/case mapping
   SysUtils,
-  CharUtilsUnit,
-  StringUtilsUnit;
+  ACLStringUtility;
 
 const
   TagStr: array[ ttInvalid .. ttEnd ] of string =
@@ -239,7 +270,7 @@ begin
       exit;
     end;
 
-    if CurrentChar = CharDoubleQuote then
+    if CurrentChar = DoubleQuote then
     begin
       if not InQuote then
       begin
@@ -248,7 +279,7 @@ begin
       else
       begin
         // Could be escaped quote ""
-        if ( TextPointer + 1 ) ^ = CharDoubleQuote then
+        if ( TextPointer + 1 ) ^ = DoubleQuote then
         begin
           // yes it is
           inc( TextPointer ); // skip second one
@@ -307,7 +338,7 @@ begin
       exit;
     end;
 
-    if CurrentChar = CharDoubleQuote then
+    if CurrentChar = DoubleQuote then
     begin
       if not InQuote then
       begin
@@ -321,7 +352,7 @@ begin
           // start of text... somethin weird
           InQuote := false;
         end
-        else if ( TextPointer - 1 ) ^ = CharDoubleQuote then
+        else if ( TextPointer - 1 ) ^ = DoubleQuote then
         begin
           // yes it is
           dec( TextPointer ); // skip second one
@@ -349,13 +380,14 @@ function ExtractNextTextElement( TextPointer: PChar;
                                  Var NextElement: PChar ): TTextElement;
 var
   TheChar: Char;
-  NextChar: char;
+  NextChar: Char;
 begin
   with Result do
   begin
     TheChar := TextPointer^;
     Character := TheChar;
     inc( TextPointer );
+
 
     case TheChar of
       ' ': // ---- Space (word break) found ----
@@ -404,10 +436,15 @@ begin
           inc( TextPointer );
       end;
 
+//    '-': // ---- Hyphen (ALT)
+//      ElementType := teWrapChar;
+
       else
         ElementType := teText;
     end;
+
   end; // with
+
   NextElement := TextPointer;
 end;
 
@@ -485,6 +522,10 @@ begin
             dec( TextPointer );
         end;
       end
+
+//    '-': // ---- Hyphen (ALT)
+//      ElementType := teWrapChar;
+
       else
         ElementType := teText;
     end;
@@ -503,7 +544,7 @@ begin
     if ColorParam[ 1 ] = '#' then
     begin
       try
-        Color := HexStrToLongInt( StrSubstringFrom( ColorParam, 2 ) );
+        Color := HexToInt( StrRightFrom( ColorParam, 2 ) );
         Result := true;
       except
       end;
@@ -512,7 +553,7 @@ begin
     begin
       for ColorIndex := 0 to High( StandardColors ) do
       begin
-        if StrEqualIgnoringCase( ColorParam, StandardColors[ ColorIndex ].Name ) then
+        if StringsSame( ColorParam, StandardColors[ ColorIndex ].Name ) then
         begin
           Color := StandardColors[ ColorIndex ].Color;
           Result := true;
@@ -526,11 +567,11 @@ end;
 function GetTagTextAlignment( const AlignParam: string;
                               const Default: TTextAlignment ): TTextAlignment;
 begin
-  if StrEqualIgnoringCase( AlignParam, 'left' ) then
+  if StringsSame( AlignParam, 'left' ) then
     Result := taLeft
-  else if StrEqualIgnoringCase( AlignParam, 'center' ) then
+  else if StringsSame( AlignParam, 'center' ) then
     Result := taCenter
-  else if StrEqualIgnoringCase( AlignParam, 'right' ) then
+  else if StringsSame( AlignParam, 'right' ) then
     Result := taRight
   else
     Result := Default;
@@ -538,7 +579,7 @@ end;
 
 function GetTagTextWrap( const WrapParam: string ): boolean;
 begin
-  Result := StrEqualIgnoringCase( WrapParam, 'yes' );
+  Result := StringsSame( WrapParam, 'yes' );
 end;
 
 function RichTextFindString( pRichText: PChar;
@@ -620,7 +661,7 @@ begin
             // found a complete match
             Result := true;
             pMatch := pMatchStart;
-            MatchLength := PCharPointerDiff( P, pMatchStart )
+            MatchLength := PCharDiff( P, pMatchStart )
                            + 1; // include this char
             exit;
           end;
@@ -747,7 +788,7 @@ begin
     Element := ExtractPreviousTextElement( pRichText, P, NextP );
   end;
   pWordStart := P;
-  WordLength := PCharPointerDiff( pWordEnd, pWordStart );
+  WordLength := PCharDiff( pWordEnd, pWordStart );
   Result := true;
 end;
 
@@ -799,8 +840,121 @@ begin
 
     P := NextP;
   end;
-  result := PCharPointerDiff( Q, Buffer );
+
+  Q[ 0 ] := #0;         // ALT - make sure string is terminated
+
+  result := PCharDiff( Q, Buffer );
 end;
+
+// ALT begins
+//
+// Check for special text element types that depend on context.
+//
+procedure CheckSpecialElementType( const Character:   Char;
+                                   var   ElementType: TTextElementType;
+                                   var   InsideDBC:   Boolean;
+                                   const Codepage:    LongInt );
+var
+  CharByte: Byte;
+begin
+  if Codepage in [ 874, 932, 936, 942, 943, 949, 950, 1381, 1386 ] then
+  begin
+    CharByte := ord( Character );
+    if InsideDBC then
+    begin
+        InsideDBC := false;
+        // sanity check for corrupt text sequence (definitely not foolproof)
+        if IsDBCSSecondByte( CharByte, Codepage ) then
+          ElementType := teSecondByte
+        else
+          ElementType := teText;
+    end
+    else
+    begin
+      if IsAsianWrapChar( CharByte, Codepage ) then
+      begin
+        ElementType := teWrapChar;
+        InsideDBC := false;
+      end
+      else if IsDBCSLeadByte( CharByte, Codepage ) then
+      begin
+        ElementType := teLeadByte;
+        InsideDBC := true;
+      end;
+    end;
+  end;
+end;
+
+// Check if this (single-byte) character is a legal wrap point under certain
+// Asian codepages. This is really only used for Thai and for Japanese
+// half-width katakana; other DBCS languages use double-byte characters for all
+// their native glyphs.
+//
+function IsAsianWrapChar( const CharByte: Byte;
+                          const Codepage: LongInt ): boolean;
+begin
+    Result := false;
+
+    if ( CharByte < $80) then
+      exit;
+
+    case Codepage of
+      932, 942, 943:        // Japanese
+        if CharByte in [ $A2, $A6, $B1..$DD ] then
+          Result := true;
+      874:                  // Thai
+        Result := true;
+    end;
+end;
+
+// Check if this is the lead byte of a double-byte character. This is essential
+// to know in certain cases:
+//  - Nothing must ever be inserted between such a byte and the next byte
+//    (e.g. line break, tag, etc).
+//  - Cursor position must never be set between such a byte and the next byte.
+//  - Selection state must never change between such a byte and the next byte.
+//
+function IsDBCSLeadByte( const CharByte: Byte;
+                         const Codepage: LongInt ): boolean;
+begin
+    Result := false;
+
+    case Codepage of
+      932, 942, 943:        // Japanese
+        if CharByte in [ $81..$9F, $E0..$FC ] then
+          Result := true;
+      949:                  // Korean KSC
+        if CharByte in [ $85..$FE ] then
+          Result := true;
+      1381:                 // Chinese GB2312
+        if CharByte in [ $8C..$FE ] then
+          Result := true;
+      936, 950, 1386:       // Chinese BIG-5 or GBK
+        if CharByte in [ $81..$FE ] then
+          Result := true;
+    end;
+end;
+
+// Check to see if this byte is a valid second byte in a double-byte character.
+// (This doesn't guarantee that it IS such a byte, only that it COULD be. The
+// caller is assumed to know whether we're in a double byte character or not.)
+//
+function IsDBCSSecondByte( const CharByte: Byte;
+                           const Codepage: LongInt ): boolean;
+begin
+    Result := false;
+
+    case Codepage of
+      932, 936, 942, 943, 949, 950, 1386:
+        if CharByte >= $40 then
+          Result := true;
+      1381:
+        if CharByte >= $A1 then
+          Result := true;
+    end;
+end;
+//
+// ALT ends
 
 Initialization
 End.

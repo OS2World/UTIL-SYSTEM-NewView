@@ -1,11 +1,37 @@
 NewView release changes
 
-V2.20
-- big parts of the translation engine are refactored. The files are now sorted by label
-  if you export them.
-- More german translations added
-- There was a print message that was not 'translatable'; fixed
-- The File Open dialog had problems with archived directories; fixed (see bug #31)
+V2.19.6
+- Text wrapping takes better account of the total margin width; this is mainly
+   noticeable with DBCS text.
+- Fix: In rare cases, clicking on a link in 2.19.5 could cause text to be
+   highlighted instead.
+- Fix: Rebuilt helpmgr.dll with farcalls optimization disabled. This fixes some
+   reported problems with 2.19.5 caused by changed defaults in the OW compiler.
+- Installer: Try not to relocate an existing NewView program object.
+
+V2.19.5
+- Fix: Wrapping, navigating and selecting of DBCS and Thai text should now work
+   (more or less).
+- Fix: Text copied to the clipboard should no longer have garbage appended.
+
+V2.19.4
+- Swedish translation added (Thanks to Bj”rn S”derstr”m)
+- Fix: NewView is now able to open really large help files (e.g. jdk14corba.inf with 11921536bytes).
+- Fix: In some situations the highlighting of the search results marks to many places in a topic.
+
+V2.19.3
+- Support for 'Internet-Application-Integration' added.
+  NewView is now able to start different applications for news, mail and ftp.
+- Fix: More link fixes.
+- Fix: Links in the about dialog are working as expected.
+- Fix: Searching all drives works again.
+
+V2.19.2
+- never released to the public
+
+V2.19.1
+- Fix: Broken link handling; NewView was unable to start a program or open the web browser.
+- Fix: Detection of links pointing to a url was not working.
 
 
 V2.19

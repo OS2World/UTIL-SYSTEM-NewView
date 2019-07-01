@@ -65,6 +65,7 @@ Const
   NumFontSettings = 1;
 
   DefaultTopicFontName = 'Helv';
+  DefaultTopicFontNameDBCS = 'Helv Combined';
   DefaultTopicFontSize = 8;
 
   DefaultTopicFixedFontName = 'Courier';
@@ -318,9 +319,14 @@ Begin
       end;
 
       // Fonts
-      NormalFont := Screen.GetFontFromPointSize(
-        ReadString( FontsSection, 'NormalFont', DefaultTopicFontName ),
-        ReadInteger( FontsSection, 'NormalFontSize', DefaultTopicFontSize ) );
+      if Application.DBCSSystem then
+        NormalFont := Screen.GetFontFromPointSize(
+          ReadString( FontsSection, 'NormalFont', DefaultTopicFontNameDBCS ),
+          ReadInteger( FontsSection, 'NormalFontSize', DefaultTopicFontSize ) )
+      else
+        NormalFont := Screen.GetFontFromPointSize(
+          ReadString( FontsSection, 'NormalFont', DefaultTopicFontName ),
+          ReadInteger( FontsSection, 'NormalFontSize', DefaultTopicFontSize ) );
       if NormalFont = nil then
         NormalFont := Screen.DefaultFont;
 
@@ -640,8 +646,8 @@ End;
   Begin
     aStrings.Add('');
     aStrings.Add('---- Settings ----');
-    aStrings.Add('info: ' + IntToStr(WinQuerySysValue(HWND_DESKTOP, SV_CXSCREEN)));
-    aStrings.Add('info: ' + IntToStr(Screen.Width));
+    aStrings.Add('info WinQuerySysValue(HWND_DESKTOP, SV_CXSCREEN): ' + IntToStr(WinQuerySysValue(HWND_DESKTOP, SV_CXSCREEN)));
+    aStrings.Add('info Screen.Width: ' + IntToStr(Screen.Width));
 
     // some tests
     {

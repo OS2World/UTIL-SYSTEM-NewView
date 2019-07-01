@@ -436,9 +436,9 @@ Hobbes
 .br
 :p.Browsers may also have the ability to make themselves the default&comma.
 either at install time or in preferences&per.
-:p.Email&comma. Newsgroups and FTP links are also passed to the web browser&per.
-At this time&comma. it isn&apos.t possible to choose a different program for
-these links&per.
+:p.NewView takes care of the setup done by Internet-Application-Integration (IAI). Email&comma. Newsgroups and FTP
+links are passed to the program you have configured. If there is no program for a specific url type&comma.
+then the links are passed to the web browser.
 :p.:hp2.Note to help file authors:ehp2.
 :p.The original View had no understanding of URL or email links&comma. so the
 only way to implement them was a link to&comma. for example&comma.

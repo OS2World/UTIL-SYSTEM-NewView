@@ -44,3 +44,7 @@ CFLAGS=/bt=os2 /s /wx /zq $(MODE_CFLAGS)
   wcc386 $(CFLAGS) $*.c
 
 newview.obj: newview.c
+
+clean : .SYMBOLIC
+        -del .\*.obj 2>nul
+        -del .\*.err 2>nul

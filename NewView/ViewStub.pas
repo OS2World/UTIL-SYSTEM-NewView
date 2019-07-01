@@ -19,6 +19,8 @@ Uses
   StringUtilsUnit,
   StartupUnit;
 
+{$R ViewStub}
+
 var
   Details: PROGDETAILS;
   Parameters: pchar;
@@ -56,34 +58,33 @@ var
   // activate it and return true.
   Function FindExistingWindow(aCmdLineParameters : TCmdLineParameters) : HWND;
   var
+    tmpFileItems: TStringList;
     tmpFilenames: TStringList;
     tmpFullFilePath: string;
     i: longint;
-    tmpFileWindow: HWND;
 
+    FileWindow: HWND;
   begin
     result := NULLHANDLE;
 
-    if aCmdLineParameters.getFileNames(true) = '' then
-    begin
+    if aCmdLineParameters.getFileNames(false) = '' then
       // not loading files; nothing to check
       exit;
-    end;
 
+    tmpFileItems := TStringList.Create;
     tmpFilenames := TStringList.Create;
 
-    ParseAndExpandFileNames(aCmdLineParameters.getFileNames(true), tmpFilenames);
+    StrExtractStrings(tmpFileItems, aCmdLineParameters.getFileNames(false), ['+'], #0);
+    TranslateIPFEnvironmentVars(tmpFileItems, tmpFileNames );
 
     for i := 0 to tmpFileNames.Count - 1 do
     begin
-      LogEvent(LogStartup, 'Search in GlobalFileList for ''' + tmpFilenames[i] + '''');
-
-      tmpFullFilePath := FindHelpFile( tmpFilenames[i] );
+      tmpFullFilePath := FindHelpFile( tmpFilenames[ i ] );
       if tmpFullFilePath <> '' then
       begin
-        tmpFileWindow := GlobalFilelist.FindFile(tmpFullFilePath);
+        FileWindow := GlobalFilelist.FindFile(tmpFullFilePath);
 
-        if tmpFileWindow = NULLHANDLE then
+        if FileWindow = NULLHANDLE then
         begin
           // not found - stop searching.
           Result := NULLHANDLE; // no match
@@ -91,12 +92,11 @@ var
         end;
 
         // found it
-        LogEvent(LogStartup, 'Found in GlobalFileList for ''' + tmpFullFilePath + '''');
 
         // is it the same as any previous match?
         if Result <> NULLHANDLE then
         begin
-          if tmpFileWindow <> Result then
+          if FileWindow <> Result then
           begin
             // no, so we don't have a match.
             // NOTE: We just excluded something: if the same file is
@@ -108,12 +108,13 @@ var
         else
         begin
           // no match yet - store this one
-          result := tmpFileWindow;
+          result := FileWindow;
         end;
       end;
     end;
 
     tmpFilenames.Destroy;
+    tmpFileItems.Destroy;
   end;
 
 

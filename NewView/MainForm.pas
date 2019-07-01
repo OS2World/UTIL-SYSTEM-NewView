@@ -2,7 +2,7 @@ Unit MainForm;
 
 // NewView - a new OS/2 Help Viewer
 // Copyright 2003-2006 Aaron Lawrence (aaronl at consultant dot com)
-// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
+// Copyright 2006-2007 Ronald Brill (rbri at rbri dot de)
 // This software is released under the Gnu Public License - see readme.txt
 
 Interface
@@ -382,7 +382,8 @@ Type
 
     Procedure AddCurrentToMRUFiles;
 
-    Function LoadFiles(const aFileNames: TStrings; aHelpFiles: TList) : boolean;
+    Function LoadFiles( const FileNames: TStrings;
+                        HelpFiles: TList ): boolean;
     Procedure DisplayFiles( NewFiles: TList;
                             Var FirstContentsNode: TNode );
 
@@ -460,7 +461,8 @@ Type
 
     // language stuff
     // called by callback
-    Procedure OnLanguageEvent(Language: TLanguageFile; const Apply: boolean );
+    Procedure OnLanguageEvent( Language: TLanguageFile;
+                               const Apply: boolean );
 
     function ShowCodes: boolean;
     function ShowWordIndices: boolean;
@@ -688,7 +690,6 @@ Type
     PrintTopicTitle: string;
     NoPrinterError: string;
     SelectWindowToPrintError: string;
-    PrintingComplete : string;
     PrintingError: string;
     StoppingPrintMsg: string;
     PrintStoppedMsg: string;
@@ -1363,9 +1364,8 @@ begin
     Caption := HelpProgramTitle + ' - ' + MainTitle
 end;
 
-Procedure TMainForm.OnLanguageEvent(Language: TLanguageFile; const Apply: boolean);
-var
-  tmpPrefix : String;
+Procedure TMainForm.OnLanguageEvent( Language: TLanguageFile;
+                                     const Apply: boolean );
 Begin
   // get rid of mru menu items
   DestroyListObjects( MRUMenuItems );
@@ -1390,166 +1390,163 @@ Begin
 
   // Load strings referred to by code...
   // ----------------------------------------------------------
-  tmpPrefix := 'MainForm' + LANGUAGE_LABEL_DELIMITER;
 
-  Language.LL( Apply, FileOpenTitle, tmpPrefix + 'FileOpenTitle', 'Open Help Files' );
-  Language.LL( Apply, LoadingFileMsg, tmpPrefix + 'LoadingFileMsg', 'Loading file ' );
-  Language.LL( Apply, HelpFileError, tmpPrefix + 'HelpFileError', 'Could not open ' );
-  Language.LL( Apply, LoadingStatusDisplaying, tmpPrefix + 'LoadingStatusDisplaying', 'Displaying...' );
-  Language.LL( Apply, LoadingStatusNotesAndBookmarks, tmpPrefix + 'LoadingStatusNotesAndBookmarks', 'Loading notes/bookmarks...' );
-  Language.LL( Apply, LoadingStatusContents, tmpPrefix + 'LoadingStatusContents', 'Display contents... ' );
-  Language.LL( Apply, LoadingStatusIndex, tmpPrefix + 'LoadingStatusIndex', 'Display index... ' );
-  Language.LL( Apply, LoadingStatusDone, tmpPrefix + 'LoadingStatusDone', 'Done' );
+  Language.LL( Apply, FileOpenTitle, 'FileOpenTitle', 'Open Help Files' );
+  Language.LL( Apply, LoadingFileMsg, 'LoadingFileMsg', 'Loading file ' );
+  Language.LL( Apply, HelpFileError, 'HelpFileError', 'Could not open ' );
+  Language.LL( Apply, LoadingStatusDisplaying, 'LoadingStatusDisplaying', 'Displaying...' );
+  Language.LL( Apply, LoadingStatusNotesAndBookmarks, 'LoadingStatusNotesAndBookmarks', 'Loading notes/bookmarks...' );
+  Language.LL( Apply, LoadingStatusContents, 'LoadingStatusContents', 'Display contents... ' );
+  Language.LL( Apply, LoadingStatusIndex, 'LoadingStatusIndex', 'Display index... ' );
+  Language.LL( Apply, LoadingStatusDone, 'LoadingStatusDone', 'Done' );
 
-  Language.LL( Apply, HelpFilesDesc, tmpPrefix + 'HelpFilesDesc', 'Help Files (*.inf,*.hlp)' );
-  Language.LL( Apply, AllFilesDesc, tmpPrefix + 'AllFilesDesc', 'All Files (*)' );
-  Language.LL( Apply, LanguageFilesDesc, tmpPrefix + 'LanguageFilesDesc', 'NewView Language Files (*.lng)' );
+  Language.LL( Apply, HelpFilesDesc, 'HelpFilesDesc', 'Help Files (*.inf,*.hlp)' );
+  Language.LL( Apply, AllFilesDesc, 'AllFilesDesc', 'All Files (*)' );
+  Language.LL( Apply, LanguageFilesDesc, 'LanguageFilesDesc', 'NewView Language Files (*.lng)' );
 
-  Language.LL( Apply, SaveLanguageTitle, tmpPrefix + 'SaveLanguageTitle', 'Save/Update Language File' );
-  Language.LL( Apply, OpenLanguageTitle, tmpPrefix + 'OpenLanguageTitle', 'Open Language File' );
-  Language.LL( Apply, SaveLanguageError, tmpPrefix + 'SaveLanguageError', 'Error saving language file: ' );
+  Language.LL( Apply, SaveLanguageTitle, 'SaveLanguageTitle', 'Save/Update Language File' );
+  Language.LL( Apply, OpenLanguageTitle, 'OpenLanguageTitle', 'Open Language File' );
+  Language.LL( Apply, SaveLanguageError, 'SaveLanguageError', 'Error saving language file: ' );
 
-  Language.LL( Apply, HelpManagerVersionTitle, tmpPrefix + 'HelpManagerVersionTitle', 'Help Manager Version' );
+  Language.LL( Apply, HelpManagerVersionTitle, 'HelpManagerVersionTitle', 'Help Manager Version' );
 
-  Language.LL( Apply, FindResourceIDTitle, tmpPrefix + 'FindResourceIDTitle', 'Find Resource ID' );
-  Language.LL( Apply, FindResourceIDPrompt, tmpPrefix + 'FindResourceIDPrompt', 'Enter the resource ID to find' );
-  Language.LL( Apply, InvalidResourceIDError, tmpPrefix + 'InvalidResourceIDError', 'Invalid resource ID entered' );
-  Language.LL( Apply, ResourceIDNotFoundError, tmpPrefix + 'ResourceIDNotFoundError', 'Resource ID not found' );
+  Language.LL( Apply, FindResourceIDTitle, 'FindResourceIDTitle', 'Find Resource ID' );
+  Language.LL( Apply, FindResourceIDPrompt, 'FindResourceIDPrompt', 'Enter the resource ID to find' );
+  Language.LL( Apply, InvalidResourceIDError, 'InvalidResourceIDError', 'Invalid resource ID entered' );
+  Language.LL( Apply, ResourceIDNotFoundError, 'ResourceIDNotFoundError', 'Resource ID not found' );
 
-  Language.LL( Apply, OpenSpecialTitle, tmpPrefix + 'OpenSpecialTitle', 'Open Special' );
-  Language.LL( Apply, OpenSpecialPrompt, tmpPrefix + 'OpenSpecialPrompt', 'Enter help filename/environment variable name' );
+  Language.LL( Apply, OpenSpecialTitle, 'OpenSpecialTitle', 'Open Special' );
+  Language.LL( Apply, OpenSpecialPrompt, 'OpenSpecialPrompt', 'Enter help filename/environment variable name' );
 
-  Language.LL( Apply, PrintTopicTitle, tmpPrefix + 'PrintTopicTitle', 'Print Topic' );
-  Language.LL( Apply, NoPrinterError, tmpPrefix + 'NoPrinterError', 'You don''t have a printer configured.' );
-  Language.LL( Apply, SelectWindowToPrintError, tmpPrefix + 'SelectWindowToPrintError', 'You must select the window you want to print.' );
-  Language.LL( Apply, PrintingComplete, tmpPrefix + 'PrintingComplete', 'Printing complete' );
-  Language.LL( Apply, PrintingError, tmpPrefix + 'PrintingError', 'Error while printing: ' );
-  Language.LL( Apply, StoppingPrintMsg, tmpPrefix + 'StoppingPrintMsg', 'Stopping print...' );
-  Language.LL( Apply, PrintStoppedMsg, tmpPrefix + 'PrintStoppedMsg', 'Printing stopped' );
-  Language.LL( Apply, CheckStopPrintTitle, tmpPrefix + 'CheckStopPrintTitle', 'Stop Print?' );
-  Language.LL( Apply, CheckStopPrintMsg, tmpPrefix + 'CheckStopPrintMsg', 'Printing is still in progress. It will be stopped if you close.' );
+  Language.LL( Apply, PrintTopicTitle, 'PrintTopicTitle', 'Print Topic' );
+  Language.LL( Apply, NoPrinterError, 'NoPrinterError', 'You don''t have a printer configured.' );
+  Language.LL( Apply, SelectWindowToPrintError, 'SelectWindowToPrintError', 'You must select the window you want to print.' );
+  Language.LL( Apply, PrintingError, 'PrintingError', 'Error while printing: ' );
+  Language.LL( Apply, StoppingPrintMsg, 'StoppingPrintMsg', 'Stopping print...' );
+  Language.LL( Apply, PrintStoppedMsg, 'PrintStoppedMsg', 'Printing stopped' );
+  Language.LL( Apply, CheckStopPrintTitle, 'CheckStopPrintTitle', 'Stop Print?' );
+  Language.LL( Apply, CheckStopPrintMsg, 'CheckStopPrintMsg', 'Printing is still in progress. It will be stopped if you close.' );
 
-  Language.LL( Apply, TopicInfoTitle, tmpPrefix + 'TopicInfo.Title', 'Topic Information' );
-  Language.LL( Apply, TopicInfoTopicTitle, tmpPrefix + 'TopicInfo.TopicTitle',   'Title: ' );
-  Language.LL( Apply, TopicInfoIndex, tmpPrefix + 'TopicInfo.Index',             'Index: ' );
-  Language.LL( Apply, TopicInfoFile, tmpPrefix + 'TopicInfo.File',               'File:  ' );
-  Language.LL( Apply, TopicInfoResourceIDs, tmpPrefix + 'TopicInfo.ResourceIDs', 'Resource IDs:' );
-  Language.LL( Apply, TopicInfoNoResourceIDs, tmpPrefix + 'TopicInfo.NoResourceIDs', '  (None)' );
+  Language.LL( Apply, TopicInfoTitle, 'TopicInfo.Title', 'Topic Information' );
+  Language.LL( Apply, TopicInfoTopicTitle, 'TopicInfo.TopicTitle',   'Title: ' );
+  Language.LL( Apply, TopicInfoIndex, 'TopicInfo.Index',             'Index: ' );
+  Language.LL( Apply, TopicInfoFile, 'TopicInfo.File',               'File:  ' );
+  Language.LL( Apply, TopicInfoResourceIDs, 'TopicInfo.ResourceIDs', 'Resource IDs:' );
+  Language.LL( Apply, TopicInfoNoResourceIDs, 'TopicInfo.NoResourceIDs', '  (None)' );
 
-  Language.LL( Apply, ParameterCountLabel, tmpPrefix + 'ParameterCountLabel', 'Parameter Count: ' );
+  Language.LL( Apply, ParameterCountLabel, 'ParameterCountLabel', 'Parameter Count: ' );
 
-  Language.LL( Apply, NewViewHelpTitle, tmpPrefix + 'NewViewHelpTitle', 'NewView Help' );
-  Language.LL( Apply, AlreadyNewviewHelp, tmpPrefix + 'AlreadyNewviewHelp', 'You are already viewing the NewView help file' );
-  Language.LL( Apply, NewViewHelpNotFound, tmpPrefix + 'NewViewHelpNotFound', 'Couldn''t find the NewView helpfile: ' );
+  Language.LL( Apply, NewViewHelpTitle, 'NewViewHelpTitle', 'NewView Help' );
+  Language.LL( Apply, AlreadyNewviewHelp, 'AlreadyNewviewHelp', 'You are already viewing the NewView help file' );
+  Language.LL( Apply, NewViewHelpNotFound, 'NewViewHelpNotFound', 'Couldn''t find the NewView helpfile: ' );
 
-  Language.LL( Apply, InvalidLinkErrorTitle, tmpPrefix + 'InvalidLinkErrorTitle', 'Invalid Link' );
-  Language.LL( Apply, InvalidLinkError, tmpPrefix + 'InvalidLinkError', 'Cannot follow link to nonexistent topic' );
-  Language.LL( Apply, InvalidResourceIDLinkErrorA, tmpPrefix + 'InvalidResourceIDLinkErrorA', 'Could not find linked topic (Resource #' );
-  Language.LL( Apply, InvalidResourceIDLinkErrorB, tmpPrefix + 'InvalidResourceIDLinkErrorB', '). This may be from another file.' );
+  Language.LL( Apply, InvalidLinkErrorTitle, 'InvalidLinkErrorTitle', 'Invalid Link' );
+  Language.LL( Apply, InvalidLinkError, 'InvalidLinkError', 'Cannot follow link to nonexistent topic' );
+  Language.LL( Apply, InvalidResourceIDLinkErrorA, 'InvalidResourceIDLinkErrorA', 'Could not find linked topic (Resource #' );
+  Language.LL( Apply, InvalidResourceIDLinkErrorB, 'InvalidResourceIDLinkErrorB', '). This may be from another file.' );
 
-  Language.LL( Apply, OpenedTopicMsg, tmpPrefix + 'OpenedTopicMsg', 'Opened topic #' );
+  Language.LL( Apply, OpenedTopicMsg, 'OpenedTopicMsg', 'Opened topic #' );
 
-  Language.LL( Apply, AddNoteTitle, tmpPrefix + 'AddNoteTitle', 'Add Note' );
-  Language.LL( Apply, AddNoteCursorError, tmpPrefix + 'AddNoteCursorError', 'Before adding a note, position the cursor where you want the note to be placed.' );
-  Language.LL( Apply, NoteWithinNoteError, tmpPrefix + 'NoteWithinNoteError', 'You can''t add a note within a link or another note' );
-  Language.LL( Apply, LoadNotesTitle, tmpPrefix + 'LoadNotesTitle', 'Load Notes' );
-  Language.LL( Apply, LoadNotesError, tmpPrefix + 'LoadNotesError', 'Error loading notes from ' );
-  Language.LL( Apply, SaveNotesTitle, tmpPrefix + 'SaveNotesTitle', 'Save Notes' );
-  Language.LL( Apply, SaveNotesError, tmpPrefix + 'SaveNotesError', 'Error saving notes to ' );
+  Language.LL( Apply, AddNoteTitle, 'AddNoteTitle', 'Add Note' );
+  Language.LL( Apply, AddNoteCursorError, 'AddNoteCursorError', 'Before adding a note, position the cursor where you want the note to be placed.' );
+  Language.LL( Apply, NoteWithinNoteError, 'NoteWithinNoteError', 'You can''t add a note within a link or another note' );
+  Language.LL( Apply, LoadNotesTitle, 'LoadNotesTitle', 'Load Notes' );
+  Language.LL( Apply, LoadNotesError, 'LoadNotesError', 'Error loading notes from ' );
+  Language.LL( Apply, SaveNotesTitle, 'SaveNotesTitle', 'Save Notes' );
+  Language.LL( Apply, SaveNotesError, 'SaveNotesError', 'Error saving notes to ' );
 
-  Language.LL( Apply, UntitledBookmarkName, tmpPrefix + 'UntitledBookmarkName', '(Untitled)' );
-  Language.LL( Apply, LoadBookmarksTitle, tmpPrefix + 'LoadBookmarksTitle', 'Load Bookmarks' );
-  Language.LL( Apply, LoadBookmarksError, tmpPrefix + 'LoadBookmarksError', 'Could not load bookmarks: ' );
-  Language.LL( Apply, SaveBookmarksTitle, tmpPrefix + 'SaveBookmarksTitle', 'Save Bookmarks' );
-  Language.LL( Apply, SaveBookmarksError, tmpPrefix + 'SaveBookmarksError', 'Could not save bookmarks: ' );
+  Language.LL( Apply, UntitledBookmarkName, 'UntitledBookmarkName', '(Untitled)' );
+  Language.LL( Apply, LoadBookmarksTitle, 'LoadBookmarksTitle', 'Load Bookmarks' );
+  Language.LL( Apply, LoadBookmarksError, 'LoadBookmarksError', 'Could not load bookmarks: ' );
+  Language.LL( Apply, SaveBookmarksTitle, 'SaveBookmarksTitle', 'Save Bookmarks' );
+  Language.LL( Apply, SaveBookmarksError, 'SaveBookmarksError', 'Could not save bookmarks: ' );
 
-  Language.LL( Apply, ApplicationErrorTitle, tmpPrefix + 'ApplicationErrorTitle', 'Application Error - Close?' );
-  Language.LL( Apply, ApplicationErrorA, tmpPrefix + 'ApplicationErrorA', 'This application has crashed. ' );
-  Language.LL( Apply, ApplicationErrorB, tmpPrefix + 'ApplicationErrorB', '(Details logged to ' );
-  Language.LL( Apply, ApplicationErrorC, tmpPrefix + 'ApplicationErrorC', 'Close application? ' );
+  Language.LL( Apply, ApplicationErrorTitle, 'ApplicationErrorTitle', 'Application Error - Close?' );
+  Language.LL( Apply, ApplicationErrorA, 'ApplicationErrorA', 'This application has crashed. ' );
+  Language.LL( Apply, ApplicationErrorB, 'ApplicationErrorB', '(Details logged to ' );
+  Language.LL( Apply, ApplicationErrorC, 'ApplicationErrorC', 'Close application? ' );
 
-  Language.LL( Apply, EnvironmentVarErrorTitle, tmpPrefix + 'EnvironmentVarErrorTitle', 'Environment Variable Warning' );
+  Language.LL( Apply, EnvironmentVarErrorTitle, 'EnvironmentVarErrorTitle', 'Environment Variable Warning' );
   Language.LL( Apply, EnvironmentVarError,
-      tmpPrefix + 'EnvironmentVarError',
+      'EnvironmentVarError',
       'NewView found a problem with environment variables. '
       + 'These are used when finding help files. '
       + 'You may have problems launching help.' );
-  Language.LL( Apply, EnvironmentVarUndefined, tmpPrefix + 'EnvironmentVarUndefined', 'Undefined: ' );
+  Language.LL( Apply, EnvironmentVarUndefined, 'EnvironmentVarUndefined', 'Undefined: ' );
 
-  Language.LL( Apply, FindTitle, tmpPrefix + 'FindTitle', 'Find' );
-  Language.LL( Apply, FindSelectWindowError, tmpPrefix + 'FindSelectWindowError', 'Click in a window first' );
-  Language.LL( Apply, FindPrompt, tmpPrefix + 'FindPrompt', 'Enter the text to find' );
-  Language.LL( Apply, TextNotFoundMsg, tmpPrefix + 'TextNotFoundMsg', 'Text not found' );
+  Language.LL( Apply, FindTitle, 'FindTitle', 'Find' );
+  Language.LL( Apply, FindSelectWindowError, 'FindSelectWindowError', 'Click in a window first' );
+  Language.LL( Apply, FindPrompt, 'FindPrompt', 'Enter the text to find' );
+  Language.LL( Apply, TextNotFoundMsg, 'TextNotFoundMsg', 'Text not found' );
 
-  Language.LL( Apply, FilesInfoTitle, tmpPrefix + 'FilesInfoTitle', 'Open Files Information' );
-  Language.LL( Apply, FilesInfoOverallTitle, tmpPrefix + 'FilesInfoOverallTitle', 'Title: ' );
-  Language.LL( Apply, FilesInfoFilename, tmpPrefix + 'FilesInfoFilename', 'Filename: ' );
-  Language.LL( Apply, FilesInfoFileTitle, tmpPrefix + 'FilesInfoFileTitle', '  Title: ' );
-  Language.LL( Apply, FilesInfoTopicCount, tmpPrefix + 'FilesInfoTopicCount', '  Topic Count: ' );
-  Language.LL( Apply, FilesInfoIndexCount, tmpPrefix + 'FilesInfoIndexCount', '  Index Count: ' );
-  Language.LL( Apply, FilesInfoDictionaryCount, tmpPrefix + 'FilesInfoDictionaryCount', '  Dictionary Count: ' );
-  Language.LL( Apply, FilesInfoFileSize, tmpPrefix + 'FilesInfoFileSize', '  Size: ' );
-  Language.LL( Apply, FilesInfoTotalTopicCount, tmpPrefix + 'FilesInfoTotalTopicCount', 'Total Topic Count: ' );
-  Language.LL( Apply, FilesInfoTotalIndexCount, tmpPrefix + 'FilesInfoTotalIndexCount', 'Total Index Count: ' );
-  Language.LL( Apply, FilesInfoTotalFileSize, tmpPrefix + 'FilesInfoTotalFileSize', 'Total File Size: ' );
+  Language.LL( Apply, FilesInfoTitle, 'FilesInfoTitle', 'Open Files Information' );
+  Language.LL( Apply, FilesInfoOverallTitle, 'FilesInfoOverallTitle', 'Title: ' );
+  Language.LL( Apply, FilesInfoFilename, 'FilesInfoFilename', 'Filename: ' );
+  Language.LL( Apply, FilesInfoFileTitle, 'FilesInfoFileTitle', '  Title: ' );
+  Language.LL( Apply, FilesInfoTopicCount, 'FilesInfoTopicCount', '  Topic Count: ' );
+  Language.LL( Apply, FilesInfoIndexCount, 'FilesInfoIndexCount', '  Index Count: ' );
+  Language.LL( Apply, FilesInfoDictionaryCount, 'FilesInfoDictionaryCount', '  Dictionary Count: ' );
+  Language.LL( Apply, FilesInfoFileSize, 'FilesInfoFileSize', '  Size: ' );
+  Language.LL( Apply, FilesInfoTotalTopicCount, 'FilesInfoTotalTopicCount', 'Total Topic Count: ' );
+  Language.LL( Apply, FilesInfoTotalIndexCount, 'FilesInfoTotalIndexCount', 'Total Index Count: ' );
+  Language.LL( Apply, FilesInfoTotalFileSize, 'FilesInfoTotalFileSize', 'Total File Size: ' );
 
-  Language.LL( Apply, SearchTitle, tmpPrefix + 'SearchTitle', 'Search' );
-  Language.LL( Apply, SearchSyntaxError, tmpPrefix + 'SearchSyntaxError', 'Error in search syntax: ' );
-  Language.LL( Apply, SearchingMsg, tmpPrefix + 'SearchingMsg', 'Searching...' );
-  Language.LL( Apply, NoSearchMatchesMsg, tmpPrefix + 'NoSearchMatchesMsg', 'No matches found for ' );
-  Language.LL( Apply, SearchFoundMsgA, tmpPrefix + 'SearchFoundMsgA', 'Found ' );
-  Language.LL( Apply, SearchFoundMsgB, tmpPrefix + 'SearchFoundMsgB', ' matches for ' );
+  Language.LL( Apply, SearchTitle, 'SearchTitle', 'Search' );
+  Language.LL( Apply, SearchSyntaxError, 'SearchSyntaxError', 'Error in search syntax: ' );
+  Language.LL( Apply, SearchingMsg, 'SearchingMsg', 'Searching...' );
+  Language.LL( Apply, NoSearchMatchesMsg, 'NoSearchMatchesMsg', 'No matches found for ' );
+  Language.LL( Apply, SearchFoundMsgA, 'SearchFoundMsgA', 'Found ' );
+  Language.LL( Apply, SearchFoundMsgB, 'SearchFoundMsgB', ' matches for ' );
 
-  Language.LL( Apply, FileSaveTitle, tmpPrefix + 'FileSaveTitle', 'Save Topic' );
-  Language.LL( Apply, FileSaveSelectWindowError, tmpPrefix + 'FileSaveSelectWindowError', 'Before saving, click in the window you want to save.' );
-  Language.LL( Apply, DefaultSaveTopicFilename, tmpPrefix + 'DefaultSaveTopicFilename', 'topic.txt' );
+  Language.LL( Apply, FileSaveTitle, 'FileSaveTitle', 'Save Topic' );
+  Language.LL( Apply, FileSaveSelectWindowError, 'FileSaveSelectWindowError', 'Before saving, click in the window you want to save.' );
+  Language.LL( Apply, DefaultSaveTopicFilename, 'DefaultSaveTopicFilename', 'topic.txt' );
 
-  Language.LL( Apply, ReplaceFilePromptA, tmpPrefix + 'ReplaceFilePromptA', 'Replace existing file ' );
-  Language.LL( Apply, ReplaceFilePromptB, tmpPrefix + 'ReplaceFilePromptB', '?' );
-  Language.LL( Apply, UnableToSaveError, tmpPrefix + 'UnableToSaveError', 'Unable to save file: ' );
+  Language.LL( Apply, ReplaceFilePromptA, 'ReplaceFilePromptA', 'Replace existing file ' );
+  Language.LL( Apply, ReplaceFilePromptB, 'ReplaceFilePromptB', '?' );
+  Language.LL( Apply, UnableToSaveError, 'UnableToSaveError', 'Unable to save file: ' );
 
-  Language.LL( Apply, UsageTitle, tmpPrefix + 'UsageTitle', 'NewView Command Line' );
-  Language.LL( Apply, UsageText1, tmpPrefix + 'UsageText1', 'Usage: ' );
-  Language.LL( Apply, UsageText2, tmpPrefix + 'UsageText2', 'NewView <filename> [<topic>]' );
-  Language.LL( Apply, UsageText3, tmpPrefix + 'UsageText3', ' /s Do search for <topic>' );
-  Language.LL( Apply, UsageText4, tmpPrefix + 'UsageText4', ' /g Do global search for <topic>' );
-  Language.LL( Apply, UsageText5, tmpPrefix + 'UsageText5', ' /pos:l,b,w,h Set window position' );
-  Language.LL( Apply, UsageText6, tmpPrefix + 'UsageText6', ' /lang:<lang> Load UI language' );
-  Language.LL( Apply, UsageText7, tmpPrefix + 'UsageText7', ' /title:<title> Set window title' );
-  Language.LL( Apply, UsageText8, tmpPrefix + 'UsageText8', 'See help for details' );
+  Language.LL( Apply, UsageTitle, 'UsageTitle', 'NewView Command Line' );
+  Language.LL( Apply, UsageText1, 'UsageText1', 'Usage: ' );
+  Language.LL( Apply, UsageText2, 'UsageText2', 'NewView <filename> [<topic>]' );
+  Language.LL( Apply, UsageText3, 'UsageText3', ' /s Do search for <topic>' );
+  Language.LL( Apply, UsageText4, 'UsageText4', ' /g Do global search for <topic>' );
+  Language.LL( Apply, UsageText5, 'UsageText5', ' /pos:l,b,w,h Set window position' );
+  Language.LL( Apply, UsageText6, 'UsageText6', ' /lang:<lang> Load UI language' );
+  Language.LL( Apply, UsageText7, 'UsageText7', ' /title:<title> Set window title' );
+  Language.LL( Apply, UsageText8, 'UsageText8', 'See help for details' );
 
-  Language.LL( Apply, GoBackHint, tmpPrefix + 'GoBackHint', 'Go back to ' );
+  Language.LL( Apply, GoBackHint, 'GoBackHint', 'Go back to ' );
 
-  Language.LL( Apply, SelectAllTitle, tmpPrefix + 'SelectAllTitle', 'Select All' );
-  Language.LL( Apply, SelectAllWindowError, tmpPrefix + 'SelectAllWindowError', 'Click in a text window first' );
+  Language.LL( Apply, SelectAllTitle, 'SelectAllTitle', 'Select All' );
+  Language.LL( Apply, SelectAllWindowError, 'SelectAllWindowError', 'Click in a text window first' );
 
-  Language.LL( Apply, EditNoteMsg, tmpPrefix + 'EditNoteMsg', 'Click to edit note' );
-  Language.LL( Apply, ExternalLinkMsg, tmpPrefix + 'ExternalLinkMsg', 'Link to another file' );
-  Language.LL( Apply, LinkMsg, tmpPrefix + 'LinkMsg', 'Link to' );
-  Language.LL( Apply, UnknownLinkMsg, tmpPrefix + 'UnknownLinkMsg', 'Unknown link' );
-  Language.LL( Apply, FootnoteMsg, tmpPrefix + 'FootnoteMsg', 'Footnote' );
+  Language.LL( Apply, EditNoteMsg, 'EditNoteMsg', 'Click to edit note' );
+  Language.LL( Apply, ExternalLinkMsg, 'ExternalLinkMsg', 'Link to another file' );
+  Language.LL( Apply, LinkMsg, 'LinkMsg', 'Link to' );
+  Language.LL( Apply, UnknownLinkMsg, 'UnknownLinkMsg', 'Unknown link' );
+  Language.LL( Apply, FootnoteMsg, 'FootnoteMsg', 'Footnote' );
 
-  Language.LL( Apply, ExternalLinkTitle, tmpPrefix + 'ExternalLinkTitle', 'File Link' );
-  Language.LL( Apply, ExternalLinkError, tmpPrefix + 'ExternalLinkError', 'Sorry, this is a link to another file, which is not currently implemented in NewView' );
+  Language.LL( Apply, ExternalLinkTitle, 'ExternalLinkTitle', 'File Link' );
+  Language.LL( Apply, ExternalLinkError, 'ExternalLinkError', 'Sorry, this is a link to another file, which is not currently implemented in NewView' );
 
-  Language.LL( Apply, MRUMultipleFilesHint, tmpPrefix + 'MRUMultipleFilesHint', 'files' );
-  Language.LL( Apply, HelpProgramTitle, tmpPrefix + 'HelpProgramTitle', 'Help' );
+  Language.LL( Apply, MRUMultipleFilesHint, 'MRUMultipleFilesHint', 'files' );
+  Language.LL( Apply, HelpProgramTitle, 'HelpProgramTitle', 'Help' );
 
-  Language.LL( Apply, WindowsHelpTitle, tmpPrefix + 'WindowsHelpTitle', 'Windows Help' );
-// TODO
+  Language.LL( Apply, WindowsHelpTitle, 'WindowsHelpTitle', 'Windows Help' );
   Language.LL( Apply,
                WindowsHelpPrompt,
-               tmpPrefix + 'WindowsHelpPrompt',
+               'WindowsHelpPrompt',
                'This file is a Windows help file. '
                + 'Would you like to start Windows Help viewer?' );
 
-  Language.LL( Apply, ErrorTitle, tmpPrefix + 'ErrorTitle', 'Error' );
+  Language.LL( Apply, ErrorTitle, 'ErrorTitle', 'Error' );
 
-  Language.LL( Apply, FindTopicNameTitle, tmpPrefix + 'FindTopicNameTitle', 'Find Topic By Name' );
-  Language.LL( Apply, FindTopicNamePrompt, tmpPrefix + 'FindTopicNamePrompt', 'Enter the topic name to search for' );
-  Language.LL( Apply, TopicNameNotFoundError, tmpPrefix + 'TopicNameNotFoundError', 'Topic name not found' );
-  Language.LL( Apply, SplitBarDblClickToShow, tmpPrefix + 'SplitBarDblClickToShow', 'Double-click to show left panel' );
-  Language.LL( Apply, SplitBarDblClickToHide, tmpPrefix + 'SplitBarDblClickToHide', 'Double-click to hide left panel' );
+  Language.LL( Apply, FindTopicNameTitle, 'FindTopicNameTitle', 'Find Topic By Name' );
+  Language.LL( Apply, FindTopicNamePrompt, 'FindTopicNamePrompt', 'Enter the topic name to search for' );
+  Language.LL( Apply, TopicNameNotFoundError, 'TopicNameNotFoundError', 'Topic name not found' );
+  Language.LL( Apply, SplitBarDblClickToShow, 'SplitBarDblClickToShow', 'Double-click to show left panel' );
+  Language.LL( Apply, SplitBarDblClickToHide, 'SplitBarDblClickToHide', 'Double-click to hide left panel' );
 
   SetMainCaption;
   CreateMRUMenuItems;
@@ -1578,7 +1575,7 @@ End;
 
 Procedure TMainForm.DebugSaveLanguageFileMIOnClick (Sender: TObject);
 Var
-  // LanguageFile: TLanguageFile;
+  LanguageFile: TLanguageFile;
   Dir: string;
   Filename: string;
 Begin
@@ -1598,10 +1595,9 @@ Begin
   MRUMenuItems.Clear;
 
   try
-    // first touch all
-    UpdateLanguage(g_CurrentLanguageFile);
-    // then save
-    g_CurrentLanguageFile.writeToFile(Filename);
+    LanguageFile := TLanguageFile.Create( Filename );
+
+    UpdateLanguage( LanguageFile );
   except
     on E: Exception do
     begin
@@ -1610,6 +1606,8 @@ Begin
       exit;
     end;
   end;
+
+  LanguageFile.Destroy;
 
   CreateMRUMenuItems;
 End;
@@ -1666,20 +1664,19 @@ End;
 Function TMainForm.OpenFilesFromTextList( const TextList: string;
                                           const DisplayFirstTopic: boolean ): boolean;
 var
-  tmpFileNames: TStringList;
+  Filenames: TStringList;
 begin
-  tmpFileNames := TStringList.Create;
-
-  ParseAndExpandFileNames(TextList, tmpFileNames);
-  if tmpFileNames.Count > 0 then
+  Filenames := TStringList.Create;
+  StrExtractStringsIgnoreEmpty(Filenames, TextList, ['+'], #0);
+  if Filenames.Count > 0 then
   begin
-    result := OpenFiles(tmpFileNames, '', DisplayFirstTopic);
+    result := OpenFiles( Filenames, '', DisplayFirstTopic );
   end
   else
   begin
     CloseFile;
   end;
-  tmpFileNames.Destroy;
+  Filenames.Destroy;
 end;
 
 Procedure TMainForm.OpenSpecialMIOnClick (Sender: TObject);
@@ -2052,7 +2049,7 @@ end;
 
 procedure TMainForm.OnPrintComplete( Dummy: TObject );
 begin
-  SetStatus(PrintingComplete);
+  SetStatus( 'Printing complete' );
   ResetProgress;
 end;
 
@@ -2281,7 +2278,6 @@ Begin
 
     CmdLineParameters.writeDetailsTo(Lines);
     writeSettingsDetailsTo(Lines);
-    writeDebugSetupDetailsTo(Lines);
   end;
 
   InformationForm.ShowModal;
@@ -2688,41 +2684,66 @@ begin
   end;
 end;
 
-Procedure TMainForm.WMFollowExternalLink( Var Msg: TMessage );
+Procedure TMainForm.WMFollowExternalLink(Var Msg: TMessage);
 var
-  FilePath: string;
-  Topic: TTopic;
+  tmpFilePath: string;
+  tmpAltFilePath: string;
+  tmpIsFileAlreadyOpened: boolean;
+  tmpHelpFile: THelpFile;
+  tmpTopic: TTopic;
+  i: longint;
 begin
-  // try in same dir as source file
-  FilePath := AddDirectorySeparator( ExtractFilePath( g_ExternalLinkSourceFilename ) )
-              + g_ExternalLinkFilename;
+  LogEvent(LogDebug, 'tmpFilePath ' + tmpFilePath);
 
-  if not StrEqualIgnoringCase( FilePath, g_ExternalLinkSourceFilename ) then
+  // try in same dir as source file
+  tmpFilePath := AddDirectorySeparator(ExtractFilePath(g_ExternalLinkSourceFilename)) + g_ExternalLinkFilename;
+  tmpAltFilePath := tmpFilePath;
+
+  // we use paths with extension, because the internal list of helpfiles
+  // always has extensions inside
+  if ExtractFileExt(g_ExternalLinkFilename) = '' then
+  begin
+    tmpFilePath := ChangeFileExt(tmpFilePath, INF_FILE_EXTENSION);
+    tmpAltFilePath := ChangeFileExt(tmpFilePath, HELP_FILE_EXTENSION);
+  end;
+
+  // figure out, if the file is already open
+  tmpIsFileAlreadyOpened := false;
+  for i := 0 to CurrentOpenFiles.Count - 1 do
+  begin
+    tmpHelpFile := CurrentOpenFiles[i];
+    if StrEndsWithIgnoringCase(tmpHelpFile.Filename, tmpFilePath)
+       or StrEndsWithIgnoringCase(tmpHelpFile.Filename, tmpAltFilePath) then
+    begin
+      tmpIsFileAlreadyOpened := true;
+    end;
+  end;
+
+  if not tmpIsFileAlreadyOpened then
   begin
     // different file - try and open it
-    if not FileExists( FilePath ) then
-      // not in same directory, find in help paths
-      FilePath := FindHelpFile( g_ExternalLinkFilename );
-
-    if not FileExists( FilePath ) then
+    if not FileExists(tmpFilePath) then
     begin
-      DoErrorDlg( 'Link Error',
-                  'Cannot find linked file '
-                  + g_ExternalLinkFilename );
+      // not in same directory, find in help paths
+      tmpFilePath := FindHelpFile(g_ExternalLinkFilename);
+    end;
+
+    if not FileExists(tmpFilePath) then
+    begin
+      DoErrorDlg('Link Error', 'Cannot find linked file ''' + g_ExternalLinkFilename +'''');
       exit;
     end;
 
     if g_ExternalLinkKeepCurrent then
     begin
-      if not OpenAdditionalFile( FilePath, false ) then
+      if not OpenAdditionalFile(tmpFilePath, false) then
         exit;
     end
     else
     begin
-      if not OpenFile( FilePath, '', false ) then
+      if not OpenFile(tmpFilePath, '', false) then
         exit;
     end;
-
   end;
 
   if g_ExternalLinkTopic = '' then
@@ -2732,16 +2753,30 @@ begin
     exit;
   end;
 
-  Topic := FindTopicByGlobalName( g_ExternalLinkTopic );
-  if Topic = nil then
+  // don't call this search here;
+  // because we know the file to search in
+  // otherwise the first occurence of the topic will be
+  // found
+  // Topic := FindTopicByGlobalName( g_ExternalLinkTopic );
+  tmpTopic := nil;
+  for i := 0 to CurrentOpenFiles.Count - 1 do
   begin
-    DoErrorDlg( 'Link Error',
-                'Unable to find topic with global name '
-                + g_ExternalLinkTopic );
+    tmpHelpFile := CurrentOpenFiles[i];
+    if StrEndsWithIgnoringCase(tmpHelpFile.Filename, g_ExternalLinkFilename)
+       or StrEndsWithIgnoringCase(tmpHelpFile.Filename, g_ExternalLinkFilename + INF_FILE_EXTENSION)
+       or StrEndsWithIgnoringCase(tmpHelpFile.Filename, g_ExternalLinkFilename + HELP_FILE_EXTENSION) then
+    begin
+      tmpTopic := tmpHelpFile.FindTopicByGlobalName(g_ExternalLinkTopic);
+    end;
+  end;
+
+  if tmpTopic = nil then
+  begin
+    DoErrorDlg('Link Error', 'Unable to find topic with global name ''' + g_ExternalLinkTopic + '''');
     exit;
   end;
 
-  DisplayTopic( Topic );
+  DisplayTopic(tmpTopic);
 end;
 
 // We are following a link, specified as param1 in msg
@@ -3726,7 +3761,8 @@ begin
   end;
   try
     if CurrentTopic <> nil then
-      WriteLn( F, 'Last major topic index: ' + IntToStr( CurrentTopic.Index ) );
+      WriteLn( F, 'Last major topic index: '
+                  + IntToStr( CurrentTopic.Index ) );
   except
     // ignore exceptions if there isn't a valid current topic
   end;
@@ -3830,7 +3866,7 @@ Begin
   Application.HelpFile := CmdLineParameters.GetOwnHelpFilename; // OWN_HELP_MARKER;
   Application.OnHelp := OnHelp;
 
-  RegisterEventForLanguages( OnLanguageEvent );
+  RegisterForLanguages( OnLanguageEvent );
 
   // if debug is not enabled, get rid of the debug menu and separator.
   if not CmdLineParameters.isDebugEnabled then
@@ -3915,7 +3951,7 @@ Begin
   begin
     if CmdLineParameters.getLanguage <> '' then
     begin
-      if not LoadLanguageForSpec('newview', CmdLineParameters.getLanguage) then
+      if not LoadAutoLanguage('newview', CmdLineParameters.getLanguage) then
       begin
         LoadDefaultLanguage('newview');
       end
@@ -4062,8 +4098,11 @@ Begin
 
   if CmdLineParameters.getOwnerWindow <> NULLHANDLE then
   begin
-    LogEvent(LogStartup, 'Setting owner: ' + IntToStr( CmdLineParameters.getOwnerWindow));
-    WinSetOwner( Frame.Handle, CmdLineParameters.getOwnerWindow );
+    LogEvent(LogStartup, 'Setting owner: '
+                  + IntToStr( CmdLineParameters.getOwnerWindow));
+    WinSetOwner( Frame.Handle,
+                 CmdLineParameters.getOwnerWindow );
+
   end;
 
   if CmdLineParameters.getHelpManagerFlag then
@@ -4079,6 +4118,8 @@ Begin
 
   CoolBar.SetMinConstButtonWidth;
 
+  LogEvent(LogStartup, 'Post WM_OPENED');
+
   ResetProgress;
 
   AddShortcut( kbF11, kbF11 ); // prev in contents
@@ -4087,7 +4128,6 @@ Begin
   AddShortcut( kbF8, kbF8 ); // forward
   AddShortcut( kbCtrlCLeft, kbCtrlCLeft ); // back
 
-  LogEvent(LogStartup, 'Post WM_OPENED');
   PostMsg( Handle, WM_OPENED, 0, 0 );
 End;
 
@@ -4161,7 +4201,6 @@ var
   Filenames: TStringList;
   M1: longword;
   OpenFirstTopic: boolean;
-  tmpFileNames : AnsiString;
 begin
   if Application.HelpFile = '' then
     DoErrorDlg( 'NewView Help', 'NewView help file not found' );
@@ -4189,8 +4228,6 @@ begin
 
   LogEvent(LogStartup, 'Finish paint');
   Update;
-  LogEvent(LogStartup, 'BringToFront');
-  MainForm.BringToFront;
 
   if not CmdLineParameters.getHelpManagerFlag then
   begin
@@ -4206,18 +4243,13 @@ begin
 
   HelpManagerWindows.Add( pointer( CmdLineParameters.getHelpManagerWindow ) );
 
-  if CmdLineParameters.getShowIndexFlag then
-  begin
-    DisplayIndex;
-  end;
-
-  tmpFileNames := CmdLineParameters.getFileNames(Settings.StartupHelp);
-  if tmpFileNames <> '' then
+  if CmdLineParameters.getFileNames(Settings.StartupHelp) <> '' then
   begin
     // open specified files
     Filenames := TStringList.Create;
 
-    ParseAndExpandFileNames(tmpFileNames, Filenames);
+    StrExtractStringsIgnoreEmpty(Filenames, cmdLineParameters.getFileNames(Settings.StartupHelp), ['+'], #0);
+
     LogEvent(LogStartup, 'Call OpenFiles');
 
     OpenFirstTopic := true;
@@ -4281,7 +4313,6 @@ begin
 
   LogEvent(LogStartup, 'RUN PROGRAM');
 end;
-
 
 Procedure TMainForm.MainFormOnResize (Sender: TObject);
 Begin
@@ -4490,7 +4521,8 @@ begin
   DoFind( foFromStart );
 End;
 
-Procedure TMainForm.IndexSearchEditOnScan (Sender: TObject; Var KeyCode: TKeyCode);
+Procedure TMainForm.IndexSearchEditOnScan (Sender: TObject;
+  Var KeyCode: TKeyCode);
 Begin
   case KeyCode of
     kbCUp:
@@ -4524,7 +4556,7 @@ Begin
   if InIndexSearch then
     exit;
 
-  tmpMatchIndex := -1;
+  tmpMatchIndex := -1; 
   tmpSearchText := trim(IndexSearchEdit.Text);
 
   for i := 0 to DisplayedIndex.Count - 1 do
@@ -4542,7 +4574,7 @@ Begin
   InIndexSearch:= true;
 
   if IndexListBox.ItemIndex <> tmpMatchIndex then
-    IndexListBox.ItemIndex:= tmpMatchIndex;
+    IndexListBox.ItemIndex := tmpMatchIndex;
 
   InIndexSearch:= false;
 End;
@@ -4611,6 +4643,7 @@ Begin
   if SelectedObject( SearchResultsListBox ) = nil then
     // the "no results" place holder
     exit;
+
   Topic := SelectedObject( SearchResultsListBox ) as TTopic;
   DisplayTopic( Topic );
 End;
@@ -5540,16 +5573,16 @@ Begin
   begin
     LinkDetails := StrSubstringFrom(LinkString, Length(PARAM_LINK_EXTERNAL) + 2);
 
+    Window := FindWindowFromView(Sender, Windows);
+    SourceFile := Window.Topic.HelpFile as THelpFile;
+
     tmpLinkDetails := TStringList.Create;
     StrExtractStrings(tmpLinkDetails, LinkDetails, [' '], #0);
     LinkIndex := StrToInt(tmpLinkDetails[0]);
+    g_ExternalLinkFileName := SourceFile.ReferencedFiles[ LinkIndex ];
+    g_ExternalLinkTopic := tmpLinkDetails[1];
     tmpLinkDetails.Destroy;
 
-    Window := FindWindowFromView( Sender, Windows );
-    SourceFile := Window.Topic.HelpFile as THelpFile;
-
-    g_ExternalLinkFileName := SourceFile.ReferencedFiles[ LinkIndex ];
-    g_ExternalLinkTopic := LinkDetails;
     g_ExternalLinkSourceFilename := SourceFile.Filename;
     g_ExternalLinkKeepCurrent := true; // hm... what would be nice?
 
@@ -5673,14 +5706,14 @@ begin
 
         if FileNameIndex > 0 then
         begin
-          MRUText := MRUText + HELP_FILE_DELIMITER;
+          MRUText := MRUText + '+';
         end;
         MRUText := MRUText + FileName;
 
         // stop after 50 chars
         if Length( MRUText ) > 50 then
         begin
-          MRUText := MRUText + HELP_FILE_DELIMITER + ' ...';
+          MRUText := MRUText + '+ ...';
           break;
         end;
       end;
@@ -5716,7 +5749,6 @@ begin
   MenuItem:= Sender as TMenuItem;
   Tag:= MenuItem.Tag;
   MRUItem := Settings.MRUList[ Tag ];
-// RBRi woher kommt die liste?
   if OpenFiles( MRUItem.FileNames, '', true ) then
   begin
     ClearHelpManager;
@@ -5821,12 +5853,17 @@ begin
         else
         begin
           // subnodes
-          assert( Node <> nil, 'No level 1 topic for subnodes!' );
-          AddChildNodes( HelpFile,
-                         Node,
-                         Topic.ContentsLevel,
-                         TopicIndex );
-          Node := nil;
+          // ignore child nodes before the first root node
+          // the org viewer does the same
+          if Node = nil then
+          begin
+            inc( TopicIndex );
+          end
+          else
+          begin
+            AddChildNodes( HelpFile, Node, Topic.ContentsLevel, TopicIndex );
+            Node := nil;
+          end;
         end;
       end
       else
@@ -6223,27 +6260,29 @@ type
 
 procedure TMainForm.LoadIndex;
 var
-  tmpHelpFile: THelpFile;
-  tmpTextCompareResult: integer;
+  HelpFile: THelpFile;
+  TextCompareResult: integer;
 
   FileIndex: longint;
 
   Contents: TList;
   ContentsLists: TList; // of tlist
-  tmpIndexLists: TList; // of tstringlist
+  IndexLists: TList; // of tstringlist
   ContentsNextIndex: array[ 0..255 ] of longint;
   IndexNextIndex: array[ 0..255 ] of longint;
   Topic: TTopic;
+
+  ListIndex: longint;
 
   pListEntry: pstring;
   pLowestEntry: pstring;
   pLastEntry: pstring;
 
-  tmpLowestEntryListIndex: longint;
-  tmpLowestEntryListType: TListType;
-  tmpLowestEntryTopic: TTopic;
+  LowestEntryListIndex: longint;
+  LowestEntryListType: TListType;
+  LowestEntryTopic: TTopic;
 
-  tmpIndex: TStringList;
+  Index: TStringList;
 
   i : longint;
 begin
@@ -6257,23 +6296,23 @@ begin
   SetStatus( 'Building index... ' );
 
   ContentsLists := TList.Create;
-  tmpIndexLists := TList.Create;
+  IndexLists := TList.Create;
 
   // collect the contents and index lists from the files
   for FileIndex := 0 to CurrentOpenFiles.Count - 1 do
   begin
-    tmpHelpFile := CurrentOpenFiles[ FileIndex ];
+    HelpFile := CurrentOpenFiles[ FileIndex ];
     ProgressBar.Position := 70 + 10 * FileIndex div CurrentOpenFiles.Count;
 
     if Settings.IndexStyle in [ isAlphabetical, isFull ] then
     begin
       Contents := TList.Create;
-      Contents.Capacity := tmpHelpFile.TopicCount;
+      Contents.Capacity := HelpFile.TopicCount;
 
       // copy [contents] topic list
-      for i := 0 to tmpHelpFile.TopicCount - 1 do
+      for i := 0 to HelpFile.TopicCount - 1 do
       begin
-        Topic := tmpHelpFile.Topics[ i ];
+        Topic := HelpFile.Topics[ i ];
         if Topic.ShowInContents then
           Contents.Add( Topic );
       end;
@@ -6289,8 +6328,8 @@ begin
 
     if Settings.IndexStyle in [ isFileOnly, isFull ] then
     begin
-      tmpIndexLists.Add(tmpHelpFile.Index.GetLabels);
-      IndexNextIndex[ tmpIndexLists.Count - 1 ] := 0;
+      IndexLists.Add( HelpFile.Index );
+      IndexNextIndex[ IndexLists.Count - 1 ] := 0;
     end;
   end;
 
@@ -6306,89 +6345,85 @@ begin
   while true do
   begin
     pLowestEntry := NullStr;
-    tmpLowestEntryListIndex := -1;
+    LowestEntryListIndex := -1;
 
     // Find alphabetically lowest (remaining) topic
 
     // first, look in contents lists
-    LogEvent(LogDebug, '  Merge contents' );
-    for i := 0 to ContentsLists.Count - 1 do
+    for ListIndex := 0 to ContentsLists.Count - 1 do
     begin
-      Contents := ContentsLists[i];
-      if ContentsNextIndex[i] < Contents.Count then
+      Contents := ContentsLists[ ListIndex ];
+      if ContentsNextIndex[ ListIndex ] < Contents.Count then
       begin
         // list is not yet finished, get next entry
-        Topic := Contents[ ContentsNextIndex[i] ];
+        Topic := Contents[ ContentsNextIndex[ ListIndex ] ];
         pListEntry := Topic.TitlePtr;
 
         if pLowestEntry^ <> '' then
-          tmpTextCompareResult := CompareText( pListEntry^, pLowestEntry^ )
+          TextCompareResult := CompareText( pListEntry^, pLowestEntry^ )
         else
-          tmpTextCompareResult := -1;
+          TextCompareResult := -1;
 
-        if tmpTextCompareResult < 0 then
+        if TextCompareResult < 0 then
         begin
           // this index entry comes before the lowest one so far
           pLowestEntry := pListEntry;
-          tmpLowestEntryListIndex := i;
-          tmpLowestEntryListType := ltContents;
-          tmpLowestEntryTopic := Topic;
+          LowestEntryListIndex := ListIndex;
+          LowestEntryListType := ltContents;
+          LowestEntryTopic := Topic;
         end;
       end;
     end;
 
     // look in indices
-    LogEvent(LogDebug, '  Merge indices' );
-    for i := 0 to tmpIndexLists.Count - 1 do
+    for ListIndex := 0 to IndexLists.Count - 1 do
     begin
-      LogEvent(LogDebug, '  Merge indices ' + IntToStr(i) );
-      tmpIndex := tmpIndexLists[i];
-      if IndexNextIndex[i] < tmpIndex.Count then
+      Index := IndexLists[ ListIndex ];
+      if IndexNextIndex[ ListIndex ] < Index.Count then
       begin
         // list is not yet finished, get next entry
-        pListEntry := tmpIndex.ValuePtrs[ IndexNextIndex[i] ];
+        pListEntry := Index.ValuePtrs[ IndexNextIndex[ ListIndex ] ];
 
         if pLowestEntry^ <> '' then
-          tmpTextCompareResult := CompareText( pListEntry^, pLowestEntry^ )
+          TextCompareResult := CompareText( pListEntry^, pLowestEntry^ )
         else
-          tmpTextCompareResult := -1;
+          TextCompareResult := -1;
 
-        if tmpTextCompareResult < 0 then
+        if TextCompareResult < 0 then
         begin
           // this index entry comes before the lowest one so far
           pLowestEntry := pListEntry;
-          tmpLowestEntryListIndex := i;
-          tmpLowestEntryListType := ltIndex;
-
-          LogEvent(LogDebug, '  Merge indices ' + tmpIndex.Objects[ IndexNextIndex[i] ].ClassName);
-          tmpLowestEntryTopic := TIndexEntry( tmpIndex.Objects[ IndexNextIndex[i] ] ).getTopic;
+          LowestEntryListIndex := ListIndex;
+          LowestEntryListType := ltIndex;
+          LowestEntryTopic := TTopic( Index.Objects[ IndexNextIndex[ ListIndex ] ] );
         end;
       end;
     end;
 
-    if tmpLowestEntryListIndex = -1 then
+    if LowestEntryListIndex = -1 then
       // we're out
       break;
 
     if ( pLowestEntry^ ) <> ( pLastEntry^ ) then
       // add, if different from last
-      DisplayedIndex.AddObject( pLowestEntry^, tmpLowestEntryTopic );
+      DisplayedIndex.AddObject( pLowestEntry^,
+                                LowestEntryTopic );
     pLastEntry := pLowestEntry;
 
-    if tmpLowestEntryListType = ltContents then
+    if LowestEntryListType = ltContents then
     begin
-      inc( ContentsNextIndex[ tmpLowestEntryListIndex ] );
+      inc( ContentsNextIndex[ LowestEntryListIndex ] );
     end
     else
     begin
       // found in one of indices.
       // Check for subsequent indented strings
-      tmpIndex := tmpIndexLists[ tmpLowestEntryListIndex ];
+      Index := IndexLists[ LowestEntryListIndex ];
 
-      i := IndexNextIndex[ tmpLowestEntryListIndex ] + 1;
-      while i < tmpIndex.Count do
+      i := IndexNextIndex[ LowestEntryListIndex ] + 1;
+      while i < Index.Count do
       begin
-        pListEntry := tmpIndex.ValuePtrs[ i ];
+        pListEntry := Index.ValuePtrs[ i ];
         if pListEntry^ = '' then
           break;
 
@@ -6397,12 +6432,12 @@ begin
           break;
 
         // found one,
-        Topic := TIndexEntry(tmpIndex.Objects[ i ]).getTopic;
+        Topic := Index.Objects[ i ] as TTopic;
         DisplayedIndex.AddObject( pListEntry^,
                                   Topic );
         inc( i );
       end;
-      IndexNextIndex[ tmpLowestEntryListIndex ] := i;
+      IndexNextIndex[ LowestEntryListIndex ] := i;
     end;
   end;
 
@@ -6416,7 +6451,7 @@ begin
 
   LogEvent(LogStartup, '  Tidy up' );
 
-  tmpIndexLists.Destroy;
+  IndexLists.Destroy;
 
   DestroyListAndObjects( ContentsLists );
 
@@ -6462,25 +6497,26 @@ Function TMainForm.OpenFile( const FileName: string;
                              const WindowTitle: string;
                              const SelectFirstContentsNode: boolean ): boolean;
 var
-  tmpFileNames: TStringList;
+  FileNames: TStringList;
 begin
-  tmpFileNames := TStringList.Create;
-  ParseAndExpandFileNames(FileName, tmpFileNames);
-  Result := OpenFiles( tmpFileNames,
+  FileNames := TStringList.Create;
+  FileNames.Add( FileName );
+  Result := OpenFiles( FileNames,
                        WindowTitle,
                        DisplayFirstTopic );
-  tmpFileNames.Destroy;
+  FileNames.Destroy;
 end;
 
 Function TMainForm.OpenAdditionalFile( const FileName: string;
                                        const DisplayFirstTopic: boolean ): boolean;
 var
-  tmpFileNames: TStringList;
+  FileNames: TStringList;
 begin
-  tmpFileNames := TStringList.Create;
-  ParseAndExpandFileNames(FileName, tmpFileNames);
-  Result := OpenAdditionalFiles(tmpFileNames, DisplayFirstTopic );
-  tmpFileNames.Destroy;
+  FileNames := TStringList.Create;
+  FileNames.Add( FileName );
+  Result := OpenAdditionalFiles( FileNames,
+                                 DisplayFirstTopic );
+  FileNames.Destroy;
 end;
 
 Function TMainForm.OpenWindowsHelp( const Filename: string ): boolean;
@@ -6524,10 +6560,11 @@ begin
 end;
 
 // Load the specified set of help files
-Function TMainForm.LoadFiles(const aFileNames: TStrings; aHelpFiles: TList) : boolean;
+Function TMainForm.LoadFiles( const FileNames: TStrings;
+                              HelpFiles: TList ): boolean;
 var
   HelpFile: THelpFile;
-  FileIndex, i: longint;
+  FileIndex: longint;
   FileName: string;
   FullFilePath: string;
 
@@ -6539,11 +6576,7 @@ begin
 
   LoadingFilenameList := TStringList.Create;
 
-// RBRi  TranslateIPFEnvironmentVars( FileNames, LoadingFilenameList );
-  for i := 0 to aFileNames.Count - 1 do
-  begin
-    LoadingFilenameList.Add(aFileNames[i]);
-  end;
+  TranslateIPFEnvironmentVars( FileNames, LoadingFilenameList );
 
   LogEvent(LogStartup, 'Finding files' );
 
@@ -6608,7 +6641,7 @@ begin
       if Settings.FixedFontSubstitution then
          HelpFile.SetupFontSubstitutes( Settings.FixedFontSubstitutes );
 
-      aHelpFiles.Add( HelpFile );
+      HelpFiles.Add( HelpFile );
 
     except
       on E: Exception do
@@ -6630,7 +6663,7 @@ begin
         // back out of the load process
         Result := false;
 
-        DestroyListObjects( aHelpFiles );
+        DestroyListObjects( HelpFiles );
 
         LoadingFilenameList.Destroy;
         ResetProgress;
@@ -6649,29 +6682,27 @@ end;
 // a Most Recently Used entry
 Procedure TMainForm.AddCurrentToMRUFiles;
 var
-  tmpFilenames: TStringList;
+  Filenames: TStringList;
   i: longint;
-  tmpHelpFile: THelpFile;
+  HelpFile: THelpFile;
 begin
-  tmpFilenames := TStringList.Create;
+  Filenames := TStringList.Create;
 
-  if CurrentOpenFiles.Count > 0 then
+  for i := 0 to CurrentOpenFiles.Count - 1 do
   begin
-    for i := 0 to CurrentOpenFiles.Count - 1 do
-    begin
-      tmpHelpFile := CurrentOpenFiles[ i ];
-      tmpFilenames.Add(tmpHelpFile.Filename);
-    end;
-
-    // update most-recently-used file list
-    tmpHelpFile := CurrentOpenFiles[ 0 ];
-    AddToMRUList(tmpHelpFile.Title, tmpFilenames);
+    HelpFile := CurrentOpenFiles[ i ];
+    Filenames.Add( HelpFile.Filename );
   end;
+
+  // update most-recently-used file list
+  HelpFile := CurrentOpenFiles[ 0 ];
+  AddToMRUList( HelpFile.Title,
+                Filenames );
 
   // recreate menu
   CreateMRUMenuItems;
 
-  tmpFilenames.Destroy;
+  Filenames.Destroy;
 end;
 
 // Display the specified set of files
@@ -6723,7 +6754,7 @@ Function TMainForm.OpenFiles( const FileNames: TStrings;
                               const WindowTitle: string;
                               const DisplayFirstTopic: boolean ): boolean;
 var
-  tmpHelpFiles: TList;
+  HelpFiles: TList;
   FirstContentsNode: TNode;
 begin
   LogEvent(LogStartup, 'OpenFiles' );
@@ -6733,13 +6764,13 @@ begin
 
   SetWaitCursor;
 
-  tmpHelpFiles := TList.Create;
+  HelpFiles := TList.Create;
 
-// RBRi Translate
-  if not LoadFiles(FileNames, tmpHelpFiles) then
+  if not LoadFiles( FileNames,
+                    HelpFiles ) then
   begin
     ClearWaitCursor;
-    tmpHelpFiles.Destroy;
+    HelpFiles.Destroy;
     exit;
   end;
 
@@ -6753,7 +6784,7 @@ begin
   // close the existing one.
   CloseFile;
 
-  AssignList(tmpHelpFiles, CurrentOpenFiles );
+  AssignList( HelpFiles, CurrentOpenFiles );
 
   ProgressBar.Position := 50;
   SetStatus( LoadingStatusDisplaying );
@@ -6772,7 +6803,7 @@ begin
 
   ContentsOutline.Clear;
 
-  DisplayFiles( tmpHelpFiles,
+  DisplayFiles( HelpFiles,
                 FirstContentsNode );
 
   if CmdLineParameters.getHelpManagerFlag then
@@ -6893,9 +6924,6 @@ begin
                                   Filenames ) then
       exit;
 
-    // no ParseAndExpandFileNames call required here
-    // this is the result of a file dialog
-    // no environment vars here
     if KeepCurrentFiles then
       OpenedOK := OpenAdditionalFiles( FileNames, true )
     else

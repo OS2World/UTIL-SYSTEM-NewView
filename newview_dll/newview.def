@@ -5,6 +5,4 @@ library clib3r.lib
   option map
   option stack=1M
 
-  LIBRARY P:\newview_dev\tools\pmprintf\PMPRINTF.LIB
-
   export LZWDECOMPRESSBLOCK         .1  = LZWDecompressBlock

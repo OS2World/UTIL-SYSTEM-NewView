@@ -1,10 +1,8 @@
-/* Rexx */
-
 /* ------------------------------------------------------------------------- */
 /* NewView - a new OS/2 Help Viewer                                          */
 /*                                                                           */
 /* Copyright 2003-2006 Aaron Lawrence (aaronl at consultant dot com)         */
-/* Copyright 2006/2007 Ronald Brill (rbri at rbri.org)                       */
+/* Copyright 2006-2017 Ronald Brill (rbri at rbri.org)                       */
 /*                                                                           */
 /* This software is released under the Gnu Public License                    */
 /*                                                                           */
@@ -12,23 +10,22 @@
 /* Compiles the help files and copys the lanugage files to the build         */
 /* directory.                                                                */
 /* ------------------------------------------------------------------------- */
+Parse Arg nv_build_dir_i18n
 
-
-
-nv_i18n_dir = directory()
-
-nv_build_dir = value('NV_BUILD', , 'OS2ENVIRONMENT')
-nv_rc = SysMkDir(nv_build_dir)
-
-/* copy changes.txt */
-/* copy Changes.txt nv_build_dir */
-
-/* copy the readme.txt file */
-/* TODO copy 'readme.txt' nv_build_dir */
+nv_build_dir = Value('NV_BUILD',, 'OS2ENVIRONMENT')
+If nv_build_dir == '' Then Do
+    Say '%NV_BUILD% not defined in environment!'
+    Return 1
+End
+If nv_build_dir_i18n == '' Then
+    nv_build_dir_i18n = nv_build_dir
+nv_rc = SysMkDir( nv_build_dir_i18n )
 
 /* copy the lang file */
-copy 'newview_de.lng' nv_build_dir
+'copy newview_de.lng' nv_build_dir_i18n
 
 /* compile the ipf file */
-ipfc NewView_de.ipf nv_build_dir||'\NewView_de.hlp -D:049 -C:850 -L:DEU'
+'ipfc NewView_de.ipf' nv_build_dir_i18n||'\NewView_de.hlp -D:049 -C:850 -L:DEU'
+
+Return rc
 

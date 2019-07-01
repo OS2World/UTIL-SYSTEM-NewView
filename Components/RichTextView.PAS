@@ -87,6 +87,8 @@ Type
     FCursorRow: longint;
     FCursorOffset: longint;
 
+    FCursorMoveRight: boolean;    // ALT - TRUE if cursor is moving to the right
+
     FSelectionStart: longint;
     FSelectionEnd: longint;
 
@@ -458,6 +460,9 @@ begin
 end;
 
 Procedure TRichTextView.SetSelectionStartInternal( SelectionStart: longint );
+var
+  Line:   longint;     // ALT
+  Offset: longint;     // ALT
 begin
   if SelectionStart = FSelectionStart then
     exit;
@@ -466,6 +471,9 @@ begin
     if SelectionStart = -1 then
       // small side effect here - also sets selectionend to -1
       ClearSelection;
+
+// Should already be ensured by this point?
+//  FLayout.FindCharacterBoundary( FText, SelectionStart, false );    // ALT
 
   FSelectionStart := SelectionStart;
   if FSelectionEnd = -1 then
@@ -478,10 +486,15 @@ Procedure TRichTextView.SetSelectionEndInternal( SelectionEnd: longint );
 var
   StartRedrawLine: longint;
   EndRedrawLine: longint;
+  Offset: longint;          // ALT
+  Line:   longint;          // ALT
   OldClip: TRect;
 begin
   if SelectionEnd = FSelectionEnd then
     exit;
+
+// Should already be ensured by this point?
+//  FLayout.FindCharacterBoundary( FText, SelectionEnd, false );      // ALT
 
   if FSelectionStart = -1 then
   begin
@@ -797,6 +810,7 @@ begin
     // we haven't yet done a layout
     Layout;
 
+
 end;
 
 Procedure TRichTextView.DisposeWnd;
@@ -942,6 +956,7 @@ begin
                                LineIndex,
                                Offset,
                                Link );
+
 end;
 
 Procedure TRichTextView.DrawBorder;
@@ -1217,6 +1232,8 @@ var
   LineHeight: longint;
   Descender: longint;
   MaxDescender: longint;
+  Index: longint;       // ALT
+  RowStart: longint;    // ALT
 begin
   RemoveCursor;
   if FSelectionStart = -1 then
@@ -1239,6 +1256,14 @@ begin
   if ( Y - LineHeight ) > DrawHeight then
     // off top
     exit;
+
+  // ALT - move to nearest character boundary
+  Index := FLayout.GetCharIndex( Line.Text ) + FCursorOffset;
+
+  FLayout.FindCharacterBoundary( FText, Index, FCursorMoveRight );
+  FCursorOffset := FLayout.GetOffsetFromCharIndex( Index, CursorRow );
+  FCursorMoveRight := false;
+  // ALT
 
   FLayout.GetXFromOffset( FCursorOffset, CursorRow, X );
 
@@ -1978,6 +2003,8 @@ var
   Index: longint;
   Row: longint;
 begin
+  FCursorMoveRight := false;    // ALT
+
   if SelectionSet then
   begin
     Index := FSelectionEnd
@@ -2017,12 +2044,19 @@ procedure TRichTextView.SetCursorPosition( Offset: longint;
                                            Row: longint;
                                            PreserveSelection: boolean );
 var
+  RowStart: longint;        // ALT
+  MoveRight: boolean;       // ALT
   Index: longint;
 begin
   RemoveCursor;
-  FCursorOffset := Offset;
-  FCursorRow := Row;
+
   Index := FLayout.GetCharIndex( FLayout.FLines[ Row ].Text ) + Offset;
+  RowStart := FLayout.GetCharIndex( FLayout.FLines[ Row ].Text );
+
+  Offset := FLayout.FindCharacterBoundary( FText, Index, FCursorMoveRight );  // ALT
+  FCursorOffset := FLayout.GetOffsetFromCharIndex( Index, Row );
+  FCursorRow := Row;
+
   if PreserveSelection then
   begin
     SetSelectionEndInternal( Index )
@@ -2043,9 +2077,11 @@ Var
   NewOffset: longint;
   Line: TLayoutLine;
 begin
+  FCursorMoveRight := true;
   P := FText + CursorIndex;
 
   Element := ExtractNextTextElement( P, NextP );
+
   P := NextP;
   while Element.ElementType = teStyle do
   begin
@@ -2359,6 +2395,7 @@ var
   Key: TKeyCode;
 begin
   CursorVisible := FSelectionStart <> -1;
+  FCursorMoveRight := false;
 
   Case KeyCode of
     kbTab:

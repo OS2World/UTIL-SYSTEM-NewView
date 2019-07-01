@@ -1,0 +1,330 @@
+Sibyl Libraries & Applications - HOWTO
+======================================
+
+Copyright 2003-2006 Aaron Lawrence
+Copyright 2006-2019 Ronald Brill
+
+
+The major parts of the code are developed in SpeedSoft Sibyl.
+
+*Important Note*: This setup will use these updated Sibyl libraries instead 
+of the ones installed with Sibyl.  Aaron has made many bug fixes and a few
+enhancements.  Some things will not build with the original Sibyl Fixpack 3
+libraries, for example some components depend on parts of the SPCC being 
+changed from Private to Protected.  (There were apparently problems with 
+Sibyl Fixpack 4 and so it is not used, although some of the bug fixes from
+FP4 are included.)
+
+
+Your directory structure should look like
+
+    <top>
+        build		output directory for built files
+        ConfigApps	source code for the ConfigApps program
+        Components	Sibyl components used by these applications
+        hlpmgr		replacement for OS/2 HelpMgr.dll
+                        The HelpMgr DLL is compiled with Watcom C++.
+                        It generates a DLL containing both 16 and 32 bit 
+                        entry points,like the original HelpMgr.dll.
+                        See http://www.openwatcom.org.
+        installer	install program used by NewView
+        Library	library functions used by both applications and components
+        NewView	the NewView source code
+        Sibyl		updated Sibyl libraries (based on fixpack 3)
+        unittests	Some tests used by NewView
+
+
+Required Tools
+--------------
+
+ - Speedsoft Sibyl (FP 3)
+
+    Make sure Sibyl (FP 3) is installed and working.
+    You should be able to run spc20, the Sibyl command line compiler.
+
+ - OpenWatcom 1.5
+
+    If you want to work on the HelpMgr.dll, make sure Watcom C/C++ is
+    installed and working. You should be able to run wmake, the
+    Watcom make utility.
+
+
+Setting Up the Build
+--------------------
+
+1. Copy `env.inc.sample` to `env.inc` and adjust the definitions as indicated
+   in the file.
+
+2. Adjust directories in the .spr (Sibyl project) files.
+
+   Sibyl unfortunately requires absolute paths in several places in its project
+   setup files.  To avoid committing working-copy-specific configuration to the
+   repository, templates are provided, along with a script to generate the
+   working project files from them.  
+
+   From the top-level directory, run `project-setup.cmd`.  This will create
+   the .spr files in each directory.
+
+   Alternatively, you can also generate the project files manually yourself.
+   This can be done by copying each of the following files to the indicated
+   filename, and then replacing every instance of `@NV_DEV@` in the new files
+   with the full path of your working copy's top level directory. 
+
+        Components\Components.spr.def    -->  Components\Components.spr
+
+        ConfigApps\ConfigApps.spr.def    -->  ConfigApps\ConfigApps.spr
+
+        installer\NewViewInstall.spr.def -->  installer\NewViewInstall.spr
+
+        Library\ACLTest.spr.def          -->  Library\acl_build.spr
+        Library\acl_build.spr.def        -->  Library\acl_build.spr
+
+        NewView\NewView.spr.def          -->  NewView\NewView.spr
+        NewView\viewstub.spr.def         -->  NewView\viewstub.spr
+
+        unittests\NewViewTests.spr.def   -->  unittests\NewViewTests.spr
+
+3. Open a command line window and do the following:
+
+   Change to directory `Sibyl`.
+   Execute `makeall.cmd`
+
+   Change to directory `Library'.
+   Execute `makeall.cmd`
+
+   Change to directory `Components`.
+   Execute `makeall.cmd`
+
+
+Conventionally, I compile the libraries (Sibyl, Library, Components) with 
+debug information.  You can then turn debugging on or off when compiling 
+NewView itself; if debugging is off, the library debug info will be discarded
+at link stage.
+
+As for all useful Sibyl projects, optimisation CANNOT be used as it produces
+incorrect results.
+
+Build notes for the individual projects are below.
+
+
+Building Components
+-------------------
+
+The Components project (`Components\Components.spr`) contains the updated
+Sibyl controls used by NewView and other projects (including custom ones 
+such as the rich text viewer).
+
+For the Sibyl IDE to be able to use these classes, they are compiled into 
+`CompLib.DLL`.  When building applications like NewView, however, the object
+files will be linked statically into the application.
+
+The `makeall.cmd` script in the `Components` directory will rebuild all the
+object files (and the test app, `Components.EXE`.  To rebuild `CompLib.DLL`, 
+load `Components.spr` in the Sibyl IDE and rebuild it.
+
+*Note:* Because the IDE requires `CompLib.DLL` to actually load a project 
+using those classes, and the Components project includes a demo form with the
+classes on it, this rather unintuitively means that you can't build 
+`CompLib.DLL` unless a previously-built `CompLib.DLL` already exists.  For 
+this reason, a prebuilt version with all the new/modified classes is included
+in this repository.  
+
+
+Building NewView
+----------------
+
+Make sure steps 1-3 above have been completed.
+
+You should be able to build NewView.EXE and ViewStub.EXE with debug symbols
+from a command line by running `makeall.cmd` in the `NewView` directory.  Do
+not do this for a release version.
+
+To build a release version, you should build the executables from the GUI.
+When doing this, make sure that the directories `build\newview` and 
+`build\newview_stub` exist and are writable. 
+
+To build NewView.EXE from the GUI, open the project file `NewView\NewView.spr`
+from the Sibyl IDE.  You should be able to build it from the Project menu.  
+NewView.EXE will be placed in the `build\newview` directory.
+
+*Note:* If you get errors about classes not being found, or CompLib.DLL
+unable to be loaded, make sure that CompLib.DLL exists in the directory
+indicated in `NewView.spr` - this _must_ be the version of CompLib.DLL from
+this project, and _not_ the default one shipped with Sibyl.  See the section
+above for details.
+
+You can build ViewStub.EXE from the GUI in the same way as NewView.EXE, by 
+opening `NewView\ViewStub.spr` in the IDE and building it from the Project
+menu.  ViewStub.EXE will be placed in `build\newview_stub`.
+
+
+### HelpMgr DLL ###
+
+Go to the `hlpmgr` directory and run `makeall.cmd`; helpmgr.dll will be placed
+in the `build\hlpmgr` directory.
+
+Alternatively, if OpenWatcom is available in PATH, INCLUDE, and LIB, you can 
+run `wmake` directly.  However, note that the Watcom C makefile for HelpMgr 
+will build hlpmgr2.dll by default.  To build helpmgr.dll instead, build with 
+`wmake helpmgr.dll` (which `makeall.cmd` does).
+
+helpmgr.dll is normally in use by the WPS (WorkPlace Shell, the desktop) so to 
+put it into use, you must either use a DLL-unlocking utility like replmod (on 
+Hobbes.nmsu.edu) or boot to a command prompt, and replace the dll in 
+`c:\os2\dll`.
+
+Building hlpmgr2 is easier for debugging - you can then use the dllrname
+utility to modify existing executeables to use hlpmgr2 instead of helpmgr and
+therefore, you don't need to reboot to try your changes.
+
+
+### NewView DLL ###
+
+Go to the `newview_dll` directory and run `makeall.cmd`.  Or, if OpenWatcom 
+and PMPrintF are already installed and available in PATH, INCLUDE, and LIB, 
+you can simply run `wmake` directly.
+
+
+### Help & Language Files ###
+
+The NewView help file was is in .ipf format and can be compiled with the 
+OS/2 IPFC compiler.  The language files use Aaron's language support module
+(see `NewView\Design.txt` for technical information) and are simply structured
+text files.
+
+Run `makeall.cmd` from the `i18n` directory to build/copy all the help and
+language files.  Each language lives in a subdirectory with its own 
+`makeall.cmd` that gets called by the parent script.
+
+
+### Install EXE ###
+
+This is another Sibyl project that can be opened in the IDE and compiled.  It
+is the old standalone installer for NewView.  The project will create the
+executable NewViewInstall.EXE - you are recommended to rename it to install.exe
+if you need distribute it as part of a NewView installation ZIP file.  
+
+The install executable requires Aaron's renmodul.dll, a copy of which is in the
+`installer` directory (the sources are not included here, but are available on
+Hobbes and elsewhere).
+
+I expect there should be little need to change this in the future.
+
+
+### Building an Installation ZIP File ###
+
+Pull together these files into a ZIP:
+
+    newview.exe		(from build\newview)
+    viewstub.exe		(from build\newview_stub)
+    newview.dll		(from build\newview_dll)
+    helpmgr.dll		(from build\hlpmgr)
+    install.exe		(from build\installer)
+    renmodul.dll             (from installer)
+    gpl.txt			(from newview)
+    (language files)		(from build\newview_i18n)
+
+Things to do before releasing: see `NewView\VersionUnit.pas`.
+
+Note: convention for ZIP files is `NewViewA_B_C.zip` for version A.B.C.
+
+Underscores are more compatible than dots for certain broken bits of OS/2.
+
+There is a template for uploading NewView ZIPs to Hobbes.nmsu.edu
+
+
+Building ConfigApps
+-------------------
+
+Make sure steps 1-3 above have been completed.
+
+Also make sure the directory `build\ConfigApps` exists. 
+
+Open the project file `ConfigApps\ConfigApps.spr` in the Sibyl IDE.  You should
+be able to build it from the Project menu.  ConfigApps.EXE will be placed in 
+the `build\ConfigApps` directory.
+
+
+
+
+
+
+Old Notes from Aaron
+--------------------
+
+The following are left over pieces from Aaron's original build notes.
+They should not be needed anymore, but are included for posterity.
+
+-- 
+
+2. Unzip all files.
+
+
+3. Adjust directories in the .spr (Sibyl project) files.
+
+I have them set up so that they output the EXE, DLL and SPU (Compiled unit) files into subdirectories under D:\Temp\. They could equally well all go to the same directory.
+
+Adjust the unit directories in each of the .spr files to match the output directories so that dependencies can be found.
+
+You can do these adjustments either manually with a text editor or by loading the project files into the Sibyl IDE.
+
+OutDir=D:\temp\newview
+- this is where the EXE, DLL and SPU files go.
+
+LibDir=D:\Temp\sibyl;D:\Temp\Library;D:\Temp\Components
+- this is where Sibyl looks for SPU files when compiling (in addition to OutDir)
+
+LibSrcDir=W:\sibyl\rtl;W:\sibyl\spcc;W:\components;W:\library
+- this is where Sibyl finds source files when debugging (in addition to the project dir)
+
+5. Run makelibs.cmd
+
+This should build the Sibyl, Library and Components directories. Unfortunately, NewView itself cannot be compiled from the command line due to bugs in Sibyl.
+
+The Library and Components directories could alternatively be loaded into the IDE and compiled if you want.
+
+6. Install Components into Sibyl IDE
+
+Before you can open the NewView project in the IDE (which is not essential, but likely to be helpful :), you will need to install each component used by NewView into Sibyl, so the the IDE can find them.
+
+Use the Component - Install menu. Find the .spu file in question and click OK.
+
+When installing components, Sibyl must be able to find all the SPUs of already installed components. This is the only time that the component directory setting matters. So make sure you update it to the output directory for the Components project.
+
+The components are:
+  In individual files (same name, without the T on the front):
+    TCustomListBox
+    TOutline2
+    TCoolbar2
+    TSplitBar
+    TMultiColumnListBox
+
+  In CustomFileControls unit:
+    TCustomDriveComboBox
+    TCustomDirectoryListBox
+    TCustomFilterComboBox
+
+  In ColorWheel unit:
+    TColorWheel
+    TValueBar
+
+Yes, this is extremely tedious, and no there is no short cut as far as I know.
+
+Other components can be installed or not as you see fit.
+
+7. Open the NewView project
+
+Open Newview in the Sibyl IDE, and you should now be able to compile it and change it.
+
+Conventionally, I compile the libraries (Sibyl, Library, Components) with debug information. You can then turn debugging on or off when compiling NewView itself; if debugging is off, the library debug info will be discarded at link stage.
+
+As for all useful Sibyl projects, optimisation CANNOT be used as it produces incorrect results.
+
+Bug/Todo List
+-------------
+
+TODO
+
+You can find a list in versionunit.pas
+There are also some bugs in the ecomstation bugtracker under newview, but I think they are all duplicated here.
+

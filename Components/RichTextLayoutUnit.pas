@@ -73,6 +73,8 @@ Type
 
     FRichTextSettings: TRichTextSettings;
 
+    Codepage:    ULong;       // ALT
+
     // Drawing functions
 
     Procedure PerformStyleTag( Const Tag: TTag;
@@ -117,6 +119,11 @@ Type
 
     Function GetCharIndex( P: PChar ): longint;
     Function GetTextEnd: longint;
+
+    // ALT
+    Function FindCharacterBoundary(    TextPointer: PChar;
+                                   var Index:       LongInt;
+                                       Advance:     Boolean; ): LongInt;
 
   Public
     constructor Create( Text: PChar;
@@ -168,6 +175,7 @@ constructor TRichTextLayout.Create( Text: PChar;
                                     Width: longint );
 var
   DefaultFontSpec: TFontSpec;
+  CpSize:          ULong;       // ALT
 Begin
   Inherited Create;
 
@@ -198,6 +206,8 @@ Begin
   SibylFontToFontSpec( RichTextSettings.NormalFont,
                        DefaultFontSpec );
   FFontManager.DefaultFontSpec := DefaultFontSpec;
+
+  DosQueryCp( sizeof( Codepage ), Codepage, CpSize );       // ALT
 
   Layout;
 End;
@@ -283,6 +293,7 @@ Var
   P: PChar;
   NextP: PChar;
   NextP2: PChar;
+  NextP3: PChar;
 
   WordStart: PChar;
   WordStarted: boolean; // if false, just skipping spaces..
@@ -306,6 +317,8 @@ Var
   OnBreak: boolean;
 
   DoWrap: boolean;
+
+  InsideDBC:   Boolean;     // ALT
 
   // Nested procedure
 
@@ -375,17 +388,20 @@ begin
   WordX := 0;
 
   WrapX := FLayoutWidth
-           - FRichTextSettings.Margins.Right
-             * FontWidthPrecisionFactor;
+           - FontWidthPrecisionFactor                       // ALT
+           - Style.LeftMargin * FontWidthPrecisionFactor    // ALT
+           - FRichTextSettings.Margins.Right * FontWidthPrecisionFactor;
 
   LineWordsCompleted := 0;
 
   WordStarted := false;
   DisplayedCharsSinceFontChange := false;
+  InsideDBC := false;
 
   repeat
     CurrentElement := ExtractNextTextElement( P, NextP );
     assert( NextP > P );
+    CheckSpecialElementType( CurrentElement.Character, CurrentElement.ElementType, InsideDBC, Codepage );   // ALT
 
     OnBreak := false;
 
@@ -394,6 +410,7 @@ begin
       begin
         CurrentCharWidth := FFontManager.CharWidth( ' ' );
         OnBreak := true;
+        InsideDBC := false;
       end;
 
       teLineBreak:
@@ -403,6 +420,7 @@ begin
         // remember start of line
         WordStart := NextP;
         WordX := 0;
+        InsideDBC := false;
 
         P := NextP;
 
@@ -412,6 +430,7 @@ begin
       teTextEnd:
       begin
         DoLine( P, NextP, WordStartX + WordX );
+        InsideDBC := false;
 
         // end of text, done
         break;
@@ -445,10 +464,54 @@ begin
         // Normal (non-leading-space) character
         CurrentCharWidth := FFontManager.CharWidth( CurrentElement.Character );
         WordStarted := true;
+        InsideDBC := false;
       end;
+
+      // ALT begins
+      //
+      teWrapChar:
+      begin
+        // This is a legal break character, but not a space (so we still display it).
+        CurrentCharWidth := FFontManager.CharWidth( CurrentElement.Character );
+
+        // Treat as the start of a new word (for the sake of wrapping).
+        WordStarted := true;
+        inc( WordStartX, WordX + CurrentCharWidth );
+        WordX := 0;
+        WordStart := NextP;
+      end;
+
+      teLeadByte:
+      begin
+        // Leading byte of a double-byte character.
+        // Get the complete character width for our wrapping calculations.
+        if ( NextP > P ) then
+          CurrentCharWidth := FFontManager.CJKTextWidth( 2, P )
+        else
+          CurrentCharWidth := FFontManager.CJKCharWidth;
+        WordStarted := true;
+      end;
+
+      teSecondByte:
+      begin
+        // Secondary byte of a double-byte character.
+        // The full character width was already assigned to the leading byte.
+        CurrentCharWidth := 0;
+
+        // We treat each double-byte character as a complete word for the sake
+        // of the wrapping algorithm.
+        inc( LineWordsCompleted );
+        WordStarted := true;
+        inc( WordStartX, WordX + CurrentCharWidth );
+        WordX := 0;
+        WordStart := NextP;
+      end;
+      //
+      // ALT ends
 
       teStyle:
       begin
+        InsideDBC := false;
         case CurrentElement.Tag.TagType of
           ttBeginLink:
           begin
@@ -581,13 +644,18 @@ begin
     if   WordStartX
        + WordX
        + CurrentCharWidth
-       >= WrapX then
+       >= WrapX  then
     begin
       // reached right hand side before finding end of word
       if LineWordsCompleted > 0 then
         // always wrap after at least one word displayed
         DoWrap := true
-      else if not FRichTextSettings.AtLeastOneWordBeforeWrap then
+
+      else if ( CurrentElement.ElementType = teWrapChar ) or
+              ( CurrentElement.ElementType = teLeadByte ) then
+        DoWrap := true                                                  // ALT
+
+      else if ( not FRichTextSettings.AtLeastOneWordBeforeWrap ) then
         // only wrap during the first word, if the "at least 1 word" flag is not set.
         DoWrap := true;
 
@@ -605,6 +673,18 @@ begin
           // but draw it anyway (otherwise, infinite loop)
 
           NextElement := ExtractNextTextElement( NextP, NextP2 );
+
+          // ALT
+          if InsideDBC then
+          begin
+            // we're in the middle of a double-byte character, so keep the next byte too
+            InsideDBC := false;
+            NextP := NextP2;
+            NextElement := ExtractNextTextElement( NextP2, NextP3 );
+            NextP2 := NextP3;
+          end;
+          // /ALT
+
           if NextElement.ElementType <> teLineBreak then
             // there is still more on the line...
             CurrentLine.Wrapped := true
@@ -644,15 +724,27 @@ begin
         // Normal wrap; at least one word fitted on the line
         CurrentLine.Wrapped := true;
 
-        // take the width of the last space of the
-        // previous word off the line width
-        DoLine( WordStart, // current line ends at start of this word
-                WordStart, // next line starts at start of this word
-                WordStartX - FFontManager.CharWidth( ' ' ) );
-        if CurrentElement.ElementType = teImage then
-          if Bitmap <> nil then
-            if BitmapHeight > CurrentLine.Height then
-              CurrentLine.Height := BitmapHeight;
+
+        if ( CurrentElement.ElementType = teLeadByte ) or
+           ( CurrentElement.ElementType = teWrapChar ) then     // ALT
+        begin
+          // draw up to but not including this 'word' (ALT)
+          DoLine( WordStart,
+                  WordStart,
+                  WordStartX );
+        end
+        else
+        begin                                                   // ALT
+          // take the width of the last space of the
+          // previous word off the line width
+          DoLine( WordStart, // current line ends at start of this word
+                  WordStart, // next line starts at start of this word
+                  WordStartX - FFontManager.CharWidth( ' ' ) );
+          if CurrentElement.ElementType = teImage then
+            if Bitmap <> nil then
+              if BitmapHeight > CurrentLine.Height then
+                CurrentLine.Height := BitmapHeight;
+        end;                                                    // ALT
 
         // do NOT reset WordX to zero; as we are continuing
         // from partway thru the word on the next line.
@@ -726,6 +818,7 @@ Var
   Style: TTextDrawStyle;
   NewMarginX: longint;
   StartedDrawing: boolean;
+  InsideDBC: boolean;       // ALT
 begin
   Line := FLines[ LineIndex ];
   P := Line.Text;
@@ -735,6 +828,7 @@ begin
   FFontManager.SetFont( Style.Font );
 
   StartedDrawing := false;
+  InsideDBC := false;       // ALT
 
   Link := '';
   if Line.LinkIndex <> -1 then
@@ -746,9 +840,21 @@ begin
   begin
     Element := ExtractNextTextElement( P, NextP );
 
+    // ALT - handle double-byte characters
+    if InsideDBC and ( P < EndP ) then
+    begin
+      P := NextP;
+      Element := ExtractNextTextElement( P, NextP );
+      InsideDBC := false;
+    end;
+    CheckSpecialElementType( Element.Character, Element.ElementType, InsideDBC, Codepage );
+    // ALT done
+
     case Element.ElementType of
       teWordBreak,
       teText,
+      teLeadByte,           // ALT
+      teWrapChar,           // ALT
       teImage:
       begin
         if not StartedDrawing then
@@ -771,7 +877,10 @@ begin
         end;
 
         // Now find out how wide the thing is
-        inc( X, GetElementWidth( Element ) );
+        if (( Element.ElementType = teLeadByte ) And ( EndP > P )) then    // ALT
+          inc( X, FFontManager.CJKTextWidth( 2, P ))
+        else
+          inc( X, GetElementWidth( Element ) );
 
         if X div FontWidthPrecisionFactor
            > XToFind then
@@ -828,6 +937,7 @@ Var
   Line: TLayoutLine;
   Style: TTextDrawStyle;
   NewMarginX: longint;
+  InsideDBC:   Boolean;     // ALT
 begin
   Line := FLines[ LineIndex ];
   P := Line.Text;
@@ -837,14 +947,18 @@ begin
   FFontManager.SetFont( Style.Font );
 
   StartedDrawing := false;
+  InsideDBC := false;       // ALT
 
   while P < EndP do
   begin
     Element := ExtractNextTextElement( P, NextP );
+    CheckSpecialElementType( Element.Character, Element.ElementType, InsideDBC, Codepage );   // ALT
 
     case Element.ElementType of
       teWordBreak,
       teText,
+      teWrapChar,       // ALT
+      teLeadByte,       // ALT
       teImage:
       begin
         if not StartedDrawing then
@@ -863,9 +977,14 @@ begin
         end;
 
         // Now find out how wide the thing is
-        inc( X, GetElementWidth( Element ) );
+        if (( Element.ElementType = teLeadByte ) And ( EndP > P )) then    // ALT
+          inc( X, FFontManager.CJKTextWidth( 2, P ))
+        else
+          inc( X, GetElementWidth( Element ) );
 
       end;
+
+      // teSecondByte: do nothing and continue to next byte (ALT)
 
       teStyle:
       begin
@@ -1022,8 +1141,14 @@ begin
       end;
     end;
 
-    teText, teWordBreak:
+    teText, teWordBreak, teWrapChar:        // ALT
       Result := FFontManager.CharWidth( Element.Character );
+
+    teLeadByte:                             // ALT - should not be reached
+      Result := FFontManager.CJKCharWidth;
+
+    teSecondByte:                           // ALT
+      Result := 0;
 
     else
       Assert( False ); // should never be trying to find the width of a style, etc
@@ -1094,6 +1219,73 @@ begin
     P := NextP;
   end;
 end;
+
+// ALT begins
+//
+// Given a text position, check if it's in the middle of a double-byte
+// character; if so, shift the position one byte forwards or backwards.
+//
+function TRichTextLayout.FindCharacterBoundary(     TextPointer: PChar;     // pointer to text
+                                                var Index:       LongInt;   // position (byte index) within text
+                                                    Advance:     Boolean;   // whether to adjust position forward
+                                              ): LongInt;                   // returns new offset within line
+var
+  P:          PChar;            // pointer to current character in string
+  NextP:      PChar;            // pointer to the following character, if any
+  Element:    TTextElement;     // element data about the current character
+  CurrentPos: LongInt;          // index of first character of line
+  Line:       LongInt;          // current line number
+  Offset:     LongInt;          // offset position within current line
+  InsideDBC:  boolean;
+begin
+  Offset := 0;
+
+  if ( Codepage in [ 932, 936, 942, 943, 949, 950, 1381, 1386 ]) then
+  begin
+    // Because parsing of byte types is state based, we must verify every
+    // byte's type from the beginning of the line until we reach the target.
+    //
+    Line := GetLineFromCharIndex( Index );
+    CurrentPos := GetCharIndex( FLines[ Line ].Text );
+    P := TextPointer + CurrentPos;
+    InsideDBC := false;
+
+    while CurrentPos < Index do
+    begin
+      Element := ExtractNextTextElement( P, NextP );
+      CheckSpecialElementType( Element.Character, Element.ElementType, InsideDBC, Codepage );
+      CurrentPos := CurrentPos + PCharPointerDiff( NextP, P );
+      Offset := Offset + PCharPointerDiff( NextP, P );
+      P := NextP;
+    end;
+
+    // We've reached the target position, and the current parsing state should
+    // be correctly set. So now we can safely determine the target byte's type.
+    //
+    Element := ExtractNextTextElement( P, NextP );
+    CheckSpecialElementType( Element.Character, Element.ElementType, InsideDBC, Codepage );
+
+    if Element.ElementType = teSecondByte then
+    begin
+      // If we are inside a a double byte character, shift position by one.
+      if Advance Then
+      Begin
+        inc( Index );
+        inc( Offset );
+      End
+      Else
+      Begin
+        dec( Index );
+        dec( Offset );
+      End
+    end;
+
+  end;
+
+  Result := Offset;
+end;
+//
+// ALT ends
 
 Initialization
 End.

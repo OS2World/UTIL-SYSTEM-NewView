@@ -22,8 +22,8 @@ Const
   Vendor = 'Aaron Lawrence';
   Description = 'NewView Install';
 
-  Version =        'V1.10.0'; // $SS_REQUIRE_NEW_VERSION$
-  BldLevelVersion = '1.10.0'; // Embedded for IBM BLDLEVEL tool
+  Version =        'V1.10.2'; // $SS_REQUIRE_NEW_VERSION$
+  BldLevelVersion = '1.10.2'; // Embedded for IBM BLDLEVEL tool
 
   // BLDLevel - compatible - mostly
   EmbeddedVersion: string =
@@ -198,6 +198,7 @@ const // install types
   itStandAlone = 2;
 
   ECSNewViewObjectID = '<ECS_NEWVIEW>';
+  WPNewViewObjectID = '<WP_NEWVIEW>';
   NewViewObjectID = '<NEWVIEW>';
   IPFFiles = '*.INF,*.HLP'; // NOTE: PM is case sensitive here
 
@@ -413,7 +414,7 @@ begin
   FSystemDir := GetBootDriveLetter + ':\os2\';
   FSystemDLLDir := FSystemDir + 'dll\';
 
-  // ecs things
+  // aos/ecs things
   FEnv_OSDir := GetEnvironmentFolder( 'OSDIR' );
   FEnv_Programs := GetEnvironmentFolder( 'PROGRAMS' );
 end;
@@ -569,7 +570,7 @@ begin
     else if rc <> 0 then
     begin
       DoErrorDlg( 'Install Error',
-                  'Unable to acces ' + StrCRLF
+                  'Unable to access ' + StrCRLF
                   + ' ' + DestinationPath + StrCRLF
                   + SysErrorMessage( rc ) );
       exit;
@@ -847,12 +848,19 @@ begin
     WinCreateObject( 'WPProgram', // class
                      Description,
                      szSetupString, // setup string
-                     '<WP_DESKTOP>',
-                     CO_REPLACEIFEXISTS );
+                     '<WP_TOOLS>',
+                     CO_UPDATEIFEXISTS );
 
   if Result <> NULLHANDLE then
+  begin
     // OK
+    WinCreateObject( 'WPShadow',        // class
+                     Description,
+                     'SHADOWID=' + ID,  // setup string
+                     '<WP_DESKTOP>',
+                     CO_UPDATEIFEXISTS );
     exit;
+  end;
 
   // error
   PMError := WinGetLastError( AppHandle );
@@ -864,8 +872,8 @@ begin
       DoErrorDlg( 'Warning',
                   'Unable to create desktop icon:' + StrCRLF
                   + IntToHex( PMError, 8 )
-                  + ': The desktop is not correctly installed '
-                  + '(<WP_DESKTOP> missing). ' );
+                  + ': The target folder is not correctly installed '
+                  + '(<WP_TOOLS> missing). ' );
 
     WPERR_NOT_WORKPLACE_CLASS:
       DoErrorDlg( 'Warning',
@@ -879,6 +887,7 @@ begin
                   + IntToHex( PMError, 8 )
                   + ': There may be some problem with the desktop.' );
   end;
+
 end;
 
 Function TMainForm.Install: boolean;
@@ -975,6 +984,67 @@ begin
                 + Dest );
 end;
 
+function MoveFileError( const Source: string;
+                        const Dest: string;
+                        const IsModule: boolean;
+                        var SourceInUse: boolean ): boolean;
+var
+  rc: APIRET;
+  szSource: cstring;
+  FileHandle: HFILE;
+  ActionTaken: ULONG;
+begin
+  // First copy the file
+  Result := CopyFileError( Source,
+                           Dest  );
+  if not Result then exit;
+
+  // Now delete the original
+  szSource := Source;
+  // see if it's in use.
+  rc := DosOpen( szSource,
+                 FileHandle,
+                 ActionTaken,
+                 0,         // new size: not used
+                 0,         // attributes: not used
+                 OPEN_ACTION_FAIL_IF_NEW + OPEN_ACTION_OPEN_IF_EXISTS,
+                 OPEN_FLAGS_FAIL_ON_ERROR + OPEN_SHARE_DENYREADWRITE
+                 + OPEN_ACCESS_READWRITE,
+                 nil );     // e.a.s: not used
+  DosClose( FileHandle );
+  if rc = ERROR_SHARING_VIOLATION then
+  begin
+    // file in use
+    if not IsModule then
+    begin
+      Result := false;
+      DoErrorDlg( 'Installation Error',
+                  'This file is in use: ' + StrCRLF
+                  + ' ' + Source + StrCRLF
+                  + 'and cannot be moved.' );
+      exit;
+    end;
+
+    // unlock the module
+    SourceInUse := true;
+    rc := DosReplaceModule( Addr( szSource ),
+                            nil,
+                            nil );
+    if rc <> 0 then
+    begin
+      // error
+      Result := false;
+      DoErrorDlg( 'Install Error',
+                  'Could not unlock ' + StrCRLF
+                  + ' ' + Source + StrCRLF
+                  + SysErrorMessage( rc ) );
+
+      exit;
+    end;
+  end;
+  Result := DeleteFile( Source );
+end;
+
 // Do a full install, replacing parts of the operating system
 // as needed.
 // Either view only, or view and helpmgr
@@ -989,6 +1059,8 @@ var
   ProgramObjectHandle: HOBJECT;
   ObjectID: string;
   rc: longint;
+  HelpMgrDllPath: string;
+  HelpMgrOriginal: string;
   HelpMgrBackupPath: string;
   StubBackupPath: string;
   IBMHelpMgrPath: cstring;
@@ -1070,10 +1142,10 @@ begin
   end;
 
   // install viewer app to either x:\os2
-  // or on eCS, %OSDIR%\bin
+  // or on ArcaOS or eCS, %OSDIR%\bin
   if FEnv_OSDir <> '' then
   begin
-    // ecs - with a dir specified
+    // aos/ecs - with a dir specified
     AppDir := FEnv_OSDir + 'bin\';
   end
   else
@@ -1082,12 +1154,27 @@ begin
     AppDir := FSystemDir;
   end;
 
-  LanguageDir := AppDir; // for now.
+  if FEnv_OSDir <> '' then
+  begin
+    LanguageDir := FEnv_OSDir + 'lang\';
+  end
+  else
+  begin
+    LanguageDir := AppDir; // for now.
+  end;
 
   // Where shall we put the programs eh?
   FAppInstallPath := AppDir + 'NewView.exe';
   FStubInstallPath := FSystemDir + 'view.exe';
-  FDllInstallPath := FSystemDLLDir + 'newview.dll';
+
+  if FEnv_OSDir <> '' then
+  begin
+    FDllInstallPath := FEnv_OSDir + 'dll\';
+  end
+  else
+  begin
+    FDllInstallPath := FSystemDLLDir;
+  end;
 
   // check for existing files that might conflict
   if not CheckConflicts( 'PATH',
@@ -1187,10 +1274,26 @@ begin
   // Help Manager DLL
   if GetInstallType = itComplete then
   begin
+    HelpMgrDllPath    := FDllInstallPath + 'HelpMgr.dll';
+    HelpMgrOriginal   := FSystemDLLDir + 'HelpMgr.dll';
     HelpMgrBackupPath := FSystemDLLDir + 'HelpMgr.bak';
+
+    // Back up the original HELPMGR.DLL. We have to do this separately
+    // (rather than in Installfile) because it might not be in the same
+    // place as our replacement.
+    if FileExists( HelpMgrOriginal ) and
+       not FileExists( HelpMgrBackupPath ) then
+    begin
+      if not MoveFileError( HelpMgrOriginal,
+                            HelpMgrBackupPath,
+                            true, FDLLInUse ) then
+        exit;
+    end;
+
+    // Now install the new HelpMgr
     if not InstallFile( 'HelpMgr.dll',
-                        FSystemDLLDir + 'HelpMgr.dll',
-                        HelpMgrBackupPath,
+                        HelpMgrDllPath,
+                        '',
                         true,
                         FDLLInUse ) then
       exit;
@@ -1225,7 +1328,7 @@ begin
 
   // newview.dll
   if not InstallFile( 'NewView.dll',
-                      FDllInstallPath,
+                      FDllInstallPath + 'newview.dll',
                       '', // no backup
                       false, // not in use
                       Dummy ) then
@@ -1280,8 +1383,14 @@ begin
       // yes, replace that
       ObjectID := ECSNewViewObjectID
     else
-      // no, create our own
-      ObjectID := NewViewObjectID;
+    begin
+      ProgramObjectHandle :=
+        WinQueryObject( WPNewViewObjectID );
+      if ProgramObjectHandle <> NULLHANDLE then
+        ObjectID := WPNewViewObjectID
+      else
+        ObjectID := NewViewObjectID;
+    end;
 
     if CreateDesktopIcon( FAppInstallPath,
                           ObjectID,

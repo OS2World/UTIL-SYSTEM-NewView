@@ -1,5 +1,12 @@
 Unit SharedMemoryUnit;
 
+// NewView - a new OS/2 Help Viewer
+// Copyright 2003-2006 Aaron Lawrence
+// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
+// This software is released under the GNU Public License - see readme.txt
+
+// Helper functions to work with SharedMemory
+
 Interface
 
 uses

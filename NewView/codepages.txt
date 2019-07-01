@@ -1,2 +1,7 @@
-Korean: 949
-Japanese: 932 (also: 933?)
+LANGUAGE		CODEPAGE(S)			REMARKS
+--------		-----------			-------
+Korean: 		949 				KSC5601 (KS-Code) encoding
+Japanese: 		932 or 943 (also: 942)	Shift-JIS/1990 encoding; 932 is aliased to 943 (942 is the older Shift-JIS/1978 standard)
+Traditional Chinese: 	950 				Big-5 encoding
+Simplified Chinese: 	1386 (also: 1381)		GBK encoding (1381 is the older GB2312 standard; there is also 946 which seems to be a very old/obsolete standard)
+Thai: 			874				TIS-620 encoding

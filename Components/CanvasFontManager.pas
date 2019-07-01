@@ -49,6 +49,7 @@ Type
     lAveCharWidth: LONG;
     lMaxCharInc: LONG;
     lMaxDescender: LONG;
+    lEmInc: LONG;
 
     destructor Destroy; override;
   end;
@@ -102,7 +103,8 @@ Type
 
     function AverageCharWidth: longint;
     function MaximumCharWidth: longint;
-
+    function CJKCharWidth: longint;         // ALT
+    function CJKTextWidth(  const Length: longint; const S: PChar ): longint;
     function IsFixed: boolean;
 
     function CharHeight: longint;
@@ -139,6 +141,7 @@ uses
   OS2Def,
   PmDev,
   SysUtils,
+
   StringUtilsUnit;
 
 Imports
@@ -389,6 +392,7 @@ Begin
       Font.lMaxbaselineExt := pfm^[ T ].lMaxbaselineExt;
       Font.lAveCharWidth := pfm^[ T ].lAveCharWidth;
       Font.lMaxCharInc := pfm^[ T ].lMaxCharInc;
+      Font.lEmInc := pfm^[ T ].lEmInc;
 
       Font.ID := -1; // and always shall be so...
 
@@ -823,6 +827,7 @@ begin
   Result.lMaxbaseLineExt := FontInfo.lMaxbaselineExt;
   Result.lAveCharWidth := FontInfo.lAveCharWidth;
   Result.lMaxCharInc := FontInfo.lMaxCharInc;
+  Result.lEmInc := FontInfo.lEmInc;
 
   // Set style flags
   with Result do
@@ -1058,6 +1063,7 @@ begin
   FCurrentFont.lAveCharWidth := fm.lAveCharWidth;
   FCurrentFont.lMaxCharInc := fm.lMaxCharInc;
   FCurrentFont.lMaxDescender := fm.lMaxDescender;
+  FCurrentFont.lEmInc := fm.lEmInc;
 end;
 
 procedure TCanvasFontManager.EnsureMetricsLoaded;
@@ -1103,6 +1109,34 @@ function TCanvasFontManager.IsFixed: boolean;
 begin
   Result := FCurrentFont.FixedWidth;
 end;
+
+// ALT begins
+//
+// A 'default' average width for DBCS characters; probably not very accurate.
+// Should only be used as a fallback in case querying the actual string width
+// is impossible/fails.
+//
+function TCanvasFontManager.CJKCharWidth: longint;
+begin
+  EnsureMetricsLoaded;
+  if FCurrentFont.lMaxCharInc < FCurrentFont.lEmInc then
+    Result := FCurrentFont.lMaxCharInc * FontWidthPrecisionFactor
+  else
+    Result := FCurrentFont.lEmInc * FontWidthPrecisionFactor;
+end;
+
+// Get the render width of a CJK (Chinese/Japanese/Korean) character string.
+//
+function TCanvasFontManager.CJKTextWidth(  const Length: longint; const S: PChar ): longint;
+var
+  aptl: Array[ 0..TXTBOX_COUNT-1 ] Of PointL;
+begin
+  EnsureMetricsLoaded;
+  GpiQueryTextBox( FCanvas.Handle, Length, S^, TXTBOX_COUNT, aptl[0] );
+  Result := aptl[ TXTBOX_CONCAT ].x * FontWidthPrecisionFactor;
+end;
+//
+// ALT ends
 
 procedure TCanvasFontManager.DrawString( Var Point: TPoint;
                                          const Length: longint;

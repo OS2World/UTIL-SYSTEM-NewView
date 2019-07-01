@@ -1,22 +1,14 @@
 program Main;
 
-// NewView - a new OS/2 Help Viewer
-// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
-// This software is released under the GNU Public License - see readme.txt
-
-// UnitTests
-
 uses
   Classes,
   SysUtils,
   TestAssert,
-  ACLLanguageUnitTests,
   CmdLineParameterUnitTests,
   CharUtilsUnitTests,
   StringUtilsUnitTests,
   FileUtilsUnitTests,
-  HelpTopicTests,
-  VersionUnit;
+  HelpTopicTests;
 
 IMPORTS
   FUNCTION PmPrintfString(aString:PChar):BYTE; APIENTRY; 'PMPRINTF' NAME 'PmPrintfString';
@@ -38,23 +30,14 @@ BEGIN
   tmpSuites := TList.Create;
   tmpAllExceptions := TStringList.Create;
 
-  write('UnitTest for NewView version ' + GetAppVersion);
-
   tmpTestNoParam := ParamStr(1);
   writeln(tmpTestNoParam);
 
-  // Components
-  tmpSuites.Add(@getACLLanguageUnitTests);
-
-  // Libraries
+  tmpSuites.Add(@getCmdLineParameterUnitTests);
   tmpSuites.Add(@getCharUtilsUnitTests);
   tmpSuites.Add(@getStringUtilsUnitTests);
+  tmpSuites.Add(@getHelpTopicTests);
   tmpSuites.Add(@getFileUtilsUnitTests);
-
-  // NewView
-  tmpSuites.Add(@getCmdLineParameterUnitTests);
-//  tmpSuites.Add(@getHelpTopicTests);
-
 
   tmpTestNo := -1;
   try

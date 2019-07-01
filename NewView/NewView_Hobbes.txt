@@ -1,0 +1,31 @@
+                          Upload Information Template for Hobbes.nmsu.edu
+                          ===============================================
+
+        Archive Filename: NewView2_xx_x.zip
+       Short Description: Replacement OS/2 help viewer
+        Long Description: Rewrite of OS/2 View.exe, reads INF and HLP files.
+                          Improvements include a new UI, remember size/position,
+                          select and copy from the window... etc.
+<p>
+                          [summary of major changes in current release]
+
+      Proposed directory
+           for placement: /pub/os2/apps/misc/
+
+               Your name: Alexander Taylor
+           Email address: alex at altsan dot org
+    Program contact name: (same)
+   Program contact email: (same)
+             Program URL: http://trac.netlabs.org/newview
+
+      Would you like the
+   contact email address
+    included in listings? no
+
+Operating System/Version: OS/2 Warp (only tested on Warp 4/fp15 and later), MCP/ACP, eCS, ArcaOS
+ Additional requirements:
+
+                Replaces: /pub/os2/apps/misc/NewView2_*.zip
+
+
+

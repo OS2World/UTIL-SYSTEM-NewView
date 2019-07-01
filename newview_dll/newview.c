@@ -6,8 +6,8 @@
 #include <stdlib.h>
 
 
-#define  _PMPRINTF_
-#include <PMPRINTF.H>
+//#define  _PMPRINTF_
+//#include <PMPRINTF.H>
 
 
 #define VERSION "0.9.1"
@@ -144,7 +144,7 @@ BOOL APIENTRY LZWDecompressBlock( PBYTE pbInput,             // in: compressed d
 
     *pBytesOut = 0;
 
-    _Pmpf(("LZWDecompressBlock"));
+//    _Pmpf(("LZWDecompressBlock"));
 
     while ((new_code = input_code(&pbInput, number_bytes)) != TERMINATOR) {
         if (clear_flag) {

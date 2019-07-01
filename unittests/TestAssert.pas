@@ -14,6 +14,7 @@ uses
   TYPE EAssertFailed=CLASS(Exception);
 
   PROCEDURE assertEqualsString(aTestDescription : String; anExpectedValue : String; aRealValue : String);
+  PROCEDURE assertEqualsIgnoreCaseString(aTestDescription : String; anExpectedValue : String; aRealValue : String);
   PROCEDURE assertEqualsAnsiString(aTestDescription : String; anExpectedValue : AnsiString; aRealValue : AnsiString);
   PROCEDURE assertEqualsInt(aTestDescription : String; anExpectedValue : INTEGER; aRealValue : INTEGER);
   PROCEDURE assertEqualsLongWord(aTestDescription : String; anExpectedValue : LongWord; aRealValue : LongWord);
@@ -37,6 +38,30 @@ Implementation
       tmpMessage := tmpMessage + anExpectedValue;
       tmpMessage := tmpMessage + '''  but it was: ''' + tmpLineBreak;
       tmpMessage := tmpMessage + aRealValue;
+      tmpMessage := tmpMessage + '''';
+      raise EAssertFailed.Create(tmpMessage);
+    end;
+  END;
+
+
+  PROCEDURE assertEqualsIgnoreCaseString(aTestDescription : String; anExpectedValue : String; aRealValue : String);
+  VAR
+    tmpMessage : AnsiString;
+    tmpLineBreak : String;
+    tmpRealValueUC : String;
+    tmpExpectedValueUC : String;
+  BEGIN
+    tmpRealValueUC := UpperCase(aRealValue);
+    tmpExpectedValueUC := UpperCase(anExpectedValue);
+    if (tmpRealValueUC <> tmpExpectedValueUC) then
+    begin
+      tmpLineBreak := '';
+      if Length(tmpExpectedValueUC) > 13 then tmpLineBreak := chr(13) + chr(10) + '  ';
+
+      tmpMessage := 'Failed: ' + aTestDescription + ' Expected: ''' + tmpLineBreak;
+      tmpMessage := tmpMessage + tmpExpectedValueUC;
+      tmpMessage := tmpMessage + '''  but it was: ''' + tmpLineBreak;
+      tmpMessage := tmpMessage + tmpRealValueUC;
       tmpMessage := tmpMessage + '''';
       raise EAssertFailed.Create(tmpMessage);
     end;

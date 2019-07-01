@@ -50,7 +50,7 @@ BOOL StartViewer(   char* pszParameters,
                  NULL,                // reserved
                  SAF_INSTALLEDCMDLINE ); // options
 
-  if ( hApplication == NULL )
+  if ( hApplication == NULLHANDLE )
   {
     LogEvent( "  Failed to launch viewer, rc=%8X", WinGetLastError( hab ) );
     sprintf( pszMessageCaption, "Unable to start help viewer %s", pszViewerFilename );

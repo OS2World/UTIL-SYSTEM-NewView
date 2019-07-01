@@ -1,5 +1,12 @@
 Unit Semaphores;
 
+// NewView - a new OS/2 Help Viewer
+// Copyright 2003-2006 Aaron Lawrence
+// Copyright 2006-2009 Ronald Brill (rbri at rbri dot de)
+// This software is released under the GNU Public License - see readme.txt
+
+// Helper functions to work with Semaphores
+
 Interface
 
 Uses
@@ -106,7 +113,7 @@ begin
   CName := Name;
   DosCreateEventSem( CName, // unnamed
                      _Handle,
-                     DC_SEM_SHARED, // shared 
+                     DC_SEM_SHARED, // shared
                      false );
 {$else}
   _Handle:= CreateEvent( nil, // no security

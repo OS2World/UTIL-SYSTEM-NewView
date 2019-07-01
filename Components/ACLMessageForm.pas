@@ -39,9 +39,6 @@ Type
 
   End;
 
-
-
-
 Implementation
 
 Uses
@@ -60,29 +57,17 @@ var
   YesButtonCaption: string;
   NoButtonCaption: string;
 
-Procedure OnLanguageEvent(Language: TLanguageFile; const Apply: boolean);
-var
-  tmpPrefix : String;
+Procedure OnLanguageEvent( Language: TLanguageFile;
+                           const Apply: boolean );
 begin
-  tmpPrefix := '';
-  if Language = nil then
-  begin
-    OKButtonCaption := '~OK';
-    CancelButtonCaption := '~Cancel';
-    HelpButtonCaption := '~Help';
-    YesButtonCaption := '~Yes';
-    NoButtonCaption := '~No';
-  end
-  else
-  begin
-    tmpPrefix := 'MessageForm' + LANGUAGE_LABEL_DELIMITER; // use messageform captions
+  if Language <> nil then
+    Language.Prefix := 'MessageForm.'; // use messageform captions
 
-    Language.LL(Apply, OKButtonCaption, tmpPrefix + 'OKButtonCaption', '~OK');
-    Language.LL(Apply, CancelButtonCaption, tmpPrefix + 'CancelButtonCaption', '~Cancel');
-    Language.LL(Apply, HelpButtonCaption, tmpPrefix + 'HelpButtonCaption', '~Help');
-    Language.LL(Apply, YesButtonCaption, tmpPrefix + 'YesButtonCaption', '~Yes');
-    Language.LL(Apply, NoButtonCaption, tmpPrefix + 'NoButtonCaption', '~No');
-  end;
+  LoadString( Language,Apply, OKButtonCaption, 'OKButtonCaption', '~OK' );
+  LoadString( Language,Apply, CancelButtonCaption, 'CancelButtonCaption', '~Cancel' );
+  LoadString( Language,Apply, HelpButtonCaption, 'HelpButtonCaption', '~Help' );
+  LoadString( Language,Apply, YesButtonCaption, 'YesButtonCaption', '~Yes' );
+  LoadString( Language,Apply, NoButtonCaption, 'NoButtonCaption', '~No' );
 end;
 
 Procedure TMessageForm.SetupComponent;
@@ -237,7 +222,8 @@ Begin
 End;
 
 Initialization
-  RegisterClasses ([TButton, TImage, TMessageForm, TCustomMemo, TListBox]);
+  RegisterClasses ([ TButton, TImage,
+    TMessageForm, TCustomMemo, TListBox]);
 
   RegisterProcForLanguages( OnLanguageEvent );
 

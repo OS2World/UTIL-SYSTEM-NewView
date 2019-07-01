@@ -1,0 +1,26 @@
+                          Upload Information Template for Hobbes.nmsu.edu
+                          ===============================================
+
+        Archive Filename: ConfigApps1_2_0.zip
+       Short Description: Configure OS/2 default Internet apps
+        Long Description: Configure default Web Browser.
+                          Other settings are new settings that not all 
+                          programs currently use, including default Email, News, FTP and IRC Clients.
+<p>
+                          1.2.0 Now includes national language (i18n) support.
+      Proposed directory
+           for placement: /pub/os2/apps/misc
+
+               Your name: Alex Taylor
+           Email address: alex at altsan dot org
+    Program contact name: (same)
+   Program contact email: (same)
+             Program URL: http://trac.netlabs.org/newview
+      Would you like the
+   contact email address
+    included in listings? no
+
+Operating System/Version: OS/2 Warp 4+
+ Additional requirements: 
+
+                Replaces: /pub/os2/apps/misc/configapps1_1_1.zip
